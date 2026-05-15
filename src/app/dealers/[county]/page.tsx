@@ -1,0 +1,132 @@
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getCountySoils, getCountyBySlug, getDealersByCounty } from "@/lib/data";
+import Breadcrumbs from "@/components/Breadcrumbs";
+
+interface PageProps {
+  params: Promise<{ county: string }>;
+}
+
+export async function generateStaticParams() {
+  return getCountySoils().map((c) => ({ county: c.slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { county: slug } = await params;
+  const county = getCountyBySlug(slug);
+  if (!county) return {};
+  const dealers = getDealersByCounty(county.county);
+  return {
+    title: `Agrovets in ${county.county} County — ${dealers.length} Farm Input Dealers`,
+    description: `Find ${dealers.length} verified agrovet dealers in ${county.county} County. Fertilizer, seeds, and pesticide suppliers with stock lists and contact info.`,
+  };
+}
+
+export default async function DealerCountyPage({ params }: PageProps) {
+  const { county: slug } = await params;
+  const county = getCountyBySlug(slug);
+  if (!county) notFound();
+
+  const dealers = getDealersByCounty(county.county);
+
+  const schemaItems = dealers.map((d) => ({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: d.name,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: d.town,
+      addressRegion: county.county,
+      addressCountry: "KE",
+    },
+    ...(d.lat && d.lon
+      ? { geo: { "@type": "GeoCoordinates", latitude: d.lat, longitude: d.lon } }
+      : {}),
+    ...(d.phone ? { telephone: d.phone } : {}),
+  }));
+
+  return (
+    <>
+      {schemaItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaItems) }}
+        />
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Dealers", href: "/dealers" },
+            { label: county.county },
+          ]}
+        />
+
+        <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
+          Agrovets in {county.county} County
+        </h1>
+        <p className="text-soil-400 mb-10">
+          {dealers.length} farm input dealer{dealers.length !== 1 ? "s" : ""} found
+        </p>
+
+        {dealers.length > 0 ? (
+          <div className="grid sm:grid-cols-2 gap-4">
+            {dealers.map((d, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-xl p-6 border border-cream-300"
+              >
+                <h2 className="font-display font-bold text-forest-700 mb-1">
+                  {d.name}
+                </h2>
+                <p className="text-sm text-soil-400 mb-3">{d.town}</p>
+                {d.phone && (
+                  <p className="text-sm text-forest-600 mb-2">
+                    📞{" "}
+                    <a href={`tel:${d.phone}`} className="hover:text-gold-600">
+                      {d.phone}
+                    </a>
+                  </p>
+                )}
+                {d.stocks && (
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    {d.stocks.split(",").map((s) => (
+                      <span
+                        key={s.trim()}
+                        className="text-xs bg-cream-200 text-soil-500 px-2 py-0.5 rounded-full"
+                      >
+                        {s.trim()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl p-10 border border-cream-300 text-center">
+            <p className="text-soil-400 mb-4">
+              No dealers listed in {county.county} yet.
+            </p>
+            <p className="text-sm text-soil-300">
+              Are you an agrovet in {county.county}?{" "}
+              <span className="text-gold-600 font-medium">Apply to be listed</span> on
+              ShambaIQ.
+            </p>
+          </div>
+        )}
+
+        <div className="mt-8 text-center">
+          <Link
+            href={`/soil/${county.slug}`}
+            className="text-gold-600 hover:text-gold-700 font-medium text-sm"
+          >
+            ← View {county.county} soil report
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+}

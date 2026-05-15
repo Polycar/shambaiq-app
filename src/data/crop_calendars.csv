@@ -1,0 +1,16 @@
+Crop,Season,Month_1,Month_2,Month_3
+Maize,Long Rains,Sowing & Basal Fertilizer (DAP/NPK),Top Dressing (CAN/Urea) & 1st Weeding,Crop Protection & Scouting
+Maize,Short Rains,Fast Sowing & Basal Fertilizer,Top Dressing & Weeding,Fast Growth Scouting
+Maize,Dry Season,Land Preparation & Manure,Soil Testing & Resting,Seed Selection & Storage
+Wheat,Long Rains,Drilling Sowing & Basal Fertilizer,Top Dressing & Weed Control,Pest Monitoring & Protection
+Wheat,Short Rains,Sowing & Basal Fertilizer,Top Dressing & Weed Control,Pest Monitoring
+Wheat,Dry Season,Post-Harvest Processing,Land Resting,Dry Planting Preparation
+Potatoes,Long Rains,Planting Tubers & Basal Fertilizer (NPK),Earthing Up & Top Dressing (CAN),Pest Control (Blight) & Weeding
+Potatoes,Short Rains,Planting & Basal Fertilizer,Earthing Up & Top Dressing,Blight Control
+Potatoes,Dry Season,Harvesting & Storage,Land Resting,Seed Tuber Sprouting
+Beans,Long Rains,Sowing & Basal Fertilizer (DAP),1st Weeding & Thining,Flowering Stage & Pest Control
+Beans,Short Rains,Sowing & Basal Fertilizer,1st Weeding & Thining,Flowering Stage
+Beans,Dry Season,Post-Harvest Storage,Land Resting,Seed Selection
+Sorghum,Long Rains,Sowing & Basal Fertilizer,Top Dressing & 1st Weeding,Bird Control & Scouting
+Sorghum,Short Rains,Sowing & Basal Fertilizer,Top Dressing & 1st Weeding,Bird Control
+Sorghum,Dry Season,Harvesting & Drying,Land Resting,Seed Selection

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
 import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData } from "@/lib/api";
 
@@ -55,8 +55,9 @@ function scoreBg(s: number) {
 function clean(s: string | undefined | null): string {
   if (!s) return "";
   return s
-    .replace(/\*\*/g, "")              // remove ** markers
-    .replace(/^[\p{Emoji_Presentation}\p{Extended_Pictographic}\u200d\uFE0F]+\s*/u, "")  // strip leading emojis
+    .replace(/\*\*/g, "")
+    .replace(/^[\u2728\u26A0\uFE0F\u2705\u274C\u2757\u2615\u26C5\u2600\uFE0F\u2614\u2B50\uD83C-\uDBFF][\uDC00-\uDFFF]?\s*/g, "")
+    .replace(/^[🚨⚠️✅❌🚀💡🌧️☀️🍃🏔️📅📡🧬📊🛒🏷️💧🌦️⛅🎯🔄📤🌍💰🌾⛈️☁️🌫️🎉]+\s*/g, "")
     .trim();
 }
 
@@ -90,6 +91,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const resultRef = useRef<HTMLDivElement>(null);
 
   // GPS capture
   const captureGPS = useCallback(() => {
@@ -598,7 +600,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
         {/* ── RESULTS ───────────────────────────────────────── */}
         {result && !result.error && (
-          <div className="space-y-4 pb-20">
+          <div ref={resultRef} id="shambaiq-results" className="space-y-4 pb-20">
             {/* Score */}
             <div className="rounded-2xl text-center text-white py-6 px-4" style={{ background: scoreColor(result.health_score) }}>
               <p className="text-6xl font-extrabold">{result.health_score}</p>
@@ -679,7 +681,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {result.comparison && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  🔄 {t("switch_title", lang)}
+                  {t("switch_title", lang)}
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm border-collapse">
@@ -694,7 +696,16 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                       <tr className="border-b border-gray-100">
                         <td className="py-2 pr-2 font-medium">{t("table_strategy", lang)}</td>
                         <td className="py-2 pr-2 text-red-600 text-xs">{clean(result.comparison.current_flaw) || "—"}</td>
-                        <td className="py-2 text-green-700 font-bold">{clean(result.comparison.recommended) || "—"}</td>
+                        <td className="py-2 text-green-700 font-bold">
+                          {(() => {
+                            const rec = clean(result.comparison.recommended);
+                            // Fix contradiction: if K is low, don't say "None required"
+                            if (rec && (rec.includes("None") || rec.includes("Optimal")) && result.is_k_low) {
+                              return lang === "en" ? "NPK 17:17:17 + CAN (K is deficient)" : "NPK 17:17:17 + CAN (K iko chini)";
+                            }
+                            return rec || "—";
+                          })()}
+                        </td>
                       </tr>
                       <tr>
                         <td className="py-2 pr-2 font-medium">{t("table_outcome", lang)}</td>
@@ -862,11 +873,36 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               </div>
             )}
 
-            {/* Share Actions */}
-            <div className="rounded-2xl border bg-white p-5 space-y-3">
+            {/* Share & Download Actions */}
+            <div className="rounded-2xl border bg-white p-5 space-y-3" data-noprint>
               <h3 className="font-bold text-base" style={{ color: "#1a3a1a" }}>
-                📤 {lang === "en" ? "Share Results" : "Shiriki Matokeo"}
+                {lang === "en" ? "Share & Download" : "Shiriki na Pakua"}
               </h3>
+              <button
+                onClick={() => {
+                  const el = resultRef.current;
+                  if (!el) return;
+                  // Hide the share buttons during print
+                  const noprint = el.querySelectorAll('[data-noprint]');
+                  noprint.forEach(n => (n as HTMLElement).style.display = 'none');
+                  const style = document.createElement('style');
+                  style.textContent = `
+                    @media print {
+                      body * { visibility: hidden; }
+                      #shambaiq-results, #shambaiq-results * { visibility: visible; }
+                      #shambaiq-results { position: absolute; left: 0; top: 0; width: 100%; }
+                    }
+                  `;
+                  document.head.appendChild(style);
+                  window.print();
+                  style.remove();
+                  noprint.forEach(n => (n as HTMLElement).style.display = '');
+                }}
+                className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm cursor-pointer"
+                style={{ background: "#1a3a1a" }}
+              >
+                {lang === "en" ? "Download PDF Report" : "Pakua Ripoti ya PDF"}
+              </button>
               <a
                 href={whatsappUrl}
                 target="_blank"
@@ -874,7 +910,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm"
                 style={{ background: "#25D366" }}
               >
-                ✅ {t("result_share", lang)}
+                {t("result_share", lang)}
               </a>
               <a
                 href={`https://www.google.com/maps/search/Agrovet+Fertilizer/@${selectedWard?.latitude || 0},${selectedWard?.longitude || 0},14z`}
@@ -883,13 +919,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm"
                 style={{ background: "#2563eb" }}
               >
-                🌍 {t("dealers_find", lang)}
+                {t("dealers_find", lang)}
               </a>
             </div>
 
             {/* Footer attribution */}
             <p className="text-center text-xs text-gray-400 pb-6">
-              📡 ISRIC / iSDAsoil Precision | 🏛️ Kenyan Agronomic Baselines | 🚀 ShambaIQ
+              ISRIC / iSDAsoil Precision | Kenyan Agronomic Baselines | ShambaIQ
             </p>
           </div>
         )}

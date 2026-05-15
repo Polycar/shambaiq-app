@@ -61,6 +61,10 @@ export interface RecommendResult {
   }>;
   weather_advice?: string;
   error?: string;
+  is_acidic?: boolean;
+  is_n_low?: boolean;
+  is_p_low?: boolean;
+  is_k_low?: boolean;
 }
 
 export interface CropMatch {

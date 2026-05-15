@@ -48,18 +48,19 @@ export default function YieldsPage() {
   const [msg, setMsg] = useState("");
 
   const identify = async () => {
-    if (!farmerId.trim()) return;
+    const id = farmerId.trim();
+    if (!id) return;
     setLoading(true);
     try {
       const res = await fetch(
-        `${API}/api/v1/analytics/yields/${encodeURIComponent(farmerId)}`
+        `${API}/api/v1/analytics/yields/${encodeURIComponent(id)}`
       );
       if (res.ok) {
         const data = await res.json();
-        setRecords(data.yields || data || []);
+        setRecords(data.yields || (Array.isArray(data) ? data : []) || []);
       }
     } catch {
-      // start fresh
+      // API may not be available — start fresh locally
     }
     setIdentified(true);
     setLoading(false);
@@ -134,6 +135,7 @@ export default function YieldsPage() {
                   type="text"
                   value={farmerId}
                   onChange={(e) => setFarmerId(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && identify()}
                   placeholder="e.g. 0712345678"
                   className="w-full pl-9 pr-4 py-3 bg-cream-100 border border-cream-300 rounded-xl text-forest-700 focus:outline-none focus:ring-2 focus:ring-gold-400"
                 />

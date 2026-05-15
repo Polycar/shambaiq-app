@@ -762,13 +762,73 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               </ul>
             </div>
 
-            {/* Weather */}
+            {/* 7-Day Weather Forecast */}
             {weather && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  ⛅ {t("weather_title", lang)}
+                  ⛅ {lang === "en" ? "7-Day Weather Forecast" : "Utabiri wa Hali ya Hewa (Siku 7)"}
                 </h3>
-                <p className="text-sm text-gray-700">{weather.advice || weather.summary}</p>
+
+                {/* Agronomic Advice Banner */}
+                {weather.summary && (
+                  <div className={`rounded-xl px-3 py-2.5 text-sm mb-3 border ${
+                    weather.summary.includes("Heavy") || weather.summary.includes("dry") || weather.summary.includes("Dry")
+                      ? "bg-amber-50 border-amber-200 text-amber-800"
+                      : "bg-green-50 border-green-200 text-green-800"
+                  }`}>
+                    <span className="font-semibold">{weather.summary}</span>
+                    {weather.advice && <span className="opacity-80"> — {weather.advice}</span>}
+                  </div>
+                )}
+
+                {/* Daily Forecast Cards */}
+                {weather.forecast && weather.forecast.length > 0 && (
+                  <div className="grid grid-cols-7 gap-1.5">
+                    {weather.forecast.map((day: { date: string; temp_max: number; temp_min: number; rain_mm: number; description: string; wind_kmh?: number }, i: number) => {
+                      const d = new Date(day.date + "T00:00:00");
+                      const dayName = i === 0
+                        ? (lang === "en" ? "Today" : "Leo")
+                        : d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { weekday: "short" });
+                      const dateStr = d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { day: "numeric", month: "short" });
+
+                      // Weather icon from description
+                      const desc = (day.description || "").toLowerCase();
+                      let icon = "☀️";
+                      if (desc.includes("thunder")) icon = "⛈️";
+                      else if (desc.includes("heavy rain") || desc.includes("violent")) icon = "🌧️";
+                      else if (desc.includes("rain") || desc.includes("shower")) icon = "🌦️";
+                      else if (desc.includes("drizzle")) icon = "🌦️";
+                      else if (desc.includes("overcast")) icon = "☁️";
+                      else if (desc.includes("cloud") || desc.includes("partly")) icon = "⛅";
+                      else if (desc.includes("fog")) icon = "🌫️";
+
+                      const isWet = day.rain_mm > 5;
+                      const isDry = day.rain_mm < 1;
+
+                      return (
+                        <div
+                          key={day.date}
+                          className={`rounded-xl border p-2 text-center text-xs transition-all ${
+                            isWet ? "bg-blue-50 border-blue-200" : isDry ? "bg-amber-50 border-amber-100" : "bg-green-50 border-green-100"
+                          }`}
+                        >
+                          <div className="font-bold text-gray-800">{dayName}</div>
+                          <div className="text-gray-400 text-[10px]">{dateStr}</div>
+                          <div className="text-2xl my-1">{icon}</div>
+                          <div className="font-semibold text-gray-700">
+                            {day.temp_max !== null ? `${Math.round(day.temp_max)}°` : "—"}
+                          </div>
+                          <div className="text-gray-400">
+                            {day.temp_min !== null ? `${Math.round(day.temp_min)}°` : "—"}
+                          </div>
+                          <div className={`mt-1 font-semibold ${isWet ? "text-blue-600" : "text-gray-400"}`}>
+                            💧 {day.rain_mm !== null ? `${day.rain_mm.toFixed(1)}` : "0"}mm
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
 

@@ -51,6 +51,15 @@ function scoreBg(s: number) {
   return "bg-red-50 border-red-200";
 }
 
+/** Strip markdown **bold** markers and leading emojis from backend text */
+function clean(s: string | undefined | null): string {
+  if (!s) return "";
+  return s
+    .replace(/\*\*/g, "")              // remove ** markers
+    .replace(/^[\p{Emoji_Presentation}\p{Extended_Pictographic}\u200d\uFE0F]+\s*/u, "")  // strip leading emojis
+    .trim();
+}
+
 // ─── Component ─────────────────────────────────────────────────
 export default function RecommendTool({ counties, wards, crops, countyCoords }: Props) {
   const [lang, setLang] = useState<Lang>("en");
@@ -605,10 +614,10 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     ? "#16a34a" : "#64748b",
                 }}
               >
-                🧬 {result.data_source}
+                {clean(result.data_source)}
               </span>
               <span className="text-xs text-gray-500">
-                📡 {result.confidence} | {t("result_mapping", lang)} {result.county}
+                {clean(result.confidence)} | {t("result_mapping", lang)} {result.county}
               </span>
             </div>
 
@@ -684,13 +693,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     <tbody>
                       <tr className="border-b border-gray-100">
                         <td className="py-2 pr-2 font-medium">{t("table_strategy", lang)}</td>
-                        <td className="py-2 pr-2 text-red-600 text-xs">{result.comparison.current_flaw || "—"}</td>
-                        <td className="py-2 text-green-700 font-bold">{result.comparison.recommended || "—"}</td>
+                        <td className="py-2 pr-2 text-red-600 text-xs">{clean(result.comparison.current_flaw) || "—"}</td>
+                        <td className="py-2 text-green-700 font-bold">{clean(result.comparison.recommended) || "—"}</td>
                       </tr>
                       <tr>
                         <td className="py-2 pr-2 font-medium">{t("table_outcome", lang)}</td>
-                        <td className="py-2 pr-2">{result.comparison.current_outcome || "Variable"}</td>
-                        <td className="py-2 text-green-700 font-bold">{result.comparison.impact || "—"}</td>
+                        <td className="py-2 pr-2">{clean(result.comparison.current_outcome) || "Variable"}</td>
+                        <td className="py-2 text-green-700 font-bold">{clean(result.comparison.impact) || "—"}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -712,7 +721,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 ].map((m) => (
                   <div key={m.label} className="mb-3 rounded-lg p-3" style={{ background: "#f8fafc", borderTop: `4px solid ${m.color}` }}>
                     <p className="text-xs uppercase tracking-wider font-bold text-gray-400">{m.label}</p>
-                    <p className="text-sm font-semibold mt-0.5" style={{ color: "#0f172a" }}>{m.text}</p>
+                    <p className="text-sm font-semibold mt-0.5" style={{ color: "#0f172a" }}>{clean(m.text)}</p>
                   </div>
                 ))}
               </div>
@@ -840,12 +849,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 </h3>
                 <div className="space-y-2">
                   {result.advice.map((item, i) => {
-                    const isError = item.includes("❌") || item.includes("🚨");
-                    const isWarn = item.includes("⚠️");
+                    const isError = item.includes("❌") || item.includes("🚨") || item.includes("Critical") || item.includes("Toxicity");
+                    const isWarn = item.includes("⚠️") || item.includes("Deficiency") || item.includes("Low");
                     const bg = isError ? "bg-red-50 border-red-200" : isWarn ? "bg-amber-50 border-amber-200" : "bg-green-50 border-green-200";
                     return (
                       <div key={i} className={`rounded-lg border px-3 py-2 text-sm ${bg}`}>
-                        {item}
+                        {clean(item)}
                       </div>
                     );
                   })}

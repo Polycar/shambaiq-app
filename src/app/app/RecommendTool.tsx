@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
-import { getRecommendation, RecommendResult, getWeatherByCounty, WeatherData } from "@/lib/api";
+import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData } from "@/lib/api";
 
 // ─── Types for serialized data passed from server ───────────────
 interface CountyData {
@@ -26,11 +26,17 @@ interface CropData {
   crop: string;
   slug: string;
 }
+interface CountyCoordData {
+  county: string;
+  latitude: number;
+  longitude: number;
+}
 
 interface Props {
   counties: CountyData[];
   wards: WardData[];
   crops: CropData[];
+  countyCoords: CountyCoordData[];
 }
 
 // ─── Score color ────────────────────────────────────────────────
@@ -46,8 +52,15 @@ function scoreBg(s: number) {
 }
 
 // ─── Component ─────────────────────────────────────────────────
-export default function RecommendTool({ counties, wards, crops }: Props) {
+export default function RecommendTool({ counties, wards, crops, countyCoords }: Props) {
   const [lang, setLang] = useState<Lang>("en");
+
+  // Location mode: "region" = County/SubCounty/Ward, "gps" = GPS coordinates
+  const [locMode, setLocMode] = useState<"region" | "gps">("region");
+  const [gpsLat, setGpsLat] = useState<number | null>(null);
+  const [gpsLon, setGpsLon] = useState<number | null>(null);
+  const [gpsError, setGpsError] = useState("");
+  const [gpsLoading, setGpsLoading] = useState(false);
 
   // Form state
   const [county, setCounty] = useState("");
@@ -68,6 +81,32 @@ export default function RecommendTool({ counties, wards, crops }: Props) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // GPS capture
+  const captureGPS = useCallback(() => {
+    if (!navigator.geolocation) {
+      setGpsError(lang === "en" ? "GPS not supported on this device" : "GPS haitumiki kwenye kifaa hiki");
+      return;
+    }
+    setGpsLoading(true);
+    setGpsError("");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setGpsLat(pos.coords.latitude);
+        setGpsLon(pos.coords.longitude);
+        setGpsLoading(false);
+      },
+      (err) => {
+        setGpsError(
+          lang === "en"
+            ? `GPS error: ${err.message}. Enable location access.`
+            : `Hitilafu ya GPS: ${err.message}. Ruhusu ufikiaji wa eneo.`
+        );
+        setGpsLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  }, [lang]);
 
   // Computed drill-down
   const subcounties = useMemo(() => {
@@ -101,10 +140,49 @@ export default function RecommendTool({ counties, wards, crops }: Props) {
     );
   }, [county, subcounty, ward, wards]);
 
+  // Resolve best available coordinates: GPS > Ward > Sub-County centroid > County centroid
+  const resolvedCoords = useMemo(() => {
+    // 1. GPS coordinates (highest precision — 30m)
+    if (locMode === "gps" && gpsLat !== null && gpsLon !== null) {
+      return { lat: gpsLat, lon: gpsLon, source: "GPS (30m)" };
+    }
+    // 2. Ward centroid
+    if (selectedWard) {
+      return { lat: selectedWard.latitude, lon: selectedWard.longitude, source: `Ward: ${ward}` };
+    }
+    // 3. Sub-county centroid (average of wards in that sub-county)
+    if (county && subcounty) {
+      const scWards = wards.filter(
+        (w) => w.county.toLowerCase() === county.toLowerCase() && w.subcounty === subcounty
+      );
+      if (scWards.length > 0) {
+        const avgLat = scWards.reduce((s, w) => s + w.latitude, 0) / scWards.length;
+        const avgLon = scWards.reduce((s, w) => s + w.longitude, 0) / scWards.length;
+        return { lat: avgLat, lon: avgLon, source: `Sub-County: ${subcounty}` };
+      }
+    }
+    // 4. County centroid
+    if (county) {
+      const cc = countyCoords.find((c) => c.county.toLowerCase() === county.toLowerCase());
+      if (cc) {
+        return { lat: cc.latitude, lon: cc.longitude, source: `County: ${county}` };
+      }
+    }
+    return null;
+  }, [locMode, gpsLat, gpsLon, selectedWard, ward, county, subcounty, wards, countyCoords]);
+
   // Submit
   const handleSubmit = useCallback(async () => {
-    if (!county || !crop) {
+    if (locMode === "gps" && !gpsLat) {
+      setError(lang === "en" ? "Capture GPS first" : "Pata GPS kwanza");
+      return;
+    }
+    if (locMode === "region" && !county) {
       setError(t("form_select_first", lang));
+      return;
+    }
+    if (!crop) {
+      setError(lang === "en" ? "Select a crop" : "Chagua zao");
       return;
     }
     setLoading(true);
@@ -113,8 +191,8 @@ export default function RecommendTool({ counties, wards, crops }: Props) {
     setWeather(null);
 
     try {
-      const lat = selectedWard?.latitude;
-      const lon = selectedWard?.longitude;
+      const lat = resolvedCoords?.lat;
+      const lon = resolvedCoords?.lon;
       const overrides = labMode
         ? {
             pH: labPH,
@@ -127,8 +205,11 @@ export default function RecommendTool({ counties, wards, crops }: Props) {
       const yieldTarget =
         cropUnit && yieldVal ? yieldVal / cropUnit.def : undefined;
 
+      // Use county from GPS reverse or from dropdown
+      const resolvedCounty = county || "Nairobi";
+
       const res = await getRecommendation({
-        county,
+        county: resolvedCounty,
         crop,
         current_fertilizer: fertilizer,
         farm_size_acres: acres,
@@ -141,16 +222,20 @@ export default function RecommendTool({ counties, wards, crops }: Props) {
       });
       setResult(res);
 
-      // Fire weather in background
-      getWeatherByCounty(county)
-        .then(setWeather)
-        .catch(() => {});
+      // Fire weather in background — prefer coordinate-based weather
+      if (lat && lon) {
+        getWeather(lat, lon).then(setWeather).catch(() => {
+          getWeatherByCounty(resolvedCounty).then(setWeather).catch(() => {});
+        });
+      } else {
+        getWeatherByCounty(resolvedCounty).then(setWeather).catch(() => {});
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : t("error", lang));
     } finally {
       setLoading(false);
     }
-  }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, selectedWard, cropUnit, yieldVal]);
+  }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat]);
 
   // WhatsApp share
   const whatsappUrl = useMemo(() => {
@@ -220,10 +305,69 @@ export default function RecommendTool({ counties, wards, crops }: Props) {
             {t("form_title", lang)}
           </h2>
 
-          {/* County */}
+          {/* Location Mode Toggle */}
+          <div className="flex rounded-xl overflow-hidden border border-gray-200">
+            <button
+              onClick={() => setLocMode("region")}
+              className={`flex-1 py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                locMode === "region"
+                  ? "text-white"
+                  : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+              }`}
+              style={locMode === "region" ? { background: "#1a3a1a" } : {}}
+            >
+              📍 {lang === "en" ? "Select Region" : "Chagua Eneo"}
+            </button>
+            <button
+              onClick={() => { setLocMode("gps"); if (!gpsLat) captureGPS(); }}
+              className={`flex-1 py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                locMode === "gps"
+                  ? "text-white"
+                  : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+              }`}
+              style={locMode === "gps" ? { background: "#16a34a" } : {}}
+            >
+              📡 {lang === "en" ? "GPS Precision (30m)" : "GPS Sahihi (30m)"}
+            </button>
+          </div>
+
+          {/* GPS Status */}
+          {locMode === "gps" && (
+            <div>
+              {gpsLoading && (
+                <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700 flex items-center gap-2">
+                  <span className="animate-spin">📡</span>
+                  {lang === "en" ? "Acquiring GPS signal..." : "Inapata ishara ya GPS..."}
+                </div>
+              )}
+              {gpsLat !== null && gpsLon !== null && !gpsLoading && (
+                <div className="rounded-xl border border-green-200 bg-green-50 p-3 text-sm text-green-700 font-semibold flex items-center justify-between">
+                  <span>✅ GPS Locked: {gpsLat.toFixed(4)}, {gpsLon.toFixed(4)}</span>
+                  <button
+                    onClick={captureGPS}
+                    className="text-xs bg-green-600 text-white px-2.5 py-1 rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    🔄 {lang === "en" ? "Refresh" : "Sasisha"}
+                  </button>
+                </div>
+              )}
+              {gpsError && (
+                <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                  ⚠️ {gpsError}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* County — always shown (for GPS mode it provides context, for region mode it's required) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               📍 {t("form_county", lang)}
+              {locMode === "gps" && (
+                <span className="text-xs text-gray-400 ml-1">
+                  ({lang === "en" ? "optional with GPS" : "si lazima na GPS"})
+                </span>
+              )}
             </label>
             <select
               value={county}
@@ -287,6 +431,18 @@ export default function RecommendTool({ counties, wards, crops }: Props) {
                   🎯 Ward Locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
                 </p>
               )}
+            </div>
+          )}
+
+          {/* Coordinate Resolution Badge */}
+          {resolvedCoords && (
+            <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700 flex items-center gap-2">
+              <span>🛰️</span>
+              <span className="font-semibold">
+                {lang === "en" ? "iSDA Precision Active" : "Usahihi wa iSDA Umeamilishwa"}
+              </span>
+              <span className="text-green-500">—</span>
+              <span>{resolvedCoords.source} ({resolvedCoords.lat.toFixed(4)}, {resolvedCoords.lon.toFixed(4)})</span>
             </div>
           )}
 

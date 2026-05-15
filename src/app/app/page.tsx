@@ -1,4 +1,4 @@
-import { getCountySoils, getWards, getCrops, slugify } from "@/lib/data";
+import { getCountySoils, getWards, getCrops, getCountyCoords, slugify } from "@/lib/data";
 import RecommendTool from "./RecommendTool";
 import type { Metadata } from "next";
 
@@ -33,5 +33,11 @@ export default function AppPage() {
     slug: slugify(c.crop),
   }));
 
-  return <RecommendTool counties={counties} wards={wards} crops={crops} />;
+  const countyCoords = getCountyCoords().map((c) => ({
+    county: c.county,
+    latitude: c.latitude,
+    longitude: c.longitude,
+  }));
+
+  return <RecommendTool counties={counties} wards={wards} crops={crops} countyCoords={countyCoords} />;
 }

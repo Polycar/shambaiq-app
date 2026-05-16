@@ -89,6 +89,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
   // Result state
   const [result, setResult] = useState<RecommendResult | null>(null);
+  const [livePrices, setLivePrices] = useState<any>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -119,6 +120,14 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   }, [lang]);
+
+  // Load live prices from Admin
+  useMemo(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app"}/api/v1/admin/inventory`)
+      .then(r => r.json())
+      .then(data => setLivePrices(data))
+      .catch(() => console.warn("Using baseline prices"));
+  }, []);
 
   // Computed drill-down
   const subcounties = useMemo(() => {

@@ -404,77 +404,77 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
           )}
 
-          {/* County — always shown (for GPS mode it provides context, for region mode it's required) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              📍 {t("form_county", lang)}
-              {locMode === "gps" && (
-                <span className="text-xs text-gray-400 ml-1">
-                  ({lang === "en" ? "optional with GPS" : "si lazima na GPS"})
-                </span>
+          {/* Manual Location Selection — only shown in region mode */}
+          {locMode === "region" && (
+            <div className="space-y-4">
+              {/* County */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  📍 {t("form_county", lang)}
+                </label>
+                <select
+                  value={county}
+                  onChange={(e) => {
+                    setCounty(e.target.value);
+                    setSubcounty("");
+                    setWard("");
+                    setResult(null);
+                  }}
+                  className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm focus:border-green-600 focus:ring-green-600 shadow-sm"
+                >
+                  <option value="">{t("form_select_county", lang)}</option>
+                  {counties.map((c) => (
+                    <option key={c.slug} value={c.county}>
+                      {c.county}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Subcounty */}
+              {subcounties.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    🏘️ {t("form_subcounty", lang)}
+                  </label>
+                  <select
+                    value={subcounty}
+                    onChange={(e) => {
+                      setSubcounty(e.target.value);
+                      setWard("");
+                    }}
+                    className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm shadow-sm"
+                  >
+                    <option value="">{t("form_whole_county", lang)}</option>
+                    {subcounties.map((sc) => (
+                      <option key={sc} value={sc}>{sc}</option>
+                    ))}
+                  </select>
+                </div>
               )}
-            </label>
-            <select
-              value={county}
-              onChange={(e) => {
-                setCounty(e.target.value);
-                setSubcounty("");
-                setWard("");
-                setResult(null);
-              }}
-              className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm focus:border-green-600 focus:ring-green-600"
-            >
-              <option value="">{t("form_select_county", lang)}</option>
-              {counties.map((c) => (
-                <option key={c.slug} value={c.county}>
-                  {c.county}
-                </option>
-              ))}
-            </select>
-          </div>
 
-          {/* Subcounty */}
-          {subcounties.length > 0 && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                🏘️ {t("form_subcounty", lang)}
-              </label>
-              <select
-                value={subcounty}
-                onChange={(e) => {
-                  setSubcounty(e.target.value);
-                  setWard("");
-                }}
-                className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm"
-              >
-                <option value="">{t("form_whole_county", lang)}</option>
-                {subcounties.map((sc) => (
-                  <option key={sc} value={sc}>{sc}</option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* Ward */}
-          {wardList.length > 0 && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                🎯 {t("form_ward", lang)}
-              </label>
-              <select
-                value={ward}
-                onChange={(e) => setWard(e.target.value)}
-                className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm"
-              >
-                <option value="">{t("form_whole_subcounty", lang)}</option>
-                {wardList.map((w) => (
-                  <option key={w.ward} value={w.ward}>{w.ward}</option>
-                ))}
-              </select>
-              {ward && selectedWard && (
-                <p className="mt-1 text-xs text-green-700 font-semibold">
-                  🎯 Ward Locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
-                </p>
+              {/* Ward */}
+              {wardList.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    🎯 {t("form_ward", lang)}
+                  </label>
+                  <select
+                    value={ward}
+                    onChange={(e) => setWard(e.target.value)}
+                    className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm shadow-sm"
+                  >
+                    <option value="">{t("form_whole_subcounty", lang)}</option>
+                    {wardList.map((w) => (
+                      <option key={w.ward} value={w.ward}>{w.ward}</option>
+                    ))}
+                  </select>
+                  {ward && selectedWard && (
+                    <p className="mt-1 text-xs text-green-700 font-semibold">
+                      🎯 Ward Locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           )}

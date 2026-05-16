@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { getCountySoils, getCrops, getZones, getWards, slugify } from "@/lib/data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = "https://shambaiq.com";
+  const base = "https://www.shambaiq.com";
   const counties = getCountySoils();
   const crops = getCrops();
   const zones = getZones();
@@ -11,7 +11,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogPages: MetadataRoute.Sitemap = [];
   try {
     const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
-    const res = await fetch(`${API}/api/v1/blog/posts`);
+    // Add a 5s timeout to prevent GSC fetch failure if backend is slow
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), 5000);
+    
+    const res = await fetch(`${API}/api/v1/blog/posts`, { signal: controller.signal });
+    clearTimeout(id);
     if (res.ok) {
       const data = await res.json();
       blogPages = data.posts.map((p: any) => ({

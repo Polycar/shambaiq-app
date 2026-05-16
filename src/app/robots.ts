@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/app/results", "/api/"],
     },
-    sitemap: "https://shambaiq.com/sitemap.xml",
+    sitemap: "https://www.shambaiq.com/sitemap.xml",
   };
 }

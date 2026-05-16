@@ -1,12 +1,29 @@
 import { MetadataRoute } from "next";
 import { getCountySoils, getCrops, getZones, getWards, slugify } from "@/lib/data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://shambaiq.com";
   const counties = getCountySoils();
   const crops = getCrops();
   const zones = getZones();
   const wards = getWards();
+
+  let blogPages: MetadataRoute.Sitemap = [];
+  try {
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
+    const res = await fetch(`${API}/api/v1/blog/posts`);
+    if (res.ok) {
+      const data = await res.json();
+      blogPages = data.posts.map((p: any) => ({
+        url: `${base}/blog/${p.slug}`,
+        lastModified: new Date(p.updated_at || p.published_at || Date.now()),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }));
+    }
+  } catch (err) {
+    console.error("Failed to fetch blog posts for sitemap", err);
+  }
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, changeFrequency: "weekly", priority: 1.0 },
@@ -14,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/crops`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/zones`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/dealers`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/blog`, changeFrequency: "weekly", priority: 0.6 },
+    { url: `${base}/blog`, changeFrequency: "daily", priority: 0.8 },
     { url: `${base}/yields`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/doctor`, changeFrequency: "monthly", priority: 0.6 },
   ];
@@ -66,6 +83,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticPages,
+    ...blogPages,
     ...countyPages,
     ...cropPages,
     ...zonePages,

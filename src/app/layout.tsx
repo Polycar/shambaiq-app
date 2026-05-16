@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -49,6 +50,7 @@ export default function RootLayout({
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />
         <MobileNav />
+        <WhatsAppWidget />
       </body>
     </html>
   );

@@ -63,10 +63,15 @@ const config: Config = {
       marquee: {
         '0%': { transform: 'translateX(0%)' },
         '100%': { transform: 'translateX(-50%)' },
+      },
+      'bounce-slow': {
+        '0%, 100%': { transform: 'translateY(-5%)' },
+        '50%': { transform: 'translateY(0)' },
       }
     },
     animation: {
       marquee: 'marquee 30s linear infinite',
+      'bounce-slow': 'bounce-slow 3s infinite ease-in-out',
     },
   },
   plugins: [],

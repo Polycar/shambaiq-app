@@ -95,16 +95,21 @@ export default function AdminDashboard() {
     else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
     else if (t === "yields") { 
       const y = await f(yieldFilter === "flagged" ? "/api/v1/analytics/yields/flagged" : "/api/v1/admin/yields"); 
-      // Be robust: check records, yields, and data keys
-      setYields(y?.records || y?.yields || y?.data || []); 
+      // Safety Net: If the expected keys are missing, find the first array in the response
+      const list = y?.records || y?.yields || y?.data || Object.values(y || {}).find(v => Array.isArray(v)) || [];
+      setYields(list); 
     }
     else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || b?.data || []); }
-    else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || fm?.data || []); }
+    else if (t === "farmers") { 
+      const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); 
+      const list = fm?.farmers || fm?.data || Object.values(fm || {}).find(v => Array.isArray(v)) || [];
+      setFarmers(list);
+    }
     else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || a?.data || []); }
     else if (t === "recs") { 
       const r = await f("/api/v1/admin/recommendations"); 
-      // Be robust: check recommendations, records, and data keys
-      setRecs(r?.recommendations || r?.records || r?.data || []); 
+      const list = r?.recommendations || r?.records || r?.data || Object.values(r || {}).find(v => Array.isArray(v)) || [];
+      setRecs(list); 
     }
     else if (t === "inventory") { 
       const inv = await f("/api/v1/admin/inventory"); 

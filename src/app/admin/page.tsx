@@ -184,10 +184,10 @@ export default function AdminDashboard() {
   const tabs: { key: Tab; label: string; icon: any; badge?: number }[] = [
     { key: "stats", label: "Overview", icon: BarChart3 },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
+    { key: "inventory", label: "Inventory", icon: Package },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
     { key: "farmers", label: "Farmers", icon: Users, badge: summary?.total_farmers },
-    { key: "inventory", label: "Inventory", icon: Package },
     { key: "audit", label: "Audit", icon: FileText },
   ];
 

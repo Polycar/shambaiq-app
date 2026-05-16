@@ -372,7 +372,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               }`}
               style={locMode === "gps" ? { background: "#16a34a" } : {}}
             >
-              📡 {lang === "en" ? "GPS Precision (30m)" : "GPS Sahihi (30m)"}
+              📡 {lang === "en" ? "Check My Farm" : "Kagua Shamba Langu"}
             </button>
           </div>
 

@@ -37,10 +37,15 @@ export default function AdminDashboard() {
   const [blogSaving, setBlogSaving] = useState(false);
 
   const f = useCallback(async (url: string) => {
-    const sep = url.includes("?") ? "&" : "?";
-    const res = await fetch(`${API}${url}${sep}access_code=${code}`);
-    if (res.ok) return res.json();
-    return null;
+    try {
+      const sep = url.includes("?") ? "&" : "?";
+      const res = await fetch(`${API}${url}${sep}access_code=${code}`);
+      if (res.ok) return res.json();
+      return null;
+    } catch (err) {
+      console.error("Network error:", err);
+      return null;
+    }
   }, [code]);
 
   const fetchTab = useCallback(async (t: Tab) => {
@@ -56,9 +61,19 @@ export default function AdminDashboard() {
 
   const login = async () => {
     setAuthErr(false);
-    const res = await fetch(`${API}/api/v1/analytics/stats?access_code=${code}`);
-    if (res.ok) { setAuth(true); setStats(await res.json()); const s = await f("/api/v1/admin/summary"); setSummary(s); }
-    else setAuthErr(true);
+    try {
+      const res = await fetch(`${API}/api/v1/analytics/stats?access_code=${code}`);
+      if (res.ok) { 
+        setAuth(true); 
+        setStats(await res.json()); 
+        const s = await f("/api/v1/admin/summary"); 
+        setSummary(s); 
+      }
+      else setAuthErr(true);
+    } catch (err) {
+      console.error("Login fetch error:", err);
+      setAuthErr(true);
+    }
   };
 
   useEffect(() => { if (auth) fetchTab(tab); }, [auth, tab, dealerFilter]);
@@ -66,42 +81,52 @@ export default function AdminDashboard() {
   // Actions
   const reviewDealer = async (id: string, status: string) => {
     setActionLoading(id);
-    await fetch(`${API}/api/v1/dealers/applications/${id}?access_code=${code}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status, officer_id: "admin" }) });
-    setDealers(prev => prev.filter(d => d.id !== id));
+    try {
+      await fetch(`${API}/api/v1/dealers/applications/${id}?access_code=${code}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status, officer_id: "admin" }) });
+      setDealers(prev => prev.filter(d => d.id !== id));
+    } catch (err) { console.error(err); }
     setActionLoading(null);
   };
 
   const reviewYield = async (id: number, status: string) => {
     setActionLoading(String(id));
-    await fetch(`${API}/api/v1/analytics/yields/${id}/review?access_code=${code}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status, officer_id: "admin" }) });
-    setYields(prev => prev.filter(y => y.id !== id));
+    try {
+      await fetch(`${API}/api/v1/analytics/yields/${id}/review?access_code=${code}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status, officer_id: "admin" }) });
+      setYields(prev => prev.filter(y => y.id !== id));
+    } catch (err) { console.error(err); }
     setActionLoading(null);
   };
 
   const saveBlogPost = async () => {
     setBlogSaving(true);
-    if (editing) {
-      await fetch(`${API}/api/v1/blog/admin/${editing.id}?access_code=${code}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
-    } else {
-      await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
-    }
+    try {
+      if (editing) {
+        await fetch(`${API}/api/v1/blog/admin/${editing.id}?access_code=${code}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
+      } else {
+        await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
+      }
+      setEditing(null);
+      setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
+      fetchTab("blog");
+    } catch (err) { console.error(err); }
     setBlogSaving(false);
-    setEditing(null);
-    setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
-    fetchTab("blog");
   };
 
   const deleteBlogPost = async (id: string) => {
     if (!confirm("Delete this post?")) return;
-    await fetch(`${API}/api/v1/blog/admin/${id}?access_code=${code}`, { method: "DELETE" });
-    fetchTab("blog");
+    try {
+      await fetch(`${API}/api/v1/blog/admin/${id}?access_code=${code}`, { method: "DELETE" });
+      fetchTab("blog");
+    } catch (err) { console.error(err); }
   };
 
   const editPost = (post: any) => {
     setEditing(post);
     setBlogForm({ title: post.title, content: "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
     // Fetch full content
-    fetch(`${API}/api/v1/blog/${post.slug}`).then(r => r.ok ? r.json() : null).then(d => { if (d) setBlogForm(f => ({ ...f, content: d.content })); });
+    try {
+      fetch(`${API}/api/v1/blog/${post.slug}`).then(r => r.ok ? r.json() : null).then(d => { if (d) setBlogForm(f => ({ ...f, content: d.content })); }).catch(e => console.error(e));
+    } catch (err) { console.error(err); }
   };
 
   const loadFarmerDetail = async (id: string) => {

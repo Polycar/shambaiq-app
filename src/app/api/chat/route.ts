@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
-export const maxDuration = 30;
 
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;

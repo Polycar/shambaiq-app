@@ -34,8 +34,31 @@ export default function DoctorPage() {
     setResult(null);
     setError("");
     setFileName(file.name);
+    
     const reader = new FileReader();
-    reader.onload = (e) => setImage(e.target?.result as string);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        // Resize to max 800px width to keep base64 payload under Vercel's 4.5MB limit
+        const MAX_WIDTH = 800;
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > MAX_WIDTH) {
+          height = height * (MAX_WIDTH / width);
+          width = MAX_WIDTH;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+        // Compress to 70% quality jpeg
+        setImage(canvas.toDataURL("image/jpeg", 0.7));
+      };
+      img.src = e.target?.result as string;
+    };
     reader.readAsDataURL(file);
   };
 

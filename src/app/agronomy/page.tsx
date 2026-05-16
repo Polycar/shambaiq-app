@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader2, Bot, User, Leaf, RotateCcw } from "lucide-react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   role: "user" | "assistant";
@@ -89,7 +90,7 @@ export default function AgronomyPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-cream-100">
+    <div className="flex flex-col bg-cream-100 relative" style={{ height: "calc(100vh - 64px)" }}>
       {/* Header */}
       <div
         className="flex items-center justify-between px-4 py-3 text-white flex-shrink-0"
@@ -177,13 +178,29 @@ export default function AgronomyPage() {
 
               {/* Bubble */}
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
+                className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-forest-700 text-white rounded-tr-sm"
+                    ? "bg-forest-700 text-white rounded-tr-sm whitespace-pre-wrap"
                     : "bg-white border border-cream-300 text-forest-800 rounded-tl-sm"
                 }`}
               >
-                {msg.content}
+                {msg.role === "user" ? (
+                  msg.content
+                ) : (
+                  <ReactMarkdown
+                    components={{
+                      strong: ({ node, ...props }) => <strong className="font-bold" {...props} />,
+                      h3: ({ node, ...props }) => <h3 className="font-bold text-base mt-4 mb-2" {...props} />,
+                      h4: ({ node, ...props }) => <h4 className="font-bold mt-3 mb-1" {...props} />,
+                      ul: ({ node, ...props }) => <ul className="list-disc pl-5 my-2 space-y-1" {...props} />,
+                      ol: ({ node, ...props }) => <ol className="list-decimal pl-5 my-2 space-y-1" {...props} />,
+                      li: ({ node, ...props }) => <li className="pl-1" {...props} />,
+                      p: ({ node, ...props }) => <p className="mb-3 last:mb-0" {...props} />,
+                    }}
+                  >
+                    {msg.content}
+                  </ReactMarkdown>
+                )}
               </div>
             </div>
           ))

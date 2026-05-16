@@ -540,8 +540,8 @@ export default function AdminDashboard() {
                 <thead><tr className="bg-cream-100"><th className="px-4 py-3 text-left font-semibold text-forest-700">Action</th><th className="px-4 py-3 text-left font-semibold text-forest-700">Target</th><th className="px-4 py-3 text-left font-semibold text-forest-700">Details</th><th className="px-4 py-3 text-left font-semibold text-forest-700">Date</th></tr></thead>
                 <tbody>{audit.map(a => (
                   <tr key={a.id} className="border-t border-cream-200">
-                    <td className="px-4 py-3"><span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${a.action.includes("approved") || a.action.includes("verified") ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>{a.action.replace(/_/g, " ")}</span></td>
-                    <td className="px-4 py-3 text-soil-400">{a.target_type?.replace(/_/g, " ")}</td>
+                    <td className="px-4 py-3"><span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${a.action?.includes("approved") || a.action?.includes("verified") ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>{a.action?.replace(/_/g, " ") || "action"}</span></td>
+                    <td className="px-4 py-3 text-soil-400">{a.target_type?.replace(/_/g, " ") || "—"}</td>
                     <td className="px-4 py-3 text-soil-400">{a.details || "—"}</td>
                     <td className="px-4 py-3 text-soil-400 whitespace-nowrap">{new Date(a.created_at).toLocaleDateString("en-KE")}</td>
                   </tr>
@@ -597,13 +597,13 @@ export default function AdminDashboard() {
                 {inventory.length === 0 && (
                   <tr><td colSpan={4} className="px-6 py-12 text-center text-soil-300">Loading current market data...</td></tr>
                 )}
-                {inventory.map((item, idx) => (
-                  <tr key={item.name} className="hover:bg-cream-50/30 transition-colors">
-                    <td className="px-6 py-4 font-bold text-forest-900">{item.name}</td>
+                {inventory.map((item, idx) => item && (
+                  <tr key={item.name || idx} className="hover:bg-cream-50/30 transition-colors">
+                    <td className="px-6 py-4 font-bold text-forest-900">{item.name || "Unknown Item"}</td>
                     <td className="px-6 py-4">
                       <input 
                         type="number" 
-                        value={item.subsidized} 
+                        value={item.subsidized ?? 0} 
                         onChange={(e) => {
                           const newInv = [...inventory];
                           newInv[idx].subsidized = parseInt(e.target.value) || 0;
@@ -615,7 +615,7 @@ export default function AdminDashboard() {
                     <td className="px-6 py-4">
                       <input 
                         type="number" 
-                        value={item.commercial} 
+                        value={item.commercial ?? 0} 
                         onChange={(e) => {
                           const newInv = [...inventory];
                           newInv[idx].commercial = parseInt(e.target.value) || 0;

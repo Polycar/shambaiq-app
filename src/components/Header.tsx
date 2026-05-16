@@ -22,7 +22,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group">
-            <Logo size={28} />
+            <Logo size={28} showText={false} />
             <span className="font-display text-xl font-bold text-cream-100 group-hover:text-gold-300 transition-colors">
               Shamba<span className="text-gold-400">IQ</span>
             </span>

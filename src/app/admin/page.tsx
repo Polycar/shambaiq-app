@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Lock, Store, BarChart3, AlertTriangle, FileText,
   Check, CheckCircle, X, Loader2, RefreshCw, Users, TrendingUp, MapPin, Wheat,
-  PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight,
+  PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight, Download
 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
@@ -137,6 +137,33 @@ export default function AdminDashboard() {
     setFarmerDetail(d);
   };
 
+  const downloadCSV = (data: any[], filename: string) => {
+    if (!data || data.length === 0) {
+      alert("No data available to export");
+      return;
+    }
+    const headers = Object.keys(data[0]);
+    const csvContent = [
+      headers.join(","),
+      ...data.map(row => 
+        headers.map(header => {
+          let val = row[header] ?? "";
+          if (typeof val === "object") val = JSON.stringify(val);
+          return `"${String(val).replace(/"/g, '""')}"`;
+        }).join(",")
+      )
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `${filename}_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // ─── Login ───
   if (!auth) return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
@@ -231,6 +258,12 @@ export default function AdminDashboard() {
             {["pending", "approved", "declined", "all"].map(s => (
               <button key={s} onClick={() => setDealerFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${dealerFilter === s ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-400"}`}>{s}</button>
             ))}
+            <button 
+              onClick={() => downloadCSV(dealers, `shambaiq_dealers_${dealerFilter}`)}
+              className="ml-auto flex items-center gap-2 px-4 py-2 bg-white border border-cream-300 text-forest-700 rounded-lg hover:border-gold-400 transition-colors text-sm font-semibold"
+            >
+              <Download size={14} /> Export CSV
+            </button>
           </div>
           {dealers.length === 0 ? <p className="text-center py-12 text-soil-400">No {dealerFilter} applications.</p> : (
             <div className="space-y-4">
@@ -262,6 +295,15 @@ export default function AdminDashboard() {
       {/* ═══ YIELDS ═══ */}
       {!loading && tab === "yields" && (
         <div>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="font-display text-lg font-bold text-forest-700">Flagged Yields</h2>
+            <button 
+              onClick={() => downloadCSV(yields, "shambaiq_flagged_yields")}
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-cream-300 text-forest-700 rounded-lg hover:border-gold-400 transition-colors text-sm font-semibold"
+            >
+              <Download size={14} /> Export CSV
+            </button>
+          </div>
           {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-400">No flagged yields.</p></div> : (
             <div className="space-y-4">
               {yields.map(y => (
@@ -377,6 +419,12 @@ export default function AdminDashboard() {
               <input value={farmerSearch} onChange={e => setFarmerSearch(e.target.value)} onKeyDown={e => e.key === "Enter" && fetchTab("farmers")} placeholder="Search by name, phone, or county..." className="w-full pl-10 pr-4 py-3 border border-cream-300 rounded-xl text-forest-700 focus:outline-none focus:border-gold-400" />
             </div>
             <button onClick={() => fetchTab("farmers")} className="px-6 py-3 bg-forest-700 text-white font-semibold rounded-xl">Search</button>
+            <button 
+              onClick={() => downloadCSV(farmers, "shambaiq_farmers")}
+              className="flex items-center gap-2 px-6 py-3 bg-white border border-cream-300 text-forest-700 rounded-xl hover:border-gold-400 transition-colors font-semibold"
+            >
+              <Download size={18} /> Export CSV
+            </button>
           </div>
           {farmers.length === 0 ? <p className="text-center py-12 text-soil-400">No farmers found.</p> : (
             <div className="space-y-3">

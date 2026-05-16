@@ -25,7 +25,7 @@ export default function ProfilePage() {
       const res = await fetch(`${API}/api/v1/auth/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, password }),
+        body: JSON.stringify({ phone_number: phone, password }),
       });
       if (res.ok) {
         const data = await res.json();

@@ -6,6 +6,7 @@ import Logo from "./Logo";
 const navLinks = [
   { href: "/soil", label: "Soil Reports" },
   { href: "/crops", label: "Crop Guides" },
+  { href: "/yields", label: "My Yields" },
   { href: "/dealers", label: "Dealers" },
   { href: "/doctor", label: "Plant Doctor" },
   { href: "/agronomy", label: "Ask Agronomist" },

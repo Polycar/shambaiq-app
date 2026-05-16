@@ -65,7 +65,6 @@ export default function BlogPage() {
               <span className="text-xs font-semibold bg-forest-100 text-forest-600 px-2.5 py-0.5 rounded-full">
                 {post.category}
               </span>
-              <span className="text-xs text-soil-400">{post.date}</span>
             </div>
             <h2 className="font-display text-xl font-bold text-forest-700 mb-2">
               {post.title}
@@ -73,8 +72,8 @@ export default function BlogPage() {
             <p className="text-soil-400 text-sm leading-relaxed mb-4">
               {post.excerpt}
             </p>
-            <span className="text-gold-600 font-semibold text-sm">
-              Coming soon →
+            <span className="text-gold-600 font-semibold text-sm hover:underline cursor-pointer">
+              Subscribe for updates →
             </span>
           </article>
         ))}

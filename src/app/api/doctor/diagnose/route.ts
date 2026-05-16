@@ -31,7 +31,7 @@ Use exactly this schema:
 {"condition":"Name of the disease/pest/deficiency, or Healthy if no issues","confidence":85,"treatment":"Specific, actionable treatment advice using products available at Kenyan agrovets. Include product names and dosages where possible.","prevention":"Practical prevention steps for Kenyan small-scale farmers."}`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

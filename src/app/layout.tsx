@@ -29,9 +29,6 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  verification: {
-    google: "YOUR_GOOGLE_SEARCH_CONSOLE_CODE",
-  },
   alternates: {
     languages: {
       "en": "https://shambaiq.com",

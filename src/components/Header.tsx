@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/dealers", label: "Dealers" },
   { href: "/yields", label: "Yields" },
   { href: "/doctor", label: "Plant Doctor" },
+  { href: "/agronomy", label: "Ask Agronomist" },
   { href: "/blog", label: "Blog" },
   { href: "/dealers/apply", label: "Dealer Signup", cta: true },
 ];

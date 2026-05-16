@@ -37,6 +37,7 @@ export default function Footer() {
               <li><Link href="/zones" className="hover:text-gold-400 transition-colors">Agroecological Zones</Link></li>
               <li><Link href="/dealers" className="hover:text-gold-400 transition-colors">Agrovet Directory</Link></li>
               <li><Link href="/blog" className="hover:text-gold-400 transition-colors">Blog</Link></li>
+              <li><Link href="/agronomy" className="hover:text-gold-400 transition-colors">Ask Agronomist (AI)</Link></li>
               <li><Link href="/app" className="hover:text-gold-400 transition-colors">Get Advice</Link></li>
               <li><Link href="/admin" className="hover:text-gold-400 transition-colors">Admin Login</Link></li>
             </ul>

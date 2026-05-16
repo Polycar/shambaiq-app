@@ -80,25 +80,11 @@ export default function DoctorPage() {
         const data = await res.json();
         setResult(data);
       } else {
-        // Fallback: show user guidance
-        setResult({
-          condition: "Analysis Unavailable",
-          confidence: 0,
-          treatment:
-            "The Plant Doctor AI is being calibrated. For now, visit your nearest agricultural extension office with a sample of the affected plant for diagnosis.",
-          prevention:
-            "Practice crop rotation, use certified seeds, maintain proper spacing, and scout your fields weekly for early signs of pest or disease pressure.",
-        });
+        const errData = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+        setError(`AI Error: ${errData.error || res.status}. Check that GEMINI_API_KEY is set in Vercel.`);
       }
     } catch {
-      setResult({
-        condition: "Offline Mode",
-        confidence: 0,
-        treatment:
-          "Could not reach the ShambaIQ server. Check your internet connection and try again, or visit your county agricultural extension officer.",
-        prevention:
-          "Good practices: remove infected plants, avoid overhead irrigation, apply approved fungicides as prevention during the rainy season.",
-      });
+      setError("Network error — could not reach the API. Check your connection.");
     } finally {
       setLoading(false);
     }

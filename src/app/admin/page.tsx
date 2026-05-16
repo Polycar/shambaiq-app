@@ -27,7 +27,27 @@ export default function AdminDashboard() {
   const [audit, setAudit] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [farmers, setFarmers] = useState<any[]>([]);
-  const [inventory, setInventory] = useState<any[]>([]);
+  const [inventory, setInventory] = useState<any[]>([
+    { name: "DAP", subsidized: 2500, commercial: 6500 },
+    { name: "CAN", subsidized: 2500, commercial: 4500 },
+    { name: "NPK 17:17:17", subsidized: 2500, commercial: 5600 },
+    { name: "Urea", subsidized: 2500, commercial: 5500 },
+    { name: "Lime", subsidized: 1500, commercial: 1800 },
+    { name: "Mavuno", subsidized: 2500, commercial: 5800 },
+    { name: "YaraMila Cereal", subsidized: 3500, commercial: 7200 },
+    { name: "SSP", subsidized: 2500, commercial: 5200 },
+    { name: "Manure", subsidized: 500, commercial: 1000 },
+  ]);
+  const [cropPrices, setCropPrices] = useState<any[]>([
+    { crop: "Maize", price: 65 },
+    { crop: "Beans", price: 110 },
+    { crop: "Potatoes", price: 40 },
+    { crop: "Tomatoes", price: 100 },
+    { crop: "Wheat", price: 115 },
+    { crop: "Coffee (Arabica)", price: 400 },
+    { crop: "Tea", price: 25 },
+    { crop: "Avocado", price: 50 },
+  ]);
   const [farmerSearch, setFarmerSearch] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -58,7 +78,11 @@ export default function AdminDashboard() {
     else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
     else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
     else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
-    else if (t === "inventory") { const inv = await f("/api/v1/admin/inventory"); setInventory(inv?.items || []); }
+    else if (t === "inventory") { 
+      const inv = await f("/api/v1/admin/inventory"); 
+      if (inv?.items) setInventory(inv.items);
+      if (inv?.crops) setCropPrices(inv.crops);
+    }
     setLoading(false);
   }, [code, f, dealerFilter, farmerSearch]);
 
@@ -553,84 +577,131 @@ export default function AdminDashboard() {
       )}
       {/* ═══ INVENTORY ═══ */}
       {!loading && tab === "inventory" && (
-        <div className="bg-white rounded-2xl border border-cream-300 overflow-hidden">
-          <div className="p-6 border-b border-cream-200 flex justify-between items-center">
-            <div>
-              <h2 className="font-display text-lg font-bold text-forest-700">Market Price Manager</h2>
-              <p className="text-xs text-soil-400">Updates here reflect instantly in farmer budget calculations.</p>
+        <div className="space-y-8">
+          <div className="bg-white rounded-2xl border border-cream-300 overflow-hidden shadow-sm">
+            <div className="p-6 border-b border-cream-200 flex justify-between items-center bg-cream-50/50">
+              <div>
+                <h2 className="font-display text-lg font-bold text-forest-700">1. Fertilizer Price Manager</h2>
+                <p className="text-xs text-soil-400">Manage input costs (Subsidized vs Commercial market rates).</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => downloadCSV(inventory, "shambaiq_fertilizer_prices")}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-white border border-forest-700 text-forest-700 font-semibold rounded-xl hover:bg-cream-50 transition-all text-sm"
+                >
+                  <Download size={14} /> Export CSV
+                </button>
+                <button 
+                  onClick={async () => {
+                    setLoading(true);
+                    await fetch(`${API}/api/v1/admin/inventory/update?access_code=${code}`, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ items: inventory, crops: cropPrices })
+                    });
+                    setLoading(false);
+                    alert("All market prices updated successfully! 🚀");
+                  }}
+                  className="flex items-center gap-2 px-6 py-2.5 bg-forest-700 text-white font-semibold rounded-xl hover:bg-forest-800 transition-all shadow-lg shadow-forest-100"
+                >
+                  <Check size={16} /> Save All Changes
+                </button>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead>
+                  <tr className="bg-cream-50/30 text-soil-700">
+                    <th className="px-6 py-4 font-semibold">Fertilizer Type</th>
+                    <th className="px-6 py-4 font-semibold text-center">Subsidized (KES)</th>
+                    <th className="px-6 py-4 font-semibold text-center">Commercial (KES)</th>
+                    <th className="px-6 py-4 font-semibold text-right">Last Change</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-cream-100">
+                  {inventory.map((item, idx) => item && (
+                    <tr key={item.name || idx} className="hover:bg-cream-50/20 transition-colors">
+                      <td className="px-6 py-4 font-bold text-forest-900">{item.name || "Unknown Item"}</td>
+                      <td className="px-6 py-4 text-center">
+                        <input 
+                          type="number" 
+                          value={item.subsidized ?? 0} 
+                          onChange={(e) => {
+                            const newInv = [...inventory];
+                            newInv[idx].subsidized = parseInt(e.target.value) || 0;
+                            setInventory(newInv);
+                          }}
+                          className="w-24 px-3 py-1.5 border border-cream-200 rounded-lg text-center focus:ring-2 focus:ring-gold-200 outline-none"
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <input 
+                          type="number" 
+                          value={item.commercial ?? 0} 
+                          onChange={(e) => {
+                            const newInv = [...inventory];
+                            newInv[idx].commercial = parseInt(e.target.value) || 0;
+                            setInventory(newInv);
+                          }}
+                          className="w-24 px-3 py-1.5 border border-cream-200 rounded-lg text-center focus:ring-2 focus:ring-gold-200 outline-none"
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-right text-xs text-soil-300">
+                        {item.updated_at ? new Date(item.updated_at).toLocaleDateString("en-KE") : "Live"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-cream-300 overflow-hidden shadow-sm">
+            <div className="p-6 border-b border-cream-200 flex justify-between items-center bg-cream-50/50">
+              <div>
+                <h2 className="font-display text-lg font-bold text-forest-700">2. Crop Selling Prices (KES/KG)</h2>
+                <p className="text-xs text-soil-400">Manage the current market rate for farmer harvests.</p>
+              </div>
               <button 
-                onClick={() => downloadCSV(inventory, "shambaiq_fertilizer_prices")}
+                onClick={() => downloadCSV(cropPrices, "shambaiq_crop_prices")}
                 className="flex items-center gap-2 px-4 py-2.5 bg-white border border-forest-700 text-forest-700 font-semibold rounded-xl hover:bg-cream-50 transition-all text-sm"
               >
                 <Download size={14} /> Export CSV
               </button>
-              <button 
-                onClick={async () => {
-                  setLoading(true);
-                  await fetch(`${API}/api/v1/admin/inventory/update?access_code=${code}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ items: inventory })
-                  });
-                  setLoading(false);
-                  alert("Prices updated successfully! 🚀");
-                }}
-                className="flex items-center gap-2 px-6 py-2.5 bg-forest-700 text-white font-semibold rounded-xl hover:bg-forest-800 transition-all shadow-lg shadow-forest-100"
-              >
-                <Check size={16} /> Save Changes
-              </button>
             </div>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
-              <thead>
-                <tr className="bg-cream-50 text-soil-700">
-                  <th className="px-6 py-4 font-semibold">Fertilizer Type</th>
-                  <th className="px-6 py-4 font-semibold">Subsidized (KES)</th>
-                  <th className="px-6 py-4 font-semibold">Commercial (KES)</th>
-                  <th className="px-6 py-4 font-semibold text-right">Last Change</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-cream-100">
-                {inventory.length === 0 && (
-                  <tr><td colSpan={4} className="px-6 py-12 text-center text-soil-300">Loading current market data...</td></tr>
-                )}
-                {inventory.map((item, idx) => item && (
-                  <tr key={item.name || idx} className="hover:bg-cream-50/30 transition-colors">
-                    <td className="px-6 py-4 font-bold text-forest-900">{item.name || "Unknown Item"}</td>
-                    <td className="px-6 py-4">
-                      <input 
-                        type="number" 
-                        value={item.subsidized ?? 0} 
-                        onChange={(e) => {
-                          const newInv = [...inventory];
-                          newInv[idx].subsidized = parseInt(e.target.value) || 0;
-                          setInventory(newInv);
-                        }}
-                        className="w-32 px-3 py-1.5 border border-cream-200 rounded-lg bg-white focus:ring-2 focus:ring-gold-200 focus:border-gold-400 outline-none transition-all"
-                      />
-                    </td>
-                    <td className="px-6 py-4">
-                      <input 
-                        type="number" 
-                        value={item.commercial ?? 0} 
-                        onChange={(e) => {
-                          const newInv = [...inventory];
-                          newInv[idx].commercial = parseInt(e.target.value) || 0;
-                          setInventory(newInv);
-                        }}
-                        className="w-32 px-3 py-1.5 border border-cream-200 rounded-lg bg-white focus:ring-2 focus:ring-gold-200 focus:border-gold-400 outline-none transition-all"
-                      />
-                    </td>
-                    <td className="px-6 py-4 text-right text-xs text-soil-300">
-                      {item.updated_at ? new Date(item.updated_at).toLocaleDateString("en-KE") : "Never"}
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead>
+                  <tr className="bg-cream-50/30 text-soil-700">
+                    <th className="px-6 py-4 font-semibold">Crop</th>
+                    <th className="px-6 py-4 font-semibold text-center">Market Price (KES per KG)</th>
+                    <th className="px-6 py-4 font-semibold text-right">Category</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-cream-100">
+                  {cropPrices.map((item, idx) => item && (
+                    <tr key={item.crop || idx} className="hover:bg-cream-50/20 transition-colors">
+                      <td className="px-6 py-4 font-bold text-forest-900">{item.crop}</td>
+                      <td className="px-6 py-4 text-center">
+                        <input 
+                          type="number" 
+                          value={item.price ?? 0} 
+                          onChange={(e) => {
+                            const newCrops = [...cropPrices];
+                            newCrops[idx].price = parseInt(e.target.value) || 0;
+                            setCropPrices(newCrops);
+                          }}
+                          className="w-32 px-3 py-1.5 border border-cream-200 rounded-lg text-center focus:ring-2 focus:ring-gold-200 outline-none"
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-right text-xs text-soil-300">
+                        Market Average
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

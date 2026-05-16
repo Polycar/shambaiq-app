@@ -202,7 +202,7 @@ export default function AdminDashboard() {
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white rounded-xl p-6 border border-cream-300">
             <h3 className="font-display font-bold text-forest-700 mb-4">Soil Health Issues</h3>
-            {Object.entries(stats.soil_health).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-400 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
+            {Object.entries(stats.soil_health || {}).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-400 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
           </div>
           <div className="bg-white rounded-xl p-6 border border-cream-300">
             <h3 className="font-display font-bold text-forest-700 mb-4">Top Counties</h3>

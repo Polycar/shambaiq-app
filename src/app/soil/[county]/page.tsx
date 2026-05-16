@@ -15,6 +15,7 @@ import {
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScoreRing from "@/components/ScoreRing";
 import NutrientBar from "@/components/NutrientBar";
+import CollapsibleWards from "@/components/CollapsibleWards";
 
 interface PageProps {
   params: Promise<{ county: string }>;
@@ -211,29 +212,13 @@ export default async function CountySoilPage({ params }: PageProps) {
               Wards in {county.county}
             </h2>
             <p className="text-sm text-soil-400 mb-5">
-              {wards.length} wards across {subcounties.length} sub-counties — click for precision soil data
+              {wards.length} wards across {subcounties.length} sub-counties — tap to expand
             </p>
-            {subcounties.map((sc) => {
-              const scWards = wards.filter((w) => w.subcounty === sc);
-              return (
-                <div key={sc} className="mb-4 last:mb-0">
-                  <h3 className="text-sm font-bold text-forest-600 mb-2 uppercase tracking-wide">
-                    {sc} Sub-County
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {scWards.map((w) => (
-                      <Link
-                        key={w.slug}
-                        href={`/soil/${slug}/ward/${slugify(w.ward)}`}
-                        className="px-3 py-1.5 bg-cream-100 hover:bg-gold-100 text-forest-700 text-sm rounded-lg border border-cream-300 hover:border-gold-400 transition-colors"
-                      >
-                        {w.ward}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+            <CollapsibleWards
+              countySlug={slug}
+              subcounties={subcounties}
+              wards={wards.map((w) => ({ ward: w.ward, slug: slugify(w.ward), subcounty: w.subcounty }))}
+            />
           </section>
         )}
 

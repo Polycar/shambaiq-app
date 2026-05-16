@@ -14,28 +14,29 @@ export async function GET() {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`,
-      { method: 'GET' }
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: 'Reply with just the word: OK' }] }],
+          generationConfig: { maxOutputTokens: 5 },
+        }),
+      }
     );
 
     if (!response.ok) {
       const body = await response.text();
       return NextResponse.json({ 
         status: 'FAIL', 
-        reason: `Could not list models: HTTP ${response.status}`,
-        detail: body.slice(0, 500)
+        reason: `Gemini rejected the key: HTTP ${response.status}`,
+        detail: body.slice(0, 200)
       }, { status: 502 });
     }
 
     const data = await response.json();
-    const modelNames = data.models?.map((m: any) => m.name) || [];
-    
-    return NextResponse.json({ 
-      status: 'LISTED', 
-      count: modelNames.length,
-      models: modelNames,
-      key_prefix: apiKey.slice(0, 10) + '...' 
-    });
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+    return NextResponse.json({ status: 'OK', gemini_response: text, key_prefix: apiKey.slice(0, 10) + '...' });
   } catch (err) {
     return NextResponse.json({ status: 'FAIL', reason: String(err) }, { status: 500 });
   }

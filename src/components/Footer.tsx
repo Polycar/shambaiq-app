@@ -18,30 +18,36 @@ export default function Footer() {
               <li><Link href="/soil/kiambu" className="hover:text-gold-400 transition-colors">Kiambu</Link></li>
               <li><Link href="/soil/kakamega" className="hover:text-gold-400 transition-colors">Kakamega</Link></li>
               <li><Link href="/soil/uasin-gishu" className="hover:text-gold-400 transition-colors">Uasin Gishu</Link></li>
-              <li><Link href="/soil" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">All 47 →</Link></li>
+              <li><Link href="/soil" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">All 47 Counties →</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-cream-200 mb-3 text-sm uppercase tracking-wider">Crop Guides</h4>
+            <h4 className="font-semibold text-cream-200 mb-3 text-sm uppercase tracking-wider">Crops &amp; Zones</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/crops/maize" className="hover:text-gold-400 transition-colors">Maize</Link></li>
-              <li><Link href="/crops/beans" className="hover:text-gold-400 transition-colors">Beans</Link></li>
-              <li><Link href="/crops/potatoes" className="hover:text-gold-400 transition-colors">Potatoes</Link></li>
-              <li><Link href="/crops/tea" className="hover:text-gold-400 transition-colors">Tea</Link></li>
-              <li><Link href="/crops" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">All 25 →</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-cream-200 mb-3 text-sm uppercase tracking-wider">Resources</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/zones" className="hover:text-gold-400 transition-colors">Agroecological Zones</Link></li>
+              <li><Link href="/crops/maize" className="hover:text-gold-400 transition-colors">Maize Guide</Link></li>
+              <li><Link href="/crops/beans" className="hover:text-gold-400 transition-colors">Beans Guide</Link></li>
+              <li><Link href="/crops" className="hover:text-gold-400 transition-colors">All 25 Crops</Link></li>
+              <li><Link href="/zones" className="hover:text-gold-400 transition-colors text-gold-400 font-medium">Agroecological Zones</Link></li>
               <li><Link href="/dealers" className="hover:text-gold-400 transition-colors">Agrovet Directory</Link></li>
-              <li><Link href="/blog" className="hover:text-gold-400 transition-colors">Blog</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold text-cream-200 mb-3 text-sm uppercase tracking-wider">Support &amp; Contact</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a href="mailto:info@shambaiq.com" className="hover:text-gold-400 transition-colors flex items-center gap-2">
+                  <span>✉️</span> info@shambaiq.com
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/254748042633" target="_blank" rel="noopener noreferrer" className="hover:text-gold-400 transition-colors flex items-center gap-2">
+                  <span>💬</span> +254 748 042 633
+                </a>
+              </li>
+              <li><Link href="/blog" className="hover:text-gold-400 transition-colors">ShambaIQ Blog</Link></li>
               <li><Link href="/agronomy" className="hover:text-gold-400 transition-colors">Ask AI Agronomist</Link></li>
-              <li><Link href="/app" className="hover:text-gold-400 transition-colors">Get Advice</Link></li>
-              <li><Link href="/contact" className="hover:text-gold-400 transition-colors">Contact Us</Link></li>
-              <li><Link href="/sitemap.xml" className="hover:text-gold-400 transition-colors">Sitemap (XML)</Link></li>
-              <li><Link href="/admin" className="hover:text-gold-400 transition-colors">Admin Login</Link></li>
+              <li><Link href="/admin" className="hover:text-gold-400 transition-colors opacity-60">Admin Portal</Link></li>
+              <li><Link href="/sitemap.xml" className="hover:text-gold-400 transition-colors opacity-60">Sitemap (XML)</Link></li>
             </ul>
           </div>
         </div>

@@ -9,7 +9,7 @@ import {
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
 
-type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "inventory";
+type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "inventory" | "recs";
 
 export default function AdminDashboard() {
   const [code, setCode] = useState("");
@@ -24,9 +24,11 @@ export default function AdminDashboard() {
   const [dealers, setDealers] = useState<any[]>([]);
   const [dealerFilter, setDealerFilter] = useState("pending");
   const [yields, setYields] = useState<any[]>([]);
+  const [yieldFilter, setYieldFilter] = useState("all");
   const [audit, setAudit] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [farmers, setFarmers] = useState<any[]>([]);
+  const [recs, setRecs] = useState<any[]>([]);
   const [inventory, setInventory] = useState<any[]>([
     { name: "DAP", subsidized: 2500, commercial: 6500 },
     { name: "CAN", subsidized: 2500, commercial: 4500 },
@@ -91,10 +93,14 @@ export default function AdminDashboard() {
     setLoading(true);
     if (t === "stats") { setStats(await f("/api/v1/analytics/stats")); setSummary(await f("/api/v1/admin/summary")); }
     else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
-    else if (t === "yields") { const y = await f("/api/v1/analytics/yields/flagged"); setYields(y?.records || []); }
+    else if (t === "yields") { 
+      const y = await f(yieldFilter === "flagged" ? "/api/v1/analytics/yields/flagged" : "/api/v1/admin/yields"); 
+      setYields(y?.records || y?.yields || []); 
+    }
     else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
     else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
     else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
+    else if (t === "recs") { const r = await f("/api/v1/admin/recommendations"); setRecs(r?.recommendations || []); }
     else if (t === "inventory") { 
       const inv = await f("/api/v1/admin/inventory"); 
       if (inv?.items) setInventory(inv.items);
@@ -226,6 +232,7 @@ export default function AdminDashboard() {
     { key: "stats", label: "Overview", icon: BarChart3 },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
     { key: "inventory", label: "Inventory", icon: Package },
+    { key: "recs", label: "Recs", icon: FileText, badge: summary?.total_recommendations },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
     { key: "farmers", label: "Farmers", icon: Users, badge: summary?.total_farmers },
@@ -392,31 +399,67 @@ export default function AdminDashboard() {
       {!loading && tab === "yields" && (
         <div>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="font-display text-lg font-bold text-forest-700">Flagged Yields</h2>
+            <div className="flex gap-2">
+              <button onClick={() => setYieldFilter("all")} className={`px-4 py-2 rounded-lg text-sm font-medium ${yieldFilter === "all" ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-400"}`}>All Yields</button>
+              <button onClick={() => setYieldFilter("flagged")} className={`px-4 py-2 rounded-lg text-sm font-medium ${yieldFilter === "flagged" ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-400"}`}>Flagged Only</button>
+            </div>
             <button 
-              onClick={() => downloadCSV(yields, "shambaiq_flagged_yields")}
+              onClick={() => downloadCSV(yields, `shambaiq_yields_${yieldFilter}`)}
               className="flex items-center gap-2 px-4 py-2 bg-forest-700 text-white rounded-lg hover:bg-forest-800 transition-all text-sm font-semibold shadow-md"
             >
               <Download size={14} /> Export CSV
             </button>
           </div>
-          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-400">No flagged yields.</p></div> : (
+          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-400">No yield records found.</p></div> : (
             <div className="space-y-4">
               {yields.map(y => (
                 <div key={y.id} className="bg-white rounded-xl border border-cream-300 p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div>
-                    <h3 className="font-bold text-forest-700">{y.crop} — {y.yield_bags_per_acre} bags/acre</h3>
-                    <p className="text-sm text-soil-400">Farmer: {y.farmer_id} · {y.season}</p>
-                    <span className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-full"><AlertTriangle size={12} /> {y.flag_reason}</span>
+                    <h3 className="font-bold text-forest-700 text-lg">{y.crop} — {y.yield_bags_per_acre} bags/acre</h3>
+                    <p className="text-sm text-soil-400">Farmer: {y.farmer_name || y.farmer_id} · {y.county} · {y.season}</p>
+                    {y.status === "flagged" && <span className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-full"><AlertTriangle size={12} /> {y.flag_reason || "Flagged"}</span>}
                   </div>
-                  <div className="flex gap-2">
-                    <button onClick={() => reviewYield(y.id, "verified")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><Check size={14} /> Verify</button>
-                    <button onClick={() => reviewYield(y.id, "rejected")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><X size={14} /> Reject</button>
-                  </div>
+                  {y.status === "flagged" && (
+                    <div className="flex gap-2">
+                      <button onClick={() => reviewYield(y.id, "verified")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><Check size={14} /> Verify</button>
+                      <button onClick={() => reviewYield(y.id, "rejected")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><X size={14} /> Reject</button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ═══ RECS ═══ */}
+      {!loading && tab === "recs" && (
+        <div>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="font-display text-lg font-bold text-forest-700">Production Recommendations</h2>
+            <button 
+              onClick={() => downloadCSV(recs, "shambaiq_recommendations")}
+              className="flex items-center gap-2 px-4 py-2 bg-forest-700 text-white rounded-lg hover:bg-forest-800 transition-all text-sm font-semibold shadow-md"
+            >
+              <Download size={14} /> Export CSV
+            </button>
+          </div>
+          <div className="bg-white rounded-xl border border-cream-300 overflow-hidden overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead><tr className="bg-cream-100"><th className="px-4 py-3 font-semibold text-forest-700">Crop</th><th className="px-4 py-3 font-semibold text-forest-700">County</th><th className="px-4 py-3 font-semibold text-forest-700">Score</th><th className="px-4 py-3 font-semibold text-forest-700">Budget (KES)</th><th className="px-4 py-3 font-semibold text-forest-700 text-right">Date</th></tr></thead>
+              <tbody className="divide-y divide-cream-100">
+                {recs.length === 0 ? <tr><td colSpan={5} className="py-12 text-center text-soil-400">No recommendations found.</td></tr> : recs.map(r => (
+                  <tr key={r.id} className="hover:bg-cream-50/50 transition-colors">
+                    <td className="px-4 py-4 font-bold text-forest-700">{r.crop}</td>
+                    <td className="px-4 py-4 text-soil-600">{r.county}</td>
+                    <td className="px-4 py-4 font-medium text-forest-600">{r.health_score}/100</td>
+                    <td className="px-4 py-4 font-bold text-forest-700">KES {r.total_budget?.toLocaleString()}</td>
+                    <td className="px-4 py-4 text-right text-soil-400">{new Date(r.created_at).toLocaleDateString("en-KE")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

@@ -342,11 +342,9 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
-            <p className="mt-4 text-[11px] text-soil-300 italic">
-              * This table aggregates real-time AI recommendations to predict local fertilizer demand.
-            </p>
           </div>
         </div>
+      </div>
       )}
 
       {/* ═══ DEALERS ═══ */}

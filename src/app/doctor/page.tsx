@@ -46,8 +46,8 @@ export default function DoctorPage() {
     setResult(null);
 
     try {
-      // Try backend endpoint first
-      const res = await fetch(`${API}/api/v1/doctor/diagnose`, {
+      // Call our Next.js API route powered by Gemini
+      const res = await fetch(`/api/doctor/diagnose`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: image.split(",")[1] }),

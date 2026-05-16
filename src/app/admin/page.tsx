@@ -286,49 +286,55 @@ export default function AdminDashboard() {
             {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
           </div>
           <div className="bg-white rounded-xl p-6 border border-cream-300 md:col-span-2">
+            <div className="bg-white rounded-xl p-6 border border-cream-300 md:col-span-2 shadow-sm">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="font-display font-bold text-forest-700">Regional Input Demand</h3>
-                <div className="flex items-center gap-3">
-                  <span className="text-[10px] text-soil-400 bg-cream-100 px-2 py-1 rounded-md uppercase font-bold tracking-wider">Live Analytics</span>
-                  <button 
-                    onClick={() => {
-                      const data = Object.entries(stats.county_distribution || {}).map(([c, n]) => ({ County: c, Recommendations: n }));
-                      downloadCSV(data, "shambaiq_regional_demand");
-                    }}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-forest-700 text-white text-xs font-bold rounded-lg hover:bg-forest-800 transition-all shadow-sm"
-                  >
-                    <Download size={12} /> Export CSV
-                  </button>
+                <div className="flex flex-col">
+                  <h3 className="font-display font-bold text-forest-700">Regional Input Demand</h3>
+                  <p className="text-[10px] text-soil-400 font-medium">REAL-TIME AGGREGATED FROM {stats.total_recommendations || 0} RECS</p>
                 </div>
+                <button 
+                  onClick={() => {
+                    const data = Object.entries(stats.county_distribution || {}).map(([c, n]) => ({ County: c, Recommendations: n }));
+                    downloadCSV(data, "shambaiq_regional_demand");
+                  }}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-forest-700 text-white text-xs font-extrabold rounded-xl hover:bg-forest-800 transition-all shadow-lg shadow-forest-100 uppercase tracking-wider"
+                >
+                  <Download size={14} strokeWidth={3} /> Export CSV
+                </button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
                   <thead>
                     <tr className="border-b border-cream-200">
-                      <th className="pb-3 font-semibold text-soil-700">County</th>
-                      <th className="pb-3 font-semibold text-soil-700 text-center">Primary Deficit</th>
-                      <th className="pb-3 font-semibold text-soil-700 text-center">Recommended Input</th>
-                      <th className="pb-3 font-semibold text-soil-700 text-right">Volume</th>
+                      <th className="pb-3 font-semibold text-soil-700 uppercase text-[10px] tracking-widest">County</th>
+                      <th className="pb-3 font-semibold text-soil-700 text-center uppercase text-[10px] tracking-widest">Primary Deficit</th>
+                      <th className="pb-3 font-semibold text-soil-700 text-center uppercase text-[10px] tracking-widest">Recommended Input</th>
+                      <th className="pb-3 font-semibold text-soil-700 text-right uppercase text-[10px] tracking-widest">Live Volume</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-cream-100">
+                    {Object.entries(stats.county_distribution || {}).length === 0 && (
+                      <tr><td colSpan={4} className="py-8 text-center text-soil-300 italic">No recommendations logged yet today.</td></tr>
+                    )}
                     {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0, 8).map(([county, count]) => {
                       const isAcidic = county === "Bungoma" || county === "Nandi" || county === "Uasin Gishu" || county === "Trans Nzoia";
                       return (
                         <tr key={county} className="hover:bg-cream-50/50 transition-colors">
-                          <td className="py-3.5 font-bold text-forest-900">{county}</td>
-                          <td className="py-3.5 text-center">
+                          <td className="py-4 font-bold text-forest-900">{county}</td>
+                          <td className="py-4 text-center">
                             <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-tight ${
-                              isAcidic ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"
+                              isAcidic ? "bg-red-50 text-red-700 border border-red-100" : "bg-amber-50 text-amber-700 border border-amber-100"
                             }`}>
                               {isAcidic ? "Acidity (Low pH)" : "Nitrogen Deficit"}
                             </span>
                           </td>
-                          <td className="py-3.5 text-center text-soil-600 font-medium">
+                          <td className="py-4 text-center text-soil-600 font-medium">
                             {isAcidic ? "Lime + DAP" : "CAN / Urea"}
                           </td>
-                          <td className="py-3.5 text-right font-bold text-forest-700">
-                            {count as number} recs
+                          <td className="py-4 text-right">
+                            <span className="font-display font-bold text-forest-700 bg-cream-50 px-2 py-1 rounded-lg">
+                              {count as number} <span className="text-[10px] opacity-60">RECS</span>
+                            </span>
                           </td>
                         </tr>
                       );

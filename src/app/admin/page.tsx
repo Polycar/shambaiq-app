@@ -33,6 +33,7 @@ export default function AdminDashboard() {
 
   // Blog editor
   const [editing, setEditing] = useState<any>(null);
+  const [isCreating, setIsCreating] = useState(false);
   const [blogForm, setBlogForm] = useState({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
   const [blogSaving, setBlogSaving] = useState(false);
 
@@ -106,6 +107,7 @@ export default function AdminDashboard() {
         await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
       }
       setEditing(null);
+      setIsCreating(false);
       setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
       fetchTab("blog");
     } catch (err) { console.error(err); }
@@ -283,11 +285,11 @@ export default function AdminDashboard() {
       {/* ═══ BLOG EDITOR ═══ */}
       {!loading && tab === "blog" && (
         <div>
-          {!editing && !blogForm.title ? (
+          {!editing && !isCreating ? (
             <>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setBlogForm(f => ({ ...f, title: " " })); setTimeout(() => setBlogForm(f => ({ ...f, title: "" })), 0); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                <button onClick={() => { setEditing(null); setIsCreating(true); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
               </div>
               {posts.length === 0 ? <p className="text-center py-12 text-soil-400">No blog posts yet.</p> : (
                 <div className="space-y-3">
@@ -316,7 +318,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-2xl border border-cream-300 p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-display text-lg font-bold text-forest-700">{editing ? "Edit Post" : "New Post"}</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm text-soil-400 hover:text-forest-700">← Back to list</button>
+                <button onClick={() => { setEditing(null); setIsCreating(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm text-soil-400 hover:text-forest-700">← Back to list</button>
               </div>
               <div className="space-y-4">
                 <div>

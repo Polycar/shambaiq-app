@@ -222,7 +222,7 @@ export default function HomePage() {
               const zoneCounties = counties.filter((c) => c.zone === z);
               const slug = z.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
               return (
-                <Link key={z} href={`/zones/${slug}`} className="min-w-[75vw] sm:min-w-[250px] md:min-w-0 snap-center bg-white rounded-xl p-5 border border-cream-300 hover:border-gold-400 transition-all group shadow-sm">
+                <Link key={z} href={`/zones/${slug}`} className="min-w-[75vw] sm:min-w-[250px] shrink-0 snap-center bg-white rounded-xl p-5 border border-cream-300 hover:border-gold-400 transition-all group shadow-sm">
                   <div className="flex items-center gap-3 mb-2">
                     <Layers size={18} className="text-forest-600" strokeWidth={1.8} />
                     <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{z}</h3>

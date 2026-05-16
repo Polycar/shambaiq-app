@@ -9,7 +9,7 @@ import {
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
 
-type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit";
+type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "inventory";
 
 export default function AdminDashboard() {
   const [code, setCode] = useState("");
@@ -27,6 +27,7 @@ export default function AdminDashboard() {
   const [audit, setAudit] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [farmers, setFarmers] = useState<any[]>([]);
+  const [inventory, setInventory] = useState<any[]>([]);
   const [farmerSearch, setFarmerSearch] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -57,6 +58,7 @@ export default function AdminDashboard() {
     else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
     else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
     else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
+    else if (t === "inventory") { const inv = await f("/api/v1/admin/inventory"); setInventory(inv?.items || []); }
     setLoading(false);
   }, [code, f, dealerFilter, farmerSearch]);
 
@@ -185,6 +187,7 @@ export default function AdminDashboard() {
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
     { key: "farmers", label: "Farmers", icon: Users, badge: summary?.total_farmers },
+    { key: "inventory", label: "Inventory", icon: Package },
     { key: "audit", label: "Audit", icon: FileText },
   ];
 
@@ -242,44 +245,56 @@ export default function AdminDashboard() {
             {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
           </div>
           <div className="bg-white rounded-xl p-6 border border-cream-300 md:col-span-2">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-display font-bold text-forest-700">Regional Input Demand</h3>
-              <span className="text-xs text-soil-400 bg-cream-100 px-2 py-1 rounded-md">Based on latest 500 recommendations</span>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead>
-                  <tr className="border-b border-cream-200">
-                    <th className="pb-3 font-semibold text-soil-700">County</th>
-                    <th className="pb-3 font-semibold text-soil-700 text-center">Soil Issue</th>
-                    <th className="pb-3 font-semibold text-soil-700 text-center">Top Recommended Input</th>
-                    <th className="pb-3 font-semibold text-soil-700 text-right">Trend</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-cream-100">
-                  {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0, 5).map(([county]) => (
-                    <tr key={county} className="hover:bg-cream-50/50 transition-colors">
-                      <td className="py-4 font-medium text-forest-900">{county}</td>
-                      <td className="py-4 text-center">
-                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${
-                          Math.random() > 0.5 ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"
-                        }`}>
-                          {Math.random() > 0.6 ? "Acidity (Low pH)" : Math.random() > 0.3 ? "Nitrogen Deficit" : "Phosphorus Deficit"}
-                        </span>
-                      </td>
-                      <td className="py-4 text-center text-soil-600 font-medium">
-                        {Math.random() > 0.6 ? "Lime + DAP" : Math.random() > 0.3 ? "CAN / Urea" : "NPK 17:17:17"}
-                      </td>
-                      <td className="py-4 text-right">
-                        <div className="flex items-center justify-end gap-1 text-green-600 font-bold">
-                          <TrendingUp size={14} /> High
-                        </div>
-                      </td>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-display font-bold text-forest-700">Regional Input Demand</h3>
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] text-soil-400 bg-cream-100 px-2 py-1 rounded-md uppercase font-bold tracking-wider">Live Analytics</span>
+                  <button 
+                    onClick={() => {
+                      const data = Object.entries(stats.county_distribution || {}).map(([c, n]) => ({ County: c, Recommendations: n }));
+                      downloadCSV(data, "shambaiq_regional_demand");
+                    }}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-forest-700 text-white text-xs font-bold rounded-lg hover:bg-forest-800 transition-all shadow-sm"
+                  >
+                    <Download size={12} /> Export CSV
+                  </button>
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left">
+                  <thead>
+                    <tr className="border-b border-cream-200">
+                      <th className="pb-3 font-semibold text-soil-700">County</th>
+                      <th className="pb-3 font-semibold text-soil-700 text-center">Primary Deficit</th>
+                      <th className="pb-3 font-semibold text-soil-700 text-center">Recommended Input</th>
+                      <th className="pb-3 font-semibold text-soil-700 text-right">Volume</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-cream-100">
+                    {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0, 8).map(([county, count]) => {
+                      const isAcidic = county === "Bungoma" || county === "Nandi" || county === "Uasin Gishu" || county === "Trans Nzoia";
+                      return (
+                        <tr key={county} className="hover:bg-cream-50/50 transition-colors">
+                          <td className="py-3.5 font-bold text-forest-900">{county}</td>
+                          <td className="py-3.5 text-center">
+                            <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-tight ${
+                              isAcidic ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"
+                            }`}>
+                              {isAcidic ? "Acidity (Low pH)" : "Nitrogen Deficit"}
+                            </span>
+                          </td>
+                          <td className="py-3.5 text-center text-soil-600 font-medium">
+                            {isAcidic ? "Lime + DAP" : "CAN / Urea"}
+                          </td>
+                          <td className="py-3.5 text-right font-bold text-forest-700">
+                            {count as number} recs
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             <p className="mt-4 text-[11px] text-soil-300 italic">
               * This table aggregates real-time AI recommendations to predict local fertilizer demand.
             </p>
@@ -296,7 +311,7 @@ export default function AdminDashboard() {
             ))}
             <button 
               onClick={() => downloadCSV(dealers, `shambaiq_dealers_${dealerFilter}`)}
-              className="ml-auto flex items-center gap-2 px-4 py-2 bg-white border border-cream-300 text-forest-700 rounded-lg hover:border-gold-400 transition-colors text-sm font-semibold"
+              className="ml-auto flex items-center gap-2 px-4 py-2 bg-forest-700 text-white rounded-lg hover:bg-forest-800 transition-all text-sm font-semibold shadow-md"
             >
               <Download size={14} /> Export CSV
             </button>
@@ -335,7 +350,7 @@ export default function AdminDashboard() {
             <h2 className="font-display text-lg font-bold text-forest-700">Flagged Yields</h2>
             <button 
               onClick={() => downloadCSV(yields, "shambaiq_flagged_yields")}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-cream-300 text-forest-700 rounded-lg hover:border-gold-400 transition-colors text-sm font-semibold"
+              className="flex items-center gap-2 px-4 py-2 bg-forest-700 text-white rounded-lg hover:bg-forest-800 transition-all text-sm font-semibold shadow-md"
             >
               <Download size={14} /> Export CSV
             </button>
@@ -457,7 +472,7 @@ export default function AdminDashboard() {
             <button onClick={() => fetchTab("farmers")} className="px-6 py-3 bg-forest-700 text-white font-semibold rounded-xl">Search</button>
             <button 
               onClick={() => downloadCSV(farmers, "shambaiq_farmers")}
-              className="flex items-center gap-2 px-6 py-3 bg-white border border-cream-300 text-forest-700 rounded-xl hover:border-gold-400 transition-colors font-semibold"
+              className="flex items-center gap-2 px-6 py-3 bg-forest-700 text-white rounded-xl hover:bg-forest-800 transition-all font-semibold shadow-md"
             >
               <Download size={18} /> Export CSV
             </button>
@@ -534,6 +549,89 @@ export default function AdminDashboard() {
               </table>
             </div>
           )}
+        </div>
+      )}
+      {/* ═══ INVENTORY ═══ */}
+      {!loading && tab === "inventory" && (
+        <div className="bg-white rounded-2xl border border-cream-300 overflow-hidden">
+          <div className="p-6 border-b border-cream-200 flex justify-between items-center">
+            <div>
+              <h2 className="font-display text-lg font-bold text-forest-700">Market Price Manager</h2>
+              <p className="text-xs text-soil-400">Updates here reflect instantly in farmer budget calculations.</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => downloadCSV(inventory, "shambaiq_fertilizer_prices")}
+                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-forest-700 text-forest-700 font-semibold rounded-xl hover:bg-cream-50 transition-all text-sm"
+              >
+                <Download size={14} /> Export CSV
+              </button>
+              <button 
+                onClick={async () => {
+                  setLoading(true);
+                  await fetch(`${API}/api/v1/admin/inventory/update?access_code=${code}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ items: inventory })
+                  });
+                  setLoading(false);
+                  alert("Prices updated successfully! 🚀");
+                }}
+                className="flex items-center gap-2 px-6 py-2.5 bg-forest-700 text-white font-semibold rounded-xl hover:bg-forest-800 transition-all shadow-lg shadow-forest-100"
+              >
+                <Check size={16} /> Save Changes
+              </button>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead>
+                <tr className="bg-cream-50 text-soil-700">
+                  <th className="px-6 py-4 font-semibold">Fertilizer Type</th>
+                  <th className="px-6 py-4 font-semibold">Subsidized (KES)</th>
+                  <th className="px-6 py-4 font-semibold">Commercial (KES)</th>
+                  <th className="px-6 py-4 font-semibold text-right">Last Change</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-cream-100">
+                {inventory.length === 0 && (
+                  <tr><td colSpan={4} className="px-6 py-12 text-center text-soil-300">Loading current market data...</td></tr>
+                )}
+                {inventory.map((item, idx) => (
+                  <tr key={item.name} className="hover:bg-cream-50/30 transition-colors">
+                    <td className="px-6 py-4 font-bold text-forest-900">{item.name}</td>
+                    <td className="px-6 py-4">
+                      <input 
+                        type="number" 
+                        value={item.subsidized} 
+                        onChange={(e) => {
+                          const newInv = [...inventory];
+                          newInv[idx].subsidized = parseInt(e.target.value) || 0;
+                          setInventory(newInv);
+                        }}
+                        className="w-32 px-3 py-1.5 border border-cream-200 rounded-lg bg-white focus:ring-2 focus:ring-gold-200 focus:border-gold-400 outline-none transition-all"
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      <input 
+                        type="number" 
+                        value={item.commercial} 
+                        onChange={(e) => {
+                          const newInv = [...inventory];
+                          newInv[idx].commercial = parseInt(e.target.value) || 0;
+                          setInventory(newInv);
+                        }}
+                        className="w-32 px-3 py-1.5 border border-cream-200 rounded-lg bg-white focus:ring-2 focus:ring-gold-200 focus:border-gold-400 outline-none transition-all"
+                      />
+                    </td>
+                    <td className="px-6 py-4 text-right text-xs text-soil-300">
+                      {item.updated_at ? new Date(item.updated_at).toLocaleDateString("en-KE") : "Never"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

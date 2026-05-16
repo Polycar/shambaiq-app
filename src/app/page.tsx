@@ -46,7 +46,7 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/20 border border-gold-500/30 rounded-full text-gold-300 text-sm font-medium mb-6">
               <span className="w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
-              Powered by iSDAsoil 30m satellite data
+              Check your farm&apos;s soil using satellite data
             </div>
             <h1 className="font-display text-4xl md:text-6xl font-bold text-cream-100 leading-tight mb-6">
               Know your soil.
@@ -105,7 +105,7 @@ export default function HomePage() {
           </p>
           <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible">
             {([
-              { icon: Sprout, title: "Soil & Crop Advice", desc: "Precision fertilizer recommendations matched to your county\u2019s soil chemistry. iSDAsoil data at 30m resolution.", href: "/app", color: "#16a34a" },
+              { icon: Sprout, title: "Soil & Crop Advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using advanced satellite mapping.", href: "/app", color: "#16a34a" },
               { icon: BarChart3, title: "Yield Tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
               { icon: Camera, title: "Plant Doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
               { icon: Store, title: "Find Agrovets", desc: "Locate nearby input suppliers by county. Phone numbers, stock lists, and directions to your nearest dealer.", href: "/dealers", color: "#C8860A" },
@@ -132,7 +132,7 @@ export default function HomePage() {
           <p className="text-center text-soil-400 mb-10 md:mb-14 max-w-xl mx-auto">From satellite to shamba in three steps</p>
           <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8">
             {([
-              { step: "01", title: "Select your county", desc: "Choose from 47 counties and 1,450 wards. We fetch soil data from iSDAsoil satellite mapping at 30-metre resolution.", icon: MapPin },
+              { step: "01", title: "Select your location", desc: "Choose your county and ward. We use satellite technology to check the exact soil health of your local farm area.", icon: MapPin },
               { step: "02", title: "Pick your crop", desc: "25 crops analyzed against your soil\u2019s pH, nitrogen, phosphorus, and potassium. Each scored for suitability.", icon: Wheat },
               { step: "03", title: "Get your plan", desc: "Fertilizer type, bags per acre, timing, budget, and nearest agrovet. Actionable advice you can use today.", icon: ClipboardCheck },
             ] as const).map((s) => {

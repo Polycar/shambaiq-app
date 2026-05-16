@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
 import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData } from "@/lib/api";
@@ -122,7 +122,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   }, [lang]);
 
   // Load live prices from Admin
-  useMemo(() => {
+  useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app"}/api/v1/admin/inventory`)
       .then(r => r.json())
       .then(data => setLivePrices(data))
@@ -249,7 +249,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         lon,
         overrides,
         price_mode: priceMode,
-        yield_target: yieldTarget,
+        yield_target: yieldVal,
       });
       setResult(res);
 

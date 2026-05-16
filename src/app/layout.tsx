@@ -46,7 +46,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
+      <body className="min-h-screen flex flex-col antialiased">
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-7X2WCN7KJ7"
@@ -60,8 +60,6 @@ export default function RootLayout({
             gtag('config', 'G-7X2WCN7KJ7');
           `}
         </Script>
-      </head>
-      <body className="min-h-screen flex flex-col antialiased">
         <Header />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />

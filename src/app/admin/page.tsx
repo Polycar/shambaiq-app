@@ -95,12 +95,17 @@ export default function AdminDashboard() {
     else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
     else if (t === "yields") { 
       const y = await f(yieldFilter === "flagged" ? "/api/v1/analytics/yields/flagged" : "/api/v1/admin/yields"); 
-      setYields(y?.records || y?.yields || []); 
+      // Be robust: check records, yields, and data keys
+      setYields(y?.records || y?.yields || y?.data || []); 
     }
-    else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
-    else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
-    else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
-    else if (t === "recs") { const r = await f("/api/v1/admin/recommendations"); setRecs(r?.recommendations || []); }
+    else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || b?.data || []); }
+    else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || fm?.data || []); }
+    else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || a?.data || []); }
+    else if (t === "recs") { 
+      const r = await f("/api/v1/admin/recommendations"); 
+      // Be robust: check recommendations, records, and data keys
+      setRecs(r?.recommendations || r?.records || r?.data || []); 
+    }
     else if (t === "inventory") { 
       const inv = await f("/api/v1/admin/inventory"); 
       if (inv?.items) setInventory(inv.items);

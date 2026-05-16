@@ -298,26 +298,25 @@ export function getTopCountiesForCrop(crop: CropEconomics, limit = 10): { county
     .slice(0, limit);
 }
 
-// ─── Soil Health Score ─────────────────────────────
+// ─── Soil Health Score (SQI — matches recommender.py sigmoid) ──
 export function computeSoilHealthScore(county: CountySoil): number {
-  let score = 0;
-  if (county.pH >= 5.5 && county.pH <= 7.0) score += 25;
-  else if (county.pH >= 5.0 && county.pH <= 7.5) score += 15;
-  else score += 5;
+  // Sigmoid function — same as recommender.py
+  const sig = (x: number, x_crit: number): number =>
+    1 / (1 + Math.exp(-5 * (x / x_crit - 0.5)));
 
-  if (county.nitrogen >= 1.2) score += 25;
-  else if (county.nitrogen >= 0.8) score += 15;
-  else score += 5;
+  // pH uses Gaussian centered at 6.5 (optimal for most crops)
+  const s_ph = Math.exp(-Math.pow(county.pH - 6.5, 2) / 2.0);
 
-  if (county.phosphorus >= 20) score += 25;
-  else if (county.phosphorus >= 12) score += 15;
-  else score += 5;
+  // Nutrients use sigmoid against general thresholds
+  // Thresholds calibrated to iSDAsoil output scale
+  const s_n = sig(county.nitrogen, 1.2);
+  const s_p = sig(county.phosphorus, 20);
+  const s_k = sig(county.potassium, 150);
+  const s_oc = sig(county.organicCarbon, 15);
 
-  if (county.potassium >= 200) score += 25;
-  else if (county.potassium >= 150) score += 15;
-  else score += 5;
-
-  return score;
+  // Weighted: pH 40% (gatekeeper), each nutrient 15%
+  const raw = s_ph * 0.4 + s_n * 0.15 + s_p * 0.15 + s_k * 0.15 + s_oc * 0.15;
+  return Math.round(Math.min(100, Math.max(0, raw * 100)));
 }
 
 // ─── Zone Helpers ──────────────────────────────────

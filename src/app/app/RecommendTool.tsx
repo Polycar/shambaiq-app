@@ -305,7 +305,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
       {/* Language toggle bar */}
       <div className="sticky top-0 z-50 border-b" style={{ background: "#1a3a1a" }}>
         <div className="mx-auto max-w-2xl flex items-center justify-between px-4 py-2">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 group transition-opacity hover:opacity-80">
             <svg width="28" height="28" viewBox="10 70 100 190" fill="none">
               <path d="M60 240 L35 140 Q30 100 60 80 Q90 100 85 140 Z" fill="#15803d" />
               <circle cx="60" cy="130" r="22" fill="#dcfce7" />
@@ -316,7 +316,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             <span className="text-white font-bold text-lg tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
               Shamba<span style={{ color: "#C8860A" }}>IQ</span>
             </span>
-          </div>
+          </Link>
           <button
             onClick={() => setLang(lang === "en" ? "sw" : "en")}
             className="text-sm font-semibold px-3 py-1.5 rounded-full transition-colors"

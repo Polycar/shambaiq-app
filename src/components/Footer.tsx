@@ -6,7 +6,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-display text-cream-100 font-bold text-lg mb-4">ShambaIQ</h3>
+            <Link href="/">
+              <h3 className="font-display text-cream-100 font-bold text-lg mb-4 hover:text-gold-400 transition-colors inline-block">ShambaIQ</h3>
+            </Link>
             <p className="text-sm text-cream-500 leading-relaxed">
               Precision agriculture for every Kenyan farmer. 47 counties, 25 crops, satellite soil data.
             </p>

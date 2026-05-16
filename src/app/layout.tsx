@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import Header from "@/components/Header";
+import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
@@ -68,12 +68,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
-
-// Separate component to use usePathname
-import { usePathname } from "next/navigation";
-function HeaderWrapper() {
-  const pathname = usePathname();
-  if (pathname === "/app") return null;
-  return <Header />;
 }

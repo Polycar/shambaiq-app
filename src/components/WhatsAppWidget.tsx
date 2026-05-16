@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
 export default function WhatsAppWidget() {
-  const phoneNumber = "254700000000"; // Replace with actual number
+  const phoneNumber = "254748042633"; 
   const message = encodeURIComponent("Hello ShambaIQ, I need help with my farm!");
   
   return (

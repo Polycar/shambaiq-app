@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback, useRef } from "react";
+import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
 import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData } from "@/lib/api";
 

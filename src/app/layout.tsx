@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
@@ -6,7 +7,7 @@ import WhatsAppWidget from "@/components/WhatsAppWidget";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://shambaiq.com"),
+  metadataBase: new URL("https://www.shambaiq.com"),
   title: {
     default: "ShambaIQ — Precision Agriculture for Every Kenyan Farmer",
     template: "%s | ShambaIQ",
@@ -32,8 +33,8 @@ export const metadata: Metadata = {
   },
   alternates: {
     languages: {
-      "en": "https://shambaiq.com",
-      "sw": "https://shambaiq.com/sw",
+      "en": "https://www.shambaiq.com",
+      "sw": "https://www.shambaiq.com/sw",
     },
   },
 };
@@ -45,6 +46,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+          `}
+        </Script>
+      </head>
       <body className="min-h-screen flex flex-col antialiased">
         <Header />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>

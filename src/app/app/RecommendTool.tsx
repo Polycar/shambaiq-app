@@ -493,7 +493,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           )}
 
           {/* Crop + Fertilizer */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 🌾 {t("form_crop", lang)}
@@ -530,7 +530,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           </div>
 
           {/* Acres + Price Mode */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 📐 {t("form_acres", lang)}

@@ -60,7 +60,7 @@ export default function RootLayout({
             gtag('config', 'G-7X2WCN7KJ7');
           `}
         </Script>
-        <Header />
+        <HeaderWrapper />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />
         <MobileNav />
@@ -68,4 +68,12 @@ export default function RootLayout({
       </body>
     </html>
   );
+}
+
+// Separate component to use usePathname
+import { usePathname } from "next/navigation";
+function HeaderWrapper() {
+  const pathname = usePathname();
+  if (pathname === "/app") return null;
+  return <Header />;
 }

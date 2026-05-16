@@ -28,6 +28,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${crop.crop} Farming in Kenya — Soil Requirements, Best Counties, Fertilizer Guide`,
     description: `Complete ${crop.crop} farming guide: optimal soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, best counties ranked by soil suitability. Certified seed varieties and fertilizer budget.`,
+    openGraph: {
+      title: `${crop.crop} Farming Guide — Kenya`,
+      images: [`/api/og/crop/${slug}`],
+    },
   };
 }
 

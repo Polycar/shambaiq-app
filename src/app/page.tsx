@@ -42,7 +42,7 @@ export default function HomePage() {
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-28">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-28">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/20 border border-gold-500/30 rounded-full text-gold-300 text-sm font-medium mb-6">
               <span className="w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
@@ -74,7 +74,7 @@ export default function HomePage() {
           </div>
 
           {/* Stats bar — bold green */}
-          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl">
+          <div className="mt-10 md:mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-6 max-w-2xl">
             {[
               { n: "47", label: "Counties" },
               { n: "25", label: "Crops" },
@@ -95,7 +95,7 @@ export default function HomePage() {
       </section>
 
       {/* Feature cards — Lucide icons + green left border */}
-      <section className="py-16 bg-cream-100">
+      <section className="py-12 md:py-16 bg-cream-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-forest-700 text-center mb-4">
             Everything your shamba needs
@@ -103,7 +103,7 @@ export default function HomePage() {
           <p className="text-center text-soil-400 mb-12 max-w-xl mx-auto">
             Soil reports, fertilizer plans, yield tracking, and crop disease diagnosis — all in one place
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible">
             {([
               { icon: Sprout, title: "Soil & Crop Advice", desc: "Precision fertilizer recommendations matched to your county\u2019s soil chemistry. iSDAsoil data at 30m resolution.", href: "/app", color: "#16a34a" },
               { icon: BarChart3, title: "Yield Tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
@@ -112,7 +112,7 @@ export default function HomePage() {
             ] as const).map((card) => {
               const Icon = card.icon;
               return (
-                <Link key={card.title} href={card.href} className="bg-white rounded-2xl p-6 border-l-4 shadow-sm hover:shadow-md transition-all group" style={{ borderLeftColor: card.color }}>
+                <Link key={card.title} href={card.href} className="min-w-[85vw] sm:min-w-[300px] md:min-w-0 snap-center bg-white rounded-2xl p-6 border-l-4 shadow-sm hover:shadow-md transition-all group" style={{ borderLeftColor: card.color }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${card.color}15` }}>
                     <Icon size={24} strokeWidth={1.8} style={{ color: card.color }} />
                   </div>
@@ -126,11 +126,11 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-forest-700 text-center mb-4">How ShambaIQ works</h2>
-          <p className="text-center text-soil-400 mb-14 max-w-xl mx-auto">From satellite to shamba in three steps</p>
-          <div className="grid md:grid-cols-3 gap-8">
+          <p className="text-center text-soil-400 mb-10 md:mb-14 max-w-xl mx-auto">From satellite to shamba in three steps</p>
+          <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8">
             {([
               { step: "01", title: "Select your county", desc: "Choose from 47 counties and 1,450 wards. We fetch soil data from iSDAsoil satellite mapping at 30-metre resolution.", icon: MapPin },
               { step: "02", title: "Pick your crop", desc: "25 crops analyzed against your soil\u2019s pH, nitrogen, phosphorus, and potassium. Each scored for suitability.", icon: Wheat },
@@ -155,18 +155,18 @@ export default function HomePage() {
       </section>
 
       {/* Top counties */}
-      <section className="py-16 bg-cream-100">
+      <section className="py-12 md:py-16 bg-cream-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-end mb-10">
+          <div className="flex justify-between items-end mb-8 md:mb-10">
             <div>
               <h2 className="font-display text-3xl font-bold text-forest-700">County Soil Reports</h2>
               <p className="text-soil-400 mt-2">Healthiest soils across Kenya</p>
             </div>
             <Link href="/soil" className="text-gold-600 hover:text-gold-700 font-semibold text-sm">All 47 counties →</Link>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible">
             {topCounties.map((c) => (
-              <Link key={c.slug} href={`/soil/${c.slug}`} className="bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 hover:shadow-lg transition-all group shadow-sm">
+              <Link key={c.slug} href={`/soil/${c.slug}`} className="min-w-[85vw] sm:min-w-[350px] md:min-w-0 snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 hover:shadow-lg transition-all group shadow-sm">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h3 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{c.county}</h3>
@@ -187,30 +187,35 @@ export default function HomePage() {
       </section>
 
       {/* Crops grid */}
-      <section className="py-16 bg-forest-700">
+      <section className="py-12 md:py-16 bg-forest-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl font-bold text-cream-100 mb-2 text-center">25 Crops Supported</h2>
-          <p className="text-center text-cream-400 mb-12">Every crop matched to your county&apos;s soil</p>
+          <p className="text-center text-cream-400 mb-8 md:mb-12">Every crop matched to your county&apos;s soil</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-            {crops.map((c) => (
-              <Link key={c.slug} href={`/crops/${c.slug}`} className="bg-forest-600/50 hover:bg-forest-600 border border-forest-500/30 hover:border-gold-500/40 rounded-xl px-4 py-3 text-center transition-all group">
+            {crops.map((c, i) => (
+              <Link key={c.slug} href={`/crops/${c.slug}`} className={`bg-forest-600/50 hover:bg-forest-600 border border-forest-500/30 hover:border-gold-500/40 rounded-xl px-4 py-3 text-center transition-all group ${i >= 8 ? "hidden md:block" : ""}`}>
                 <span className="text-cream-200 group-hover:text-gold-300 font-medium text-sm transition-colors">{c.crop}</span>
               </Link>
             ))}
+          </div>
+          <div className="mt-6 text-center md:hidden">
+            <Link href="/crops" className="inline-block px-6 py-2.5 rounded-lg border border-gold-500/40 text-gold-400 text-sm font-semibold hover:bg-gold-500 hover:text-white transition-colors">
+              View All 25 Crops
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Zones */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-3xl font-bold text-forest-700 text-center mb-10">Agroecological Zones</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <h2 className="font-display text-3xl font-bold text-forest-700 text-center mb-8 md:mb-10">Agroecological Zones</h2>
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible">
             {zones.map((z) => {
               const zoneCounties = counties.filter((c) => c.zone === z);
               const slug = z.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
               return (
-                <Link key={z} href={`/zones/${slug}`} className="bg-white rounded-xl p-5 border border-cream-300 hover:border-gold-400 transition-all group shadow-sm">
+                <Link key={z} href={`/zones/${slug}`} className="min-w-[75vw] sm:min-w-[250px] md:min-w-0 snap-center bg-white rounded-xl p-5 border border-cream-300 hover:border-gold-400 transition-all group shadow-sm">
                   <div className="flex items-center gap-3 mb-2">
                     <Layers size={18} className="text-forest-600" strokeWidth={1.8} />
                     <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{z}</h3>
@@ -224,7 +229,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-cream-200">
+      <section className="py-12 md:py-16 bg-cream-200">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-4">Ready to farm with data?</h2>
           <p className="text-lg text-soil-400 mb-8">Get a free, personalized soil report and fertilizer plan for your county in under 30 seconds.</p>

@@ -1,12 +1,6 @@
 import { getCountySoils, getWards, getCrops, getCountyCoords, slugify } from "@/lib/data";
 import RecommendTool from "./RecommendTool";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Get Advice — ShambaIQ",
-  description:
-    "Free precision fertilizer and soil advice for Kenyan farmers. Select your county, crop, and get actionable recommendations powered by iSDAsoil satellite data.",
-};
 
 export default function AppPage() {
   const counties = getCountySoils().map((c) => ({

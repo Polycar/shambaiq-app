@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${county.county} County Soil Report`,
       description: `pH ${county.pH} · N ${county.nitrogen} g/kg · P ${county.phosphorus} mg/kg`,
+      images: [`/api/og/county/${slug}`],
     },
     alternates: {
       languages: { sw: `/sw/udongo/${slug}` },

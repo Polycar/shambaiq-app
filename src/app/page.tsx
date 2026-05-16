@@ -186,23 +186,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Crops grid */}
-      <section className="py-12 md:py-16 bg-forest-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Crops marquee */}
+      <section className="py-12 md:py-16 bg-forest-700 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 md:mb-10">
           <h2 className="font-display text-3xl font-bold text-cream-100 mb-2 text-center">25 Crops Supported</h2>
-          <p className="text-center text-cream-400 mb-8 md:mb-12">Every crop matched to your county&apos;s soil</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-            {crops.map((c, i) => (
-              <Link key={c.slug} href={`/crops/${c.slug}`} className={`bg-forest-600/50 hover:bg-forest-600 border border-forest-500/30 hover:border-gold-500/40 rounded-xl px-4 py-3 text-center transition-all group ${i >= 8 ? "hidden md:block" : ""}`}>
-                <span className="text-cream-200 group-hover:text-gold-300 font-medium text-sm transition-colors">{c.crop}</span>
+          <p className="text-center text-cream-400">Every crop matched to your county&apos;s soil</p>
+        </div>
+        
+        <div className="relative w-full flex overflow-hidden group">
+          <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-forest-700 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-forest-700 to-transparent z-10 pointer-events-none"></div>
+          
+          <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+            {[...crops, ...crops].map((c, i) => (
+              <Link key={`${c.slug}-${i}`} href={`/crops/${c.slug}`} className="bg-forest-600/50 hover:bg-forest-600 border border-forest-500/30 hover:border-gold-500/40 rounded-full px-8 py-3 mx-2 text-center transition-all group/link whitespace-nowrap">
+                <span className="text-cream-200 group-hover/link:text-gold-300 font-medium text-sm transition-colors">{c.crop}</span>
               </Link>
             ))}
           </div>
-          <div className="mt-6 text-center md:hidden">
-            <Link href="/crops" className="inline-block px-6 py-2.5 rounded-lg border border-gold-500/40 text-gold-400 text-sm font-semibold hover:bg-gold-500 hover:text-white transition-colors">
-              View All 25 Crops
-            </Link>
-          </div>
+        </div>
+        
+        <div className="mt-8 md:mt-10 text-center relative z-20">
+          <Link href="/crops" className="inline-block px-6 py-2.5 rounded-lg border border-gold-500/40 text-gold-400 text-sm font-semibold hover:bg-gold-500 hover:text-white transition-colors">
+            View All 25 Crops
+          </Link>
         </div>
       </section>
 
@@ -210,7 +217,7 @@ export default function HomePage() {
       <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl font-bold text-forest-700 text-center mb-8 md:mb-10">Agroecological Zones</h2>
-          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible">
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 snap-x snap-mandatory gap-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {zones.map((z) => {
               const zoneCounties = counties.filter((c) => c.zone === z);
               const slug = z.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");

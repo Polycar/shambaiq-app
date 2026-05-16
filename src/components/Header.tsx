@@ -11,7 +11,7 @@ const navLinks = [
   { href: "/yields", label: "Yields" },
   { href: "/doctor", label: "Plant Doctor" },
   { href: "/blog", label: "Blog" },
-  { href: "/app", label: "Get Advice", cta: true },
+  { href: "/dealers/apply", label: "Dealer Signup", cta: true },
 ];
 
 export default function Header() {

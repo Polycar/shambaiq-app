@@ -1,0 +1,82 @@
+import { NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
+export const maxDuration = 30;
+
+export async function POST(request: Request) {
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey) {
+    return NextResponse.json({ error: 'Server misconfiguration: API key missing' }, { status: 503 });
+  }
+
+  try {
+    const body = await request.json();
+    const { county, crop, fertilizer, acres, soil } = body;
+
+    if (!county || !crop) {
+      return NextResponse.json({ error: 'County and crop are required' }, { status: 400 });
+    }
+
+    const soilContext = soil
+      ? `Soil data: pH=${soil.pH}, Nitrogen=${soil.nitrogen}g/kg, Phosphorus=${soil.phosphorus}mg/kg, Potassium=${soil.potassium}mg/kg.`
+      : `No precise soil data provided — use typical values for ${county} County, Kenya.`;
+
+    const prompt = `You are an expert agronomist specializing in Kenyan smallholder farming. Provide a precise, actionable fertilizer and crop management recommendation.
+
+Farm Details:
+- County: ${county}, Kenya
+- Crop: ${crop}
+- Current fertilizer: ${fertilizer || 'Unknown'}
+- Farm size: ${acres || 1} acres
+- ${soilContext}
+
+Respond ONLY with a raw JSON object in exactly this format (no markdown, no backticks):
+{
+  "summary": "2-3 sentence executive summary of the soil situation and main recommendation",
+  "primary_fertilizer": "Specific fertilizer product recommended (e.g. DAP 18:46:0)",
+  "application_rate": "Exact rate in kg/acre",
+  "estimated_cost_kes": 3500,
+  "timing": "When and how to apply (e.g. at planting vs top-dress)",
+  "key_advice": ["Tip 1 specific to ${county}", "Tip 2", "Tip 3"],
+  "warning": "Any critical soil issue or common mistake to avoid in ${county} for ${crop}"
+}`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.2, maxOutputTokens: 600 },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errBody = await response.text();
+      console.error('[Agronomy] Gemini API error:', response.status, errBody);
+      return NextResponse.json({ error: `Gemini API error: ${response.status}` }, { status: 502 });
+    }
+
+    const data = await response.json();
+    const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+
+    if (!text) {
+      return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
+    }
+
+    const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+
+    try {
+      const parsed = JSON.parse(cleaned);
+      return NextResponse.json(parsed);
+    } catch {
+      return NextResponse.json({ error: 'Failed to parse AI response', raw: cleaned }, { status: 502 });
+    }
+  } catch (error) {
+    console.error('[Agronomy] Unexpected error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

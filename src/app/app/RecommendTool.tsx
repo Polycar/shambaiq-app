@@ -183,6 +183,16 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   }, [locMode, gpsLat, gpsLon, selectedWard, ward, county, subcounty, wards, countyCoords]);
 
   // Submit
+  const [geminiAdvice, setGeminiAdvice] = useState<{
+    summary: string;
+    primary_fertilizer: string;
+    application_rate: string;
+    estimated_cost_kes: number;
+    timing: string;
+    key_advice: string[];
+    warning: string;
+  } | null>(null);
+
   const handleSubmit = useCallback(async () => {
     if (locMode === "gps" && !gpsLat) {
       setError(lang === "en" ? "Capture GPS first" : "Pata GPS kwanza");
@@ -200,10 +210,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
     setError("");
     setResult(null);
     setWeather(null);
+    setGeminiAdvice(null);
+
+    const lat = resolvedCoords?.lat;
+    const lon = resolvedCoords?.lon;
+    const resolvedCounty = county || "Nairobi";
 
     try {
-      const lat = resolvedCoords?.lat;
-      const lon = resolvedCoords?.lon;
       const overrides = labMode
         ? {
             pH: labPH,
@@ -215,9 +228,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
       const yieldTarget =
         cropUnit && yieldVal ? yieldVal / cropUnit.def : undefined;
-
-      // Use county from GPS reverse or from dropdown
-      const resolvedCounty = county || "Nairobi";
 
       const res = await getRecommendation({
         county: resolvedCounty,
@@ -241,12 +251,36 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
       } else {
         getWeatherByCounty(resolvedCounty).then(setWeather).catch(() => {});
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("error", lang));
+    } catch {
+      // Railway backend failed — fall back to Gemini AI agronomic advice
+      try {
+        const countyData = counties.find((c) => c.county.toLowerCase() === resolvedCounty.toLowerCase());
+        const geminiRes = await fetch("/api/agronomy", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            county: resolvedCounty,
+            crop,
+            fertilizer,
+            acres,
+            soil: countyData
+              ? { pH: countyData.pH, nitrogen: countyData.nitrogen, phosphorus: countyData.phosphorus, potassium: countyData.potassium }
+              : null,
+          }),
+        });
+        if (geminiRes.ok) {
+          const geminiData = await geminiRes.json();
+          setGeminiAdvice(geminiData);
+        } else {
+          setError(lang === "en" ? "Unable to get advice — please try again." : "Imeshindwa kupata ushauri — jaribu tena.");
+        }
+      } catch {
+        setError(lang === "en" ? "No internet connection." : "Hakuna muunganisho wa intaneti.");
+      }
     } finally {
       setLoading(false);
     }
-  }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat]);
+  }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
 
   // WhatsApp share
   const whatsappUrl = useMemo(() => {
@@ -597,6 +631,59 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
           )}
         </div>
+
+        {/* ── GEMINI FALLBACK ADVICE ─────────────────────── */}
+        {geminiAdvice && (
+          <div className="space-y-4 pb-6">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 flex items-center gap-2">
+              <span>⚡</span>
+              <span><strong>AI-Powered Advice</strong> — Precision server unavailable. Showing Gemini AI analysis using local soil data.</span>
+            </div>
+
+            <div className="rounded-2xl border bg-white p-5">
+              <h3 className="font-bold text-base mb-2" style={{ color: "#1a3a1a" }}>📋 Summary</h3>
+              <p className="text-sm text-gray-700 leading-relaxed">{geminiAdvice.summary}</p>
+            </div>
+
+            <div className="rounded-2xl text-center text-white py-6 px-4" style={{ background: "#1a3a1a" }}>
+              <p className="text-sm uppercase tracking-wider opacity-70 mb-1">Recommended Fertilizer</p>
+              <p className="text-2xl font-extrabold">{geminiAdvice.primary_fertilizer}</p>
+              <p className="text-sm opacity-80 mt-1">{geminiAdvice.application_rate}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border bg-white p-4 text-center">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Est. Cost</p>
+                <p className="text-xl font-extrabold" style={{ color: "#16a34a" }}>KES {geminiAdvice.estimated_cost_kes?.toLocaleString()}</p>
+              </div>
+              <div className="rounded-2xl border bg-white p-4">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Timing</p>
+                <p className="text-sm font-semibold text-gray-800">{geminiAdvice.timing}</p>
+              </div>
+            </div>
+
+            {geminiAdvice.key_advice?.length > 0 && (
+              <div className="rounded-2xl border bg-white p-5">
+                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>💡 Key Advice</h3>
+                <ul className="space-y-2">
+                  {geminiAdvice.key_advice.map((tip, i) => (
+                    <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                      <span className="text-green-600 font-bold mt-0.5">✓</span>
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {geminiAdvice.warning && (
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
+                <h3 className="font-bold text-sm mb-1 text-red-700">⚠️ Warning</h3>
+                <p className="text-sm text-red-700">{geminiAdvice.warning}</p>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* ── RESULTS ───────────────────────────────────────── */}
         {result && !result.error && (

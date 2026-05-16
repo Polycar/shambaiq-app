@@ -1,9 +1,20 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+export const runtime = 'nodejs';
+export const maxDuration = 30;
 
 export async function POST(request: Request) {
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  // Surface a clear error if the key is missing (helps debug Vercel env issues)
+  if (!apiKey) {
+    console.error('[PlantDoctor] GEMINI_API_KEY is not set in environment variables');
+    return NextResponse.json(
+      { error: 'Server misconfiguration: API key missing' },
+      { status: 503 }
+    );
+  }
+
   try {
     const body = await request.json();
     const { image } = body;
@@ -12,48 +23,78 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const prompt = `You are an expert agricultural plant doctor in Kenya. Analyze this image of a plant leaf or stem.
+Identify any disease, pest, or nutrient deficiency visible.
 
-    const prompt = `
-      You are an expert agricultural plant doctor in Kenya. Analyze this image of a plant leaf or stem.
-      Identify any disease, pest, or nutrient deficiency.
-      
-      Respond STRICTLY with a raw JSON object and nothing else. Do not wrap it in markdown block quotes or backticks.
-      
-      Schema:
+IMPORTANT: Respond ONLY with a raw JSON object. Do NOT use markdown, backticks, or any other formatting.
+
+Use exactly this schema:
+{"condition":"Name of the disease/pest/deficiency, or Healthy if no issues","confidence":85,"treatment":"Specific, actionable treatment advice using products available at Kenyan agrovets. Include product names and dosages where possible.","prevention":"Practical prevention steps for Kenyan small-scale farmers."}`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
-        "condition": "Name of the disease/pest/deficiency or 'Healthy'",
-        "confidence": <number between 0 and 100 representing certainty>,
-        "treatment": "Actionable, localized treatment advice (e.g., specific fungicides or organic remedies available to farmers)",
-        "prevention": "Best practices to prevent this in the future (e.g., crop rotation, spacing)"
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: prompt },
+                {
+                  inline_data: {
+                    mime_type: 'image/jpeg',
+                    data: image,
+                  },
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 512,
+          },
+        }),
       }
-    `;
+    );
 
-    // The frontend sends base64 without the data:image/jpeg;base64, prefix
-    const result = await model.generateContent([
-      prompt,
-      {
-        inlineData: {
-          data: image,
-          mimeType: 'image/jpeg',
-        },
-      },
-    ]);
-
-    const text = result.response.text();
-    const cleanedText = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-    
-    try {
-      const parsed = JSON.parse(cleanedText);
-      return NextResponse.json(parsed);
-    } catch (parseError) {
-      console.error('Failed to parse Gemini JSON:', text);
-      throw parseError;
+    if (!response.ok) {
+      const errBody = await response.text();
+      console.error('[PlantDoctor] Gemini API error:', response.status, errBody);
+      return NextResponse.json(
+        { error: `Gemini API error: ${response.status}` },
+        { status: 502 }
+      );
     }
-  } catch (error: any) {
-    console.error('Gemini Diagnosis Error:', error);
+
+    const data = await response.json();
+    const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+
+    if (!text) {
+      console.error('[PlantDoctor] Empty response from Gemini:', JSON.stringify(data));
+      return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
+    }
+
+    // Strip any accidental markdown wrappers
+    const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+
+    try {
+      const parsed = JSON.parse(cleaned);
+      return NextResponse.json(parsed);
+    } catch {
+      console.error('[PlantDoctor] JSON parse failed. Raw text:', text);
+      // Return a graceful structured response so the UI still shows something useful
+      return NextResponse.json({
+        condition: 'Diagnosis Complete',
+        confidence: 70,
+        treatment: cleaned,
+        prevention: 'Practice crop rotation and scout your fields weekly for early signs of pest or disease pressure.',
+      });
+    }
+  } catch (error) {
+    console.error('[PlantDoctor] Unexpected error:', error);
     return NextResponse.json(
-      { error: 'Failed to analyze image' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

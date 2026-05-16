@@ -48,7 +48,6 @@ export default function Footer() {
               </li>
               <li><Link href="/blog" className="hover:text-gold-400 transition-colors">ShambaIQ Blog</Link></li>
               <li><Link href="/agronomy" className="hover:text-gold-400 transition-colors">Ask AI Agronomist</Link></li>
-              <li><Link href="/admin" className="hover:text-gold-400 transition-colors opacity-60">Admin Portal</Link></li>
               <li><Link href="/sitemap.xml" className="hover:text-gold-400 transition-colors opacity-60">Sitemap (XML)</Link></li>
             </ul>
           </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Shamba Mshauri — AI Agronomist Chat",
-  description: "Ask Kenya's AI agronomist anything — crop diseases, fertilizer advice, soil problems. Free bilingual advice for all 47 counties.",
+  title: "Yield Tracker — Log & Track Your Harvest",
+  description: "Track your farm harvest season by season. Log yields for 25 crops and see how precision farming improves your output.",
   robots: { index: false, follow: true },
 };
 export default function L({ children }: { children: React.ReactNode }) { return <>{children}</>; }

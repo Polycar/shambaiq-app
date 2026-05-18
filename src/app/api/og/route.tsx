@@ -1,34 +1,55 @@
 import { ImageResponse } from "next/og";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   return new ImageResponse(
     (
       <div
         style={{
-          height: "100%",
-          width: "100%",
+          width: "1200px",
+          height: "630px",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          fontFamily: "system-ui, sans-serif",
+          background: "linear-gradient(135deg, #1a3a1a 0%, #1e4620 50%, #1a3a1a 100%)",
+          color: "white",
+          padding: "80px",
           justifyContent: "center",
-          backgroundColor: "#11472a",
-          fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
-          <span style={{ fontSize: 100, color: "#d97706", fontWeight: "bold", marginRight: "20px" }}>🌱</span>
-          <h1 style={{ fontSize: 100, color: "#fff", fontWeight: "bold", margin: 0 }}>
-            ShambaIQ
-          </h1>
+        <div style={{ fontSize: "28px", color: "#C8860A", fontWeight: 700, marginBottom: "20px" }}>
+          ShambaIQ
         </div>
-        <p style={{ fontSize: 40, color: "#fef3c7", textAlign: "center", maxWidth: "800px" }}>
-          Precision agriculture for every Kenyan farmer. 47 counties, 25 crops, satellite soil data.
-        </p>
+        <div style={{ fontSize: "56px", fontWeight: 800, lineHeight: 1.2, marginBottom: "16px" }}>
+          Know your soil.
+        </div>
+        <div style={{ fontSize: "56px", fontWeight: 800, lineHeight: 1.2, color: "#C8860A", marginBottom: "30px" }}>
+          Grow with precision.
+        </div>
+        <div style={{ fontSize: "22px", color: "#d4c9a8", maxWidth: "700px", lineHeight: 1.5 }}>
+          Free soil analysis, fertilizer plans, and crop recommendations for all 47 Kenyan counties.
+        </div>
+
+        <div style={{ display: "flex", gap: "60px", marginTop: "50px" }}>
+          {[
+            { n: "47", l: "Counties" },
+            { n: "25", l: "Crops" },
+            { n: "1,450+", l: "Wards" },
+            { n: "Free", l: "Forever" },
+          ].map((s) => (
+            <div key={s.l} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ fontSize: "40px", fontWeight: 800, color: "#C8860A" }}>{s.n}</div>
+              <div style={{ fontSize: "14px", color: "#8a9a7a", textTransform: "uppercase", letterSpacing: "0.1em" }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: "40px", fontSize: "14px", color: "#5a6a5a" }}>
+          shambaiq.com · Powered by iSDAsoil 30m satellite data
+        </div>
       </div>
     ),
-    {
-      width: 1200,
-      height: 630,
-    }
+    { width: 1200, height: 630 }
   );
 }

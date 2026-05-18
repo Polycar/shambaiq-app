@@ -1,99 +1,113 @@
 import { MetadataRoute } from "next";
-import { getCountySoils, getCrops, getZones, getWards, slugify } from "@/lib/data";
+import {
+  getCountySoils,
+  getCrops,
+  getZones,
+  slugify,
+} from "@/lib/data";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = "https://www.shambaiq.com";
+const BASE = "https://www.shambaiq.com";
+
+export default function sitemap(): MetadataRoute.Sitemap {
   const counties = getCountySoils();
   const crops = getCrops();
   const zones = getZones();
-  const wards = getWards();
 
-  let blogPages: MetadataRoute.Sitemap = [];
-  try {
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
-    // Add a 5s timeout to prevent GSC fetch failure if backend is slow
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), 5000);
-    
-    const res = await fetch(`${API}/api/v1/blog/posts`, { signal: controller.signal });
-    clearTimeout(id);
-    if (res.ok) {
-      const data = await res.json();
-      blogPages = data.posts.map((p: any) => ({
-        url: `${base}/blog/${p.slug}`,
-        lastModified: new Date(p.updated_at || p.published_at || Date.now()),
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      }));
-    }
-  } catch (err) {
-    console.error("Failed to fetch blog posts for sitemap", err);
-  }
+  const now = new Date().toISOString();
 
+  // ── Static pages ────────────────────────────────────────────
   const staticPages: MetadataRoute.Sitemap = [
-    { url: base, changeFrequency: "weekly", priority: 1.0 },
-    { url: `${base}/soil`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/crops`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/zones`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/dealers`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/blog`, changeFrequency: "daily", priority: 0.8 },
-    { url: `${base}/yields`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}/doctor`, changeFrequency: "monthly", priority: 0.6 },
+    { url: BASE, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${BASE}/soil`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/crops`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/zones`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/dealers`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/dealers/apply`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
+    // NOT included (noindex): /app /agronomy /admin /yields /doctor /profile /dealers/status
   ];
 
-  const countyPages: MetadataRoute.Sitemap = counties.map((c) => ({
-    url: `${base}/soil/${c.slug}`,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
+  // ── Blog posts ────────────────────────────────────────────
+  const blogPosts: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE}/blog/kenya-soil-health-rankings-2026`,
+      lastModified: "2026-05-01",
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE}/blog/complete-maize-farming-guide-kenya`,
+      lastModified: "2026-05-01",
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE}/blog/why-soil-is-acidic-kenya`,
+      lastModified: "2026-05-01",
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE}/blog/dap-vs-can-vs-npk-fertilizer-guide`,
+      lastModified: "2026-05-01",
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+  ];
 
-  const cropPages: MetadataRoute.Sitemap = crops.map((c) => ({
-    url: `${base}/crops/${c.slug}`,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  const zonePages: MetadataRoute.Sitemap = zones.map((z) => ({
-    url: `${base}/zones/${slugify(z)}`,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
-
-  const dealerPages: MetadataRoute.Sitemap = counties.map((c) => ({
-    url: `${base}/dealers/${c.slug}`,
-    changeFrequency: "monthly",
+  // ── Zone pages (10) ─────────────────────────────────────
+  const zonePages: MetadataRoute.Sitemap = zones.map((zone) => ({
+    url: `${BASE}/zones/${slugify(zone)}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  // County × Crop combos
-  const combos: MetadataRoute.Sitemap = counties.flatMap((c) =>
-    crops.map((cr) => ({
-      url: `${base}/soil/${c.slug}/${cr.slug}`,
+  // ── County soil pages (47) ────────────────────────────────
+  const countyPages: MetadataRoute.Sitemap = counties.map((c) => ({
+    url: `${BASE}/soil/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  // ── Dealer directory pages (47) ───────────────────────────
+  const dealerPages: MetadataRoute.Sitemap = counties.map((c) => ({
+    url: `${BASE}/dealers/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
+  // ── Crop pages (25) ──────────────────────────────────────
+  const cropPages: MetadataRoute.Sitemap = crops.map((c) => ({
+    url: `${BASE}/crops/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  // ── County × Crop combo pages (47 × 25 = 1,175) ──────────
+  // Priority 0.6 — valuable long-tail, lower than top-level pages
+  const comboPages: MetadataRoute.Sitemap = counties.flatMap((county) =>
+    crops.map((crop) => ({
+      url: `${BASE}/soil/${county.slug}/${crop.slug}`,
+      lastModified: now,
       changeFrequency: "monthly" as const,
-      priority: 0.5,
+      priority: 0.6,
     }))
   );
 
-  // Ward pages
-  const wardPages: MetadataRoute.Sitemap = wards.map((w) => {
-    const countySlug = slugify(counties.find(
-      (c) => c.county.toLowerCase() === w.county.toLowerCase()
-    )?.county || w.county);
-    return {
-      url: `${base}/soil/${countySlug}/ward/${slugify(w.ward)}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.4,
-    };
-  });
-
   return [
-    ...staticPages,
-    ...blogPages,
-    ...countyPages,
-    ...cropPages,
-    ...zonePages,
-    ...dealerPages,
-    ...combos,
-    ...wardPages,
+    ...staticPages,     // 8 pages
+    ...blogPosts,       // 4 pages
+    ...zonePages,       // 10 pages
+    ...countyPages,     // 47 pages
+    ...dealerPages,     // 47 pages
+    ...cropPages,       // 25 pages
+    ...comboPages,      // 1,175 pages
+    // Total: ~1,316 pages
+    // Ward pages excluded — 1,450 pages is too many for a single sitemap
+    // and ward-level data pages have low individual SEO value
   ];
 }

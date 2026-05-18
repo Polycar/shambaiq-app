@@ -284,16 +284,18 @@ export function scoreCropForCounty(county: CountySoil, crop: CropEconomics): num
   return Math.max(0, Math.round(score));
 }
 
-export function getTopCropsForCounty(county: CountySoil, limit = 10): { crop: CropEconomics; score: number }[] {
-  return getCrops()
-    .map(c => ({ crop: c, score: scoreCropForCounty(county, c) }))
+export function getTopCropsForCounty(county: CountySoil, limit = 8): { crop: CropEconomics; score: number }[] {
+  const crops = getCrops();
+  return crops
+    .map((crop) => ({ crop, score: computeCropSoilScore(county, crop) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
 
 export function getTopCountiesForCrop(crop: CropEconomics, limit = 10): { county: CountySoil; score: number }[] {
-  return getCountySoils()
-    .map(c => ({ county: c, score: scoreCropForCounty(c, crop) }))
+  const counties = getCountySoils();
+  return counties
+    .map((county) => ({ county, score: computeCropSoilScore(county, crop) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
@@ -316,6 +318,26 @@ export function computeSoilHealthScore(county: CountySoil): number {
 
   // Weighted: pH 40% (gatekeeper), each nutrient 15%
   const raw = s_ph * 0.4 + s_n * 0.15 + s_p * 0.15 + s_k * 0.15 + s_oc * 0.15;
+  return Math.round(Math.min(100, Math.max(0, raw * 100)));
+}
+
+// ─── Crop-Soil Suitability Score (sigmoid model) ───
+export function computeCropSoilScore(county: CountySoil, crop: CropEconomics): number {
+  const sig = (x: number, x_crit: number) =>
+    1 / (1 + Math.exp(-5 * (x / x_crit - 0.5)));
+  const phMid = (crop.ph_min + crop.ph_max) / 2;
+  const s_ph  = Math.exp(-Math.pow(county.pH - phMid, 2) / 2.0);
+  const nThresholds: Record<string, number> = { high: 1.2, medium: 0.8, low: 0.5 };
+  const pThresholds: Record<string, number> = { high: 20, medium: 12, low: 6 };
+  const kThresholds: Record<string, number> = { high: 200, medium: 150, low: 100 };
+  const nCrit = nThresholds[crop.n_need] ?? 1.0;
+  const pCrit = pThresholds[crop.p_need] ?? 15;
+  const kCrit = kThresholds[crop.k_need] ?? 120;
+  const s_n  = sig(county.nitrogen, nCrit);
+  const s_p  = sig(county.phosphorus, pCrit);
+  const s_k  = sig(county.potassium, kCrit);
+  const s_oc = sig(county.organicCarbon, 12);
+  const raw = s_ph * 0.4 + s_n * 0.2 + s_p * 0.2 + s_k * 0.1 + s_oc * 0.1;
   return Math.round(Math.min(100, Math.max(0, raw * 100)));
 }
 

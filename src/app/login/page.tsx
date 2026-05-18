@@ -1,14 +1,89 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { 
-  Phone, Lock, User, Home, Sprout, BarChart3, Stethoscope, UserCircle, Menu, LogIn, UserPlus
+  Phone, Lock, User, Home, Sprout, BarChart3, Stethoscope, UserCircle, Menu, LogIn, UserPlus, Loader2
 } from "lucide-react";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export default function FarmerLogin() {
   const [mode, setMode] = useState<"login" | "register">("login");
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!phone || !password) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      let token = "";
+      
+      if (mode === "register") {
+        const res = await fetch(`${API}/api/v1/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            phone_number: phone,
+            password: password,
+            name: name,
+          }),
+        });
+        
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || "Registration failed");
+        }
+        const data = await res.json();
+        token = data.access_token;
+      } else {
+        const res = await fetch(`${API}/api/v1/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            identifier: phone,
+            password: password,
+          }),
+        });
+        
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || "Login failed. Check your credentials.");
+        }
+        const data = await res.json();
+        token = data.access_token;
+      }
+
+      // Fetch user profile to get the name
+      const meRes = await fetch(`${API}/api/v1/auth/me?token=${token}`);
+      let displayName = "Farmer";
+      if (meRes.ok) {
+        const meData = await meRes.json();
+        if (meData.name) displayName = meData.name;
+      }
+
+      // Save token and name in the cookie
+      const sessionData = JSON.stringify({ name: displayName, token, phone });
+      document.cookie = `shambaiq_session=${encodeURIComponent(sessionData)}; path=/; max-age=86400`;
+      
+      router.push("/");
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message || "An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-cream-50 flex flex-col font-sans text-soil-700">
@@ -61,7 +136,7 @@ export default function FarmerLogin() {
             </button>
           </div>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {mode === "register" && (
               <div>
                 <label className="text-sm font-bold text-forest-800 mb-2 block">Full Name</label>
@@ -69,6 +144,8 @@ export default function FarmerLogin() {
                   <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-soil-300" />
                   <input 
                     type="text" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder="Enter your name" 
                     className="w-full bg-cream-50 border border-cream-200 rounded-2xl py-4 pl-12 pr-4 text-forest-900 focus:outline-none focus:border-gold-500 transition-colors"
                   />
@@ -104,9 +181,14 @@ export default function FarmerLogin() {
               </div>
             </div>
 
-            <button className="w-full bg-gold-600 hover:bg-gold-700 active:scale-95 text-white font-bold py-5 rounded-2xl shadow-lg shadow-gold-600/20 transition-all">
+            <button disabled={loading} className="w-full bg-gold-600 hover:bg-gold-700 disabled:opacity-70 active:scale-95 text-white font-bold py-5 rounded-2xl shadow-lg shadow-gold-600/20 transition-all flex items-center justify-center gap-2">
+              {loading && <Loader2 size={18} className="animate-spin" />}
               {mode === "login" ? "Log In" : "Create Account"}
             </button>
+            
+            {error && (
+              <p className="text-red-500 text-sm text-center font-medium mt-2">{error}</p>
+            )}
             
             {mode === "login" && (
               <button className="w-full text-center text-sm font-semibold text-soil-400 py-2">

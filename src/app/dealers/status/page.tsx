@@ -9,9 +9,9 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-pr
 interface Application {
   id: string;
   business_name: string;
-  phone_number: string;
   county: string;
   town: string;
+  phone_number: string;
   status: "pending" | "approved" | "declined";
   created_at: string;
 }

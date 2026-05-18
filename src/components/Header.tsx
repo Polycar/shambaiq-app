@@ -13,8 +13,13 @@ const navLinks = [
   { href: "/dealers/apply", label: "Dealer Signup", cta: true },
 ];
 
-export default function Header() {
+export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean; userName?: string }) {
   const [open, setOpen] = useState(false);
+
+  const handleLogout = () => {
+    document.cookie = "shambaiq_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    window.location.href = "/";
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-forest-700/95 backdrop-blur-sm border-b border-forest-600">
@@ -47,6 +52,29 @@ export default function Header() {
                   {link.label}
                 </Link>
               )
+            )}
+            {isLoggedIn ? (
+              <div className="flex items-center gap-4 ml-3">
+                <div className="flex items-center gap-2 text-cream-300">
+                  <div className="w-7 h-7 rounded-full bg-forest-600 flex items-center justify-center border border-forest-500">
+                    <span className="text-xs font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
+                  </div>
+                  <span className="text-sm font-medium">Hi, {userName || "Farmer"}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="px-3 py-1.5 border border-cream-300/30 hover:border-cream-300 text-cream-300 font-semibold rounded-lg transition-colors text-xs"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="ml-3 px-4 py-2 border border-cream-300/30 hover:border-cream-300 text-cream-300 font-semibold rounded-lg transition-colors text-sm"
+              >
+                Log In
+              </Link>
             )}
           </nav>
 
@@ -83,6 +111,33 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            {isLoggedIn ? (
+              <div className="mt-4 pt-4 border-t border-cream-300/10">
+                <div className="flex items-center gap-3 px-3 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-forest-600 flex items-center justify-center border border-forest-500">
+                    <span className="text-sm font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
+                  </div>
+                  <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"}</span>
+                </div>
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full text-left block px-3 py-2 rounded-lg text-sm font-medium text-cream-300 border border-cream-300/30"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="block px-3 py-2 mt-2 rounded-lg text-sm font-medium text-cream-300 border border-cream-300/30"
+              >
+                Log In
+              </Link>
+            )}
           </nav>
         )}
       </div>

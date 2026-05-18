@@ -20,7 +20,6 @@ export default function DealerApplyPage() {
     business_name: "",
     county: "",
     town: "",
-    ward: "",
     phone_number: "",
     products_stocked: "",
     lat: null as number | null,
@@ -157,19 +156,6 @@ export default function DealerApplyPage() {
               className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-colors"
             />
           </div>
-        </div>
-
-        <div>
-          <label className="text-sm font-semibold text-forest-700 mb-2 block">
-            Ward (Optional)
-          </label>
-          <input
-            type="text"
-            placeholder="e.g. Mountain View"
-            value={form.ward}
-            onChange={(e) => setForm({ ...form, ward: e.target.value })}
-            className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-colors"
-          />
         </div>
 
         {/* Phone */}

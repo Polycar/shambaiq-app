@@ -1,70 +1,33 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import HeaderWrapper from "@/components/HeaderWrapper";
+import { Playfair_Display, DM_Sans } from "next/font/google";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
 import "./globals.css";
 
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-display", display: "swap" });
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.shambaiq.com"),
-  title: {
-    default: "ShambaIQ — Precision Agriculture for Every Kenyan Farmer",
-    template: "%s | ShambaIQ",
-  },
-  description:
-    "Free soil analysis and fertilizer recommendations for all 47 Kenyan counties, 25 crops. Powered by iSDAsoil satellite data.",
-  icons: {
-    icon: "/favicon.svg",
-    apple: "/favicon.svg",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_KE",
-    siteName: "ShambaIQ",
-    images: ["/api/og"],
-  },
-  twitter: {
-    card: "summary_large_image",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    languages: {
-      "en": "https://www.shambaiq.com",
-      "sw": "https://www.shambaiq.com/sw",
-    },
-  },
+  metadataBase: new URL("https://shambaiq.com"),
+  title: { default: "ShambaIQ — Precision Agriculture for Every Kenyan Farmer", template: "%s | ShambaIQ" },
+  description: "Free soil analysis and fertilizer recommendations for all 47 Kenyan counties, 25 crops. Powered by iSDAsoil satellite data.",
+  icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
+  openGraph: { type: "website", locale: "en_KE", siteName: "ShambaIQ", images: ["/api/og"] },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
+  verification: { google: "hDkSRs8CVliEOaxCe1Odg6JKByTt7natiI-1DM4GHWo" },
+  alternates: { languages: { en: "https://shambaiq.com", sw: "https://shambaiq.com/sw" } },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <body className="min-h-screen flex flex-col antialiased">
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-7X2WCN7KJ7"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-7X2WCN7KJ7');
-          `}
-        </Script>
-        <HeaderWrapper />
+        <Header />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />
         <MobileNav />
-        <WhatsAppWidget />
       </body>
     </html>
   );

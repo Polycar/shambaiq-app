@@ -7,7 +7,7 @@ import {
   slugify,
 } from "@/lib/data";
 
-const BASE = "https://www.shambaiq.com";
+const BASE = "https://shambaiq.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const counties = getCountySoils();

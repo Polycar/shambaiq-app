@@ -249,7 +249,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         lon,
         overrides,
         price_mode: priceMode,
-        yield_target: yieldVal ?? undefined,
+        yield_target: yieldTarget,
       });
       setResult(res);
 

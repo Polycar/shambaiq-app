@@ -264,12 +264,19 @@ export default async function CountySoilPage({ params }: PageProps) {
                 {dealers.slice(0, 4).map((d, i) => (
                   <div
                     key={i}
-                    className="p-3 rounded-lg bg-cream-50 border border-cream-200"
+                    className="p-3 rounded-lg bg-cream-50 border border-cream-200 flex justify-between items-start gap-2"
                   >
-                    <div className="font-medium text-forest-700 text-sm">
-                      {d.name}
+                    <div>
+                      <div className="font-medium text-forest-700 text-sm">
+                        {d.name}
+                      </div>
+                      <div className="text-xs text-soil-400 mt-0.5">{d.town}</div>
                     </div>
-                    <div className="text-xs text-soil-400">{d.town}</div>
+                    {d.rating && (
+                      <span className="flex items-center gap-0.5 text-xs font-semibold text-gold-600 shrink-0">
+                        ⭐ {d.rating}
+                      </span>
+                    )}
                   </div>
                 ))}
                 {dealers.length > 4 && (

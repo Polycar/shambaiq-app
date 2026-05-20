@@ -1,53 +1,149 @@
-name,county,town,lat,lon,phone,stocks
-Coast Farmcare Agrovet,Mombasa,Mombasa Town,-4.0435,39.6682,,"DAP,NPK,CAN,Urea,Seeds,Pesticides"
-Kwale Agrochemicals & Seeds,Kwale,Ukunda,-4.3164,39.5445,,"DAP,NPK,CAN,Urea,Seeds"
-Pwani Farm Inputs,Kilifi,Malindi,-3.2192,40.1169,,"DAP,NPK,CAN,Urea,Seeds"
-Hola Agricultural Supplies,Tana River,Hola,-1.4826,40.0334,,"DAP,NPK,CAN,Urea,Seeds"
-Lamu Island Agrovets,Lamu,Lamu Town,-2.2696,40.9006,,"DAP,NPK,CAN,Urea,Seeds"
-Voi Farmers Centre,Taita Taveta,Voi,-3.3945,38.5561,,"DAP,NPK,CAN,Urea,Seeds"
-Northern Farm Supplies,Garissa,Garissa Town,-0.4532,39.6401,,"DAP,NPK,CAN,Urea,Seeds"
-Wajir Oasis Agrovets,Wajir,Wajir Town,1.7471,40.0573,,"DAP,NPK,CAN,Urea,Seeds"
-Mandera Green Supply,Mandera,Mandera Town,3.9366,41.8569,,"DAP,NPK,CAN,Urea,Seeds"
-Marsabit Agro-vet,Marsabit,Marsabit Town,2.3284,37.99,,"DAP,NPK,CAN,Urea,Seeds"
-Isiolo Farm Masters,Isiolo,Isiolo Town,0.3546,37.5833,,"DAP,NPK,CAN,Urea,Seeds"
-Meru Central Farmers Coop,Meru,Meru Town,0.05,37.65,,"DAP,NPK,CAN,Urea,Seeds,Foliar"
-Chuka Farmers Paradise,Tharaka Nithi,Chuka,-0.3333,37.65,,"DAP,NPK,CAN,Urea,Seeds"
-Embu Farm Care,Embu,Embu Town,-0.5319,37.4513,,"DAP,NPK,CAN,Urea,Seeds"
-Kitui Agri-Care,Kitui,Kitui Town,-1.3667,38.0167,,"DAP,NPK,CAN,Urea,Seeds"
-Makamithi Kenya,Machakos,Machakos Town,-1.5177,37.2634,,"DAP,NPK,CAN,Urea,Seeds"
-Wote Farm Inputs,Makueni,Wote,-1.7808,37.6259,,"DAP,NPK,CAN,Urea,Seeds"
-Ol Kalou Agro-Dealers,Nyandarua,Ol Kalou,-0.2724,36.3789,,"DAP,NPK,CAN,Urea,Seeds"
-Agroserve & Irrigation Agencies,Nyeri,Nyeri Town,-0.4167,36.95,,"DAP,NPK,CAN,Urea,Seeds"
-Kirinyaga Agro-Supplies,Kirinyaga,Kerugoya,-0.5,37.3,,"DAP,NPK,CAN,Urea,Seeds"
-Royal Seedlings & Inputs,Murang'a,Murang'a Town,-0.7167,37.15,,"DAP,NPK,CAN,Urea,Seeds"
-VAM Health Services (Agro),Kiambu,Kiambu Town,-1.1667,36.8333,,"DAP,NPK,CAN,Urea,Seeds"
-Turkana Oasis Agri,Turkana,Lodwar,3.1166,35.5973,,"DAP,NPK,CAN,Urea,Seeds"
-Kapenguria Farm Supplies,West Pokot,Kapenguria,1.2333,35.1167,,"DAP,NPK,CAN,Urea,Seeds"
-Maralal Agrovets,Samburu,Maralal,1.0968,36.698,,"DAP,NPK,CAN,Urea,Seeds"
-Paves Vetagro Limited,Trans Nzoia,Kitale,1.0167,35.0,,"DAP,NPK,CAN,Urea,Seeds,Lime"
-Baitany Agro-Vet,Uasin Gishu,Eldoret,0.5167,35.2833,,"DAP,NPK,CAN,Urea,Seeds"
-Iten Farmers Choice,Elgeyo Marakwet,Iten,0.6711,35.5081,,"DAP,NPK,CAN,Urea,Seeds"
-Nandi Farm Store,Nandi,Kapsabet,0.2,35.1,,"DAP,NPK,CAN,Urea,Seeds"
-Kabarnet Agri-Inputs,Baringo,Kabarnet,0.4908,35.7411,,"DAP,NPK,CAN,Urea,Seeds"
-Laikipia Farm Solutions,Laikipia,Nanyuki,0.0167,37.0667,,"DAP,NPK,CAN,Urea,Seeds"
-Menengai Agrovet Enterprises,Nakuru,Nakuru Town,-0.3031,36.08,,"DAP,NPK,CAN,Urea,Seeds"
-Shomoro Farm Supplies Ltd,Narok,Narok Town,-1.0784,35.8601,,"DAP,NPK,CAN,Urea,Seeds"
-Oloitokitok Agrovets,Kajiado,Kajiado Town,-2.0945,36.7766,,"DAP,NPK,CAN,Urea,Seeds"
-Paksons Enterprises,Kericho,Kericho Town,-0.3667,35.2833,,"DAP,NPK,CAN,Urea,Seeds"
-Bomet Farmers Hub,Bomet,Bomet Town,-0.7813,35.3416,,"DAP,NPK,CAN,Urea,Seeds"
-Ralbag Chain Limited,Kakamega,Kakamega Town,0.2833,34.75,,"DAP,NPK,CAN,Urea,Seeds"
-Mbale Farm Needs,Vihiga,Mbale,0.08,34.72,,"DAP,NPK,CAN,Urea,Seeds"
-FarmGRO Africa,Bungoma,Bungoma Town,0.5635,34.5606,,"DAP,NPK,CAN,Urea,Seeds"
-Busia Agro-Supplies,Busia,Busia Town,0.4608,34.1117,,"DAP,NPK,CAN,Urea,Seeds"
-Siaya Farm Centre,Siaya,Siaya Town,-0.06,34.28,,"DAP,NPK,CAN,Urea,Seeds"
-Victoria Agrovets,Kisumu,Kisumu Town,-0.1,34.75,,"DAP,NPK,CAN,Urea,Seeds"
-Homa Bay Agro-Dealers,Homa Bay,Homa Bay Town,-0.5167,34.45,,"DAP,NPK,CAN,Urea,Seeds"
-Migori Agri-Inputs,Migori,Migori Town,-1.0667,34.4667,,"DAP,NPK,CAN,Urea,Seeds"
-Kisii Farmers Paradise,Kisii,Kisii Town,-0.6667,34.7667,,"DAP,NPK,CAN,Urea,Seeds"
-Nyamira Farm Care,Nyamira,Nyamira Town,-0.5667,34.9333,,"DAP,NPK,CAN,Urea,Seeds"
-Amiran Kenya,Nairobi,Nairobi City,-1.2833,36.8167,,"DAP,NPK,CAN,Urea,Seeds,Greenhouses"
-Ronak Agrovet,Bungoma,Bungoma Town,0.5651,34.5612,0722000000,"DAP,CAN,NPK,Seeds"
-Nawal Agrovet,Kakamega,Mumias Town,0.3345,34.4856,0722000001,"DAP,CAN,NPK,Seeds"
-Ruiru Kamiti Road Agrovet,Kiambu,Ruiru,-1.1556,36.9589,0722000002,"DAP,CAN,NPK,Seeds"
-KFA Bungoma,Bungoma,Bungoma Town,0.5635,34.5606,,"DAP,CAN,NPK,Seeds,Subsidized"
-KNTC Mumias,Kakamega,Mumias Town,0.3311,34.4897,,"DAP,CAN,NPK,Seeds,Subsidized"
+name,county,town,lat,lon,phone,stocks,rating
+Skylab Cropcare Limited/ Agrovet,Nairobi,"Shop No. G3/G4, Shepherd Arcade, Racecourse Rd., Nairobi",-1.28563,36.830521,+254 725 881199,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Jumbo Agrovet Limited,Nairobi,"Hailes Selassie, Nairobi",-1.288587,36.8284,+254 722 510291,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.1
+Nikifarmcare E A Ltd,Nairobi,"Starehe, Kijabe St, Nairobi",-1.278293,36.819697,+254 20 8098171,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Westvet Africa Agrovet,Nairobi,"Shop E4, Amber Building, Mfangano Street, Nairobi CBD",-1.286798,36.828095,+254 757 251859,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.8
+Ciira Agrovet Supplies Limited,Nairobi,"Keekorok Rd, Nairobi",-1.280765,36.824484,+254 713 483593,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Kasarani Agrovet,Nairobi,"Block B, Off Kasarani Mwiki Rd, Nairobi",-1.217023,36.895352,+254 791 226344,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.9
+NAWESO AGROVET,Nairobi,Nairobi,-1.264593,36.746116,+254 754 144899,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.9
+Masimba Agrovet Ltd,Nairobi,"Opposite Mama Villa, Kayole Spine Rd, Nairobi",-1.277207,36.908509,+254 721 794880,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.2
+Mwiki Agrovet,Nairobi,"Shop No 20, Matatu Stage, Kangundo Rd, Nairobi",-1.235973,36.935357,+254 725 264953,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Coast Farmcare Agrovet,Mombasa,"Opposite The Pentecoastal Church, Mombasa Road, Mombasa",-4.054507,39.667378,+254 708 588993,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Mtwapa Farm Point Agrovet,Mombasa,"B8, Mtwapa",-3.944839,39.745308,+254 716 465777,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Keenpris Agrovet,Mombasa,"Old Malindi Road Shanzu, Mombasa",-3.968183,39.721808,+254 791 085682,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.7
+Farmplus Agrovet LTD,Mombasa,"Joe Kadenge Rd, Mombasa",-4.056421,39.669349,+254 723 607354,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.7
+Mingo Pharmacy And Agrovet,Mombasa,"Old Malindi Rd, Mombasa",-3.993983,39.705895,+254 727 265752,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Lamu Fashion AGROVET,Mombasa,"Jomo Kenyatta Ave, Mombasa",-4.055722,39.668481,+254 719 793716,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Kisumu Farm Agrovet,Kisumu,"Adjacent to Aghah Khan Hall, Otieno Oyoo St, Kisumu",-0.098315,34.7552,+254 723 713862,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.4
+Kavi Farm Agrovet,Kisumu,"Opposite Good Year, Odera St, Kisumu",-0.099328,34.751411,+254 704 404349,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.1
+Mwanga Agrovet,Kisumu,"Railways Oginga Odinga Street, Kisumu",-0.101542,34.747819,+254 722 862237,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.3
+Weva Agrovet,Kisumu,"Along Accra St, Kisumu Town",-0.098606,34.751451,+254 733 278374,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.7
+Kaseta Farmers Store,Kisumu,"Serem Kisumu - Busia Road, Kisumu",0.023238,34.820124,+254 722 149159,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Petma Agrovet,Kisumu,"Ahero, Kisumu",-0.172616,34.893583,+254 721 429710,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Menengai Agrovet & Veterinary Services,Nakuru,"Kenyatta Ave, Nakuru",-0.284085,36.073468,+254 724 224801,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.2
+MOHSON INPUTS AGROVET,Nakuru,"Oginga Odinga Ave, Nakuru",-0.287743,36.075714,+254 721 144508,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.4
+ISAMAR B AGROVET,Nakuru,"Kisumu Road, Nakuru",-0.251948,35.971557,+254 710 983594,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Neema Farmers Solutions Agrovet,Nakuru,"Wanyororo Main Rd, Nakuru",-0.259591,36.186032,+254 722 257914,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+RIVA AGROVET,Nakuru,"Mburu Gichua Rd, Nakuru",-0.288203,36.075727,+254 727 525288,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.9
+Grade Agrovet and Animal Feeds,Uasin Gishu,Eldoret,0.565917,35.281014,+254 721 827720,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Metkei - Gaa Agrovet,Uasin Gishu,"Nandi Rd, Eldoret",0.514389,35.276544,+254 714 774018,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Janto's Smart Feeds and Agrovet,Uasin Gishu,"Kisumu Road Kapsoya, Eldoret",0.507249,35.295251,+254 726 546313,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Sapaboy Consultants & Agrovet,Uasin Gishu,"Junction, Iten Road, Eldoret",0.549943,35.309215,+254 703 383525,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.7
+Shish Agrovet & Animal Feed Store,Uasin Gishu,"Munyaka Estate, Item Road, Eldoret",0.528591,35.306536,+254 705 134577,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Baitany Agrovet Ltd.,Uasin Gishu,"Kitale - Cherangani Rd, Eldoret",0.53846,35.293893,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Makena Agrovet,Nyeri,Nyeri,-0.425259,36.954474,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.8
+Nyeri Farmers Agrovet,Nyeri,"Gakere Rd, Nyeri",-0.422541,36.952048,+254 701 102100,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Meru Farmers Agrovet Suppliers,Meru,Meru,0.045741,37.656759,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Mapema Agrovet,Meru,"Main Stage, Meru",0.051472,37.645604,+254 722 147558,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Brilliance House Agrovet,Kiambu,"Biashara St, Kiambu",-1.171044,36.828023,+254 111 847294,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Sunrise Agrovet Supplies,Kiambu,Kiambu,-1.176761,36.821582,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Limuru Agrovet Supplies,Kiambu,"Kiambu Rd, Limuru",-1.110863,36.642875,+254 714 328322,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.7
+Felison Agrovet,Kiambu,"Ann's Arcade, Karuri Kiambu Rd, Kiambu",-1.173178,36.831329,+254 729 223746,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.4
+Online Virtual Agrovet,Kiambu,"Arc Business Centre, Ruiru",-1.169402,36.970334,+254 752 452939,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Farm Care Agrovet,Machakos,"Off Machakos Wote Road, Machakos",-1.519237,37.268945,+254 726 248347,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Sephkim Agrovet,Machakos,"Off Machakos Wote Road, Machakos",-1.519172,37.26891,+254 722 687664,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Riziki Agrovet,Machakos,"Near Masaku Market, Ngei Road, Machakos",-1.520204,37.270732,+254 720 884078,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.8
+Peacevet Supplies Agro-Vet,Machakos,"Ngei Road, Machakos",-1.519287,37.271439,+254 721 779455,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Agrovet Seeds,Machakos,"Opposite Kiamba Mall, Syokimau Ave, Machakos",-1.519412,37.269743,+254 735 550238,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Kot Agrovet,Kakamega,"Sudi Road, Kakamega Township",0.284879,34.754045,+254 720 516367,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.5
+Orijo Agrovet,Kakamega,"Ingotse-Matiha, Kakamega",0.28245,34.750196,+254 719 233307,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Siberian Agrovet,Kakamega,"LURAMBI, Kakamega Township",0.295146,34.763391,+254 723 769305,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Alpha Farmers Agrovet,Kakamega,"MUSANDA, Kakamega",0.282647,34.753761,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+MULTIDOSH AGROVET SUPPLIES,Kakamega,"Moi Avenue St, Sheywe, Kakamega",0.299244,34.74473,+254 724 234246,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Itete Trading Ltd,Trans Nzoia,"Near Equity Bank, Kenyatta St, Kitale",1.016991,35.002161,+254 720 231990,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Paves Vetagro Limited (Kitale),Trans Nzoia,"Moi Street, Kitale",1.016943,35.001093,+254 721 832700,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Mazop Enterprises Ltd,Trans Nzoia,"Shop No. 29, Moi Ave, Kitale",1.013869,35.002764,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.9
+Zaro Agrovet,Trans Nzoia,"Moi Ave, Kitale",1.016459,35.001338,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",2.6
+Farm Agrovet,Trans Nzoia,"Moi Ave, Kitale",1.016268,35.001683,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",2.0
+Grand Agro-Vet Supplies,Embu,Embu,-0.538284,37.453828,+254 756 924900,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.2
+Soulmate Agrovet,Embu,"Mama Ngina St, Embu",-0.535826,37.452445,+254 715 560056,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Kithimani Agro-Vet,Kitui,Kitui,-1.367134,38.008318,+254 748 229858,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.2
+Snow Agrovet,Kitui,"Muli Mall, Kitui",-1.366497,38.00971,+254 717 168496,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+J Let Agrovet Suppliers,Narok,"Olmaji Street, Narok East, Narok",-1.090189,35.87166,+254 723 420588,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Olchekut Agrovet,Narok,"Olmaji Building, Olentutu Rd, Narok",-1.090015,35.871381,+254 722 866739,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.8
+Jemorin Agrovet,Narok,"Narok East, Narok",-1.089075,35.876789,+254 703 737010,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Solai Agrovet,Narok,"Ole Ntutu Road, Narok",-1.090179,35.871457,+254 720 753017,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.2
+LIVE FARM AGROVET AND SUPPLIES,Kajiado,"Olooloitikosh, Kajiado",-1.57643,36.928401,+254 111 448228,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Bulls Agrovet Supplies,Kajiado,"Kitengela, Kajiado",-1.512651,36.951394,+254 714 225998,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.7
+Serian Agrovet Ltd,Kajiado,"Opposite Kisamis Stage, Magadi Rd, Kiserian",-1.43026,36.68628,+254 741 657947,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.8
+Farm Solution Agro Kajiado,Kajiado,Kajiado,-1.843993,36.786454,+254 720 563112,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Lenana Agrovet-Kitengela,Kajiado,"Kitengela Kajiado East, Athi River",-1.451789,36.978099,+254 718 575202,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Lukenya Agrovet Supplies Ltd,Kajiado,"Mombasa Road, Athi River",-1.435494,36.972954,+254 712 001141,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.8
+Tropical Farmers Agrovet Ltd,Kericho,"Kericho Rd, Kericho",-0.370573,35.283228,+254 740 522124,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Kericho Mashambani Stores,Kericho,"Temple Rd, Kericho",-0.36929,35.283697,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Vet-Farm,Kericho,Kericho,-0.445886,35.138098,+254 717 256400,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Gifttown Agrovet,Kericho,"Roret Market, Kericho",-0.369154,35.285728,+254 769 456937,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Ronak Agrovet,Bungoma,"Opp National Bank, Moi Avenue, Bungoma",0.565028,34.561194,+254 710 277777,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.2
+Omusale Agrovet,Bungoma,"Township, Bungoma",0.563954,34.560896,+254 709 474727,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.7
+Ultra Farmcare Agrovet,Bungoma,"Mama Fanta, Bungoma",0.560025,34.559787,+254 745 500071,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Pleasant Hill Agrovet,Bungoma,Bungoma,0.59085,34.569987,+254 721 264771,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Bukembe Farmers Agrovet,Bungoma,Bungoma,0.613884,34.656785,+254 729 165281,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Green Agro Distributors Limited,Busia,"Near Co-operative Bank, Busia Kisumu Highway, Busia",0.461224,34.109244,+254 754 800000,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+GIATHI VET ENTERPRISES,Busia,"Kisumu - Busia Rd, Butula",0.326471,34.21559,+254 55 22400,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Stans Agrovet Distributors,Kisii,"Opposite Safaricom Center, Moi Avenue, Kisii",-0.67162,34.770465,+254 729 972469,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Josemo Agrovet,Kisii,"Hospital Road, Kisii",-0.677322,34.779546,+254 702 102066,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Adams Agrovet,Kisii,Kisii,-0.651095,34.752096,+254 715 798855,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Farmers Agrovet,Kisii,Kisii,-0.673206,34.774065,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3
+Enochem Agrovet Ltd,Kisii,"Moi Avenue, Kisii",-0.676073,34.780119,+254 712 085605,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Asego Agrovet,Homa Bay,"Homa Bay Arujo, Homa Bay-Rongo Rd, Homa Bay",-0.530661,34.458104,+254 727 109580,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Tomech Agrovet,Homa Bay,"Homa Bay-Rongo Rd, Homa Bay",-0.523923,34.455878,+254 792 477620,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Homa-Bay Farmcare Agrovet,Homa Bay,"C19, Homa Bay",-0.537712,34.456026,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Greenfarm Agrovet,Homa Bay,"Stage Bus Stop, Homa Bay - Rongo Rd, Opapo",-0.698616,34.548119,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Farmgro Inputs Centre - Agrovet,Migori,"Migori, Isibania",-1.070698,34.475272,+254 716 136084,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Avepo Enterprises,Siaya,"Alego Usonga, Moi Ave, Siaya",0.05927,34.285546,+254 722 976171,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.8
+Avepo Agrovets Ltd,Siaya,Siaya,0.068945,34.095956,+254 745 248822,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Avepo Agrovet (Bondo),Siaya,Bondo,-0.102818,34.275666,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Joyfarm Agrovet,Siaya,"Siaya, Karapul, Next to White Hotel",0.057821,34.314379,+254 795 592486,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Rads Agrovet,Siaya,"Alego Usonga, Bondo - Usenge Rd",0.102463,34.273428,+254 733 688745,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+SHRIJI AGROVET,Bomet,Bomet,-0.780603,35.341054,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.5
+Pioneer Agrovet,Bomet,Bomet,-0.781374,35.342581,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Sai Agro Vet Ltd,Bomet,Bomet,-0.781657,35.34227,+254 703 535252,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Bomet Agro Feeds,Bomet,Bomet,-0.781752,35.341774,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Longisa Farmers Agrovet,Bomet,"Dana Street, Isack Salat Road, Bomet",-0.781426,35.340694,+254 726 021854,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Nyamira Mashambani Stores Agrovet,Nyamira,"Bokeira, North Mugirango, Nyamira",-0.579485,34.934999,+254 719 755589,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Township Agrovet and Farm Centre,Nyamira,"Manga, West Mugirango, Nyamira",-0.56694,34.934123,+254 708 388126,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Jachems Agrovet,Nyamira,Nyamira,-0.54443,34.919799,+254 733 587387,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+G Eight Agrovet,Nyandarua,Ol Kalou,-0.273497,36.37513,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",2.5
+Umoja Agrovet,Nyandarua,Ol Kalou,-0.273438,36.374938,+254 714 453481,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Northland Farmers Agrovet,Laikipia,Nanyuki,0.011489,37.075219,+254 722 661338,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Mwihoko Agrovet,Laikipia,"Nyeri - Nanyuki Rd, Nanyuki",0.000141,37.070504,+254 720 662465,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Hope Farm Agrovet Nanyuki,Laikipia,"Irura Road, Nanyuki",0.001855,37.074024,+254 768 855262,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Nosidan Agrovet,Laikipia,"Nanyuki Lumumba Rd, Baraka Bldg, Nanyuki",0.017124,37.075263,+254 62 2031184,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+RAHA AGRO SUPPLIES,Laikipia,Nanyuki,0.005837,37.072869,+254 788 413257,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Kosyin Agrovet,Nandi,"Kisumu Rd, Kapsabet",0.201496,35.096128,+254 729 225777,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Green Agro Distributors (Kapsabet),Nandi,"Co-operative Bank, Jean-Marie Seroney Rd, Kapsabet",0.201765,35.098166,+254 707 005904,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Riptany Agrovet,Nandi,"Jean-Marie Seroney Rd, Kapsabet",0.201019,35.096934,+254 725 010598,"DAP, NPK, CAN, Urea, Seeds, Pesticides",3.5
+ZION VILLE AGROVET,Nandi,Kapsabet,0.124562,34.919548,+254 720 512769,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Nandi Chemist Ltd,Nandi,"Jean Marie, Kapsabet",0.201595,35.098953,+254 727 048578,"DAP, NPK, CAN, Urea, Seeds, Pesticides",1.0
+Sergoit Ukulima Stores (Agrovet),Elgeyo Marakwet,"Opposite Keiyo Gardens, Kapshow Road, Iten",0.670497,35.508793,+254 724 960093,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Chamtany Agro-Vet Kabarnet,Baringo,Kabarnet,0.492354,35.742864,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+KABOTIK AGROVET,Baringo,Kabarnet,0.492775,35.743674,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+BILA-KUPE AGROVET,Samburu,Maralal,1.096405,36.698547,+254 748 720969,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+SOLVET AGRO LODWAR,Turkana,"New Personality Building, Opposite Tilak Hardware, Lodwar",3.118366,35.599698,+254 724 445213,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Silo Agrovet,Turkana,Lodwar,3.118361,35.599764,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Happy Farm Agrovet,West Pokot,"Makutano - Lodwar Road, Opposite Ola Petrol Station, Makutano",1.259451,35.098314,+254 757 168609,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Paves Vetagro Limited (Kapenguria),West Pokot,"434 Makutano, Kapenguria",1.258776,35.096459,+254 721 832700,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.4
+Guroabad's Agrovet Ltd,Garissa,Garissa,-0.454759,39.643384,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Garissa Agrovet,Garissa,Garissa,-0.452787,39.643609,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+WAJIR AGROVET CENTRE LTD,Wajir,Wajir,1.745106,40.05711,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Professional Agrovet Isiolo,Isiolo,Isiolo,0.347385,37.582935,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.5
+Blue Valley Agrovet,Isiolo,Isiolo,0.269556,37.549559,+254 727 984368,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Isiolo Oasis Agrovet,Isiolo,"A2, Isiolo",0.350563,37.582242,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Chuka Farmline Stores,Tharaka Nithi,"Kiagondu Rd, Chuka",-0.333981,37.646308,+254 64 630574,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.8
+NGETHA AGROVET,Makueni,"Along Ngooni Hyper, Machakos-Wote Road, Wote",-1.781766,37.624704,+254 720 529234,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+MAKONGO AGROVET,Makueni,"Bushman Street, Wote",-1.780244,37.626562,+254 712 888505,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Kilimo Agrofarm Supplies and Agrovet,Kilifi,"Opposite Postbank, Biashara Street, Kilifi Town",-3.630755,39.853038,+254 722 567480,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Mkulima Agrovet,Kilifi,"Barclay Bank Road, Kilifi",-3.630249,39.853235,+254 721 619549,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Golini Misamu Agrovet,Kwale,"Kwale Kinango Road, Kwale",-4.174985,39.453792,+254 729 565184,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Matuga Mbele Enterprise (Agrovet),Kwale,"Baracuda Road Tsimba, Kwale",-4.172127,39.451662,+254 721 498757,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+Kwale Farmers Agrovet,Kwale,Kwale,-4.537363,39.368181,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Maxlab Chemist and Agrovet,Taita Taveta,"Market Street, Voi",-3.392234,38.562867,+254 111 381020,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Frontfield Agrovet,Taita Taveta,Voi,-3.392929,38.563213,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+MVOI AGROVET,Taita Taveta,Voi,-3.393508,38.562545,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",
+Magura Agrovet,Tana River,"Prison Road, Next to Bboxx Office, Hola",-1.498574,40.033033,+254 759 650011,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Agrovet Store (Mpeketoni),Lamu,"Mpeketoni, Lamu",-2.388457,40.697745,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+UKULIMA AGROVET,Kirinyaga,Kerugoya,-0.505063,37.279705,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Ukuaji Agrovet Distributors Ltd,Murang'a,"C71, Murang'a",-0.725193,37.161554,+254 713 219276,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Platinum Farm Care Agrovet,Murang'a,Murang'a,-0.72141,37.158013,+254 720 504242,"DAP, NPK, CAN, Urea, Seeds, Pesticides",5.0
+Big Vision Agrovet,Murang'a,"Gateiguru, Murang'a",-0.871029,36.910323,,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.0
+FARMTOWN DISTRIBUTORS,Murang'a,"Murang'a - Nairobi Road, Murang'a",-0.729589,37.150753,+254 711 701211,"DAP, NPK, CAN, Urea, Seeds, Pesticides",4.3

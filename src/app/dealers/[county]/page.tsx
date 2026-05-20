@@ -76,12 +76,21 @@ export default async function DealerCountyPage({ params }: PageProps) {
             {dealers.map((d, i) => (
               <div
                 key={i}
-                className="bg-white rounded-xl p-6 border border-cream-300"
+                className="bg-white rounded-xl p-6 border border-cream-300 flex flex-col justify-between hover:shadow-md hover:border-gold-300 transition-all"
               >
-                <h2 className="font-display font-bold text-forest-700 mb-1">
-                  {d.name}
-                </h2>
-                <p className="text-sm text-soil-400 mb-3">{d.town}</p>
+                <div>
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <h2 className="font-display font-bold text-forest-700 text-lg leading-snug">
+                      {d.name}
+                    </h2>
+                    {d.rating && (
+                      <span className="flex items-center gap-1 bg-gold-50 text-gold-700 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-gold-200 shrink-0">
+                        ⭐ {d.rating}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-soil-400 mb-4">{d.town}</p>
+                </div>
                 {d.phone && (
                   <p className="text-sm text-forest-600 mb-2">
                     📞{" "}

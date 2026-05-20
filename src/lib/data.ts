@@ -67,6 +67,7 @@ export interface Dealer {
   lon: number;
   phone: string;
   stocks: string;
+  rating?: number;
 }
 
 export interface Seed {
@@ -169,6 +170,7 @@ export function getDealers(): Dealer[] {
     lon: parseFloat(r['lon']),
     phone: r['phone'] || '',
     stocks: r['stocks'] || '',
+    rating: r['rating'] ? parseFloat(r['rating']) : undefined,
   }));
   return _dealers;
 }

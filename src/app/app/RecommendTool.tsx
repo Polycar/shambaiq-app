@@ -299,7 +299,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
     const lines = [
       `🌱 ShambaIQ (${result.county})`,
       `Crop: ${result.crop}`,
-      `Score: ${result.health_score}/100`,
+      `Score: ${result.health_score}`,
       "",
       ...result.budget.breakdown.map((l) => `🛒 ${l}`),
       `Budget: KES ${result.budget.total_budget.toLocaleString()}`,

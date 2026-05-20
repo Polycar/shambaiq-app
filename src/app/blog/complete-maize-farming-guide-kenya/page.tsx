@@ -43,7 +43,7 @@ export default function MaizeFarmingGuide() {
   const faqSchema = {
     "@context": "https://schema.org", "@type": "FAQPage",
     mainEntity: [
-      { "@type": "Question", name: "What is the best county for growing maize in Kenya?", acceptedAnswer: { "@type": "Answer", text: `Based on soil analysis, ${bestCounties[0]?.county} County scores highest for maize suitability with a score of ${bestCounties[0]?.maizeScore}/100, thanks to its pH of ${bestCounties[0]?.pH} and nitrogen level of ${bestCounties[0]?.nitrogen} g/kg.` } },
+      { "@type": "Question", name: "What is the best county for growing maize in Kenya?", acceptedAnswer: { "@type": "Answer", text: `Based on soil analysis, ${bestCounties[0]?.county} County scores highest for maize suitability with a score of ${bestCounties[0]?.maizeScore}, thanks to its pH of ${bestCounties[0]?.pH} and nitrogen level of ${bestCounties[0]?.nitrogen} g/kg.` } },
       { "@type": "Question", name: "How many bags of fertilizer per acre for maize?", acceptedAnswer: { "@type": "Answer", text: "For maize, the standard recommendation is 1-1.5 bags of DAP (or Mavuno for acidic soils) at planting, plus 1-1.5 bags of CAN for top dressing at knee-height stage. Exact amounts depend on your specific soil nutrient levels." } },
       { "@type": "Question", name: "What is the best maize seed variety in Kenya?", acceptedAnswer: { "@type": "Answer", text: `Popular certified varieties include ${seeds.slice(0, 3).map(s => s.variety).join(", ")}. The best choice depends on your altitude, rainfall, and desired maturity period.` } },
     ],

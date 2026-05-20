@@ -160,7 +160,7 @@ export default async function CropPage({ params }: PageProps) {
                     {county.county}
                   </span>
                   <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700">
-                    {score}/100
+                    {score}
                   </span>
                 </Link>
               ))}

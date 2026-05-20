@@ -41,7 +41,7 @@ export default function KenyaSoilRankings() {
       {
         "@type": "Question",
         name: "Which Kenyan county has the healthiest soil?",
-        acceptedAnswer: { "@type": "Answer", text: `Based on iSDAsoil 2026 data, ${top10[0]?.county} County has the highest soil health score of ${top10[0]?.score}/100, with optimal pH, nitrogen, and phosphorus levels for most crops.` },
+        acceptedAnswer: { "@type": "Answer", text: `Based on iSDAsoil 2026 data, ${top10[0]?.county} County has the highest soil health score of ${top10[0]?.score}, with optimal pH, nitrogen, and phosphorus levels for most crops.` },
       },
       {
         "@type": "Question",

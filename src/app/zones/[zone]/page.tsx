@@ -124,7 +124,7 @@ export default async function ZonePage({ params }: PageProps) {
                 >
                   <span className="font-medium text-forest-700">{c.crop}</span>
                   <span className="text-xs font-bold text-gold-600">
-                    Avg {c.avg}/100
+                    Avg {c.avg}
                   </span>
                 </Link>
               ))}

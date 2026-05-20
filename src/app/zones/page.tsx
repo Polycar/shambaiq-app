@@ -46,7 +46,7 @@ export default function ZonesPage() {
                   {z}
                 </h2>
                 <span className="text-sm font-bold text-gold-600">
-                  Avg: {avgScore}/100
+                  Avg: {avgScore}
                 </span>
               </div>
               <div className="text-sm text-soil-400 mb-3">

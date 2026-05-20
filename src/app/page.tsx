@@ -8,6 +8,10 @@ import {
   Camera,
   Store,
   Layers,
+  ArrowRight,
+  Satellite,
+  Leaf,
+  TrendingUp,
 } from "lucide-react";
 import {
   getCountySoils,
@@ -28,96 +32,124 @@ export default function HomePage() {
     .sort((a, b) => b.score - a.score)
     .slice(0, 6);
 
+  const scoreColor = (s: number) =>
+    s >= 70 ? "#16a34a" : s >= 50 ? "#f59e0b" : "#dc2626";
+
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-forest-700 via-[#1e4620] to-forest-700 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.07]">
+      {/* ─── HERO ─────────────────────────────────────────── */}
+      <section className="relative bg-gradient-to-br from-forest-800 via-forest-700 to-[#1e4620] overflow-hidden grain">
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-[0.05]">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#C8860A" strokeWidth="0.5" />
+              <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+                <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#C8860A" strokeWidth="0.4" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-28">
+
+        {/* Floating orbs */}
+        <div className="absolute top-20 right-[15%] w-64 h-64 rounded-full bg-gold-500/[0.06] blur-3xl animate-float" />
+        <div className="absolute bottom-10 left-[10%] w-48 h-48 rounded-full bg-forest-300/[0.08] blur-3xl animate-float" style={{ animationDelay: "3s" }} />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-32">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/20 border border-gold-500/30 rounded-full text-gold-300 text-sm font-medium mb-6">
-              <span className="w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
-              Check your farm&apos;s soil using satellite data
+            {/* Badge */}
+            <div className="fade-up inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-sm font-medium mb-8">
+              <Satellite size={14} strokeWidth={2} />
+              Powered by iSDAsoil satellite mapping
             </div>
-            <h1 className="font-display text-4xl md:text-6xl font-bold text-cream-100 leading-tight mb-6">
+
+            {/* Headline */}
+            <h1 className="fade-up fade-up-delay-1 font-display text-[2.75rem] md:text-7xl font-bold text-cream-100 leading-[1.08] mb-6 tracking-tight">
               Know your soil.
               <br />
               <span className="text-gold-400">Grow with precision.</span>
             </h1>
-            <p className="text-lg md:text-xl text-cream-300 mb-10 leading-relaxed max-w-2xl">
+
+            {/* Subheadline */}
+            <p className="fade-up fade-up-delay-2 text-lg md:text-xl text-cream-300/90 mb-10 leading-relaxed max-w-2xl">
               Free soil analysis, fertilizer plans, and crop recommendations for
               all 47 Kenyan counties. Data-driven farming for every shamba.
             </p>
-            <div className="flex flex-wrap gap-4">
+
+            {/* CTAs */}
+            <div className="fade-up fade-up-delay-3 flex flex-wrap gap-4">
               <Link
                 href="/app"
-                className="px-8 py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25"
+                className="group px-8 py-4 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25 flex items-center gap-2"
               >
-                Get Free Advice →
+                Get Free Advice
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/soil"
-                className="px-8 py-3.5 bg-cream-200/10 hover:bg-cream-200/20 text-cream-200 font-semibold rounded-xl text-lg transition-colors border border-cream-200/20"
+                className="px-8 py-4 bg-cream-200/10 hover:bg-cream-200/20 text-cream-200 font-semibold rounded-xl text-lg transition-colors border border-cream-200/20 hover:border-cream-200/30"
               >
                 Explore Counties
               </Link>
             </div>
           </div>
 
-          {/* Stats bar — bold green */}
-          <div className="mt-10 md:mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-6 max-w-2xl">
+          {/* ─── Stats bar ─── */}
+          <div className="fade-up fade-up-delay-4 mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-2xl">
             {[
-              { n: "47", label: "Counties" },
-              { n: "25", label: "Crops" },
-              { n: wardCount.toLocaleString(), label: "Wards" },
-              { n: "Free", label: "Forever" },
-            ].map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="font-display text-4xl md:text-5xl font-extrabold text-gold-400">
-                  {s.n}
+              { n: "47", label: "Counties", icon: MapPin },
+              { n: "25", label: "Crops", icon: Wheat },
+              { n: wardCount.toLocaleString(), label: "Wards", icon: Layers },
+              { n: "Free", label: "Forever", icon: Leaf },
+            ].map((s) => {
+              const Icon = s.icon;
+              return (
+                <div key={s.label} className="text-center group">
+                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-cream-100/[0.06] mb-3 group-hover:bg-gold-500/10 transition-colors">
+                    <Icon size={18} className="text-gold-400" strokeWidth={1.8} />
+                  </div>
+                  <div className="font-display text-4xl md:text-5xl font-extrabold text-gold-400 leading-none">
+                    {s.n}
+                  </div>
+                  <div className="text-xs text-cream-400 mt-1.5 font-medium tracking-widest uppercase">
+                    {s.label}
+                  </div>
                 </div>
-                <div className="text-sm text-cream-300 mt-1 font-medium tracking-wide uppercase">
-                  {s.label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Feature cards — Lucide icons + green left border */}
-      <section className="py-12 md:py-16 bg-cream-100">
+      {/* ─── FEATURE CARDS ─────────────────────────────────── */}
+      <section className="py-16 md:py-24 bg-cream-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-forest-700 text-center mb-4">
-            Everything your shamba needs
-          </h2>
-          <p className="text-center text-soil-400 mb-12 max-w-xl mx-auto">
-            Soil reports, fertilizer plans, yield tracking, and crop disease diagnosis — all in one place
-          </p>
-          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 mb-4 leading-tight">
+              Everything your shamba needs
+            </h2>
+            <p className="text-soil-400 max-w-xl mx-auto text-lg">
+              Soil reports, fertilizer plans, yield tracking, and crop disease diagnosis — all in one place
+            </p>
+          </div>
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible no-scrollbar">
             {([
-              { icon: Sprout, title: "Soil & Crop Advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using advanced satellite mapping.", href: "/app", color: "#16a34a" },
+              { icon: Sprout, title: "Soil & Crop Advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using 30m satellite mapping.", href: "/app", color: "#16a34a" },
               { icon: BarChart3, title: "Yield Tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
               { icon: Camera, title: "Plant Doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
               { icon: Store, title: "Find Agrovets", desc: "Locate nearby input suppliers by county. Phone numbers, stock lists, and directions to your nearest dealer.", href: "/dealers", color: "#C8860A" },
             ] as const).map((card) => {
               const Icon = card.icon;
               return (
-                <Link key={card.title} href={card.href} className="min-w-[85vw] sm:min-w-[300px] md:min-w-0 snap-center bg-white rounded-2xl p-6 border-l-4 shadow-sm hover:shadow-md transition-all group" style={{ borderLeftColor: card.color }}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${card.color}15` }}>
+                <Link key={card.title} href={card.href} className="min-w-[82vw] sm:min-w-[300px] md:min-w-0 snap-center bg-white rounded-2xl p-7 border-l-4 shadow-sm card-hover group" style={{ borderLeftColor: card.color }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ backgroundColor: `${card.color}12` }}>
                     <Icon size={24} strokeWidth={1.8} style={{ color: card.color }} />
                   </div>
                   <h3 className="font-display text-lg font-bold text-forest-700 mb-2 group-hover:text-gold-600 transition-colors">{card.title}</h3>
                   <p className="text-sm text-soil-400 leading-relaxed">{card.desc}</p>
+                  <div className="mt-4 text-sm font-semibold flex items-center gap-1 transition-colors" style={{ color: card.color }}>
+                    Explore <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
                 </Link>
               );
             })}
@@ -125,23 +157,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="py-12 md:py-16">
+      {/* ─── HOW IT WORKS ──────────────────────────────────── */}
+      <section className="py-16 md:py-24 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-forest-700 text-center mb-4">How ShambaIQ works</h2>
-          <p className="text-center text-soil-400 mb-10 md:mb-14 max-w-xl mx-auto">From satellite to shamba in three steps</p>
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 mb-4 leading-tight">How ShambaIQ works</h2>
+            <p className="text-soil-400 max-w-lg mx-auto text-lg">From satellite to shamba in three steps</p>
+          </div>
           <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8">
             {([
-              { step: "01", title: "Select your location", desc: "Choose your county and ward. We use satellite technology to check the exact soil health of your local farm area.", icon: MapPin },
+              { step: "01", title: "Select your location", desc: "Choose your county and ward. We use iSDAsoil satellite technology to check the exact soil health of your local farm area.", icon: MapPin },
               { step: "02", title: "Pick your crop", desc: "25 crops analyzed against your soil\u2019s pH, nitrogen, phosphorus, and potassium. Each scored for suitability.", icon: Wheat },
               { step: "03", title: "Get your plan", desc: "Fertilizer type, bags per acre, timing, budget, and nearest agrovet. Actionable advice you can use today.", icon: ClipboardCheck },
             ] as const).map((s) => {
               const Icon = s.icon;
               return (
-                <div key={s.step} className="relative bg-white rounded-2xl p-8 border border-cream-300 hover:border-gold-400 transition-colors group shadow-sm">
-                  <div className="absolute -top-4 -left-2 font-display text-6xl font-bold text-cream-300 group-hover:text-gold-200 transition-colors select-none">{s.step}</div>
-                  <div className="relative">
-                    <div className="w-14 h-14 bg-forest-700/10 rounded-xl flex items-center justify-center text-forest-700 mb-5">
+                <div key={s.step} className="relative bg-white rounded-2xl p-8 md:p-10 border border-cream-300 hover:border-gold-400 transition-all group card-hover">
+                  <div className="absolute -top-5 -left-1 font-display text-7xl font-bold text-cream-300/60 group-hover:text-gold-200/60 transition-colors select-none leading-none">{s.step}</div>
+                  <div className="relative pt-4">
+                    <div className="w-14 h-14 bg-forest-700/8 rounded-xl flex items-center justify-center text-forest-700 mb-5">
                       <Icon size={28} strokeWidth={1.8} />
                     </div>
                     <h3 className="font-display text-xl font-bold text-forest-700 mb-3">{s.title}</h3>
@@ -154,78 +188,102 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Top counties */}
-      <section className="py-12 md:py-16 bg-cream-100">
+      {/* ─── TOP COUNTIES ──────────────────────────────────── */}
+      <section className="py-16 md:py-24 bg-cream-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-end mb-8 md:mb-10">
+          <div className="flex justify-between items-end mb-10 md:mb-12">
             <div>
-              <h2 className="font-display text-3xl font-bold text-forest-700">County Soil Reports</h2>
-              <p className="text-soil-400 mt-2">Healthiest soils across Kenya</p>
+              <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 leading-tight">County Soil Reports</h2>
+              <p className="text-soil-400 mt-2 text-lg">Healthiest soils across Kenya</p>
             </div>
-            <Link href="/soil" className="text-gold-600 hover:text-gold-700 font-semibold text-sm">All 47 counties →</Link>
+            <Link href="/soil" className="hidden sm:flex items-center gap-1 text-gold-600 hover:text-gold-700 font-semibold text-sm transition-colors">
+              All 47 counties <ArrowRight size={14} />
+            </Link>
           </div>
-          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible">
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible no-scrollbar">
             {topCounties.map((c) => (
-              <Link key={c.slug} href={`/soil/${c.slug}`} className="min-w-[85vw] sm:min-w-[350px] md:min-w-0 snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 hover:shadow-lg transition-all group shadow-sm">
-                <div className="flex items-start justify-between mb-4">
+              <Link key={c.slug} href={`/soil/${c.slug}`} className="min-w-[84vw] sm:min-w-[350px] md:min-w-0 snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group">
+                <div className="flex items-start justify-between mb-5">
                   <div>
                     <h3 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{c.county}</h3>
                     <span className="text-xs text-soil-400 font-medium">{c.zone}</span>
                   </div>
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center font-display text-lg font-bold text-white shadow-md" style={{ backgroundColor: c.score >= 70 ? "#16a34a" : c.score >= 50 ? "#f59e0b" : "#dc2626" }}>{c.score}</div>
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center font-display text-lg font-bold text-white shadow-md shrink-0" style={{ backgroundColor: scoreColor(c.score) }}>
+                    {c.score}
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><span className="text-soil-400">pH</span><span className="block font-semibold text-forest-700">{c.pH}</span></div>
-                  <div><span className="text-soil-400">Nitrogen</span><span className="block font-semibold text-forest-700">{c.nitrogen} g/kg</span></div>
-                  <div><span className="text-soil-400">Phosphorus</span><span className="block font-semibold text-forest-700">{c.phosphorus} mg/kg</span></div>
-                  <div><span className="text-soil-400">Potassium</span><span className="block font-semibold text-forest-700">{c.potassium} mg/kg</span></div>
+                {/* Nutrient micro-bars */}
+                <div className="space-y-3">
+                  {[
+                    { label: "pH", value: c.pH, display: String(c.pH), pct: Math.min(100, ((c.pH - 3) / 5) * 100), color: c.pH >= 5.5 && c.pH <= 7.0 ? "#16a34a" : c.pH >= 5.0 && c.pH <= 7.5 ? "#f59e0b" : "#dc2626" },
+                    { label: "Nitrogen", value: c.nitrogen, display: `${c.nitrogen} g/kg`, pct: Math.min(100, (c.nitrogen / 2.5) * 100), color: c.nitrogen >= 1.2 ? "#16a34a" : c.nitrogen >= 0.8 ? "#f59e0b" : "#dc2626" },
+                    { label: "Phosphorus", value: c.phosphorus, display: `${c.phosphorus} mg/kg`, pct: Math.min(100, (c.phosphorus / 40) * 100), color: c.phosphorus >= 20 ? "#16a34a" : c.phosphorus >= 12 ? "#f59e0b" : "#dc2626" },
+                    { label: "Potassium", value: c.potassium, display: `${c.potassium} mg/kg`, pct: Math.min(100, (c.potassium / 400) * 100), color: c.potassium >= 200 ? "#16a34a" : c.potassium >= 150 ? "#f59e0b" : "#dc2626" },
+                  ].map((n) => (
+                    <div key={n.label}>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-soil-400">{n.label}</span>
+                        <span className="font-semibold text-forest-700">{n.display}</span>
+                      </div>
+                      <div className="nutrient-bar">
+                        <div className="nutrient-bar-fill" style={{ width: `${n.pct}%`, backgroundColor: n.color }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </Link>
             ))}
           </div>
+          <div className="mt-6 text-center sm:hidden">
+            <Link href="/soil" className="text-gold-600 hover:text-gold-700 font-semibold text-sm">
+              View all 47 counties →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Crops marquee */}
-      <section className="py-12 md:py-16 bg-forest-700 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 md:mb-10">
-          <h2 className="font-display text-3xl font-bold text-cream-100 mb-2 text-center">25 Crops Supported</h2>
-          <p className="text-center text-cream-400">Every crop matched to your county&apos;s soil</p>
+      {/* ─── CROPS MARQUEE ─────────────────────────────────── */}
+      <section className="py-16 md:py-24 bg-forest-700 overflow-hidden relative grain">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 md:mb-12">
+          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-cream-100 mb-3 text-center leading-tight">25 Crops Supported</h2>
+          <p className="text-center text-cream-400 text-lg">Every crop matched to your county&apos;s soil</p>
         </div>
-        
+
         <div className="relative w-full flex overflow-hidden group">
-          <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-forest-700 to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-forest-700 to-transparent z-10 pointer-events-none"></div>
-          
+          <div className="absolute inset-y-0 left-0 w-20 md:w-40 bg-gradient-to-r from-forest-700 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-20 md:w-40 bg-gradient-to-l from-forest-700 to-transparent z-10 pointer-events-none" />
+
           <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
             {[...crops, ...crops].map((c, i) => (
-              <Link key={`${c.slug}-${i}`} href={`/crops/${c.slug}`} className="bg-forest-600/50 hover:bg-forest-600 border border-forest-500/30 hover:border-gold-500/40 rounded-full px-8 py-3 mx-2 text-center transition-all group/link whitespace-nowrap">
+              <Link key={`${c.slug}-${i}`} href={`/crops/${c.slug}`} className="bg-forest-600/40 hover:bg-forest-500 border border-forest-500/30 hover:border-gold-500/40 rounded-full px-7 py-2.5 mx-2 text-center transition-all group/link whitespace-nowrap">
                 <span className="text-cream-200 group-hover/link:text-gold-300 font-medium text-sm transition-colors">{c.crop}</span>
               </Link>
             ))}
           </div>
         </div>
-        
-        <div className="mt-8 md:mt-10 text-center relative z-20">
-          <Link href="/crops" className="inline-block px-6 py-2.5 rounded-lg border border-gold-500/40 text-gold-400 text-sm font-semibold hover:bg-gold-500 hover:text-white transition-colors">
-            View All 25 Crops
+
+        <div className="mt-10 md:mt-12 text-center relative z-20">
+          <Link href="/crops" className="inline-flex items-center gap-2 px-7 py-3 rounded-xl border border-gold-500/40 text-gold-400 text-sm font-semibold hover:bg-gold-500 hover:text-white transition-all">
+            View All 25 Crops <ArrowRight size={14} />
           </Link>
         </div>
       </section>
 
-      {/* Zones */}
-      <section className="py-12 md:py-16">
+      {/* ─── AGROECOLOGICAL ZONES ──────────────────────────── */}
+      <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-3xl font-bold text-forest-700 text-center mb-8 md:mb-10">Agroecological Zones</h2>
-          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 snap-x snap-mandatory gap-4 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-cream-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gold-400 transition-colors">
+          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 text-center mb-10 md:mb-12 leading-tight">Agroecological Zones</h2>
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 snap-x snap-mandatory gap-4 styled-scrollbar">
             {zones.map((z) => {
               const zoneCounties = counties.filter((c) => c.zone === z);
               const slug = z.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
               return (
-                <Link key={z} href={`/zones/${slug}`} className="min-w-[75vw] sm:min-w-[250px] shrink-0 snap-center bg-white rounded-xl p-5 border border-cream-300 hover:border-gold-400 transition-all group shadow-sm">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Layers size={18} className="text-forest-600" strokeWidth={1.8} />
-                    <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{z}</h3>
+                <Link key={z} href={`/zones/${slug}`} className="min-w-[72vw] sm:min-w-[240px] shrink-0 snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 transition-all group card-hover">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-forest-700/8 flex items-center justify-center">
+                      <Layers size={18} className="text-forest-600" strokeWidth={1.8} />
+                    </div>
+                    <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-600 transition-colors leading-tight">{z}</h3>
                   </div>
                   <p className="text-sm text-soil-400">{zoneCounties.length} counties</p>
                 </Link>
@@ -235,13 +293,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-12 md:py-16 bg-cream-200">
+      {/* ─── TRUST BAR ─────────────────────────────────────── */}
+      <section className="py-10 bg-cream-200/60 border-y border-cream-300">
+        <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-x-12 gap-y-4 text-sm text-soil-400">
+          <div className="flex items-center gap-2"><Satellite size={16} className="text-forest-500" /> iSDAsoil 30m satellite data</div>
+          <div className="flex items-center gap-2"><TrendingUp size={16} className="text-forest-500" /> Updated annually</div>
+          <div className="flex items-center gap-2"><MapPin size={16} className="text-forest-500" /> All 47 counties covered</div>
+          <div className="flex items-center gap-2"><Leaf size={16} className="text-forest-500" /> 100% free, forever</div>
+        </div>
+      </section>
+
+      {/* ─── CTA ───────────────────────────────────────────── */}
+      <section className="py-16 md:py-24 bg-cream-200">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-4">Ready to farm with data?</h2>
-          <p className="text-lg text-soil-400 mb-8">Get a free, personalized soil report and fertilizer plan for your county in under 30 seconds.</p>
-          <Link href="/app" className="inline-block px-10 py-4 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25">
-            Get Free Soil Advice →
+          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 mb-5 leading-tight">Ready to farm with data?</h2>
+          <p className="text-lg text-soil-400 mb-10 max-w-xl mx-auto">Get a free, personalized soil report and fertilizer plan for your county in under 30 seconds.</p>
+          <Link href="/app" className="group inline-flex items-center gap-2 px-10 py-4 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25">
+            Get Free Soil Advice
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </section>

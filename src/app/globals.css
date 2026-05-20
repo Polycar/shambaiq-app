@@ -48,17 +48,119 @@ body {
   color: var(--color-forest-800);
 }
 
+/* ═══════════════════════════════════════════════════
+   CORE ANIMATIONS
+   ═══════════════════════════════════════════════════ */
+
 @keyframes score-fill {
   from { stroke-dashoffset: 283; }
 }
 .score-ring { animation: score-fill 1.5s ease-out forwards; }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.fade-up { animation: fade-up 0.6s ease-out forwards; }
-.fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
-.fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
-.fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
-.fade-up-delay-4 { animation-delay: 0.4s; opacity: 0; }
+.fade-up { animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.fade-up-delay-1 { animation-delay: 0.08s; opacity: 0; }
+.fade-up-delay-2 { animation-delay: 0.16s; opacity: 0; }
+.fade-up-delay-3 { animation-delay: 0.24s; opacity: 0; }
+.fade-up-delay-4 { animation-delay: 0.32s; opacity: 0; }
+.fade-up-delay-5 { animation-delay: 0.40s; opacity: 0; }
+.fade-up-delay-6 { animation-delay: 0.48s; opacity: 0; }
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 45s linear infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 134, 10, 0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(200, 134, 10, 0); }
+}
+.pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 30%, rgba(200, 134, 10, 0.06) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 12s ease infinite;
+}
+
+/* ═══════════════════════════════════════════════════
+   TEXTURES
+   ═══════════════════════════════════════════════════ */
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* ═══════════════════════════════════════════════════
+   COMPONENT UTILITIES
+   ═══════════════════════════════════════════════════ */
+
+.card-hover {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 48px -12px rgba(26, 58, 26, 0.1),
+    0 8px 16px -6px rgba(200, 134, 10, 0.06);
+}
+
+.nutrient-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-cream-300);
+  overflow: hidden;
+}
+.nutrient-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass {
+  background: rgba(26, 58, 26, 0.88);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* Scrollbar styling */
+.styled-scrollbar::-webkit-scrollbar { height: 5px; }
+.styled-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.styled-scrollbar::-webkit-scrollbar-thumb { background: var(--color-cream-400); border-radius: 3px; }
+.styled-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--color-gold-400); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

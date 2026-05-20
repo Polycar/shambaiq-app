@@ -194,7 +194,7 @@ export default async function CountySoilPage({ params }: PageProps) {
                         s >= 70 ? "#16a34a" : s >= 50 ? "#f59e0b" : "#dc2626",
                     }}
                   >
-                    {s}/100
+                    {s}
                   </span>
                 </div>
                 <div className="text-xs text-soil-400">
@@ -246,7 +246,7 @@ export default async function CountySoilPage({ params }: PageProps) {
                       </span>
                     </div>
                     <span className="text-sm font-bold text-forest-600">
-                      {nScore}/100
+                      {nScore}
                     </span>
                   </Link>
                 );

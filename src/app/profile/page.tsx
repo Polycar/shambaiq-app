@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { User, Phone, LogIn, UserPlus, Loader2 } from "lucide-react";
 import Link from "next/link";
 
@@ -15,25 +16,67 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [user, setUser] = useState<{ phone: string; name?: string } | null>(null);
+  const router = useRouter();
+
+  // Restore session from cookie on mount
+  useEffect(() => {
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        try {
+          const raw = parts.pop()?.split(';').shift();
+          return JSON.parse(decodeURIComponent(raw || ''));
+        } catch {
+          return null;
+        }
+      }
+      return null;
+    };
+    const session = getCookie('shambaiq_session');
+    if (session) {
+      setUser({ phone: session.phone, name: session.name });
+    }
+  }, []);
 
   const handleAuth = async () => {
-    if (!phone) return;
+    if (!phone || !password) {
+      setMsg("Please enter both phone number and password.");
+      return;
+    }
     setLoading(true);
     setMsg("");
     try {
       const endpoint = mode === "login" ? "login" : "register";
+      const payload = mode === "login" 
+        ? { identifier: phone, password }
+        : { phone_number: phone, password, name: "Farmer" };
+
       const res = await fetch(`${API}/api/v1/auth/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone_number: phone, password }),
+        body: JSON.stringify(payload),
       });
+
       if (res.ok) {
         const data = await res.json();
-        if (data.token) {
-          localStorage.setItem("shambaiq_token", data.token);
-        }
-        setUser({ phone, name: data.name });
+        const token = data.access_token;
+        const displayName = data.name || "Farmer";
+
+        // Save session cookie (24 hrs)
+        const sessionData = JSON.stringify({
+          name: displayName,
+          token,
+          phone,
+        });
+        document.cookie = `shambaiq_session=${encodeURIComponent(
+          sessionData
+        )}; path=/; max-age=86400`;
+
+        setUser({ phone, name: displayName });
         setMsg(mode === "login" ? "Welcome back! 🌱" : "Account created! 🎉");
+        
+        router.refresh();
       } else {
         const err = await res.json().catch(() => ({}));
         setMsg(err.detail || "Something went wrong. Try again.");
@@ -73,7 +116,8 @@ export default function ProfilePage() {
             onClick={() => {
               setUser(null);
               setMsg("");
-              localStorage.removeItem("shambaiq_token");
+              document.cookie = "shambaiq_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+              window.location.href = "/";
             }}
             className="w-full py-3 text-center text-red-600 font-semibold text-sm"
           >

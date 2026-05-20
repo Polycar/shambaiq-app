@@ -3,6 +3,7 @@ import { Playfair_Display, DM_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
+import { cookies } from "next/headers";
 import "./globals.css";
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-display", display: "swap" });
@@ -20,11 +21,26 @@ export const metadata: Metadata = {
   alternates: { languages: { en: "https://shambaiq.com", sw: "https://shambaiq.com/sw" } },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("shambaiq_session");
+  let isLoggedIn = false;
+  let userName = "";
+
+  if (sessionCookie?.value) {
+    try {
+      const session = JSON.parse(decodeURIComponent(sessionCookie.value));
+      isLoggedIn = true;
+      userName = session.name || "Farmer";
+    } catch {
+      // Ignored
+    }
+  }
+
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <body className="min-h-screen flex flex-col antialiased">
-        <Header />
+        <Header isLoggedIn={isLoggedIn} userName={userName} />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />
         <MobileNav />

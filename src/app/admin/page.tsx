@@ -9,7 +9,7 @@ import {
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
 
-type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit";
+type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "crops";
 
 export default function AdminDashboard() {
   const [code, setCode] = useState("");
@@ -30,6 +30,11 @@ export default function AdminDashboard() {
   const [farmerSearch, setFarmerSearch] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  
+  // Crop Pricing state
+  const [cropList, setCropList] = useState<any[]>([]);
+  const [cropSaving, setCropSaving] = useState(false);
+  const [cropSavedMessage, setCropSavedMessage] = useState(false);
 
   // Blog editor
   const [editing, setEditing] = useState<any>(null);
@@ -51,6 +56,13 @@ export default function AdminDashboard() {
     else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
     else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
     else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
+    else if (t === "crops") {
+      const res = await fetch(`/api/admin/crops?access_code=${code}`);
+      if (res.ok) {
+        const data = await res.json();
+        setCropList(data.crops || []);
+      }
+    }
     setLoading(false);
   }, [code, f, dealerFilter, farmerSearch]);
 
@@ -127,6 +139,7 @@ export default function AdminDashboard() {
   // ─── Tabs ───
   const tabs: { key: Tab; label: string; icon: any; badge?: number }[] = [
     { key: "stats", label: "Overview", icon: BarChart3 },
+    { key: "crops", label: "Crop Pricing", icon: Wheat },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
@@ -193,6 +206,107 @@ export default function AdminDashboard() {
               <div className="font-display text-4xl font-bold text-forest-700">{stats.feedback?.average_rating?.toFixed(1) || "—"}</div>
               <div className="text-sm text-soil-400 mt-1">Average rating · {stats.feedback?.total_responses || 0} responses</div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ CROPS ═══ */}
+      {!loading && tab === "crops" && (
+        <div className="bg-white rounded-2xl border border-cream-300 p-6">
+          <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
+            <div>
+              <h2 className="font-display text-lg font-bold text-forest-700">Crop Pricing & Yield Economics</h2>
+              <p className="text-xs text-soil-400">Edit crop market prices and baseline yields. Changes take effect immediately across all crop guides and reports.</p>
+            </div>
+            <button
+              onClick={async () => {
+                setCropSaving(true);
+                const res = await fetch(`/api/admin/crops?access_code=${code}`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ crops: cropList }),
+                });
+                setCropSaving(false);
+                if (res.ok) {
+                  setCropSavedMessage(true);
+                  setTimeout(() => setCropSavedMessage(false), 3000);
+                  fetchTab("crops");
+                }
+              }}
+              disabled={cropSaving}
+              className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl shadow-sm transition-colors"
+            >
+              {cropSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+              Save Changes
+            </button>
+          </div>
+
+          {cropSavedMessage && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 text-sm font-semibold rounded-xl flex items-center gap-2">
+              <CheckCircle size={16} /> Prices updated successfully and synced to Crop Guides!
+            </div>
+          )}
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-cream-100 text-left border-b border-cream-200">
+                  <th className="px-4 py-3 font-semibold text-forest-700">Crop</th>
+                  <th className="px-4 py-3 font-semibold text-forest-700">Soil pH Range</th>
+                  <th className="px-4 py-3 font-semibold text-forest-700">Market Price (KES/kg)</th>
+                  <th className="px-4 py-3 font-semibold text-forest-700">Baseline Yield (kg/acre)</th>
+                  <th className="px-4 py-3 font-semibold text-forest-700">Soil Texture</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-cream-100">
+                {cropList.map((cr, idx) => (
+                  <tr key={cr.Crop} className="hover:bg-cream-50/50">
+                    <td className="px-4 py-3 font-semibold text-forest-700 flex items-center gap-2">
+                      <Wheat size={16} className="text-gold-500" />
+                      {cr.Crop}
+                    </td>
+                    <td className="px-4 py-3 text-soil-400">
+                      {cr.ph_min} – {cr.ph_max}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5 max-w-[120px]">
+                        <span className="text-soil-300 font-medium">KES</span>
+                        <input
+                          type="number"
+                          value={cr.price_per_kg}
+                          onChange={(e) => {
+                            const val = parseFloat(e.target.value) || 0;
+                            const updated = [...cropList];
+                            updated[idx] = { ...updated[idx], price_per_kg: val };
+                            setCropList(updated);
+                          }}
+                          className="w-full px-2.5 py-1.5 border border-cream-300 rounded-lg text-forest-700 font-semibold focus:outline-none focus:border-gold-400"
+                        />
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5 max-w-[140px]">
+                        <input
+                          type="number"
+                          value={cr.yield_per_acre}
+                          onChange={(e) => {
+                            const val = parseFloat(e.target.value) || 0;
+                            const updated = [...cropList];
+                            updated[idx] = { ...updated[idx], yield_per_acre: val };
+                            setCropList(updated);
+                          }}
+                          className="w-full px-2.5 py-1.5 border border-cream-300 rounded-lg text-forest-700 font-semibold focus:outline-none focus:border-gold-400"
+                        />
+                        <span className="text-soil-400 text-xs">kg</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-soil-400">
+                      {cr.pref_texture}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

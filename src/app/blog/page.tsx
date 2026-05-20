@@ -9,7 +9,9 @@ export const metadata: Metadata = {
     "Data-driven farming guides for Kenya. County soil rankings, crop guides, fertilizer comparisons, and seasonal advice based on iSDAsoil satellite data.",
 };
 
-const posts = [
+const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
+
+const staticPosts = [
   {
     slug: "kenya-soil-health-rankings-2026",
     title: "2026 Kenya Soil Health Report: All 47 Counties Ranked",
@@ -44,7 +46,38 @@ const posts = [
   },
 ];
 
-export default function BlogPage() {
+async function getPublishedPosts() {
+  try {
+    const res = await fetch(`${API}/api/v1/blog`, { next: { revalidate: 60 } });
+    if (res.ok) {
+      const data = await res.json();
+      return data.posts || [];
+    }
+  } catch (e) {
+    console.error("Failed to fetch blog posts from API:", e);
+  }
+  return [];
+}
+
+export default async function BlogPage() {
+  const dynamicPosts = await getPublishedPosts();
+
+  const mappedDynamic = dynamicPosts.map((p: any) => ({
+    slug: p.slug,
+    title: p.title,
+    excerpt: p.excerpt || "",
+    date: p.published_at
+      ? new Date(p.published_at).toLocaleDateString("en-KE", {
+          year: "numeric",
+          month: "long",
+        })
+      : "May 2026",
+    readTime: p.read_time || "5 min read",
+    category: p.category || "Guide",
+  }));
+
+  const allPosts = [...staticPosts, ...mappedDynamic];
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
@@ -57,7 +90,7 @@ export default function BlogPage() {
       </p>
 
       <div className="space-y-6">
-        {posts.map((post) => (
+        {allPosts.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}

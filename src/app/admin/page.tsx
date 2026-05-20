@@ -92,15 +92,27 @@ export default function AdminDashboard() {
 
   const saveBlogPost = async () => {
     setBlogSaving(true);
-    if (editing) {
-      await fetch(`${API}/api/v1/blog/admin/${editing.id}?access_code=${code}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
-    } else {
-      await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
+    try {
+      const res = editing
+        ? await fetch(`${API}/api/v1/blog/admin/${editing.id}?access_code=${code}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) })
+        : await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(blogForm) });
+
+      if (res.ok) {
+        setEditing(null);
+        setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
+        alert(editing ? "Blog post updated successfully!" : "Blog post created successfully!");
+        fetchTab("blog");
+      } else {
+        const err = await res.json().catch(() => ({}));
+        console.error("Blog save failed:", err);
+        alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed to save blog post (${res.status})`);
+      }
+    } catch (e: any) {
+      console.error("Blog save error:", e);
+      alert("Network error: " + e.message);
+    } finally {
+      setBlogSaving(false);
     }
-    setBlogSaving(false);
-    setEditing(null);
-    setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
-    fetchTab("blog");
   };
 
   const deleteBlogPost = async (id: string) => {
@@ -111,9 +123,11 @@ export default function AdminDashboard() {
 
   const editPost = (post: any) => {
     setEditing(post);
-    setBlogForm({ title: post.title, content: "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
-    // Fetch full content
-    fetch(`${API}/api/v1/blog/${post.slug}`).then(r => r.ok ? r.json() : null).then(d => { if (d) setBlogForm(f => ({ ...f, content: d.content })); });
+    setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
+    // Fetch full content if not already present
+    if (!post.content) {
+      fetch(`${API}/api/v1/blog/${post.slug}`).then(r => r.ok ? r.json() : null).then(d => { if (d) setBlogForm(f => ({ ...f, content: d.content })); });
+    }
   };
 
   const loadFarmerDetail = async (id: string) => {

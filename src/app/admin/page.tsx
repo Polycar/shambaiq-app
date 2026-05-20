@@ -40,6 +40,7 @@ export default function AdminDashboard() {
   const [editing, setEditing] = useState<any>(null);
   const [blogForm, setBlogForm] = useState({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
   const [blogSaving, setBlogSaving] = useState(false);
+  const [showBlogEditor, setShowBlogEditor] = useState(false);
 
   const f = useCallback(async (url: string) => {
     const sep = url.includes("?") ? "&" : "?";
@@ -99,6 +100,7 @@ export default function AdminDashboard() {
 
       if (res.ok) {
         setEditing(null);
+        setShowBlogEditor(false);
         setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
         alert(editing ? "Blog post updated successfully!" : "Blog post created successfully!");
         fetchTab("blog");
@@ -123,6 +125,7 @@ export default function AdminDashboard() {
 
   const editPost = (post: any) => {
     setEditing(post);
+    setShowBlogEditor(true);
     setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
     // Fetch full content if not already present
     if (!post.content) {
@@ -386,11 +389,11 @@ export default function AdminDashboard() {
       {/* ═══ BLOG EDITOR ═══ */}
       {!loading && tab === "blog" && (
         <div>
-          {!editing && !blogForm.title ? (
+          {!showBlogEditor && !editing ? (
             <>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setBlogForm(f => ({ ...f, title: " " })); setTimeout(() => setBlogForm(f => ({ ...f, title: "" })), 0); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
               </div>
               {posts.length === 0 ? <p className="text-center py-12 text-soil-400">No blog posts yet.</p> : (
                 <div className="space-y-3">
@@ -419,7 +422,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-2xl border border-cream-300 p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-display text-lg font-bold text-forest-700">{editing ? "Edit Post" : "New Post"}</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm text-soil-400 hover:text-forest-700">← Back to list</button>
+                <button onClick={() => { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm text-soil-400 hover:text-forest-700">← Back to list</button>
               </div>
               <div className="space-y-4">
                 <div>
@@ -460,7 +463,7 @@ export default function AdminDashboard() {
                     {editing ? "Update Post" : "Create Post"}
                   </button>
                   {editing && blogForm.status === "draft" && (
-                    <button onClick={() => { setBlogForm({ ...blogForm, status: "published" }); setTimeout(saveBlogPost, 100); }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl">Publish Now</button>
+                    <button onClick={async () => { const updatedForm = { ...blogForm, status: "published" }; setBlogForm(updatedForm); setBlogSaving(true); try { const res = editing ? await fetch(`${API}/api/v1/blog/admin/${editing.id}?access_code=${code}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updatedForm) }) : await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updatedForm) }); if (res.ok) { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); alert("Post published!"); fetchTab("blog"); } else { const err = await res.json().catch(() => ({})); alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed (${res.status})`); } } finally { setBlogSaving(false); } }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl">Publish Now</button>
                   )}
                 </div>
               </div>

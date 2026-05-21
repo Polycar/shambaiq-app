@@ -4,12 +4,12 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Lock, Store, BarChart3, AlertTriangle, FileText,
   Check, CheckCircle, X, Loader2, RefreshCw, Users, TrendingUp, MapPin, Wheat,
-  PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight,
+  PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight, Upload,
 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
-type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "crops";
+type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "crops" | "agrovets";
 
 export default function AdminDashboard() {
   const [code, setCode] = useState("");
@@ -35,6 +35,13 @@ export default function AdminDashboard() {
   const [cropList, setCropList] = useState<any[]>([]);
   const [cropSaving, setCropSaving] = useState(false);
   const [cropSavedMessage, setCropSavedMessage] = useState(false);
+
+  // Agrovet CSV state
+  const [agrovets, setAgrovets] = useState<any[]>([]);
+  const [agrovetTotal, setAgrovetTotal] = useState(0);
+  const [agrovetUploading, setAgrovetUploading] = useState(false);
+  const [agrovetMsg, setAgrovetMsg] = useState<{type: "success"|"error", text: string} | null>(null);
+  const [agrovetSearch, setAgrovetSearch] = useState("");
 
   // Blog editor
   const [editing, setEditing] = useState<any>(null);
@@ -62,6 +69,14 @@ export default function AdminDashboard() {
       if (res.ok) {
         const data = await res.json();
         setCropList(data.crops || []);
+      }
+    }
+    else if (t === "agrovets") {
+      const res = await fetch(`${API}/api/v1/admin/agrovets/csv?access_code=${code}`);
+      if (res.ok) {
+        const data = await res.json();
+        setAgrovets(data.agrovets || []);
+        setAgrovetTotal(data.count || 0);
       }
     }
     setLoading(false);
@@ -161,6 +176,7 @@ export default function AdminDashboard() {
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
     { key: "farmers", label: "Farmers", icon: Users, badge: summary?.total_farmers },
+    { key: "agrovets", label: "Agrovets CSV", icon: Upload },
     { key: "audit", label: "Audit", icon: FileText },
   ];
 
@@ -540,6 +556,112 @@ export default function AdminDashboard() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ═══ AGROVETS CSV ═══ */}
+      {!loading && tab === "agrovets" && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-2xl border border-cream-300 p-6">
+            <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
+              <div>
+                <h2 className="font-display text-lg font-bold text-forest-700">Agrovet Directory</h2>
+                <p className="text-xs text-soil-400">Upload a CSV to add or replace agrovets in the directory. CSV must have at least <code className="bg-cream-100 px-1 rounded">name</code> and <code className="bg-cream-100 px-1 rounded">county</code> columns.</p>
+              </div>
+              <div className="text-right">
+                <div className="font-display text-2xl font-bold text-forest-700">{agrovetTotal}</div>
+                <div className="text-xs text-soil-400">Total Agrovets</div>
+              </div>
+            </div>
+
+            {agrovetMsg && (
+              <div className={`mb-6 p-4 text-sm font-semibold rounded-xl flex items-center gap-2 ${agrovetMsg.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-700"}`}>
+                {agrovetMsg.type === "success" ? <CheckCircle size={16} /> : <AlertTriangle size={16} />}
+                {agrovetMsg.text}
+              </div>
+            )}
+
+            <div className="grid sm:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="text-sm font-semibold text-forest-700 mb-2 block">Add to existing directory</label>
+                <label className={`flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-cream-300 rounded-xl cursor-pointer hover:border-gold-400 transition-colors ${agrovetUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                  <Upload size={20} className="text-soil-400" />
+                  <span className="text-sm text-soil-400">{agrovetUploading ? "Uploading..." : "Drop CSV or click to browse"}</span>
+                  <input type="file" accept=".csv" className="hidden" onChange={async (e) => {
+                    const file = e.target.files?.[0]; if (!file) return;
+                    setAgrovetUploading(true); setAgrovetMsg(null);
+                    const form = new FormData(); form.append("file", file);
+                    try {
+                      const res = await fetch(`${API}/api/v1/admin/agrovets/csv?access_code=${code}`, { method: "POST", body: form });
+                      const data = await res.json();
+                      if (res.ok) { setAgrovetMsg({type: "success", text: data.message}); fetchTab("agrovets"); }
+                      else { setAgrovetMsg({type: "error", text: data.detail || "Upload failed"}); }
+                    } catch { setAgrovetMsg({type: "error", text: "Network error"}); }
+                    setAgrovetUploading(false); e.target.value = "";
+                  }} />
+                </label>
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-forest-700 mb-2 block">Replace entire directory</label>
+                <label className={`flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-red-200 rounded-xl cursor-pointer hover:border-red-400 transition-colors ${agrovetUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                  <Upload size={20} className="text-red-400" />
+                  <span className="text-sm text-red-400">Replace all (destructive)</span>
+                  <input type="file" accept=".csv" className="hidden" onChange={async (e) => {
+                    const file = e.target.files?.[0]; if (!file) return;
+                    if (!confirm(`This will REPLACE all ${agrovetTotal} existing agrovets with the data in this file. Continue?`)) { e.target.value = ""; return; }
+                    setAgrovetUploading(true); setAgrovetMsg(null);
+                    const form = new FormData(); form.append("file", file);
+                    try {
+                      const res = await fetch(`${API}/api/v1/admin/agrovets/csv/replace?access_code=${code}`, { method: "POST", body: form });
+                      const data = await res.json();
+                      if (res.ok) { setAgrovetMsg({type: "success", text: data.message}); fetchTab("agrovets"); }
+                      else { setAgrovetMsg({type: "error", text: data.detail || "Upload failed"}); }
+                    } catch { setAgrovetMsg({type: "error", text: "Network error"}); }
+                    setAgrovetUploading(false); e.target.value = "";
+                  }} />
+                </label>
+              </div>
+            </div>
+
+            {/* Search and Table */}
+            <div className="mb-4">
+              <div className="relative">
+                <Search size={16} className="absolute left-4 top-3.5 text-soil-400" />
+                <input value={agrovetSearch} onChange={e => setAgrovetSearch(e.target.value)} placeholder="Search agrovets by name or county..." className="w-full pl-10 pr-4 py-3 border border-cream-300 rounded-xl text-forest-700 focus:outline-none focus:border-gold-400" />
+              </div>
+            </div>
+
+            <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
+              <table className="w-full text-sm">
+                <thead className="sticky top-0">
+                  <tr className="bg-cream-100 text-left border-b border-cream-200">
+                    <th className="px-4 py-3 font-semibold text-forest-700">Name</th>
+                    <th className="px-4 py-3 font-semibold text-forest-700">County</th>
+                    <th className="px-4 py-3 font-semibold text-forest-700">Town</th>
+                    <th className="px-4 py-3 font-semibold text-forest-700">Phone</th>
+                    <th className="px-4 py-3 font-semibold text-forest-700">Rating</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-cream-100">
+                  {agrovets
+                    .filter(a => !agrovetSearch || a.name?.toLowerCase().includes(agrovetSearch.toLowerCase()) || a.county?.toLowerCase().includes(agrovetSearch.toLowerCase()))
+                    .slice(0, 100)
+                    .map((a, i) => (
+                    <tr key={i} className="hover:bg-cream-50/50">
+                      <td className="px-4 py-3 font-medium text-forest-700">{a.name}</td>
+                      <td className="px-4 py-3 text-soil-400">{a.county}</td>
+                      <td className="px-4 py-3 text-soil-400">{a.town || "—"}</td>
+                      <td className="px-4 py-3 text-soil-400">{a.phone || "—"}</td>
+                      <td className="px-4 py-3 text-soil-400">{a.rating || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {agrovets.length > 100 && !agrovetSearch && (
+                <p className="text-xs text-soil-300 text-center py-3">Showing first 100 of {agrovets.length} agrovets. Use search to filter.</p>
+              )}
+            </div>
+          </div>
         </div>
       )}
 

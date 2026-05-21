@@ -11,6 +11,10 @@ const STATIC_SLUGS = [
   "complete-maize-farming-guide-kenya",
   "why-soil-is-acidic-kenya",
   "dap-vs-can-vs-npk-fertilizer-guide",
+  "kakamega-soil-mavuno-not-dap",
+  "farming-semi-arid-kenya-machakos-makueni-kitui",
+  "nakuru-vs-uasin-gishu-best-county-wheat",
+  "how-much-fertilizer-per-acre-calculator",
 ];
 
 interface PageProps {

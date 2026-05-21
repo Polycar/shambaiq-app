@@ -36,28 +36,18 @@ export default function DealerStatusPage() {
     setSearched(true);
 
     try {
-      // Check all statuses
-      const results: Application[] = [];
-      for (const status of ["pending", "approved", "declined"]) {
-        try {
-          const res = await fetch(
-            `${API_BASE}/api/v1/dealers/applications?status=${status}&access_code=status_check&phone=${phone.trim()}`
-          );
-          if (res.ok) {
-            const data = await res.json();
-            const filtered = (data.applications || []).filter(
-              (a: Application) => a.phone_number === phone.trim()
-            );
-            results.push(...filtered);
-          }
-        } catch {
-          // Continue checking other statuses
-        }
+      const encodedPhone = encodeURIComponent(phone.trim());
+      const res = await fetch(`${API_BASE}/api/v1/dealers/status/${encodedPhone}`);
+      if (res.ok) {
+        const data = await res.json();
+        setApplications(data.applications || []);
+      } else {
+        setApplications([]);
       }
-      setApplications(results);
     } catch {
       setError("Could not connect to the server. Please try again.");
     }
+    
     setLoading(false);
   };
 

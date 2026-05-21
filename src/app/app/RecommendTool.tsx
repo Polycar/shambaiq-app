@@ -584,28 +584,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
           </div>
 
-          {/* Yield Target */}
-          {cropUnit && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                🎯 {t("form_yield_goal", lang)} ({cropUnit.unit})
-              </label>
-              <input
-                type="range"
-                min={cropUnit.min}
-                max={cropUnit.max}
-                step={cropUnit.max - cropUnit.min <= 50 ? 1 : 10}
-                value={yieldVal ?? cropUnit.def}
-                onChange={(e) => setYieldVal(parseFloat(e.target.value))}
-                className="w-full accent-green-600"
-              />
-              <div className="flex justify-between text-xs text-gray-500 mt-0.5">
-                <span>{cropUnit.min}</span>
-                <span className="font-bold text-green-700">{yieldVal ?? cropUnit.def} {cropUnit.unit}</span>
-                <span>{cropUnit.max}</span>
-              </div>
-            </div>
-          )}
+
 
           {/* Lab Override */}
           <div className="border-t pt-3">

@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
-import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, Dealer } from "@/lib/api";
+import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, Dealer, matchCrops, CropMatch } from "@/lib/api";
 
 // ─── Types for serialized data passed from server ───────────────
 interface CountyData {
@@ -99,6 +99,9 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [agrovets, setAgrovets] = useState<Dealer[]>([]);
   const [agrLoading, setAgrLoading] = useState(false);
   const [agrShown, setAgrShown] = useState(false);
+
+  // Crop Matches state
+  const [cropMatches, setCropMatches] = useState<CropMatch[] | null>(null);
 
   // GPS capture
   const captureGPS = useCallback(() => {
@@ -226,6 +229,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
     setResult(null);
     setWeather(null);
     setGeminiAdvice(null);
+    setCropMatches(null);
 
     const lat = resolvedCoords?.lat;
     const lon = resolvedCoords?.lon;
@@ -257,6 +261,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         yield_target: yieldTarget,
       });
       setResult(res);
+
+      if (res.county_data) {
+        matchCrops(res.county_data, acres, lang === "en" ? "English" : "Kiswahili")
+          .then(setCropMatches)
+          .catch((e) => console.error("Failed to match crops:", e));
+      }
 
       // Fire weather in background — prefer coordinate-based weather
       if (lat && lon) {
@@ -1104,6 +1114,33 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     </p>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Alternative Crop Recommendations */}
+            {cropMatches && cropMatches.length > 0 && (
+              <div className="mt-8 mb-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                  🌱 {lang === "en" ? "Alternative Crops for Your Soil" : "Mazao Mbadala kwa Udongo Wako"}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {cropMatches.map((cm, idx) => (
+                    <div key={idx} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm relative overflow-hidden">
+                      <div className="absolute top-0 right-0 h-full w-2 bg-gradient-to-b from-green-400 to-emerald-600"></div>
+                      <h4 className="font-bold text-gray-800 text-lg">{cm.crop}</h4>
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="text-sm text-gray-500">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
+                        <span className="font-bold text-emerald-600">{Math.round(cm.match_score * 100)}%</span>
+                      </div>
+                      <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                        <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${Math.round(cm.match_score * 100)}%` }}></div>
+                      </div>
+                      <p className="mt-3 text-xs text-gray-600 font-medium bg-gray-50 p-2 rounded border border-gray-100 line-clamp-2" title={cm.label}>
+                        {cm.label}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 

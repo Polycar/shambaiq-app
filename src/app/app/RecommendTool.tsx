@@ -1109,10 +1109,10 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                       <h4 className="font-bold text-gray-800 text-lg">{cm.crop}</h4>
                       <div className="mt-2 flex items-center justify-between">
                         <span className="text-sm text-gray-500">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
-                        <span className="font-bold text-emerald-600">{Math.round(cm.match_score * 100)}%</span>
+                        <span className="font-bold text-emerald-600">{Math.round(cm.match_score)}%</span>
                       </div>
                       <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1">
-                        <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${Math.round(cm.match_score * 100)}%` }}></div>
+                        <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${Math.round(cm.match_score)}%` }}></div>
                       </div>
                       <p className="mt-3 text-xs text-gray-600 font-medium bg-gray-50 p-2 rounded border border-gray-100 line-clamp-2" title={cm.label}>
                         {cm.label}

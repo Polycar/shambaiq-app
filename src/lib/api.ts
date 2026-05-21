@@ -95,6 +95,7 @@ export interface Dealer {
   phone?: string;
   stocks?: string;
   distance?: number;
+  rating?: number;
   source?: string;
 }
 

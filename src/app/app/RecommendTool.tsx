@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
-import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData } from "@/lib/api";
+import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, Dealer } from "@/lib/api";
 
 // ─── Types for serialized data passed from server ───────────────
 interface CountyData {
@@ -94,6 +94,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
+
+  // Agrovet state
+  const [agrovets, setAgrovets] = useState<Dealer[]>([]);
+  const [agrLoading, setAgrLoading] = useState(false);
+  const [agrShown, setAgrShown] = useState(false);
 
   // GPS capture
   const captureGPS = useCallback(() => {
@@ -1009,16 +1014,98 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               >
                 {t("result_share", lang)}
               </a>
-              <a
-                href={`https://www.google.com/maps/search/Agrovet+Fertilizer/@${resolvedCoords?.lat || 0},${resolvedCoords?.lon || 0},14z`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm"
-                style={{ background: "#2563eb" }}
+              <button
+                onClick={async () => {
+                  if (agrShown) { setAgrShown(false); return; }
+                  const lat = resolvedCoords?.lat;
+                  const lon = resolvedCoords?.lon;
+                  if (!lat || !lon) return;
+                  setAgrLoading(true);
+                  try {
+                    const res = await getDealersNearby(lat, lon);
+                    setAgrovets(res);
+                    setAgrShown(true);
+                  } catch { setAgrovets([]); setAgrShown(true); }
+                  finally { setAgrLoading(false); }
+                }}
+                disabled={agrLoading}
+                className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm cursor-pointer transition-all disabled:opacity-60"
+                style={{ background: agrShown ? "#64748b" : "#2563eb" }}
               >
-                {t("dealers_find", lang)}
-              </a>
+                {agrLoading
+                  ? (lang === "en" ? "Searching Agrovets..." : "Inatafuta Agroveti...")
+                  : agrShown
+                    ? (lang === "en" ? "Hide Agrovets" : "Ficha Agroveti")
+                    : t("dealers_find", lang)}
+              </button>
             </div>
+
+            {/* Agrovet Results */}
+            {agrShown && (
+              <div className="rounded-2xl border bg-white p-5">
+                <h3 className="font-bold text-base mb-1" style={{ color: "#1a3a1a" }}>
+                  🏪 {lang === "en" ? "Agrovets Near You" : "Agroveti Karibu Nawe"}
+                </h3>
+                <p className="text-xs text-gray-500 mb-3">
+                  {lang === "en"
+                    ? `${agrovets.length} verified agrovets found within 50 km`
+                    : `Agroveti ${agrovets.length} zilizopatikana ndani ya km 50`}
+                </p>
+                {agrovets.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {agrovets.slice(0, 10).map((d, i) => (
+                      <div
+                        key={i}
+                        className="rounded-xl border p-3 flex items-start justify-between gap-3 hover:border-green-300 transition-colors"
+                        style={{ background: i === 0 ? "#f0fdf4" : "#f8fafc" }}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="font-bold text-sm text-gray-800 truncate">{d.name}</p>
+                          <p className="text-xs text-gray-500 mt-0.5 truncate">
+                            📍 {d.town || d.county}
+                          </p>
+                          {d.phone && (
+                            <a
+                              href={`tel:${d.phone}`}
+                              className="text-xs text-blue-600 font-semibold mt-1 inline-block hover:underline"
+                            >
+                              📞 {d.phone}
+                            </a>
+                          )}
+                        </div>
+                        <div className="text-right shrink-0">
+                          {d.distance !== undefined && (
+                            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                              {d.distance} km
+                            </span>
+                          )}
+                          {d.rating && (
+                            <p className="text-xs text-amber-600 font-semibold mt-1">
+                              ⭐ {d.rating}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {agrovets.length > 10 && (
+                      <p className="text-xs text-gray-400 text-center pt-1">
+                        {lang === "en"
+                          ? `+${agrovets.length - 10} more agrovets nearby`
+                          : `+${agrovets.length - 10} agroveti zaidi karibu`}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-sm text-gray-500">
+                      {lang === "en"
+                        ? "No agrovets found within 50 km. Try a wider search on the Dealers page."
+                        : "Hakuna agroveti zilizopatikana ndani ya km 50."}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Footer attribution */}
             <p className="text-center text-xs text-gray-400 pb-6">

@@ -1,9 +1,9 @@
 /**
  * ShambaIQ Backend API Client
- * Wraps all endpoints from shambaiq-backend-production.up.railway.app
+ * Wraps all endpoints from api.shambaiq.com
  */
 
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 // ─── Types ───────────────────────────────────────────────────────
 

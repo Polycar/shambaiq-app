@@ -131,7 +131,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
   // Load live prices from Admin
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app"}/api/v1/admin/inventory`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com"}/api/v1/admin/inventory`)
       .then(r => r.json())
       .then(data => setLivePrices(data))
       .catch(() => console.warn("Using baseline prices"));

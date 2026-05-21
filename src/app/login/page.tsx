@@ -10,7 +10,7 @@ import {
 /* ── Use the SAME base URL as api.ts ──────────────────── */
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://shambaiq-backend-production.up.railway.app";
+  "https://api.shambaiq.com";
 
 export default function FarmerLogin() {
   const [mode, setMode] = useState<"login" | "register">("login");

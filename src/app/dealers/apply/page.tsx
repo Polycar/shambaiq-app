@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Store, MapPin, Phone, Package, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 const COUNTIES = [
   "Baringo","Bomet","Bungoma","Busia","Elgeyo Marakwet","Embu","Garissa",

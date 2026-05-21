@@ -401,7 +401,7 @@ export function getNutrientStatus(
   }
 }
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://shambaiq-backend-production.up.railway.app';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.shambaiq.com';
 
 // ─── Ward Types & Loader ──────────────────────────
 export interface Ward {

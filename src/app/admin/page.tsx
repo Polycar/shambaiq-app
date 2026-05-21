@@ -7,7 +7,7 @@ import {
   PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight,
 } from "lucide-react";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "crops";
 

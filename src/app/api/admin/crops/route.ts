@@ -4,7 +4,7 @@ import path from 'path';
 
 export const runtime = 'nodejs';
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 const dataDir = path.join(process.cwd(), 'src', 'data');
 const csvPath = path.join(dataDir, 'crop_economics.csv');
 

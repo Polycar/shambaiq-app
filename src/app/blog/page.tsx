@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "Data-driven farming guides for Kenya. County soil rankings, crop guides, fertilizer comparisons, and seasonal advice based on iSDAsoil satellite data.",
 };
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://shambaiq-backend-production.up.railway.app";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 const staticPosts = [
   {

@@ -265,8 +265,8 @@ export default function PartnersPage() {
                 <h4 className="font-display font-bold text-xl mb-2">Prefer direct B2B discussion?</h4>
                 <p className="text-cream-400 text-sm mb-6">Skip the form and email our licensing team directly with your specifications.</p>
                 <div className="space-y-3 mb-6">
-                  <a href="mailto:partners@shambaiq.com" className="flex items-center gap-3 text-sm text-gold-400 hover:text-gold-300 font-semibold transition-colors">
-                    <Mail size={16} /> partners@shambaiq.com
+                  <a href="mailto:info@shambaiq.com" className="flex items-center gap-3 text-sm text-gold-400 hover:text-gold-300 font-semibold transition-colors">
+                    <Mail size={16} /> info@shambaiq.com
                   </a>
                   <a href="https://wa.me/254748042633" className="flex items-center gap-3 text-sm text-green-400 hover:text-green-300 font-semibold transition-colors">
                     <MessageCircle size={16} /> +254 748 042 633

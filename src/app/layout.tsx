@@ -3,6 +3,7 @@ import { Playfair_Display, DM_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Footer />
         <MobileNav />
       </body>
+      <GoogleAnalytics gaId="G-7X2WCN7KJ7" />
     </html>
   );
 }

@@ -144,13 +144,15 @@ export async function getRecommendation(req: RecommendRequest): Promise<Recommen
 }
 
 export async function matchCrops(
-  soilData: Record<string, number>,
+  county: string,
   farmAcres: number,
-  lang: string
-): Promise<CropMatch[]> {
-  return api<CropMatch[]>("/api/v1/match-crops", {
+  lang: string,
+  lat?: number,
+  lon?: number
+): Promise<{ county: string; matches: CropMatch[] }> {
+  return api<{ county: string; matches: CropMatch[] }>("/api/v1/match-crops", {
     method: "POST",
-    body: JSON.stringify({ soil_data: soilData, farm_acres: farmAcres, lang }),
+    body: JSON.stringify({ county, farm_size_acres: farmAcres, lang, lat, lon }),
   });
 }
 

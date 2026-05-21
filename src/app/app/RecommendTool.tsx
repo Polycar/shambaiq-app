@@ -263,8 +263,8 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
       setResult(res);
 
       if (res.county_data) {
-        matchCrops(res.county_data, acres, lang === "en" ? "English" : "Kiswahili")
-          .then(setCropMatches)
+        matchCrops(resolvedCounty, acres, lang === "en" ? "English" : "Kiswahili", lat, lon)
+          .then((data) => setCropMatches(data.matches))
           .catch((e) => console.error("Failed to match crops:", e));
       }
 

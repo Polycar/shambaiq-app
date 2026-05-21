@@ -63,6 +63,7 @@ export default function Footer() {
               <li><Link href="/blog" className="hover:text-gold-400 transition-colors">ShambaIQ Blog</Link></li>
               <li><Link href="/agronomy" className="hover:text-gold-400 transition-colors">Ask AI Agronomist</Link></li>
               <li><Link href="/contact" className="hover:text-gold-400 transition-colors">Contact Us</Link></li>
+              <li><Link href="/partners" className="hover:text-gold-400 transition-colors">Partnership &amp; Licensing</Link></li>
             </ul>
           </div>
         </div>

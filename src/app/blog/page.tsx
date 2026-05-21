@@ -44,6 +44,38 @@ const staticPosts = [
     readTime: "9 min read",
     category: "Fertilizer",
   },
+  {
+    slug: "kakamega-soil-mavuno-not-dap",
+    title: "Kakamega Soil: Why Western Kenya Needs Mavuno, Not DAP",
+    excerpt: "Kakamega's acidic soil locks DAP phosphorus. Data shows Mavuno outperforms DAP in all 4 Western Kenya counties. Here's the science and the savings.",
+    date: "May 2026",
+    readTime: "7 min read",
+    category: "Soil Science",
+  },
+  {
+    slug: "farming-semi-arid-kenya-machakos-makueni-kitui",
+    title: "Farming in Semi-Arid Kenya: Machakos, Makueni, Kitui Guide",
+    excerpt: "These counties are dismissed as too dry — but their soil is surprisingly nutrient-rich. The challenge isn't fertility, it's water. Here's how to farm them.",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "County Guide",
+  },
+  {
+    slug: "nakuru-vs-uasin-gishu-best-county-wheat",
+    title: "Nakuru vs Uasin Gishu: Best County for Wheat?",
+    excerpt: "Kenya's two biggest wheat counties compared on soil chemistry, certified seed varieties, and farming economics. The satellite data picks a winner.",
+    date: "May 2026",
+    readTime: "7 min read",
+    category: "County Guide",
+  },
+  {
+    slug: "how-much-fertilizer-per-acre-calculator",
+    title: "How Much Fertilizer Per Acre? Calculator for 25 Crops",
+    excerpt: "Exact bags per acre for planting and top dressing across all 25 crops. With costs at subsidized and commercial prices. The only table you need.",
+    date: "May 2026",
+    readTime: "9 min read",
+    category: "Fertilizer",
+  },
 ];
 
 async function getPublishedPosts() {

@@ -21,6 +21,7 @@ export default function DealerApplyPage() {
     county: "",
     town: "",
     phone_number: "",
+    email: "",
     products_stocked: "",
     lat: null as number | null,
     lon: null as number | null,
@@ -79,7 +80,7 @@ export default function DealerApplyPage() {
         <h1 className="font-display text-2xl font-bold text-forest-700 mb-3">Application submitted!</h1>
         <p className="text-soil-400 mb-2">{message}</p>
         <p className="text-sm text-soil-300 mb-8">
-          Our team will review your application and notify you by SMS once approved.
+          Our team will review your application and notify you by email once approved.
           This usually takes 1-3 business days.
         </p>
         <a
@@ -108,7 +109,7 @@ export default function DealerApplyPage() {
       <div className="bg-gold-50 border border-gold-200 rounded-xl p-4 mb-8 flex gap-3 items-start">
         <AlertCircle size={20} className="text-gold-600 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-gold-700">
-          All submissions are reviewed by ShambaIQ before going live. You'll be notified by SMS when your listing is approved.
+          All submissions are reviewed by ShambaIQ before going live. You'll be notified by email when your listing is approved.
         </p>
       </div>
 
@@ -158,18 +159,32 @@ export default function DealerApplyPage() {
           </div>
         </div>
 
-        {/* Phone */}
-        <div>
-          <label className="flex items-center gap-2 text-sm font-semibold text-forest-700 mb-2">
-            <Phone size={16} /> Phone Number *
-          </label>
-          <input
-            type="tel"
-            placeholder="+254 7XX XXX XXX"
-            value={form.phone_number}
-            onChange={(e) => setForm({ ...form, phone_number: e.target.value })}
-            className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-colors"
-          />
+        {/* Phone & Email */}
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className="flex items-center gap-2 text-sm font-semibold text-forest-700 mb-2">
+              <Phone size={16} /> Phone Number *
+            </label>
+            <input
+              type="tel"
+              placeholder="+254 7XX XXX XXX"
+              value={form.phone_number}
+              onChange={(e) => setForm({ ...form, phone_number: e.target.value })}
+              className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-semibold text-forest-700 mb-2 block">
+              Email Address (Optional)
+            </label>
+            <input
+              type="email"
+              placeholder="e.g. hello@agrovet.com"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-colors"
+            />
+          </div>
         </div>
 
         {/* Products */}

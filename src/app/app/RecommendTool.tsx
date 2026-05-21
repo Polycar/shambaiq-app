@@ -1010,7 +1010,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 {t("result_share", lang)}
               </a>
               <a
-                href={`https://www.google.com/maps/search/Agrovet+Fertilizer/@${selectedWard?.latitude || 0},${selectedWard?.longitude || 0},14z`}
+                href={`https://www.google.com/maps/search/Agrovet+Fertilizer/@${resolvedCoords?.lat || 0},${resolvedCoords?.lon || 0},14z`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm"

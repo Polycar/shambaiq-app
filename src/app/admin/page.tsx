@@ -5,6 +5,7 @@ import {
   Lock, Store, BarChart3, AlertTriangle, FileText,
   Check, CheckCircle, X, Loader2, RefreshCw, Users, TrendingUp, MapPin, Wheat,
   PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight, Upload,
+  Sparkles, Globe, Link2, Image,
 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
@@ -48,6 +49,7 @@ export default function AdminDashboard() {
   const [blogForm, setBlogForm] = useState({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
   const [blogSaving, setBlogSaving] = useState(false);
   const [showBlogEditor, setShowBlogEditor] = useState(false);
+  const [focusKeyword, setFocusKeyword] = useState("");
 
   const f = useCallback(async (url: string) => {
     const sep = url.includes("?") ? "&" : "?";
@@ -441,56 +443,489 @@ export default function AdminDashboard() {
               )}
             </>
           ) : (
-            /* Blog editor form */
-            <div className="bg-white rounded-2xl border border-cream-300 p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="font-display text-lg font-bold text-forest-700">{editing ? "Edit Post" : "New Post"}</h2>
-                <button onClick={() => { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm text-soil-400 hover:text-forest-700">← Back to list</button>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-semibold text-forest-700 mb-1 block">Title</label>
-                  <input value={blogForm.title} onChange={e => setBlogForm({ ...blogForm, title: e.target.value })} placeholder="Post title" className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 focus:outline-none focus:border-gold-400" />
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="text-sm font-semibold text-forest-700 mb-1 block">Category</label>
-                    <select value={blogForm.category} onChange={e => setBlogForm({ ...blogForm, category: e.target.value })} className="w-full px-4 py-3 border border-cream-300 rounded-xl bg-white">
-                      {["Guide", "Data Report", "Soil Science", "Fertilizer", "Seasonal", "News"].map(c => <option key={c}>{c}</option>)}
-                    </select>
+            /* Blog editor form with SEO Assistant */
+            (() => {
+              const focusKeywordLower = focusKeyword.trim().toLowerCase();
+              
+              // 1. Title Metrics
+              const titleLen = blogForm.title.length;
+              const isTitleLenGood = titleLen >= 30 && titleLen <= 60;
+              const hasKeywordInTitle = focusKeywordLower ? blogForm.title.toLowerCase().includes(focusKeywordLower) : false;
+              
+              // 2. Content Metrics
+              const rawContent = blogForm.content || "";
+              const words = rawContent.trim() ? rawContent.trim().split(/\s+/) : [];
+              const wordCount = words.length;
+              const isWordCountGood = wordCount >= 300;
+              
+              const h2Matches = rawContent.match(/^##\s+(.+)$/gm) || [];
+              const h2Count = h2Matches.length;
+              const isH2CountGood = h2Count >= 2;
+              
+              const hasKeywordInH2 = focusKeywordLower 
+                ? h2Matches.some(h => h.toLowerCase().includes(focusKeywordLower)) 
+                : false;
+                
+              // Keyword density
+              const keywordMatches = focusKeywordLower 
+                ? (rawContent.toLowerCase().match(new RegExp(focusKeywordLower.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g')) || [])
+                : [];
+              const keywordCount = keywordMatches.length;
+              const keywordDensity = wordCount > 0 ? ((keywordCount / wordCount) * 100).toFixed(1) : "0.0";
+              
+              // 3. Excerpt Metrics
+              const excerptLen = blogForm.excerpt.length;
+              const isExcerptLenGood = excerptLen >= 80 && excerptLen <= 160;
+              const hasKeywordInExcerpt = focusKeywordLower ? blogForm.excerpt.toLowerCase().includes(focusKeywordLower) : false;
+              
+              // 4. Links & Media Metrics
+              const linkMatches = [...rawContent.matchAll(/\[(.*?)\]\((.*?)\)/g)];
+              const internalLinks = linkMatches.filter(m => {
+                const url = m[2];
+                return url && (url.includes("/soil/") || url.includes("/crops/") || url.includes("/app"));
+              });
+              const hasInternalLinks = internalLinks.length > 0;
+              
+              const imageMatches = [...rawContent.matchAll(/!\[(.*?)\]\((.*?)\)/g)];
+              const hasImages = imageMatches.length > 0;
+              const allImagesHaveAlts = hasImages && imageMatches.every(m => m[1] && m[1].trim().length >= 3);
+              const imageAltIssues = hasImages && !allImagesHaveAlts;
+              
+              // 5. Score Calculation
+              let score = 0;
+              if (isTitleLenGood) score += 15;
+              if (hasKeywordInTitle) score += 15;
+              if (isWordCountGood) score += 15;
+              if (isH2CountGood) score += 10;
+              if (hasKeywordInH2) score += 10;
+              if (isExcerptLenGood) score += 15;
+              if (hasKeywordInExcerpt) score += 10;
+              if (hasInternalLinks) score += 10;
+              
+              if (hasImages) {
+                if (allImagesHaveAlts) score += 10;
+              } else {
+                score += 5; // standard partial credit for having no broken images
+              }
+              
+              score = Math.min(score, 100);
+              
+              // Color variables
+              const scoreColor = score >= 80 ? "text-emerald-700 bg-emerald-50 border-emerald-200" : score >= 50 ? "text-amber-700 bg-amber-50 border-amber-200" : "text-rose-700 bg-rose-50 border-rose-200";
+              const scoreBarColor = score >= 80 ? "bg-emerald-600" : score >= 50 ? "bg-amber-500" : "bg-rose-500";
+              
+              // Slug generation
+              const slugPreview = blogForm.title
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, "") || "untitled-post";
+
+              return (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start text-left">
+                  {/* Left: Blog Editor Form */}
+                  <div className="lg:col-span-2 bg-white rounded-2xl border border-cream-300 p-6 shadow-sm">
+                    <div className="flex justify-between items-center mb-6 pb-4 border-b border-cream-100">
+                      <div>
+                        <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
+                        <p className="text-xs text-soil-400">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
+                      </div>
+                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
+                    </div>
+                    
+                    <div className="space-y-5">
+                      <div>
+                        <label className="text-sm font-semibold text-forest-700 mb-1.5 block">Title</label>
+                        <input 
+                          value={blogForm.title} 
+                          onChange={e => setBlogForm({ ...blogForm, title: e.target.value })} 
+                          placeholder="e.g., How to Maximize Maize Yields in Nakuru County" 
+                          className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 font-semibold placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400" 
+                        />
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="text-sm font-semibold text-forest-700 mb-1.5 block">Category</label>
+                          <select 
+                            value={blogForm.category} 
+                            onChange={e => setBlogForm({ ...blogForm, category: e.target.value })} 
+                            className="w-full px-4 py-3 border border-cream-300 rounded-xl bg-white text-forest-700 focus:outline-none focus:border-gold-400"
+                          >
+                            {["Guide", "Data Report", "Soil Science", "Fertilizer", "Seasonal", "News"].map(c => <option key={c}>{c}</option>)}
+                          </select>
+                        </div>
+                        
+                        <div>
+                          <label className="text-sm font-semibold text-forest-700 mb-1.5 block">Read Time</label>
+                          <input 
+                            value={blogForm.read_time} 
+                            onChange={e => setBlogForm({ ...blogForm, read_time: e.target.value })} 
+                            placeholder="e.g., 5 min read" 
+                            className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 focus:outline-none focus:border-gold-400" 
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="text-sm font-semibold text-forest-700 mb-1.5 block">Status</label>
+                          <select 
+                            value={blogForm.status} 
+                            onChange={e => setBlogForm({ ...blogForm, status: e.target.value })} 
+                            className="w-full px-4 py-3 border border-cream-300 rounded-xl bg-white text-forest-700 focus:outline-none focus:border-gold-400"
+                          >
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <label className="text-sm font-semibold text-forest-700 block">Excerpt / Meta Description</label>
+                          <span className={`text-xs font-semibold ${isExcerptLenGood ? "text-emerald-600" : "text-soil-400"}`}>
+                            {excerptLen} / 160 characters (ideal: 80-160)
+                          </span>
+                        </div>
+                        <textarea 
+                          value={blogForm.excerpt} 
+                          onChange={e => setBlogForm({ ...blogForm, excerpt: e.target.value })} 
+                          placeholder="Provide a compelling summary of the article (used in meta tags and listing pages)..." 
+                          rows={2}
+                          className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 resize-none text-sm" 
+                        />
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <label className="text-sm font-semibold text-forest-700 block font-sans">Content (Markdown Supported)</label>
+                          <span className={`text-xs font-semibold ${isWordCountGood ? "text-emerald-600" : "text-soil-400"}`}>
+                            {wordCount} words
+                          </span>
+                        </div>
+                        <textarea 
+                          value={blogForm.content} 
+                          onChange={e => setBlogForm({ ...blogForm, content: e.target.value })} 
+                          placeholder="Write your blog post here...&#10;&#10;## Use headings&#10;&#10;**Bold text** and [links](/soil/nakuru) work.&#10;&#10;Link to county pages: [Nakuru soil report](/soil/nakuru)&#10;Link to crop pages: [Maize guide](/crops/maize)&#10;Link to the tool: [Get advice](/app)" 
+                          rows={18} 
+                          className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 font-mono text-sm focus:outline-none focus:border-gold-400 resize-y" 
+                        />
+                        <div className="bg-cream-50 rounded-lg p-3 border border-cream-200 mt-2 text-xs text-soil-400 leading-relaxed">
+                          <span className="font-semibold text-forest-700 block mb-1">Markdown formatting tips:</span>
+                          Use <code className="bg-white px-1 border rounded">## Heading Title</code> to create H2 sections. Create links with <code className="bg-white px-1 border rounded">[Link Text](/url)</code>. Add optimized images using <code className="bg-white px-1 border rounded">![Alt Text](image_url)</code>.
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-3 pt-2">
+                        <button onClick={saveBlogPost} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors shadow-sm">
+                          {blogSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+                          {editing ? "Update Post" : "Create Post"}
+                        </button>
+                        {editing && blogForm.status === "draft" && (
+                          <button onClick={async () => { const updatedForm = { ...blogForm, status: "published" }; setBlogForm(updatedForm); setBlogSaving(true); try { const res = editing ? await fetch(`${API}/api/v1/blog/admin/${editing.id}?access_code=${code}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updatedForm) }) : await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updatedForm) }); if (res.ok) { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); alert("Post published!"); fetchTab("blog"); } else { const err = await res.json().catch(() => ({})); alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed (${res.status})`); } } finally { setBlogSaving(false); } }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl shadow-sm transition-colors">Publish Now</button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-sm font-semibold text-forest-700 mb-1 block">Read time</label>
-                    <input value={blogForm.read_time} onChange={e => setBlogForm({ ...blogForm, read_time: e.target.value })} placeholder="5 min read" className="w-full px-4 py-3 border border-cream-300 rounded-xl" />
+
+                  {/* Right: SEO Assistant side panel */}
+                  <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-6">
+                    {/* Focus Keyword Input Card */}
+                    <div className="bg-white rounded-2xl border border-cream-300 p-5 shadow-sm">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="p-1.5 bg-gold-50 border border-gold-200 text-gold-600 rounded-lg">
+                          <Sparkles size={16} />
+                        </div>
+                        <h3 className="font-display font-bold text-forest-700 text-sm">Focus Keyword</h3>
+                      </div>
+                      <div className="relative">
+                        <Search size={16} className="absolute left-3.5 top-3.5 text-soil-300" />
+                        <input 
+                          value={focusKeyword}
+                          onChange={e => setFocusKeyword(e.target.value)}
+                          placeholder="e.g., soil health, maize guide" 
+                          className="w-full pl-9 pr-4 py-2.5 border border-cream-300 rounded-xl text-forest-700 text-sm placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 font-medium"
+                        />
+                      </div>
+                      <p className="text-[11px] text-soil-400 mt-2 leading-relaxed">
+                        Specify the search query this post aims to rank for. Real-time checklist matches will sync below.
+                      </p>
+                    </div>
+
+                    {/* SEO Score Display */}
+                    <div className={`bg-white rounded-2xl border p-5 shadow-sm transition-all duration-300`}>
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <span className="text-[11px] font-bold text-soil-400 uppercase tracking-wider block">SEO Health Score</span>
+                          <span className="font-display text-3xl font-extrabold text-forest-700">{score}<span className="text-sm font-normal text-soil-300">/100</span></span>
+                        </div>
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${scoreColor}`}>
+                          {score >= 80 ? "Excellent" : score >= 50 ? "Good" : "Needs Work"}
+                        </span>
+                      </div>
+
+                      {/* Progress Bar */}
+                      <div className="w-full bg-cream-100 rounded-full h-2 mb-3 overflow-hidden border border-cream-200/50">
+                        <div 
+                          className={`h-full rounded-full transition-all duration-500 ${scoreBarColor}`}
+                          style={{ width: `${score}%` }}
+                        />
+                      </div>
+
+                      <p className="text-[11px] text-soil-400 leading-relaxed">
+                        {score >= 80 
+                          ? "🎉 Excellent optimization! Your blog post adheres to advanced SEO standards and is ready to compete on Google."
+                          : score >= 50
+                          ? "👍 Solid foundation. Complete the remaining items in the checklists below to maximize search indexability."
+                          : "⚠️ Low search compliance. Optimize the content structure, meta tags, and include key internal links."}
+                      </p>
+                    </div>
+
+                    {/* SERP Search Preview */}
+                    <div className="bg-white rounded-2xl border border-cream-300 p-5 shadow-sm">
+                      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-cream-100">
+                        <Globe size={15} className="text-soil-400" />
+                        <h3 className="font-display font-bold text-forest-700 text-sm">Google SERP Snippet Preview</h3>
+                      </div>
+                      
+                      <div className="bg-cream-50/50 p-4 border border-cream-200 rounded-xl font-sans text-left space-y-1.5 shadow-inner">
+                        {/* URL snippet */}
+                        <div className="flex items-center gap-1.5 text-xs text-soil-400 truncate">
+                          <span className="bg-cream-200 px-1 py-0.5 rounded text-[9px] font-semibold text-forest-700 uppercase tracking-tight">organic</span>
+                          <span className="truncate">https://shambaiq.com › blog › {slugPreview}</span>
+                        </div>
+                        {/* Blue Google link title */}
+                        <a href="#" className="font-sans text-[#1a0dab] hover:underline font-normal text-[17px] leading-tight block truncate">
+                          {blogForm.title || "Post Title Preview"}
+                        </a>
+                        {/* Snippet Description */}
+                        <p className="text-xs text-soil-400 font-sans leading-relaxed line-clamp-2">
+                          {blogForm.excerpt || "Please enter an excerpt / meta description to preview how this listing description will appear in Google Search results..."}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Checklists Widget */}
+                    <div className="bg-white rounded-2xl border border-cream-300 p-5 shadow-sm space-y-5">
+                      {/* Section 1: Title & Headings */}
+                      <div>
+                        <h4 className="text-xs font-bold text-forest-700 uppercase tracking-wider mb-2.5 pb-1.5 border-b border-cream-100 flex justify-between items-center">
+                          <span>1. Title & Structure</span>
+                          <span className="text-[10px] font-normal text-soil-300 font-mono">35 points</span>
+                        </h4>
+                        
+                        <div className="space-y-2">
+                          {/* Title length check */}
+                          <div className="flex items-start gap-2.5 text-xs">
+                            {isTitleLenGood ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className={`font-medium ${isTitleLenGood ? "text-forest-700" : "text-soil-500"}`}>Title Character Count</span>
+                                <span className="font-semibold text-soil-400">{titleLen}/60 chars</span>
+                              </div>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                Ideal: 30 to 60 characters for search snippet formatting.
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Focus Keyword in Title */}
+                          <div className="flex items-start gap-2.5 text-xs pt-1">
+                            {hasKeywordInTitle ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <span className={`font-medium ${hasKeywordInTitle ? "text-forest-700" : "text-soil-500"}`}>Keyword in Title</span>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                {focusKeyword 
+                                  ? `Include "${focusKeyword}" in the article title.` 
+                                  : "Define a focus keyword to trace title optimization."}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Heading Hierarchy check */}
+                          <div className="flex items-start gap-2.5 text-xs pt-1">
+                            {isH2CountGood ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className={`font-medium ${isH2CountGood ? "text-forest-700" : "text-soil-500"}`}>H2 Subheadings</span>
+                                <span className="font-semibold text-soil-400">{h2Count} found</span>
+                              </div>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                Add at least two subheadings starting with <code className="bg-cream-50 border px-1 rounded">## </code> for clear content hierarchy.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Section 2: Content Optimization */}
+                      <div>
+                        <h4 className="text-xs font-bold text-forest-700 uppercase tracking-wider mb-2.5 pb-1.5 border-b border-cream-100 flex justify-between items-center">
+                          <span>2. Content Analytics</span>
+                          <span className="text-[10px] font-normal text-soil-300 font-mono">35 points</span>
+                        </h4>
+                        
+                        <div className="space-y-2">
+                          {/* Word Count */}
+                          <div className="flex items-start gap-2.5 text-xs">
+                            {isWordCountGood ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className={`font-medium ${isWordCountGood ? "text-forest-700" : "text-soil-500"}`}>Minimum Word Count</span>
+                                <span className="font-semibold text-soil-400">{wordCount} / 300 words</span>
+                              </div>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                Ideal posts contain at least 300 words to establish high authority.
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Focus Keyword in Subheading */}
+                          <div className="flex items-start gap-2.5 text-xs pt-1">
+                            {hasKeywordInH2 ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <span className={`font-medium ${hasKeywordInH2 ? "text-forest-700" : "text-soil-500"}`}>Keyword in H2 Subheadings</span>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                {focusKeyword 
+                                  ? `Include "${focusKeyword}" in at least one H2 heading.` 
+                                  : "Define a focus keyword to verify subheading placement."}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Keyword Density */}
+                          <div className="flex items-start gap-2.5 text-xs pt-1">
+                            <div className="p-0.5 bg-cream-100 rounded text-forest-700 mt-0.5 shrink-0">
+                              <TrendingUp size={10} />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className="font-medium text-forest-700">Keyword Density / Count</span>
+                                <span className="font-semibold text-soil-400">{keywordDensity}% ({keywordCount}x)</span>
+                              </div>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                Density matches for focus keyword. Standard ranges lie between 0.5% and 2.5%.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Section 3: Metadata & Links */}
+                      <div>
+                        <h4 className="text-xs font-bold text-forest-700 uppercase tracking-wider mb-2.5 pb-1.5 border-b border-cream-100 flex justify-between items-center">
+                          <span>3. Metadata, Links & Media</span>
+                          <span className="text-[10px] font-normal text-soil-300 font-mono">30 points</span>
+                        </h4>
+                        
+                        <div className="space-y-2">
+                          {/* Excerpt Meta description length */}
+                          <div className="flex items-start gap-2.5 text-xs">
+                            {isExcerptLenGood ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className={`font-medium ${isExcerptLenGood ? "text-forest-700" : "text-soil-500"}`}>Excerpt Length</span>
+                                <span className="font-semibold text-soil-400">{excerptLen}/160 chars</span>
+                              </div>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                Keep between 80 and 160 characters to ensure it is not truncated on search listings.
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Focus Keyword in Excerpt */}
+                          <div className="flex items-start gap-2.5 text-xs pt-1">
+                            {hasKeywordInExcerpt ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <span className={`font-medium ${hasKeywordInExcerpt ? "text-forest-700" : "text-soil-500"}`}>Keyword in Excerpt</span>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                {focusKeyword 
+                                  ? `Integrate "${focusKeyword}" into the summary excerpt.` 
+                                  : "Define a focus keyword to verify meta description presence."}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Internal Links */}
+                          <div className="flex items-start gap-2.5 text-xs pt-1">
+                            {hasInternalLinks ? (
+                              <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                            ) : (
+                              <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            )}
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className={`font-medium ${hasInternalLinks ? "text-forest-700" : "text-soil-500"}`}>Internal Linking</span>
+                                <span className="font-semibold text-soil-400">{internalLinks.length} added</span>
+                              </div>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                Link to other platform pages (e.g. <code className="bg-cream-50 border px-1 rounded">(/soil/nakuru)</code> or <code className="bg-cream-50 border px-1 rounded">(/crops/maize)</code>) to improve navigation authority.
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Image Alt tags */}
+                          <div className="flex items-start gap-2.5 text-xs pt-1">
+                            {hasImages ? (
+                              imageAltIssues ? (
+                                <AlertTriangle size={14} className="text-rose-500 mt-0.5 shrink-0" />
+                              ) : (
+                                <CheckCircle size={14} className="text-emerald-500 mt-0.5 shrink-0" />
+                              )
+                            ) : (
+                              <div className="p-0.5 bg-cream-100 rounded text-forest-700 mt-0.5 shrink-0">
+                                <Image size={10} />
+                              </div>
+                            )}
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className={`font-medium ${hasImages && !imageAltIssues ? "text-forest-700" : "text-soil-500"}`}>Image Alt Tags</span>
+                                <span className="font-semibold text-soil-400">
+                                  {hasImages ? `${imageMatches.length} img` : "No images"}
+                                </span>
+                              </div>
+                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                                {!hasImages 
+                                  ? "Tip: Add standard images with ![descriptive alt text](image_url) to improve rich readability."
+                                  : imageAltIssues
+                                  ? "⚠️ Some images are missing descriptive alt texts. Ensure the alt text is at least 3 characters long."
+                                  : "🎉 All images have descriptive alt texts correctly optimized for screen readers and search engines."}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-sm font-semibold text-forest-700 mb-1 block">Status</label>
-                    <select value={blogForm.status} onChange={e => setBlogForm({ ...blogForm, status: e.target.value })} className="w-full px-4 py-3 border border-cream-300 rounded-xl bg-white">
-                      <option value="draft">Draft</option>
-                      <option value="published">Published</option>
-                    </select>
-                  </div>
                 </div>
-                <div>
-                  <label className="text-sm font-semibold text-forest-700 mb-1 block">Excerpt (shown in listing)</label>
-                  <input value={blogForm.excerpt} onChange={e => setBlogForm({ ...blogForm, excerpt: e.target.value })} placeholder="Brief description..." className="w-full px-4 py-3 border border-cream-300 rounded-xl" />
-                </div>
-                <div>
-                  <label className="text-sm font-semibold text-forest-700 mb-1 block">Content (Markdown supported)</label>
-                  <textarea value={blogForm.content} onChange={e => setBlogForm({ ...blogForm, content: e.target.value })} placeholder="Write your blog post here...&#10;&#10;## Use headings&#10;&#10;**Bold text** and [links](/soil/nakuru) work.&#10;&#10;Link to county pages: [Nakuru soil report](/soil/nakuru)&#10;Link to crop pages: [Maize guide](/crops/maize)&#10;Link to the tool: [Get advice](/app)" rows={16} className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 font-mono text-sm focus:outline-none focus:border-gold-400 resize-y" />
-                  <p className="text-xs text-soil-300 mt-1">Use ## for headings, **bold**, [text](url) for links. Link to /soil/county-name and /crops/crop-name for internal links.</p>
-                </div>
-                <div className="flex gap-3">
-                  <button onClick={saveBlogPost} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl">
-                    {blogSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
-                    {editing ? "Update Post" : "Create Post"}
-                  </button>
-                  {editing && blogForm.status === "draft" && (
-                    <button onClick={async () => { const updatedForm = { ...blogForm, status: "published" }; setBlogForm(updatedForm); setBlogSaving(true); try { const res = editing ? await fetch(`${API}/api/v1/blog/admin/${editing.id}?access_code=${code}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updatedForm) }) : await fetch(`${API}/api/v1/blog/admin/create?access_code=${code}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updatedForm) }); if (res.ok) { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); alert("Post published!"); fetchTab("blog"); } else { const err = await res.json().catch(() => ({})); alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed (${res.status})`); } } finally { setBlogSaving(false); } }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl">Publish Now</button>
-                  )}
-                </div>
-              </div>
-            </div>
+              );
+            })()
           )}
         </div>
       )}

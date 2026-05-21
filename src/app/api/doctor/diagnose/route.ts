@@ -1,8 +1,25 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
+  // Session check to protect the endpoint from unauthorized consumption
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get('shambaiq_session');
+  if (!sessionCookie?.value) {
+    return NextResponse.json({ error: 'Unauthorized: No active session' }, { status: 401 });
+  }
+
+  try {
+    const sessionData = JSON.parse(decodeURIComponent(sessionCookie.value));
+    if (!sessionData.phone && !sessionData.token) {
+      return NextResponse.json({ error: 'Unauthorized: Invalid session' }, { status: 401 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: 'Unauthorized: Invalid session format' }, { status: 401 });
+  }
+
   const apiKey = process.env.GEMINI_API_KEY;
 
   // Surface a clear error if the key is missing (helps debug Vercel env issues)
@@ -13,6 +30,7 @@ export async function POST(request: Request) {
       { status: 503 }
     );
   }
+
 
   try {
     const body = await request.json();

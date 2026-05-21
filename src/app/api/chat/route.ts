@@ -1,8 +1,25 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
+  // 1. Session check to protect the endpoint from unauthorized consumption
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get('shambaiq_session');
+  if (!sessionCookie?.value) {
+    return NextResponse.json({ error: 'Unauthorized: No active session' }, { status: 401 });
+  }
+
+  try {
+    const sessionData = JSON.parse(decodeURIComponent(sessionCookie.value));
+    if (!sessionData.phone && !sessionData.token) {
+      return NextResponse.json({ error: 'Unauthorized: Invalid session' }, { status: 401 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: 'Unauthorized: Invalid session format' }, { status: 401 });
+  }
+
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
@@ -16,6 +33,58 @@ export async function POST(request: Request) {
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
     }
+
+    // 2. Agricultural topic filtering to prevent prompt abuse/billing spikes
+    const userText = messages[messages.length - 1]?.content || '';
+    
+    const isAgriculturalQuery = (text: string): boolean => {
+      const normalized = text.toLowerCase().trim();
+
+      // Permit short standard greetings and basic conversational words (less than 40 chars)
+      const shortGreetings = [
+        'hi', 'hello', 'hey', 'habari', 'mambo', 'sasa', 'jambo', 'greetings', 'morning', 'afternoon', 'evening',
+        'thanks', 'thank you', 'asante', 'shukran', 'please', 'help', 'usaidizi', 'ok', 'sawa', 'yes', 'no', 'ndio',
+        'hapana', 'who are you', 'wewe ni nani', 'how are you', 'uhali gani', 'mambo vipi', 'niaje', 'yaliyopo', 'poa'
+      ];
+
+      if (normalized.length < 40) {
+        const words = normalized.split(/\s+/).map(w => w.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, ''));
+        if (words.some(w => shortGreetings.includes(w))) {
+          return true;
+        }
+      }
+
+      // Agriculture-related keywords in English and Swahili
+      const agKeywords = [
+        // English
+        'soil', 'crop', 'farm', 'fertilizer', 'dap', 'can', 'urea', 'npk', 'pest', 'disease', 'seed', 'weather',
+        'rain', 'yield', 'harvest', 'irrigation', 'livestock', 'poultry', 'chicken', 'cow', 'goat', 'sheep', 'pig',
+        'maize', 'bean', 'potato', 'tomato', 'onion', 'cabbage', 'coffee', 'tea', 'shamba', 'mshauri', 'agronomy',
+        'agronomist', 'county', 'kalro', 'ncpb', 'plant', 'doctor', 'leaf', 'stem', 'water', 'cultivat', 'grow',
+        'sow', 'plow', 'mulch', 'compost', 'manure', 'nutrient', 'nitrogen', 'phosphor', 'potass', 'ph ', 'acidity',
+        'alkalinity', 'liming', 'erosion', 'agriculture', 'agricultural', 'agrovet', 'agribusiness', 'veterinary',
+        'fodder', 'silage', 'milking', 'pasture', 'tillage', 'weed', 'herbicide', 'pesticide', 'fungicide', 'insecticide',
+        'spraying', 'nursery', 'seedling', 'transplant', 'pruning', 'grafting', 'mulching', 'drought', 'dryness',
+        'moisture', 'drainage', 'intercrop', 'rotation', 'fallow', 'greenhouse', 'hydroponic', 'organic', 'composting',
+        'vermicompost', 'bee', 'apiculture', 'honey', 'fish', 'aquaculture', 'tilapia', 'catfish', 'pond',
+
+        // Swahili
+        'shamba', 'mchanga', 'kilimo', 'mmea', 'mazao', 'mbolea', 'wadudu', 'ugonjwa', 'mbegu', 'mvua', 'hali ya hewa',
+        'mavuno', 'umwagiliaji', 'ng\'ombe', 'kuku', 'mbuzi', 'kondoo', 'nguruwe', 'mahindi', 'maharagwe', 'viazi',
+        'nyanya', 'kitunguu', 'kabeji', 'kahawa', 'chai', 'dawa', 'kulima', 'kupanda', 'palilia', 'uvunaji', 'ng\'ombe wa maziwa',
+        'mayai', 'chakula cha mifugo', 'agrovet', 'boma', 'mbolea ya jivu', 'samadi', 'dawa ya wadudu', 'magugu',
+        'kukausha', 'unyevu', 'ukame'
+      ];
+
+      return agKeywords.some(keyword => normalized.includes(keyword));
+    };
+
+    if (!isAgriculturalQuery(userText)) {
+      return NextResponse.json({
+        reply: "As Shamba Mshauri (your AI Agronomist), I am specialized only in farming, soil health, crop management, livestock, and agricultural practices in Kenya. 🌾\n\nI noticed your question isn't related to agriculture. Please feel free to ask me anything about crop diseases, fertilizers, planting timing, or soil care!"
+      });
+    }
+
 
     // Build the conversation history for Gemini
     const systemPrompt = `You are Shamba Mshauri (Farm Advisor), an expert agronomist working with smallholder farmers across all 47 counties of Kenya. You have deep knowledge of:

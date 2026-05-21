@@ -5,12 +5,96 @@ import {
   Lock, Store, BarChart3, AlertTriangle, FileText,
   Check, CheckCircle, X, Loader2, RefreshCw, Users, TrendingUp, MapPin, Wheat,
   PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight, Upload,
-  Sparkles, Globe, Link2, Image,
+  Sparkles, Globe, Link2, Image, Columns,
 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "crops" | "agrovets";
+
+const parseInlineMarkdown = (text: string): string => {
+  return text
+    .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" class="inline rounded my-1 max-w-full" />')
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-forest-700">$1</strong>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" class="text-gold-600 hover:underline font-medium">$1</a>')
+    .replace(/`(.+?)`/g, '<code class="bg-cream-100 px-1 border rounded font-mono text-xs text-forest-800">$1</code>');
+};
+
+const renderMarkdown = (content: string) => {
+  if (!content) return [];
+  const blocks = content.split(/\n\n+/);
+  return blocks.map((block, i) => {
+    const trimmed = block.trim();
+    if (!trimmed) return null;
+
+    if (trimmed.startsWith("## ")) {
+      const text = trimmed.substring(3).trim();
+      const html = parseInlineMarkdown(text);
+      return <h2 key={i} className="font-display text-2xl font-bold text-forest-700 mt-10 mb-4 pb-1 border-b border-cream-200" dangerouslySetInnerHTML={{ __html: html }} />;
+    }
+
+    if (trimmed.startsWith("### ")) {
+      const text = trimmed.substring(4).trim();
+      const html = parseInlineMarkdown(text);
+      return <h3 key={i} className="font-display text-xl font-bold text-forest-700 mt-8 mb-3" dangerouslySetInnerHTML={{ __html: html }} />;
+    }
+
+    if (trimmed.startsWith(">")) {
+      const lines = trimmed.split("\n").map(line => {
+        const lineTrimmed = line.trim();
+        return lineTrimmed.startsWith(">") ? lineTrimmed.substring(1).trim() : lineTrimmed;
+      }).join(" ");
+      const html = parseInlineMarkdown(lines);
+      return (
+        <blockquote key={i} className="border-l-4 border-gold-500 pl-4 py-2 my-4 italic text-soil-500 bg-cream-50/50 rounded-r-lg" dangerouslySetInnerHTML={{ __html: html }} />
+      );
+    }
+
+    const lines = trimmed.split("\n");
+    const isBulletList = lines.every(line => line.trim().startsWith("- ") || line.trim().startsWith("* "));
+    if (isBulletList && lines.length > 0) {
+      return (
+        <ul key={i} className="list-disc pl-6 my-4 space-y-2 text-soil-500">
+          {lines.map((line, idx) => {
+            const text = line.trim().substring(2).trim();
+            const html = parseInlineMarkdown(text);
+            return <li key={idx} dangerouslySetInnerHTML={{ __html: html }} />;
+          })}
+        </ul>
+      );
+    }
+
+    const isOrderedList = lines.every(line => /^\d+\.\s+/.test(line.trim()));
+    if (isOrderedList && lines.length > 0) {
+      return (
+        <ol key={i} className="list-decimal pl-6 my-4 space-y-2 text-soil-500">
+          {lines.map((line, idx) => {
+            const text = line.trim().replace(/^\d+\.\s+/, "").trim();
+            const html = parseInlineMarkdown(text);
+            return <li key={idx} dangerouslySetInnerHTML={{ __html: html }} />;
+          })}
+        </ol>
+      );
+    }
+
+    if (trimmed.startsWith("![") && trimmed.includes("](")) {
+      const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+      if (imgMatch) {
+        const alt = imgMatch[1];
+        const url = imgMatch[2];
+        return (
+          <div key={i} className="my-6">
+            <img src={url} alt={alt} className="rounded-xl border border-cream-200 shadow-sm max-w-full mx-auto" />
+            {alt && <p className="text-center text-xs text-soil-400 mt-2 font-medium">{alt}</p>}
+          </div>
+        );
+      }
+    }
+
+    const html = parseInlineMarkdown(trimmed);
+    return <p key={i} className="text-soil-500 leading-relaxed mb-4 text-sm" dangerouslySetInnerHTML={{ __html: html }} />;
+  });
+};
 
 export default function AdminDashboard() {
   const [code, setCode] = useState("");
@@ -50,6 +134,7 @@ export default function AdminDashboard() {
   const [blogSaving, setBlogSaving] = useState(false);
   const [showBlogEditor, setShowBlogEditor] = useState(false);
   const [focusKeyword, setFocusKeyword] = useState("");
+  const [activeEditorTab, setActiveEditorTab] = useState<'write' | 'preview' | 'split'>('write');
 
   const f = useCallback(async (url: string) => {
     const sep = url.includes("?") ? "&" : "?";
@@ -118,6 +203,7 @@ export default function AdminDashboard() {
       if (res.ok) {
         setEditing(null);
         setShowBlogEditor(false);
+        setActiveEditorTab("write");
         setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
         alert(editing ? "Blog post updated successfully!" : "Blog post created successfully!");
         fetchTab("blog");
@@ -143,6 +229,7 @@ export default function AdminDashboard() {
   const editPost = (post: any) => {
     setEditing(post);
     setShowBlogEditor(true);
+    setActiveEditorTab("write");
     setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
     // Fetch full content if not already present
     if (!post.content) {
@@ -418,7 +505,7 @@ export default function AdminDashboard() {
             <>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
               </div>
               {posts.length === 0 ? <p className="text-center py-12 text-soil-400">No blog posts yet.</p> : (
                 <div className="space-y-3">
@@ -491,6 +578,31 @@ export default function AdminDashboard() {
               const allImagesHaveAlts = hasImages && imageMatches.every(m => m[1] && m[1].trim().length >= 3);
               const imageAltIssues = hasImages && !allImagesHaveAlts;
               
+              const lowerContent = rawContent.toLowerCase();
+              const linkSuggestions: { keyword: string; text: string; link: string }[] = [];
+              
+              if (lowerContent.includes("maize") && !lowerContent.includes("/crops/maize")) {
+                linkSuggestions.push({ keyword: "maize", text: "Maize Farming Guide", link: "/crops/maize" });
+              }
+              if (lowerContent.includes("potato") && !lowerContent.includes("/crops/potato")) {
+                linkSuggestions.push({ keyword: "potato", text: "Potato Farming Guide", link: "/crops/potato" });
+              }
+              if (lowerContent.includes("tomato") && !lowerContent.includes("/crops/tomato")) {
+                linkSuggestions.push({ keyword: "tomato", text: "Tomato Farming Guide", link: "/crops/tomato" });
+              }
+              if (lowerContent.includes("nakuru") && !lowerContent.includes("/soil/nakuru")) {
+                linkSuggestions.push({ keyword: "nakuru", text: "Nakuru Soil Report", link: "/soil/nakuru" });
+              }
+              if (lowerContent.includes("meru") && !lowerContent.includes("/soil/meru")) {
+                linkSuggestions.push({ keyword: "meru", text: "Meru Soil Report", link: "/soil/meru" });
+              }
+              if (lowerContent.includes("uasin") && !lowerContent.includes("/soil/uasin-gishu")) {
+                linkSuggestions.push({ keyword: "uasin", text: "Uasin Gishu Soil Report", link: "/soil/uasin-gishu" });
+              }
+              if (lowerContent.includes("fertilizer") && !lowerContent.includes("/app")) {
+                linkSuggestions.push({ keyword: "fertilizer", text: "ShambaIQ Advisory Tool", link: "/app" });
+              }
+              
               // 5. Score Calculation
               let score = 0;
               if (isTitleLenGood) score += 15;
@@ -529,7 +641,7 @@ export default function AdminDashboard() {
                         <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
                         <p className="text-xs text-soil-400">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
                       </div>
-                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
+                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
                     </div>
                     
                     <div className="space-y-5">
@@ -595,23 +707,97 @@ export default function AdminDashboard() {
                       </div>
                       
                       <div>
-                        <div className="flex justify-between items-center mb-1.5">
-                          <label className="text-sm font-semibold text-forest-700 block font-sans">Content (Markdown Supported)</label>
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex border border-cream-300 rounded-lg p-0.5 bg-cream-50">
+                            <button
+                              type="button"
+                              onClick={() => setActiveEditorTab("write")}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                                activeEditorTab === "write"
+                                  ? "bg-white text-forest-700 shadow-sm border border-cream-200"
+                                  : "text-soil-400 hover:text-forest-700"
+                              }`}
+                            >
+                              <PenLine size={13} />
+                              Write
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setActiveEditorTab("preview")}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                                activeEditorTab === "preview"
+                                  ? "bg-white text-forest-700 shadow-sm border border-cream-200"
+                                  : "text-soil-400 hover:text-forest-700"
+                              }`}
+                            >
+                              <Eye size={13} />
+                              Preview
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setActiveEditorTab("split")}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                                activeEditorTab === "split"
+                                  ? "bg-white text-forest-700 shadow-sm border border-cream-200"
+                                  : "text-soil-400 hover:text-forest-700"
+                              }`}
+                            >
+                              <Columns size={13} />
+                              Split View
+                            </button>
+                          </div>
+                          
                           <span className={`text-xs font-semibold ${isWordCountGood ? "text-emerald-600" : "text-soil-400"}`}>
                             {wordCount} words
                           </span>
                         </div>
-                        <textarea 
-                          value={blogForm.content} 
-                          onChange={e => setBlogForm({ ...blogForm, content: e.target.value })} 
-                          placeholder="Write your blog post here...&#10;&#10;## Use headings&#10;&#10;**Bold text** and [links](/soil/nakuru) work.&#10;&#10;Link to county pages: [Nakuru soil report](/soil/nakuru)&#10;Link to crop pages: [Maize guide](/crops/maize)&#10;Link to the tool: [Get advice](/app)" 
-                          rows={18} 
-                          className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 font-mono text-sm focus:outline-none focus:border-gold-400 resize-y" 
-                        />
-                        <div className="bg-cream-50 rounded-lg p-3 border border-cream-200 mt-2 text-xs text-soil-400 leading-relaxed">
-                          <span className="font-semibold text-forest-700 block mb-1">Markdown formatting tips:</span>
-                          Use <code className="bg-white px-1 border rounded">## Heading Title</code> to create H2 sections. Create links with <code className="bg-white px-1 border rounded">[Link Text](/url)</code>. Add optimized images using <code className="bg-white px-1 border rounded">![Alt Text](image_url)</code>.
-                        </div>
+
+                        {activeEditorTab === "write" && (
+                          <>
+                            <textarea 
+                              value={blogForm.content} 
+                              onChange={e => setBlogForm({ ...blogForm, content: e.target.value })} 
+                              placeholder="Write your blog post here...&#10;&#10;## Use headings&#10;&#10;**Bold text** and [links](/soil/nakuru) work.&#10;&#10;Link to county pages: [Nakuru soil report](/soil/nakuru)&#10;Link to crop pages: [Maize guide](/crops/maize)&#10;Link to the tool: [Get advice](/app)" 
+                              rows={18} 
+                              className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 font-mono text-sm focus:outline-none focus:border-gold-400 resize-y" 
+                            />
+                            <div className="bg-cream-50 rounded-lg p-3 border border-cream-200 mt-2 text-xs text-soil-400 leading-relaxed">
+                              <span className="font-semibold text-forest-700 block mb-1">Markdown formatting tips:</span>
+                              Use <code className="bg-white px-1 border rounded">## Heading Title</code> to create H2 sections. Create links with <code className="bg-white px-1 border rounded">[Link Text](/url)</code>. Add optimized images using <code className="bg-white px-1 border rounded">![Alt Text](image_url)</code>.
+                            </div>
+                          </>
+                        )}
+
+                        {activeEditorTab === "preview" && (
+                          <div className="w-full min-h-[380px] max-h-[600px] overflow-y-auto px-6 py-6 border border-cream-300 rounded-xl bg-white text-forest-700 prose prose-forest max-w-none shadow-inner leading-relaxed">
+                            {blogForm.content.trim() ? (
+                              renderMarkdown(blogForm.content)
+                            ) : (
+                              <p className="text-soil-300 italic text-center py-20 text-sm">Nothing to preview yet. Write some markdown content in the 'Write' tab.</p>
+                            )}
+                          </div>
+                        )}
+
+                        {activeEditorTab === "split" && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex flex-col">
+                              <textarea 
+                                value={blogForm.content} 
+                                onChange={e => setBlogForm({ ...blogForm, content: e.target.value })} 
+                                placeholder="Write your blog post here..." 
+                                rows={20} 
+                                className="w-full h-full min-h-[450px] px-4 py-3 border border-cream-300 rounded-xl text-forest-700 font-mono text-sm focus:outline-none focus:border-gold-400 resize-none" 
+                              />
+                            </div>
+                            <div className="w-full h-full min-h-[450px] max-h-[600px] overflow-y-auto px-6 py-6 border border-cream-300 rounded-xl bg-white text-forest-700 prose prose-forest max-w-none shadow-inner leading-relaxed">
+                              {blogForm.content.trim() ? (
+                                renderMarkdown(blogForm.content)
+                              ) : (
+                                <p className="text-soil-300 italic text-center py-20 text-sm font-medium">Nothing to preview yet. Start typing on the left pane.</p>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex gap-3 pt-2">
@@ -887,6 +1073,39 @@ export default function AdminDashboard() {
                               <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
                                 Link to other platform pages (e.g. <code className="bg-cream-50 border px-1 rounded">(/soil/nakuru)</code> or <code className="bg-cream-50 border px-1 rounded">(/crops/maize)</code>) to improve navigation authority.
                               </p>
+
+                              {hasInternalLinks && (
+                                <div className="mt-2 pl-3 pr-2 py-2 bg-cream-50 rounded-lg border border-cream-200 text-[10px] text-soil-500 space-y-1">
+                                  <span className="font-bold text-forest-700 block mb-1">Detected Platform Links:</span>
+                                  {internalLinks.map((m, idx) => {
+                                    const text = m[1] || "";
+                                    const url = m[2] || "";
+                                    return (
+                                      <div key={idx} className="flex items-center gap-1">
+                                        <Link2 size={10} className="text-soil-400 shrink-0" />
+                                        <span className="font-semibold text-forest-700 truncate max-w-[80px]">"{text}"</span>
+                                        <span className="text-soil-300 shrink-0">→</span>
+                                        <code className="bg-white border px-1 rounded text-[9px] truncate max-w-[90px]">{url}</code>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+
+                              {linkSuggestions.length > 0 && (
+                                <div className="mt-2.5 pl-3 pr-2 py-2 bg-gold-50 border border-gold-200 text-[10px] text-gold-850 rounded-lg space-y-1">
+                                  <span className="font-bold flex items-center gap-1 text-gold-800"><Sparkles size={10} className="text-gold-600" /> Link Suggestions:</span>
+                                  <p className="text-[9px] text-gold-600 leading-snug">We noticed these keywords. Copy-paste these internal links to boost SEO ranking:</p>
+                                  <div className="space-y-1 mt-1">
+                                    {linkSuggestions.slice(0, 3).map((s, idx) => (
+                                      <div key={idx} className="flex flex-col gap-0.5 bg-white border border-gold-150 p-1.5 rounded">
+                                        <span className="font-medium text-forest-700">Keyword: "{s.keyword}"</span>
+                                        <code className="text-soil-500 text-[9px] select-all font-mono">[{s.text}]({s.link})</code>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
 
@@ -917,6 +1136,27 @@ export default function AdminDashboard() {
                                   ? "⚠️ Some images are missing descriptive alt texts. Ensure the alt text is at least 3 characters long."
                                   : "🎉 All images have descriptive alt texts correctly optimized for screen readers and search engines."}
                               </p>
+
+                              {hasImages && (
+                                <div className="mt-2 pl-3 pr-2 py-2 bg-cream-50 rounded-lg border border-cream-200 text-[10px] text-soil-500 space-y-1">
+                                  <span className="font-bold text-forest-700 block mb-1">Image Alt Text Audit:</span>
+                                  {imageMatches.map((m, idx) => {
+                                    const alt = m[1] || "";
+                                    const url = m[2] || "";
+                                    const isGood = alt.trim().length >= 3;
+                                    return (
+                                      <div key={idx} className="flex items-center justify-between gap-1">
+                                        <span className="truncate max-w-[100px] font-mono text-soil-400">{url.split('/').pop()}</span>
+                                        {isGood ? (
+                                          <span className="text-emerald-600 font-medium flex items-center gap-0.5"><Check size={9} /> "{alt}"</span>
+                                        ) : (
+                                          <span className="text-rose-500 font-semibold flex items-center gap-0.5"><AlertTriangle size={9} /> Alt missing/short</span>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>

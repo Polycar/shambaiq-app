@@ -109,6 +109,13 @@ export default function MaizeFarmingGuide() {
             </p>
           </section>
 
+          <section className="mb-10">
+            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Smart Crop Rotations for Maize</h2>
+            <p className="text-soil-500 leading-relaxed mb-4">
+              Growing maize year after year on the same shamba depletes nitrogen and encourages pests like stalk borer. Rotating maize with legumes (like beans or cowpeas) or tubers (like potatoes) breaks pest cycles and naturally restores soil nutrients. In highland districts like Meru and Nyeri, potatoes serve as an exceptionally profitable rotation crop. For high-yielding practices, see our <Link href="/blog/meru-nyeri-potato-farming-guide" className="text-gold-600 hover:underline font-semibold">Meru & Nyeri potato guide</Link>.
+            </p>
+          </section>
+
           {seeds.length > 0 && (
             <section className="mb-10">
               <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Certified Seed Varieties</h2>

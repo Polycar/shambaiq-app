@@ -34,6 +34,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/blog/complete-maize-farming-guide-kenya`, lastModified: "2026-05-01", changeFrequency: "yearly", priority: 0.8 },
     { url: `${BASE}/blog/why-soil-is-acidic-kenya`, lastModified: "2026-05-01", changeFrequency: "yearly", priority: 0.8 },
     { url: `${BASE}/blog/dap-vs-can-vs-npk-fertilizer-guide`, lastModified: "2026-05-01", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/kakamega-soil-mavuno-not-dap`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/farming-semi-arid-kenya-machakos-makueni-kitui`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/nakuru-vs-uasin-gishu-best-county-wheat`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/how-much-fertilizer-per-acre-calculator`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/meru-nyeri-potato-farming-guide`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/organic-soil-enrichment-kenya-soil-carbon`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/tomato-farming-guide-kiambu-kirinyaga`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
   ];
 
   // ── 3. Top-Level Directories (Zones, Counties, Crops, Dealers) ──

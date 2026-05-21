@@ -5,7 +5,6 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
-// Static blog posts that are code-based (data-driven)
 const STATIC_SLUGS = [
   "kenya-soil-health-rankings-2026",
   "complete-maize-farming-guide-kenya",
@@ -15,6 +14,9 @@ const STATIC_SLUGS = [
   "farming-semi-arid-kenya-machakos-makueni-kitui",
   "nakuru-vs-uasin-gishu-best-county-wheat",
   "how-much-fertilizer-per-acre-calculator",
+  "meru-nyeri-potato-farming-guide",
+  "organic-soil-enrichment-kenya-soil-carbon",
+  "tomato-farming-guide-kiambu-kirinyaga",
 ];
 
 interface PageProps {

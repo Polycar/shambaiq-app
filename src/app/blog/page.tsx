@@ -76,6 +76,30 @@ const staticPosts = [
     readTime: "9 min read",
     category: "Fertilizer",
   },
+  {
+    slug: "meru-nyeri-potato-farming-guide",
+    title: "Potato Farming in Meru & Nyeri: Shangi Guide & Soil Science",
+    excerpt: "Unlocking potato yields in Mt. Kenya's cold highlands. We analyze Meru and Nyeri soil chemistry, seed selection, and optimized fertilization systems.",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "Crop Guide",
+  },
+  {
+    slug: "organic-soil-enrichment-kenya-soil-carbon",
+    title: "Organic Soil Enrichment & Soil Carbon Guide — Kenya",
+    excerpt: "Chemical fertilizers work best in carbon-rich soil. We explore how to restore your shamba's natural fertility using organic soil carbon conservation.",
+    date: "May 2026",
+    readTime: "7 min read",
+    category: "Soil Science",
+  },
+  {
+    slug: "tomato-farming-guide-kiambu-kirinyaga",
+    title: "Tomato Farming in Kiambu & Kirinyaga: Blossom End Rot & Yields",
+    excerpt: "Commercial tomato cultivation under irrigation and greenhouse systems. We analyze Kirinyaga and Kiambu soils, calcium nutrition, and fertilizer selection.",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "Crop Guide",
+  },
 ];
 
 async function getPublishedPosts() {

@@ -129,6 +129,24 @@ export default function FertilizerCalculatorGuide() {
           </section>
 
           <section className="mb-10">
+            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Crop-Specific Fertilizer Deep-Dives</h2>
+            <p className="text-soil-500 leading-relaxed mb-4">
+              General guidelines serve as a solid starting point, but different crop families require specialized compound nutrients:
+            </p>
+            <ul className="list-disc pl-5 my-2 space-y-2 text-soil-500 leading-relaxed">
+              <li>
+                <strong className="text-forest-700">Potatoes</strong>: Require balanced NPK at planting and high potassium for tuber loading. For detailed highland fertilization schedules, read our <Link href="/blog/meru-nyeri-potato-farming-guide" className="text-gold-600 hover:underline font-semibold">Meru & Nyeri potato guide</Link>.
+              </li>
+              <li>
+                <strong className="text-forest-700">Tomatoes</strong>: Heavy feeders that require calcium top-dressing (CAN) to prevent bottom rot. See our <Link href="/blog/tomato-farming-guide-kiambu-kirinyaga" className="text-gold-600 hover:underline font-semibold">Tomato Farming (Kiambu & Kirinyaga) guide</Link> for calcium schedules.
+              </li>
+              <li>
+                <strong className="text-forest-700">Maize</strong>: High nitrogen demands. See the <Link href="/blog/complete-maize-farming-guide-kenya" className="text-gold-600 hover:underline font-semibold">complete maize guide</Link> for detailed planting-to-harvest timing.
+              </li>
+            </ul>
+          </section>
+
+          <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Cost Calculator (Subsidized vs Commercial)</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
               A standard fertilizer plan of 1 bag of DAP (planting) and 1 bag of CAN (top-dressing) per acre will cost:

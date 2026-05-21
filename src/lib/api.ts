@@ -195,15 +195,18 @@ export async function getWeather(lat: number, lon: number): Promise<WeatherData>
 // ─── Dealers ─────────────────────────────────────────────────────
 
 export async function getDealersByCounty(county: string): Promise<Dealer[]> {
-  return api<Dealer[]>(`/api/v1/dealers/${encodeURIComponent(county)}`);
+  const res = await api<{ dealers: Dealer[] }>(`/api/v1/dealers/${encodeURIComponent(county)}`);
+  return res.dealers;
 }
 
 export async function getDealersNearby(lat: number, lon: number): Promise<Dealer[]> {
-  return api<Dealer[]>(`/api/v1/dealers/nearby/${lat}/${lon}`);
+  const res = await api<{ dealers: Dealer[] }>(`/api/v1/dealers/nearby/${lat}/${lon}`);
+  return res.dealers;
 }
 
 export async function getDealersLive(lat: number, lon: number): Promise<Dealer[]> {
-  return api<Dealer[]>(`/api/v1/dealers/live/${lat}/${lon}`);
+  const res = await api<{ dealers: Dealer[] }>(`/api/v1/dealers/live/${lat}/${lon}`);
+  return res.dealers;
 }
 
 // ─── Analytics / Yields ──────────────────────────────────────────

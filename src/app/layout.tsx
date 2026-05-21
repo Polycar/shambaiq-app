@@ -3,6 +3,7 @@ import { Playfair_Display, DM_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { cookies } from "next/headers";
 import "./globals.css";
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />
         <MobileNav />
+        <WhatsAppWidget />
       </body>
       <GoogleAnalytics gaId="G-7X2WCN7KJ7" />
     </html>

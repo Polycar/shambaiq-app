@@ -167,11 +167,11 @@ export default function FertilizerGuide() {
             <div className="space-y-3">
               <div className="bg-cream-50 rounded-xl p-4 border border-cream-200">
                 <p className="font-semibold text-forest-700 mb-1">Using DAP on acidic soil</p>
-                <p className="text-sm text-soil-400">The phosphorus in DAP gets locked by aluminium in acidic soils. Switch to Mavuno or apply lime first. This single change can improve yields by 30-50% in counties like <Link href="/soil/kiambu" className="text-gold-600 hover:underline">Kiambu</Link> and <Link href="/soil/meru" className="text-gold-600 hover:underline">Meru</Link>.</p>
+                <p className="text-sm text-soil-400">The phosphorus in DAP gets locked by aluminium in acidic soils. Switch to Mavuno or apply lime first. This single change can improve yields by 30-50% in counties like <Link href="/soil/kiambu" className="text-gold-600 hover:underline">Kiambu</Link> and <Link href="/soil/meru" className="text-gold-600 hover:underline">Meru</Link>. For crop-specific examples, see our <Link href="/blog/cabbage-farming-kiambu" className="text-gold-600 hover:underline font-semibold">Kiambu cabbage guide</Link> and our <Link href="/blog/bean-farming-kakamega" className="text-gold-600 hover:underline font-semibold">Kakamega bean guide</Link>.</p>
               </div>
               <div className="bg-cream-50 rounded-xl p-4 border border-cream-200">
                 <p className="font-semibold text-forest-700 mb-1">Applying CAN on dry soil</p>
-                <p className="text-sm text-soil-400">CAN needs moisture to dissolve and reach roots. Applying on dry soil means the granules sit on the surface and volatilize as ammonia gas. Apply when rain is expected within 24 hours or irrigate after application.</p>
+                <p className="text-sm text-soil-400">CAN needs moisture to dissolve and reach roots. Applying on dry soil means the granules sit on the surface and volatilize as ammonia gas. Apply when rain is expected within 24 hours or irrigate after application. For intensive nitrogen feeding examples, see our <Link href="/blog/dairy-farming-nandi" className="text-gold-600 hover:underline font-semibold">Nandi fodder guide</Link> and our <Link href="/blog/onion-farming-kajiado" className="text-gold-600 hover:underline font-semibold">Kajiado onion guide</Link> for bulb-forming sulfur top-dressing.</p>
               </div>
               <div className="bg-cream-50 rounded-xl p-4 border border-cream-200">
                 <p className="font-semibold text-forest-700 mb-1">Using the same fertilizer every season</p>

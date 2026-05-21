@@ -100,6 +100,46 @@ const staticPosts = [
     readTime: "8 min read",
     category: "Crop Guide",
   },
+  {
+    slug: "cabbage-farming-kiambu",
+    title: "Cabbage Farming in Kiambu: Clubroot Defense & Soil Chemistry",
+    excerpt: "Grow heavier cabbages in Kiambu county. Learn Copenhagen and Gloria F1 cultivation, acidic soil management (pH 5.28), and lime-fertilizer applications.",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "Crop Guide",
+  },
+  {
+    slug: "onion-farming-kajiado",
+    title: "Onion Farming in Kajiado: Sulfur Nutrition & Drip Irrigation",
+    excerpt: "Master bulb onion farming in Kajiado county. Learn Red Coach F1 nursery setup, alkaline-neutral soil biology (pH 6.55), and sulfur fertilization.",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "Crop Guide",
+  },
+  {
+    slug: "sweet-potato-farming-homa-bay",
+    title: "Sweet Potato Farming in Homa Bay: Potassium & OFSP Nutrition",
+    excerpt: "Maximize sweet potato yields in Homa Bay county. Learn Orange-Fleshed Sweet Potato (OFSP) vine planting, acid-soil tolerance (pH 5.27), and potassium feeding.",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "Crop Guide",
+  },
+  {
+    slug: "dairy-farming-nandi",
+    title: "Dairy Farming & Fodder in Nandi: Protein Yields & Soil Science",
+    excerpt: "Boost milk production in Nandi county. Learn how soil chemistry (pH 6.17) fuels high-protein Napier, Boma Rhodes, and fodder maize cultivation.",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "Dairy Guide",
+  },
+  {
+    slug: "bean-farming-kakamega",
+    title: "Bean Farming in Kakamega: Rhizobium Inoculation & Acid Soil Strategy",
+    excerpt: "Grow higher bean yields in Western Kenya. Learn Rosecoco and Chelalang management, Rhizobium inoculation, and acidic soil buffering (pH 5.63).",
+    date: "May 2026",
+    readTime: "8 min read",
+    category: "Crop Guide",
+  },
 ];
 
 async function getPublishedPosts() {

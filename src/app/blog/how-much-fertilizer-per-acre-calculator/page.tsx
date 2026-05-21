@@ -141,6 +141,21 @@ export default function FertilizerCalculatorGuide() {
                 <strong className="text-forest-700">Tomatoes</strong>: Heavy feeders that require calcium top-dressing (CAN) to prevent bottom rot. See our <Link href="/blog/tomato-farming-guide-kiambu-kirinyaga" className="text-gold-600 hover:underline font-semibold">Tomato Farming (Kiambu & Kirinyaga) guide</Link> for calcium schedules.
               </li>
               <li>
+                <strong className="text-forest-700">Cabbages & Brassicas</strong>: Require high calcium and magnesium to defend against clubroot disease in acidic soils. Read our <Link href="/blog/cabbage-farming-kiambu" className="text-gold-600 hover:underline font-semibold">Kiambu cabbage guide</Link> for exact soil acidity buffering steps.
+              </li>
+              <li>
+                <strong className="text-forest-700">Onions</strong>: Sulfur nutrition is vital to increase skin quality and shelf life. For specific fertilization timing and drip details, consult our <Link href="/blog/onion-farming-kajiado" className="text-gold-600 hover:underline font-semibold">Kajiado onion guide</Link>.
+              </li>
+              <li>
+                <strong className="text-forest-700">Sweet Potatoes</strong>: Heavy potassium-feeders during early tuber bulking. Read the <Link href="/blog/sweet-potato-farming-homa-bay" className="text-gold-600 hover:underline font-semibold">Homa Bay sweet potato guide</Link> for nutrition-led vine cultivation.
+              </li>
+              <li>
+                <strong className="text-forest-700">Dairy Pastures & Fodder</strong>: Frequent cuts extract substantial nitrogen, dropping pasture protein. View the <Link href="/blog/dairy-farming-nandi" className="text-gold-600 hover:underline font-semibold">Nandi dairy fodder guide</Link> to boost forage yields.
+              </li>
+              <li>
+                <strong className="text-forest-700">Beans & Legumes</strong>: Inoculating seeds with Rhizobium bacteria captures atmospheric nitrogen for free. See the <Link href="/blog/bean-farming-kakamega" className="text-gold-600 hover:underline font-semibold">Kakamega bean guide</Link> to eliminate nitrogen top-dressing costs.
+              </li>
+              <li>
                 <strong className="text-forest-700">Maize</strong>: High nitrogen demands. See the <Link href="/blog/complete-maize-farming-guide-kenya" className="text-gold-600 hover:underline font-semibold">complete maize guide</Link> for detailed planting-to-harvest timing.
               </li>
             </ul>

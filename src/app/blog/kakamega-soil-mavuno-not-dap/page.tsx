@@ -122,7 +122,7 @@ export default function KakamegaMavunoGuide() {
               <li>**Micronutrients (Boron, Zinc)**: Crucial for uniform pollination and high grain density.</li>
             </ul>
             <p className="text-soil-500 leading-relaxed mt-4">
-              By using Mavuno instead of DAP, the phosphorus remains fully available to the maize crop even in highly acidic soils, resulting in thicker roots, stronger stalks, and a yield improvement of up to 40%.
+              By using Mavuno instead of DAP, the phosphorus remains fully available even in highly acidic soils, resulting in thicker roots, stronger stalks, and a yield improvement of up to 40%. For detailed, crop-specific practices in the Western zone, consult our <Link href="/blog/bean-farming-kakamega" className="text-gold-600 hover:underline font-semibold">Kakamega bean farming guide</Link> which highlights crucial seed inoculation methods.
             </p>
           </section>
 

@@ -17,6 +17,11 @@ const STATIC_SLUGS = [
   "meru-nyeri-potato-farming-guide",
   "organic-soil-enrichment-kenya-soil-carbon",
   "tomato-farming-guide-kiambu-kirinyaga",
+  "cabbage-farming-kiambu",
+  "onion-farming-kajiado",
+  "sweet-potato-farming-homa-bay",
+  "dairy-farming-nandi",
+  "bean-farming-kakamega",
 ];
 
 interface PageProps {

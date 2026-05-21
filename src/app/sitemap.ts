@@ -41,6 +41,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/blog/meru-nyeri-potato-farming-guide`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
     { url: `${BASE}/blog/organic-soil-enrichment-kenya-soil-carbon`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
     { url: `${BASE}/blog/tomato-farming-guide-kiambu-kirinyaga`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/cabbage-farming-kiambu`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/onion-farming-kajiado`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/sweet-potato-farming-homa-bay`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/dairy-farming-nandi`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/blog/bean-farming-kakamega`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
   ];
 
   // ── 3. Top-Level Directories (Zones, Counties, Crops, Dealers) ──

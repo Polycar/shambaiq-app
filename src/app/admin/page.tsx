@@ -204,27 +204,34 @@ export default function AdminDashboard() {
 
       {/* ═══ STATS ═══ */}
       {!loading && tab === "stats" && stats && (
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl p-6 border border-cream-300">
-            <h3 className="font-display font-bold text-forest-700 mb-4">Soil Health Issues</h3>
-            {Object.entries(stats.soil_health).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-400 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
+        stats.total_queries === 0 ? (
+          <div className="text-center py-16 text-soil-400">
+            <BarChart3 size={32} className="text-cream-300 mx-auto mb-4" />
+            <p>No statistics data available yet.</p>
           </div>
-          <div className="bg-white rounded-xl p-6 border border-cream-300">
-            <h3 className="font-display font-bold text-forest-700 mb-4">Top Counties</h3>
-            {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
-          </div>
-          <div className="bg-white rounded-xl p-6 border border-cream-300">
-            <h3 className="font-display font-bold text-forest-700 mb-4">Top Crops</h3>
-            {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
-          </div>
-          <div className="bg-white rounded-xl p-6 border border-cream-300">
-            <h3 className="font-display font-bold text-forest-700 mb-4">Feedback</h3>
-            <div className="text-center py-4">
-              <div className="font-display text-4xl font-bold text-forest-700">{stats.feedback?.average_rating?.toFixed(1) || "—"}</div>
-              <div className="text-sm text-soil-400 mt-1">Average rating · {stats.feedback?.total_responses || 0} responses</div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6 border border-cream-300">
+              <h3 className="font-display font-bold text-forest-700 mb-4">Soil Health Issues</h3>
+              {Object.entries(stats.soil_health || {}).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-400 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
+            </div>
+            <div className="bg-white rounded-xl p-6 border border-cream-300">
+              <h3 className="font-display font-bold text-forest-700 mb-4">Top Counties</h3>
+              {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
+            </div>
+            <div className="bg-white rounded-xl p-6 border border-cream-300">
+              <h3 className="font-display font-bold text-forest-700 mb-4">Top Crops</h3>
+              {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
+            </div>
+            <div className="bg-white rounded-xl p-6 border border-cream-300">
+              <h3 className="font-display font-bold text-forest-700 mb-4">Feedback</h3>
+              <div className="text-center py-4">
+                <div className="font-display text-4xl font-bold text-forest-700">{stats.feedback?.average_rating?.toFixed(1) || "—"}</div>
+                <div className="text-sm text-soil-400 mt-1">Average rating · {stats.feedback?.total_responses || 0} responses</div>
+              </div>
             </div>
           </div>
-        </div>
+        )
       )}
 
       {/* ═══ CROPS ═══ */}

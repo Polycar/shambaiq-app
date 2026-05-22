@@ -5,7 +5,7 @@
 
 const BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
-// ─── Types ───────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface RecommendRequest {
   county: string;
@@ -116,7 +116,7 @@ export interface YieldEntry {
   yield_bags_per_acre: number;
 }
 
-// ─── Fetcher ─────────────────────────────────────────────────────
+// ─── Fetcher ────────────────────────────────────────────────────────────────
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
   const url = `${BASE}${path}`;
@@ -134,7 +134,7 @@ async function api<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json();
 }
 
-// ─── Recommendation ──────────────────────────────────────────────
+// ─── Recommendation ───────────────────────────────────────────────────────────
 
 export async function getRecommendation(req: RecommendRequest): Promise<RecommendResult> {
   return api<RecommendResult>("/api/v1/recommend", {
@@ -156,7 +156,7 @@ export async function matchCrops(
   });
 }
 
-// ─── Data ────────────────────────────────────────────────────────
+// ─── Data ────────────────────────────────────────────────────────────────────
 
 export async function fetchCrops(): Promise<string[]> {
   return api<string[]>("/api/v1/crops");
@@ -174,7 +174,7 @@ export async function fetchSeeds(crop: string) {
   return api<RecommendResult["seeds"]>(`/api/v1/seeds/${encodeURIComponent(crop)}`);
 }
 
-// ─── Soil Precision ──────────────────────────────────────────────
+// ─── Soil Precision ─────────────────────────────────────────────────────────────
 
 export async function getSoilPrecision(lat: number, lon: number): Promise<SoilPrecision> {
   return api<SoilPrecision>(`/api/v1/soil/precision/${lat}/${lon}`);
@@ -184,7 +184,7 @@ export async function getSoilISDA(lat: number, lon: number): Promise<SoilPrecisi
   return api<SoilPrecision>(`/api/v1/soil/isda/${lat}/${lon}`);
 }
 
-// ─── Weather ─────────────────────────────────────────────────────
+// ─── Weather ─────────────────────────────────────────────────────────────────
 
 export async function getWeatherByCounty(county: string): Promise<WeatherData> {
   return api<WeatherData>(`/api/v1/weather/county/${encodeURIComponent(county)}`);
@@ -194,7 +194,7 @@ export async function getWeather(lat: number, lon: number): Promise<WeatherData>
   return api<WeatherData>(`/api/v1/weather/${lat}/${lon}`);
 }
 
-// ─── Dealers ─────────────────────────────────────────────────────
+// ─── Dealers ────────────────────────────────────────────────────────────────
 
 export async function getDealersByCounty(county: string): Promise<Dealer[]> {
   const res = await api<{ dealers: Dealer[] }>(`/api/v1/dealers/${encodeURIComponent(county)}`);
@@ -211,11 +211,12 @@ export async function getDealersLive(lat: number, lon: number): Promise<Dealer[]
   return res.dealers;
 }
 
-// ─── Analytics / Yields ──────────────────────────────────────────
+// ─── Analytics / Yields ────────────────────────────────────────────────────────
 
-export async function logYield(entry: YieldEntry) {
+export async function logYield(entry: YieldEntry, token: string) {
   return api("/api/v1/analytics/yields", {
     method: "POST",
+    headers: { "Authorization": `Bearer ${token}` },
     body: JSON.stringify(entry),
   });
 }
@@ -224,9 +225,10 @@ export async function getYieldHistory(farmerId: string) {
   return api<YieldEntry[]>(`/api/v1/analytics/yields/${encodeURIComponent(farmerId)}`);
 }
 
-export async function submitFeedback(recommendationId: string, rating: number, comment?: string) {
+export async function submitFeedback(recommendationId: string, rating: number, token: string, comment?: string) {
   return api("/api/v1/analytics/feedback", {
     method: "POST",
+    headers: { "Authorization": `Bearer ${token}` },
     body: JSON.stringify({ recommendation_id: recommendationId, rating, comment }),
   });
 }
@@ -235,7 +237,7 @@ export async function getDashboardStats() {
   return api("/api/v1/analytics/stats");
 }
 
-// ─── Reports ─────────────────────────────────────────────────────
+// ─── Reports ────────────────────────────────────────────────────────────────
 
 export async function getWhatsAppLink(result: RecommendResult, acres: number): Promise<{ url: string }> {
   return api<{ url: string }>("/api/v1/report/whatsapp-link", {
@@ -251,23 +253,34 @@ export async function getSMSSummary(result: RecommendResult, lang: string): Prom
   });
 }
 
-// ─── Auth ────────────────────────────────────────────────────────
+// ─── Auth ─────────────────────────────────────────────────────────────────────
 
-export async function register(phone: string, email?: string) {
+export async function register(identifier: string, password: string, email?: string) {
+  const isPhone = /^[\d+]/.test(identifier);
   return api("/api/v1/auth/register", {
     method: "POST",
-    body: JSON.stringify({ phone, email }),
+    body: JSON.stringify(
+      isPhone
+        ? { phone_number: identifier, email, password }
+        : { email: identifier, password }
+    ),
   });
 }
 
-export async function login(phone: string) {
-  return api<{ token: string }>("/api/v1/auth/login", {
+export async function login(identifier: string, password: string) {
+  return api<{ access_token: string; token_type: string; user_id: string; role: string }>("/api/v1/auth/login", {
     method: "POST",
-    body: JSON.stringify({ phone }),
+    body: JSON.stringify({ identifier, password }),
   });
 }
 
-// ─── Health ──────────────────────────────────────────────────────
+export async function getMe(token: string) {
+  return api("/api/v1/auth/me", {
+    headers: { "Authorization": `Bearer ${token}` },
+  });
+}
+
+// ─── Health ────────────────────────────────────────────────────────────────
 
 export async function healthCheck(): Promise<{ status: string }> {
   return api<{ status: string }>("/health");

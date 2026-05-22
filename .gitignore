@@ -44,6 +44,9 @@ next-env.d.ts
 shambaiq_mutual_nda.*
 shambaiq_partnership_proposal.*
 shambaiq_sacco_proposal.*
-seo_content_calendar.md
+seo_content_calendar.*
 # Temporary MS Word files
 ~$*
+
+# Helper scripts
+create_excel_calendar.py

@@ -225,6 +225,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
       return;
     }
     setLoading(true);
+    const startTime = Date.now();
     setError("");
     setResult(null);
     setWeather(null);
@@ -303,6 +304,10 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         setError(lang === "en" ? "No internet connection." : "Hakuna muunganisho wa intaneti.");
       }
     } finally {
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 1200) {
+        await new Promise(resolve => setTimeout(resolve, 1200 - elapsed));
+      }
       setLoading(false);
     }
   }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
@@ -326,65 +331,55 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   }, [result]);
 
   return (
-    <div className="min-h-screen" style={{ background: "#f8fafc" }}>
-      {/* Language toggle bar */}
-      <div className="sticky top-0 z-50 border-b" style={{ background: "#1a3a1a" }}>
-        <div className="mx-auto max-w-2xl flex items-center justify-between px-4 py-2">
-          <Link href="/" className="flex items-center gap-2 group transition-opacity hover:opacity-80">
-            <svg width="28" height="28" viewBox="10 70 100 190" fill="none">
-              <path d="M60 240 L35 140 Q30 100 60 80 Q90 100 85 140 Z" fill="#15803d" />
-              <circle cx="60" cy="130" r="22" fill="#dcfce7" />
-              <path d="M60 140 L60 118" stroke="#15803d" strokeWidth="3" strokeLinecap="round" />
-              <path d="M60 125 Q48 115 50 108 Q55 105 60 118" fill="#16a34a" />
-              <path d="M60 130 Q72 120 70 113 Q65 110 60 122" fill="#16a34a" />
-            </svg>
-            <span className="text-white font-bold text-lg tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-              Shamba<span style={{ color: "#C8860A" }}>IQ</span>
-            </span>
-          </Link>
-          <button
-            onClick={() => setLang(lang === "en" ? "sw" : "en")}
-            className="text-sm font-semibold px-3 py-1.5 rounded-full transition-colors"
-            style={{ background: "rgba(255,255,255,0.15)", color: "#F5F0E1" }}
-          >
-            {lang === "en" ? "🇰🇪 Kiswahili" : "🇬🇧 English"}
-          </button>
+    <div className="min-h-screen bg-cream-50">
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="relative bg-gradient-to-br from-forest-800 via-forest-700 to-[#1e4620] overflow-hidden grain">
+        <div className="absolute inset-0 opacity-[0.05]">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="tgrid" width="48" height="48" patternUnits="userSpaceOnUse">
+              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#C8860A" strokeWidth="0.4" />
+            </pattern></defs>
+            <rect width="100%" height="100%" fill="url(#tgrid)" />
+          </svg>
         </div>
-      </div>
+        <div className="relative max-w-2xl mx-auto px-4 py-10 text-center">
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={() => setLang(lang === "en" ? "sw" : "en")}
+              className="text-xs font-semibold px-3 py-1.5 rounded-full border border-cream-200/20 text-cream-300 hover:bg-cream-200/10 transition-colors"
+            >
+              {lang === "en" ? "🇰🇪 Kiswahili" : "🇬🇧 English"}
+            </button>
+          </div>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-xs font-medium mb-5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            {t("powered_by", lang)}
+          </div>
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-cream-100 leading-tight mb-2">
+            {t("nav_advice", lang)}
+          </h1>
+          <p className="text-cream-300/80 text-sm max-w-sm mx-auto">
+            {lang === "en" ? "Get a free, hyper-local soil analysis and fertilizer plan in seconds." : "Pata uchambuzi wa udongo na mpango wa mbolea bila malipo."}
+          </p>
+        </div>
+      </section>
 
-      {/* Hero */}
-      <div
-        className="text-center text-white py-10 px-4"
-        style={{
-          background: "linear-gradient(135deg, #16a34a, #15803d)",
-          boxShadow: "0 10px 15px -3px rgba(0,0,0,0.15)",
-        }}
-      >
-        <h1 className="text-3xl font-extrabold mb-1" style={{ fontFamily: "var(--font-display)" }}>
-          🌱 {t("nav_advice", lang)}
-        </h1>
-        <p className="text-sm opacity-90 max-w-md mx-auto">
-          {t("powered_by", lang)}
-        </p>
-      </div>
-
-      <div className="mx-auto max-w-2xl px-4 py-6 space-y-6">
+      <div className="mx-auto max-w-2xl px-4 py-6 space-y-5">
         {/* ── FORM ──────────────────────────────────────────── */}
-        <div className="bg-white rounded-2xl shadow-sm border p-5 space-y-4">
-          <h2 className="font-bold text-lg" style={{ color: "#1a3a1a" }}>
+        <div className="bg-white rounded-2xl shadow-sm border border-cream-300 p-6 space-y-4">
+          <h2 className="font-display text-xl font-bold text-forest-700">
             {t("form_title", lang)}
           </h2>
 
           {/* Location Mode Toggle */}
-          <div className="flex rounded-xl overflow-hidden border border-gray-200">
+          <div className="flex rounded-xl overflow-hidden border border-cream-300">
             <button
               onClick={() => setLocMode("region")}
               className={`flex-1 py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
                 locMode === "region"
-                  ? "text-white"
-                  : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+                  ? "bg-forest-700 text-cream-100"
+                  : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
-              style={locMode === "region" ? { background: "#1a3a1a" } : {}}
             >
               📍 {lang === "en" ? "Select Region" : "Chagua Eneo"}
             </button>
@@ -392,10 +387,9 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               onClick={() => { setLocMode("gps"); if (!gpsLat) captureGPS(); }}
               className={`flex-1 py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
                 locMode === "gps"
-                  ? "text-white"
-                  : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+                  ? "bg-forest-600 text-cream-100"
+                  : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
-              style={locMode === "gps" ? { background: "#16a34a" } : {}}
             >
               📡 {lang === "en" ? "Check My Farm" : "Kagua Shamba Langu"}
             </button>
@@ -445,7 +439,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     setWard("");
                     setResult(null);
                   }}
-                  className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm focus:border-green-600 focus:ring-green-600 shadow-sm"
+                  className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
                 >
                   <option value="">{t("form_select_county", lang)}</option>
                   {counties.map((c) => (
@@ -468,7 +462,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                       setSubcounty(e.target.value);
                       setWard("");
                     }}
-                    className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm shadow-sm"
+                    className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
                   >
                     <option value="">{t("form_whole_county", lang)}</option>
                     {subcounties.map((sc) => (
@@ -487,7 +481,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   <select
                     value={ward}
                     onChange={(e) => setWard(e.target.value)}
-                    className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm shadow-sm"
+                    className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
                   >
                     <option value="">{t("form_whole_subcounty", lang)}</option>
                     {wardList.map((w) => (
@@ -519,7 +513,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Crop + Fertilizer */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-forest-600 mb-1">
                 🌾 {t("form_crop", lang)}
               </label>
               <select
@@ -529,7 +523,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   const u = CROP_UNITS[e.target.value];
                   setYieldVal(u ? u.def : null);
                 }}
-                className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm"
+                className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
               >
                 <option value="">—</option>
                 {crops.map((c) => (
@@ -538,13 +532,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-forest-600 mb-1">
                 🧪 {t("form_fert", lang)}
               </label>
               <select
                 value={fertilizer}
                 onChange={(e) => setFertilizer(e.target.value)}
-                className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm"
+                className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
               >
                 {FERTILIZER_OPTIONS.map((f) => (
                   <option key={f} value={f}>{f}</option>
@@ -556,7 +550,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Acres + Price Mode */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-forest-600 mb-1">
                 📐 {t("form_acres", lang)}
               </label>
               <input
@@ -566,17 +560,17 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 min={0.25}
                 max={500}
                 step={0.25}
-                className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm"
+                className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-forest-600 mb-1">
                 💰 {lang === "en" ? "Price Basis" : "Msingi wa Bei"}
               </label>
               <select
                 value={priceMode}
                 onChange={(e) => setPriceMode(e.target.value as "Subsidized" | "Commercial")}
-                className="w-full rounded-xl border-gray-300 border px-3 py-2.5 text-sm"
+                className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
               >
                 <option value="Subsidized">{t("form_price_subsidized", lang)}</option>
                 <option value="Commercial">{t("form_price_commercial", lang)}</option>
@@ -623,18 +617,55 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           <button
             onClick={handleSubmit}
             disabled={loading || !county || !crop}
-            className="w-full py-3 rounded-xl font-bold text-white text-base transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ background: loading ? "#64748b" : "#16a34a" }}
+            className={`w-full py-3.5 rounded-xl font-bold text-white text-base transition-all flex items-center justify-center gap-2 shadow-md ${
+              loading
+                ? "bg-soil-400 cursor-not-allowed"
+                : "bg-forest-600 hover:bg-forest-500 hover:scale-[1.01] shadow-forest-700/20"
+            } disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100`}
           >
-            {loading ? t("form_analyzing", lang) : t("form_button", lang)}
+            {loading ? (
+              <>
+                <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                </svg>
+                {t("form_analyzing", lang)}
+              </>
+            ) : t("form_button", lang)}
           </button>
 
           {error && (
-            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
-              {error}
+            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800 flex items-start gap-2">
+              <span className="shrink-0 mt-0.5">⚠️</span><span>{error}</span>
             </div>
           )}
         </div>
+
+        {/* ── LOADING SKELETON ──────────────────────────────── */}
+        {loading && (
+          <div className="space-y-4 pb-6 fade-up">
+            <div className="bg-white rounded-2xl border border-cream-300 p-6 text-center">
+              <div className="skeleton h-20 w-20 rounded-full mx-auto mb-3" />
+              <div className="skeleton h-4 w-32 mx-auto mb-2" />
+              <div className="skeleton h-3 w-48 mx-auto" />
+            </div>
+            <div className="bg-white rounded-2xl border border-cream-300 p-5 space-y-3">
+              <div className="skeleton h-4 w-40 mb-4" />
+              {[1,2,3].map(i => (
+                <div key={i} className="space-y-1.5">
+                  <div className="skeleton h-3 w-24" />
+                  <div className="skeleton h-2 w-full" />
+                </div>
+              ))}
+            </div>
+            <div className="bg-white rounded-2xl border border-cream-300 p-5 space-y-3">
+              <div className="skeleton h-4 w-36 mb-4" />
+              <div className="skeleton h-3 w-full" />
+              <div className="skeleton h-3 w-4/5" />
+              <div className="skeleton h-3 w-3/5" />
+            </div>
+          </div>
+        )}
 
         {/* ── GEMINI FALLBACK ADVICE ─────────────────────── */}
         {geminiAdvice && (
@@ -691,11 +722,24 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
         {/* ── RESULTS ───────────────────────────────────────── */}
         {result && !result.error && (
-          <div ref={resultRef} id="shambaiq-results" className="space-y-4 pb-20">
+          <div ref={resultRef} id="shambaiq-results" className="space-y-4 pb-28 fade-up">
             {/* Score */}
-            <div className="rounded-2xl text-center text-white py-6 px-4" style={{ background: scoreColor(result.health_score) }}>
-              <p className="text-6xl font-extrabold">{result.health_score}</p>
-              <p className="text-sm font-bold tracking-wider uppercase mt-1">{t("result_score", lang)}</p>
+            <div className="rounded-2xl border border-cream-300 bg-white p-6 text-center shadow-sm">
+              <div
+                className="w-24 h-24 rounded-full flex flex-col items-center justify-center mx-auto mb-3 shadow-lg"
+                style={{ background: scoreColor(result.health_score) }}
+              >
+                <span className="text-4xl font-extrabold text-white leading-none">{result.health_score}</span>
+                <span className="text-[10px] text-white/80 uppercase tracking-wider font-bold">/100</span>
+              </div>
+              <p className="font-display text-xl font-bold text-forest-700">
+                {result.health_score >= 70
+                  ? (lang === "en" ? "Good Soil Health" : "Afya Nzuri ya Udongo")
+                  : result.health_score >= 40
+                  ? (lang === "en" ? "Moderate — Needs Attention" : "Ya Wastani — Inahitaji Uangalifu")
+                  : (lang === "en" ? "Poor — Action Required" : "Mbaya — Hatua Inahitajika")}
+              </p>
+              <p className="text-sm text-soil-400 mt-1">{t("result_score", lang)} · {result.county}</p>
             </div>
 
             {/* Data source badge */}
@@ -853,16 +897,16 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             )}
 
             {/* Budget / Shopping List */}
-            <div className="rounded-2xl border bg-white p-5">
-              <h3 className="font-bold text-base mb-1" style={{ color: "#1a3a1a" }}>
+            <div className="rounded-2xl border border-cream-300 bg-white p-5">
+              <h3 className="font-display font-bold text-base mb-1 text-forest-700">
                 🛒 {t("shopping_title", lang)}
               </h3>
-              <p className="text-xs text-gray-500 mb-3">
+              <p className="text-xs text-soil-400 mb-3">
                 {t("shopping_for", lang)} <strong>{acres} {t("shopping_acres", lang)}</strong>
               </p>
-              <div className="rounded-xl p-4 mb-3 text-center" style={{ background: "#1a3a1a" }}>
-                <p className="text-sm text-gray-300 uppercase tracking-wider">{t("result_total_cost", lang)}</p>
-                <p className="text-3xl font-extrabold text-white">KES {result.budget.total_budget.toLocaleString()}</p>
+              <div className="rounded-xl p-4 mb-3 text-center bg-forest-700">
+                <p className="text-sm text-cream-400 uppercase tracking-wider">{t("result_total_cost", lang)}</p>
+                <p className="text-3xl font-extrabold text-gold-400">KES {result.budget.total_budget.toLocaleString()}</p>
               </div>
               <ul className="space-y-1.5">
                 {result.budget.breakdown.map((line, i) => (
@@ -965,15 +1009,14 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             )}
 
             {/* Share & Download Actions */}
-            <div className="rounded-2xl border bg-white p-5 space-y-3" data-noprint>
-              <h3 className="font-bold text-base" style={{ color: "#1a3a1a" }}>
+            <div className="rounded-2xl border border-cream-300 bg-white p-5 space-y-3" data-noprint>
+              <h3 className="font-display font-bold text-base text-forest-700">
                 {lang === "en" ? "Share & Download" : "Shiriki na Pakua"}
               </h3>
               <button
                 onClick={() => {
                   const el = resultRef.current;
                   if (!el) return;
-                  // Hide the share buttons during print
                   const noprint = el.querySelectorAll('[data-noprint]');
                   noprint.forEach(n => (n as HTMLElement).style.display = 'none');
                   const style = document.createElement('style');
@@ -989,20 +1032,10 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   style.remove();
                   noprint.forEach(n => (n as HTMLElement).style.display = '');
                 }}
-                className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm cursor-pointer"
-                style={{ background: "#1a3a1a" }}
+                className="block w-full py-3 rounded-xl text-center font-bold text-cream-100 text-sm cursor-pointer bg-forest-700 hover:bg-forest-600 transition-colors"
               >
                 {lang === "en" ? "Download PDF Report" : "Pakua Ripoti ya PDF"}
               </button>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm"
-                style={{ background: "#25D366" }}
-              >
-                {t("result_share", lang)}
-              </a>
               <button
                 onClick={async () => {
                   if (agrShown) { setAgrShown(false); return; }
@@ -1018,8 +1051,9 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   finally { setAgrLoading(false); }
                 }}
                 disabled={agrLoading}
-                className="block w-full py-3 rounded-xl text-center font-bold text-white text-sm cursor-pointer transition-all disabled:opacity-60"
-                style={{ background: agrShown ? "#64748b" : "#2563eb" }}
+                className={`block w-full py-3 rounded-xl text-center font-bold text-white text-sm cursor-pointer transition-all disabled:opacity-60 ${
+                  agrShown ? "bg-soil-400 hover:bg-soil-500" : "bg-gold-600 hover:bg-gold-500"
+                }`}
               >
                 {agrLoading
                   ? (lang === "en" ? "Searching Agrovets..." : "Inatafuta Agroveti...")
@@ -1027,6 +1061,22 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     ? (lang === "en" ? "Hide Agrovets" : "Ficha Agroveti")
                     : t("dealers_find", lang)}
               </button>
+            </div>
+
+            {/* Sticky WhatsApp FAB */}
+            <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-full max-w-xs px-4" data-noprint>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-2xl font-bold text-white text-sm shadow-2xl pulse-glow"
+                style={{ background: "#25D366" }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                {t("result_share", lang)}
+              </a>
             </div>
 
             {/* Agrovet Results */}

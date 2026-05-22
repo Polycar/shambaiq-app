@@ -100,26 +100,6 @@ export default function CropsDirectoryPage() {
                       </div>
                     </div>
 
-                    {/* NPK needs */}
-                    <div className="flex justify-between">
-                      <span>N / P / K need</span>
-                      <div className="flex gap-1.5">
-                        {[c.n_need, c.p_need, c.k_need].map((need, i) => (
-                          <span
-                            key={i}
-                            className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase"
-                            style={{
-                              backgroundColor:
-                                need === "high" ? "#dc262615" : need === "medium" ? "#f59e0b15" : "#16a34a15",
-                              color:
-                                need === "high" ? "#dc2626" : need === "medium" ? "#f59e0b" : "#16a34a",
-                            }}
-                          >
-                            {need === "high" ? "H" : need === "medium" ? "M" : "L"}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
 
                     {/* Yield + Price */}
                     <div className="flex justify-between">

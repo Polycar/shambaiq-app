@@ -69,6 +69,18 @@ body {
 .fade-up-delay-5 { animation-delay: 0.40s; opacity: 0; }
 .fade-up-delay-6 { animation-delay: 0.48s; opacity: 0; }
 
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-12px); max-height: 0; }
+  to   { opacity: 1; transform: translateY(0);    max-height: 600px; }
+}
+.slide-down { animation: slide-down 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.skeleton { animation: skeleton-pulse 1.6s ease-in-out infinite; background: #EDE5D0; border-radius: 0.5rem; }
+
 @keyframes marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }

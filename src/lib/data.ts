@@ -283,7 +283,8 @@ export function scoreCropForCounty(county: CountySoil, crop: CropEconomics): num
     score -= Math.min(20, ((kMin - county.potassium) / kMin) * 25);
   }
 
-  return Math.max(0, Math.round(score));
+  // Scale score to a realistic maximum of 94% due to non-soil field factors
+  return Math.max(0, Math.round(score * 0.94));
 }
 
 export function getTopCropsForCounty(county: CountySoil, limit = 8): { crop: CropEconomics; score: number }[] {
@@ -320,7 +321,8 @@ export function computeSoilHealthScore(county: CountySoil): number {
 
   // Weighted: pH 40% (gatekeeper), each nutrient 15%
   const raw = s_ph * 0.4 + s_n * 0.15 + s_p * 0.15 + s_k * 0.15 + s_oc * 0.15;
-  return Math.round(Math.min(100, Math.max(0, raw * 100)));
+  // Maximum realistic SQI is around 94% under real field conditions
+  return Math.round(Math.min(94, Math.max(0, raw * 94)));
 }
 
 // ─── Crop-Soil Suitability Score (sigmoid model) ───
@@ -340,7 +342,8 @@ export function computeCropSoilScore(county: CountySoil, crop: CropEconomics): n
   const s_k  = sig(county.potassium, kCrit);
   const s_oc = sig(county.organicCarbon, 12);
   const raw = s_ph * 0.4 + s_n * 0.2 + s_p * 0.2 + s_k * 0.1 + s_oc * 0.1;
-  return Math.round(Math.min(100, Math.max(0, raw * 100)));
+  // Maximum realistic suitability score is around 94%
+  return Math.round(Math.min(94, Math.max(0, raw * 94)));
 }
 
 // ─── Zone Helpers ──────────────────────────────────

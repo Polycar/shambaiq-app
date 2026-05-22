@@ -12,6 +12,7 @@ import {
   Satellite,
   Leaf,
   TrendingUp,
+  User,
 } from "lucide-react";
 import {
   getCountySoils,
@@ -20,6 +21,7 @@ import {
   computeSoilHealthScore,
   getWards,
 } from "@/lib/data";
+
 
 export default function HomePage() {
   const counties = getCountySoils();
@@ -141,7 +143,7 @@ export default function HomePage() {
             ] as const).map((card) => {
               const Icon = card.icon;
               return (
-                <Link key={card.title} href={card.href} className="min-w-[82vw] sm:min-w-[300px] md:min-w-0 snap-center bg-white rounded-2xl p-7 border-l-4 shadow-sm card-hover group" style={{ borderLeftColor: card.color }}>
+                <Link key={card.title} href={card.href} className="w-[85vw] shrink-0 sm:w-[300px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-7 border-l-4 shadow-sm card-hover group" style={{ borderLeftColor: card.color }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ backgroundColor: `${card.color}12` }}>
                     <Icon size={24} strokeWidth={1.8} style={{ color: card.color }} />
                   </div>
@@ -202,7 +204,7 @@ export default function HomePage() {
           </div>
           <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible no-scrollbar">
             {topCounties.map((c) => (
-              <Link key={c.slug} href={`/soil/${c.slug}`} className="min-w-[84vw] sm:min-w-[350px] md:min-w-0 snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group">
+              <Link key={c.slug} href={`/soil/${c.slug}`} className="w-[85vw] shrink-0 sm:w-[350px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group">
                 <div className="flex items-start justify-between mb-5">
                   <div>
                     <h3 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{c.county}</h3>
@@ -255,7 +257,7 @@ export default function HomePage() {
 
           <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
             {[...crops, ...crops].map((c, i) => (
-              <Link key={`${c.slug}-${i}`} href={`/crops/${c.slug}`} className="bg-forest-600/40 hover:bg-forest-500 border border-forest-500/30 hover:border-gold-500/40 rounded-full px-7 py-2.5 mx-2 text-center transition-all group/link whitespace-nowrap">
+              <Link key={`${c.slug}-${i}`} href={`/crops/${c.slug}`} className="bg-forest-600/40 hover:bg-forest-500 border border-forest-500/30 hover:border-gold-500/40 rounded-full px-7 py-2.5 mx-2 flex items-center transition-all group/link whitespace-nowrap">
                 <span className="text-cream-200 group-hover/link:text-gold-300 font-medium text-sm transition-colors">{c.crop}</span>
               </Link>
             ))}
@@ -278,7 +280,7 @@ export default function HomePage() {
               const zoneCounties = counties.filter((c) => c.zone === z);
               const slug = z.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
               return (
-                <Link key={z} href={`/zones/${slug}`} className="min-w-[72vw] sm:min-w-[240px] shrink-0 snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 transition-all group card-hover">
+                <Link key={z} href={`/zones/${slug}`} className="w-[80vw] shrink-0 sm:w-[240px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 transition-all group card-hover">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-lg bg-forest-700/8 flex items-center justify-center">
                       <Layers size={18} className="text-forest-600" strokeWidth={1.8} />
@@ -307,7 +309,22 @@ export default function HomePage() {
       <section className="py-16 md:py-24 bg-cream-200">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 mb-5 leading-tight">Ready to farm with data?</h2>
-          <p className="text-lg text-soil-400 mb-10 max-w-xl mx-auto">Get a free, personalized soil report and fertilizer plan for your county in under 30 seconds.</p>
+          <p className="text-lg text-soil-400 mb-8 max-w-xl mx-auto">Get a free, personalized soil report and fertilizer plan for your county in under 30 seconds.</p>
+          
+          <div className="flex justify-center items-center gap-3 mb-8">
+            <div className="flex -space-x-2.5">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="w-9 h-9 rounded-full border-2 border-cream-200 bg-cream-300 flex items-center justify-center overflow-hidden shrink-0">
+                  <User size={16} className="text-forest-600/60" strokeWidth={2.5} />
+                </div>
+              ))}
+            </div>
+            <div className="text-left">
+              <div className="flex text-gold-500 text-sm">★★★★★</div>
+              <div className="text-xs text-soil-400 font-semibold mt-0.5">Join 15,000+ farmers</div>
+            </div>
+          </div>
+
           <Link href="/app" className="group inline-flex items-center gap-2 px-10 py-4 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25">
             Get Free Soil Advice
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />

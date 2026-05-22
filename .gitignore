@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Confidential business documents & calendar
+shambaiq_mutual_nda.*
+shambaiq_partnership_proposal.*
+shambaiq_sacco_proposal.*
+seo_content_calendar.md
+# Temporary MS Word files
+~$*

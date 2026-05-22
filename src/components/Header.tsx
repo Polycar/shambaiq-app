@@ -118,7 +118,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
 
         {/* Mobile nav */}
         {open && (
-          <nav className="lg:hidden pb-5 space-y-1 border-t border-forest-600/40 mt-1 pt-3">
+          <nav className="lg:hidden slide-down pb-5 space-y-1 border-t border-forest-600/40 mt-1 pt-3 overflow-hidden">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

@@ -6,7 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 export const metadata: Metadata = {
   title: "2026 Kenya Soil Health Report: All 47 Counties Ranked",
   description:
-    "Complete soil health rankings for every Kenyan county. pH, nitrogen, phosphorus, and potassium data from iSDAsoil satellite mapping. Find where Kenya's healthiest farmland is.",
+    "Complete soil health rankings for every Kenyan county. pH, nitrogen, phosphorus, and potassium data from precision satellite mapping. Find where Kenya's healthiest farmland is.",
   openGraph: {
     title: "2026 Kenya Soil Health Report: All 47 Counties Ranked",
     images: ["/api/og"],
@@ -31,7 +31,7 @@ export default function KenyaSoilRankings() {
     publisher: { "@type": "Organization", name: "ShambaIQ", url: "https://shambaiq.com" },
     datePublished: "2026-05-01",
     dateModified: "2026-05-16",
-    description: "Complete soil health rankings for every Kenyan county based on iSDAsoil satellite data.",
+    description: "Complete soil health rankings for every Kenyan county based on 30m precision satellite data.",
   };
 
   const faqSchema = {
@@ -41,7 +41,7 @@ export default function KenyaSoilRankings() {
       {
         "@type": "Question",
         name: "Which Kenyan county has the healthiest soil?",
-        acceptedAnswer: { "@type": "Answer", text: `Based on iSDAsoil 2026 data, ${top10[0]?.county} County has the highest soil health score of ${top10[0]?.score}, with optimal pH, nitrogen, and phosphorus levels for most crops.` },
+        acceptedAnswer: { "@type": "Answer", text: `Based on high-resolution 2026 satellite data, ${top10[0]?.county} County has the highest soil health score of ${top10[0]?.score}, with optimal pH, nitrogen, and phosphorus levels for most crops.` },
       },
       {
         "@type": "Question",
@@ -51,7 +51,7 @@ export default function KenyaSoilRankings() {
       {
         "@type": "Question",
         name: "Where does ShambaIQ soil data come from?",
-        acceptedAnswer: { "@type": "Answer", text: "ShambaIQ uses iSDAsoil satellite data, which provides soil chemistry predictions at 30-metre resolution across all of Africa. The data is produced using machine learning models trained on thousands of soil samples." },
+        acceptedAnswer: { "@type": "Answer", text: "ShambaIQ uses 30m resolution satellite soil data, which provides soil chemistry predictions at 30-metre resolution across all of Africa. The data is produced using machine learning models trained on thousands of soil samples." },
       },
     ],
   };
@@ -70,9 +70,9 @@ export default function KenyaSoilRankings() {
             2026 Kenya Soil Health Report: All 47 Counties Ranked
           </h1>
           <p className="text-soil-400 leading-relaxed max-w-2xl">
-            We analyzed iSDAsoil satellite data for every county in Kenya, scoring soil health based on pH, nitrogen, phosphorus, potassium, and organic carbon. Here are the results.
+            We analyzed satellite soil data for every county in Kenya, scoring soil health based on pH, nitrogen, phosphorus, potassium, and organic carbon. Here are the results.
           </p>
-          <div className="text-xs text-soil-300 mt-4">Updated May 2026 · 8 min read · Data source: iSDAsoil 30m satellite mapping</div>
+          <div className="text-xs text-soil-300 mt-4">Updated May 2026 · 8 min read · Data source: 30m precision satellite mapping</div>
         </header>
 
         <div className="prose prose-forest max-w-none">
@@ -155,7 +155,7 @@ export default function KenyaSoilRankings() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Methodology</h2>
             <p className="text-soil-500 leading-relaxed">
-              All data comes from the iSDAsoil (2021) dataset, which uses machine learning models trained on over 100,000 soil samples to predict soil properties at 30-metre resolution across Africa. County averages are computed using zonal statistics over official county boundaries. The Soil Quality Index uses a sigmoid-weighted scoring model with pH (40% weight), nitrogen (15%), phosphorus (15%), potassium (15%), and organic carbon (15%). Full methodology is documented in ShambaIQ&apos;s open-source codebase.
+              All data comes from high-resolution satellite soil data models trained on over 100,000 soil samples to predict soil properties at 30-metre resolution across Africa. County averages are computed using zonal statistics over official county boundaries. The Soil Quality Index uses a sigmoid-weighted scoring model with pH (40% weight), nitrogen (15%), phosphorus (15%), potassium (15%), and organic carbon (15%). Full methodology is documented in ShambaIQ&apos;s open-source codebase.
             </p>
           </section>
         </div>

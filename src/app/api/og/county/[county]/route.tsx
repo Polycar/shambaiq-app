@@ -90,7 +90,7 @@ export async function GET(
 
         {/* Footer */}
         <div style={{ marginTop: "24px", fontSize: "14px", color: "#5a6a5a" }}>
-          shambaiq.com/soil/{slug} · Data: iSDAsoil 30m satellite mapping
+          shambaiq.com/soil/{slug} · 30m precision satellite data
         </div>
       </div>
     ),

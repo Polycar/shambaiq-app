@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const score = scoreCropForCounty(county, crop);
   return {
     title: `Growing ${crop.crop} in ${county.county} — Soil Analysis, Fertilizer Plan, Budget`,
-    description: `${county.county} soil scores ${score} for ${crop.crop}. Get fertilizer recommendations, seed varieties, planting calendar, and budget estimates. Based on iSDAsoil 30m satellite data.`,
+    description: `${county.county} soil scores ${score} for ${crop.crop}. Get fertilizer recommendations, seed varieties, planting calendar, and budget estimates. Based on 30m precision satellite soil data.`,
     openGraph: {
       title: `${crop.crop} in ${county.county} — ${score} Suitability`,
     },

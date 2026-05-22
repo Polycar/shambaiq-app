@@ -79,7 +79,7 @@ export default function WheatCountyComparison() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Soil Statistics Comparison (Satellite Soil Data)</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Let's look at the average soil chemical indicators drawn from regional iSDAsoil metrics:
+              Let's look at the average soil chemical indicators drawn from regional satellite soil metrics:
             </p>
             <div className="overflow-x-auto mb-6">
               <table className="w-full text-sm border-collapse">

@@ -22,8 +22,8 @@ const translations = {
     sw: "Kilimo Bora kwa Kila Mkulima wa Kenya",
   },
   hero_subtitle: {
-    en: "Free soil analysis and fertilizer advice for all 47 counties. Powered by iSDAsoil 30m satellite data.",
-    sw: "Uchambuzi wa udongo na ushauri wa mbolea kwa kaunti zote 47. Inatumia data ya satelaiti ya iSDAsoil 30m.",
+    en: "Free soil analysis and fertilizer advice for all 47 counties. Powered by 30m precision satellite data.",
+    sw: "Uchambuzi wa udongo na ushauri wa mbolea kwa kaunti zote 47. Inatumia data ya satelaiti ya usahihi ya mita 30.",
   },
   hero_cta: { en: "Get Free Advice", sw: "Pata Ushauri Bure" },
 
@@ -140,7 +140,7 @@ const translations = {
   doctor_analyze: { en: "Analyze with AI", sw: "Chambua na AI" },
 
   // ─── General ─────────────────────────────────────────────────
-  powered_by: { en: "Powered by iSDAsoil 30m satellite data", sw: "Inatumia data ya satelaiti ya iSDAsoil 30m" },
+  powered_by: { en: "Powered by 30m precision satellite data", sw: "Inatumia data ya satelaiti ya usahihi ya mita 30" },
   all_counties: { en: "All 47 Counties", sw: "Kaunti Zote 47" },
   learn_more: { en: "Learn More", sw: "Jifunze Zaidi" },
   loading: { en: "Loading...", sw: "Inapakia..." },

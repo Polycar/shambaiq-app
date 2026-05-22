@@ -7,7 +7,7 @@ import { ArrowRight, Layers } from "lucide-react";
 export const metadata: Metadata = {
   title: "Soil Reports for All 47 Kenyan Counties",
   description:
-    "Free soil health reports for every Kenyan county. pH, nitrogen, phosphorus, potassium data from iSDAsoil satellite mapping. Find the best soil for your crops.",
+    "Free soil health reports for every Kenyan county. pH, nitrogen, phosphorus, potassium data from satellite soil mapping. Find the best soil for your crops.",
 };
 
 export default function SoilDirectoryPage() {
@@ -44,7 +44,7 @@ export default function SoilDirectoryPage() {
         <p className="text-soil-400 max-w-2xl text-lg leading-relaxed">
           Explore soil health data for all {total} Kenyan counties. Each report
           includes pH, nitrogen, phosphorus, potassium, and organic carbon levels with
-          crop recommendations — powered by iSDAsoil satellite data.
+          crop recommendations — powered by 30m precision satellite data.
         </p>
       </div>
 

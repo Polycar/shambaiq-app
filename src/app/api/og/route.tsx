@@ -46,7 +46,7 @@ export async function GET() {
         </div>
 
         <div style={{ marginTop: "40px", fontSize: "14px", color: "#5a6a5a" }}>
-          shambaiq.com · Powered by iSDAsoil 30m satellite data
+          shambaiq.com · 30m precision satellite data
         </div>
       </div>
     ),

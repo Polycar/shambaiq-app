@@ -44,7 +44,7 @@ export default function FertilizerGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Rule: Soil pH Decides Your Fertilizer</h2>
             <p className="text-soil-500 leading-relaxed mb-4">Before comparing products, understand this principle: your soil&apos;s pH determines which fertilizers your crops can actually use. A farmer in <Link href="/soil/nakuru" className="text-gold-600 hover:underline font-medium">Nakuru</Link> (pH 6.28) and a farmer in <Link href="/soil/kiambu" className="text-gold-600 hover:underline font-medium">Kiambu</Link> (pH 5.28) should not buy the same fertilizer, even if they grow the same crop. The Kiambu farmer&apos;s acidic soil will lock up standard DAP phosphorus, wasting money. The Nakuru farmer&apos;s neutral soil can use DAP efficiently.</p>
-            <p className="text-soil-500 leading-relaxed">Don&apos;t know your soil pH? <Link href="/soil" className="text-gold-600 hover:underline font-medium">Check your county&apos;s soil report</Link> — we have data for all 47 counties from iSDAsoil satellite mapping.</p>
+            <p className="text-soil-500 leading-relaxed">Don&apos;t know your soil pH? <Link href="/soil" className="text-gold-600 hover:underline font-medium">Check your county&apos;s soil report</Link> — we have data for all 47 counties from precision satellite soil mapping.</p>
           </section>
 
           <section className="mb-10">

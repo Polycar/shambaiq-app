@@ -62,7 +62,7 @@ export default function HomePage() {
             {/* Badge */}
             <div className="fade-up inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-sm font-medium mb-8">
               <Satellite size={14} strokeWidth={2} />
-              Powered by iSDAsoil satellite mapping
+              Powered by 30m precision satellite data
             </div>
 
             {/* Headline */}
@@ -168,7 +168,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8">
             {([
-              { step: "01", title: "Select your location", desc: "Choose your county and ward. We use iSDAsoil satellite technology to check the exact soil health of your local farm area.", icon: MapPin },
+              { step: "01", title: "Select your location", desc: "Choose your county and ward. We use 30m precision satellite data to check the exact soil health of your local farm area.", icon: MapPin },
               { step: "02", title: "Pick your crop", desc: "25 crops analyzed against your soil\u2019s pH, nitrogen, phosphorus, and potassium. Each scored for suitability.", icon: Wheat },
               { step: "03", title: "Get your plan", desc: "Fertilizer type, bags per acre, timing, budget, and nearest agrovet. Actionable advice you can use today.", icon: ClipboardCheck },
             ] as const).map((s) => {
@@ -298,7 +298,7 @@ export default function HomePage() {
       {/* ─── TRUST BAR ─────────────────────────────────────── */}
       <section className="py-10 bg-cream-200/60 border-y border-cream-300">
         <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-x-12 gap-y-4 text-sm text-soil-400">
-          <div className="flex items-center gap-2"><Satellite size={16} className="text-forest-500" /> iSDAsoil 30m satellite data</div>
+          <div className="flex items-center gap-2"><Satellite size={16} className="text-forest-500" /> 30m precision satellite data</div>
           <div className="flex items-center gap-2"><TrendingUp size={16} className="text-forest-500" /> Updated annually</div>
           <div className="flex items-center gap-2"><MapPin size={16} className="text-forest-500" /> All 47 counties covered</div>
           <div className="flex items-center gap-2"><Leaf size={16} className="text-forest-500" /> 100% free, forever</div>

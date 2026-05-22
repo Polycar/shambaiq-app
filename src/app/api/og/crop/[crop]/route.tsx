@@ -84,7 +84,7 @@ export async function GET(
         </div>
 
         <div style={{ marginTop: "16px", fontSize: "14px", color: "#5a6a5a" }}>
-          shambaiq.com/crops/{slug} · Data: iSDAsoil 30m satellite mapping
+          shambaiq.com/crops/{slug} · 30m precision satellite data
         </div>
       </div>
     ),

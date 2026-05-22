@@ -178,7 +178,7 @@ export default function MaizeFarmingGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Get a Plan for Your Specific Farm</h2>
             <p className="text-soil-500 leading-relaxed">
-              This guide covers maize farming at a national level. For advice tailored to your specific county, ward, and farm size — including exact bag quantities, costs, and nearest dealers — use ShambaIQ&apos;s <Link href="/app" className="text-gold-600 hover:underline font-medium">recommendation tool</Link>. It takes 30 seconds and covers all 47 counties with data from iSDAsoil satellite mapping.
+              This guide covers maize farming at a national level. For advice tailored to your specific county, ward, and farm size — including exact bag quantities, costs, and nearest dealers — use ShambaIQ&apos;s <Link href="/app" className="text-gold-600 hover:underline font-medium">recommendation tool</Link>. It takes 30 seconds and covers all 47 counties with data from precision satellite soil mapping.
             </p>
           </section>
         </div>

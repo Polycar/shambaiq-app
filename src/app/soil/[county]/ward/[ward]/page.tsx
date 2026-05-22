@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${ward.ward} Ward Soil Report — ${county.county} County`,
-    description: `Precision soil analysis for ${ward.ward} ward in ${ward.subcounty} sub-county, ${county.county}. GPS coordinates: ${ward.latitude.toFixed(4)}, ${ward.longitude.toFixed(4)}. iSDAsoil 30m satellite data.`,
+    description: `Precision soil analysis for ${ward.ward} ward in ${ward.subcounty} sub-county, ${county.county}. GPS coordinates: ${ward.latitude.toFixed(4)}, ${ward.longitude.toFixed(4)}. 30m precision satellite soil data.`,
   };
 }
 
@@ -111,7 +111,7 @@ export default async function WardPage({ params }: PageProps) {
 
           {precisionData ? (
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-              🎯 Ward-Level Precision Data (iSDA 30m)
+              🎯 Ward-Level Precision Data (30m satellite)
             </div>
           ) : (
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold">

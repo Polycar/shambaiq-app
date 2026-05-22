@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!county) return {};
   return {
     title: `${county.county} County Soil Health Report 2026 — pH, Nitrogen, Phosphorus`,
-    description: `${county.county} soil analysis: pH ${county.pH}, Nitrogen ${county.nitrogen} g/kg, Phosphorus ${county.phosphorus} mg/kg. Get precision fertilizer recommendations for 25 crops. Free soil data from iSDAsoil satellite mapping.`,
+    description: `${county.county} soil analysis: pH ${county.pH}, Nitrogen ${county.nitrogen} g/kg, Phosphorus ${county.phosphorus} mg/kg. Get precision fertilizer recommendations for 25 crops. Free soil data from satellite soil mapping.`,
     openGraph: {
       title: `${county.county} County Soil Report`,
       description: `pH ${county.pH} · N ${county.nitrogen} g/kg · P ${county.phosphorus} mg/kg`,
@@ -118,7 +118,7 @@ export default async function CountySoilPage({ params }: PageProps) {
               zone
             </p>
             <p className="text-sm text-soil-300">
-              Data: iSDAsoil 30m satellite mapping · Updated 2026
+              Data: 30m satellite soil mapping · Updated 2026
             </p>
           </div>
           <ScoreRing score={score} />

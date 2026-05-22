@@ -6,7 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Farming Guides & Soil Reports — Kenya Agriculture Blog",
   description:
-    "Data-driven farming guides for Kenya. County soil rankings, crop guides, fertilizer comparisons, and seasonal advice based on iSDAsoil satellite data.",
+    "Data-driven farming guides for Kenya. County soil rankings, crop guides, fertilizer comparisons, and seasonal advice based on 30m precision satellite soil data.",
 };
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
@@ -182,7 +182,7 @@ export default async function BlogPage() {
         ShambaIQ Blog
       </h1>
       <p className="text-soil-400 mb-10 max-w-2xl">
-        Data-driven farming guides, county soil reports, and seasonal advice. Every article uses real iSDAsoil satellite data covering all 47 Kenyan counties.
+        Data-driven farming guides, county soil reports, and seasonal advice. Every article uses real 30m precision satellite soil data covering all 47 Kenyan counties.
       </p>
 
       <div className="space-y-6">

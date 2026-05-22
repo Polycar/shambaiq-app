@@ -18,7 +18,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 text-xs text-cream-500">
               <Satellite size={12} />
-              <span>Powered by iSDAsoil</span>
+              <span>Powered by satellite soil data</span>
             </div>
           </div>
 
@@ -71,7 +71,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-forest-600 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-cream-500">
-            © {new Date().getFullYear()} ShambaIQ. Soil data powered by iSDAsoil &amp; ISRIC SoilGrids.
+            © {new Date().getFullYear()} ShambaIQ. Soil data powered by 30m precision satellite mapping.
           </p>
           <p className="text-xs text-cream-500">
             Built for Kenyan farmers 🇰🇪

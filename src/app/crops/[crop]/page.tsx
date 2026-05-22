@@ -13,12 +13,27 @@ import {
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
+export const revalidate = 0;
+
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
+
 interface PageProps {
   params: Promise<{ crop: string }>;
 }
 
 export async function generateStaticParams() {
   return getCrops().map((c) => ({ crop: c.slug }));
+}
+
+async function fetchLivePrice(cropName: string): Promise<number | null> {
+  try {
+    const res = await fetch(`${API}/api/v1/crops/prices`, { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.prices?.[cropName] ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -51,7 +66,9 @@ export default async function CropPage({ params }: PageProps) {
   );
   const prices = getPrices();
 
-  const revenue = crop.price_per_kg * crop.yield_per_acre;
+  const livePrice = await fetchLivePrice(crop.crop);
+  const displayPrice = livePrice ?? crop.price_per_kg;
+  const revenue = displayPrice * crop.yield_per_acre;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -248,7 +265,7 @@ export default async function CropPage({ params }: PageProps) {
               <div className="flex justify-between">
                 <span className="text-soil-400">Market price</span>
                 <span className="font-bold text-forest-700">
-                  KES {crop.price_per_kg}/kg
+                  KES {displayPrice}/kg
                 </span>
               </div>
               <div className="flex justify-between">

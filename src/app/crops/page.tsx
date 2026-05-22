@@ -4,11 +4,26 @@ import { getCrops } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { ArrowRight } from "lucide-react";
 
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Crop Farming Guides — 25 Crops, Soil Requirements, Fertilizer",
   description:
     "Complete farming guides for 25 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
 };
+
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
+
+async function fetchLivePrices(): Promise<Record<string, number>> {
+  try {
+    const res = await fetch(`${API}/api/v1/crops/prices`, { cache: "no-store" });
+    if (!res.ok) return {};
+    const data = await res.json();
+    return data.prices || {};
+  } catch {
+    return {};
+  }
+}
 
 const CATEGORY_META: Record<string, { emoji: string; color: string }> = {
   Cereals:               { emoji: "🌾", color: "#d4a020" },
@@ -28,8 +43,9 @@ function categorize(crop: string): string {
   return "Fruits & Trees";
 }
 
-export default function CropsDirectoryPage() {
+export default async function CropsDirectoryPage() {
   const crops = getCrops();
+  const livePrices = await fetchLivePrices();
 
   const groups: Record<string, typeof crops> = {};
   crops.forEach((c) => {
@@ -38,7 +54,6 @@ export default function CropsDirectoryPage() {
     groups[cat].push(c);
   });
 
-  // Ensure consistent order
   const categoryOrder = ["Cereals", "Legumes", "Root & Tuber Crops", "Vegetables", "Cash Crops", "Fruits & Trees"];
 
   return (
@@ -72,55 +87,57 @@ export default function CropsDirectoryPage() {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {catCrops.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/crops/${c.slug}`}
-                  className="bg-white rounded-2xl p-5 border border-cream-300 hover:border-gold-400 card-hover group"
-                >
-                  <h3 className="font-display text-lg font-bold text-forest-700 group-hover:text-gold-600 transition-colors mb-3 leading-tight">
-                    {c.crop}
-                  </h3>
+              {catCrops.map((c) => {
+                const displayPrice = livePrices[c.crop] ?? c.price_per_kg;
+                return (
+                  <Link
+                    key={c.slug}
+                    href={`/crops/${c.slug}`}
+                    className="bg-white rounded-2xl p-5 border border-cream-300 hover:border-gold-400 card-hover group"
+                  >
+                    <h3 className="font-display text-lg font-bold text-forest-700 group-hover:text-gold-600 transition-colors mb-3 leading-tight">
+                      {c.crop}
+                    </h3>
 
-                  <div className="space-y-2 text-xs text-soil-400">
-                    {/* pH bar */}
-                    <div>
-                      <div className="flex justify-between mb-0.5">
-                        <span>pH range</span>
-                        <span className="font-semibold text-forest-700">{c.ph_min}–{c.ph_max}</span>
+                    <div className="space-y-2 text-xs text-soil-400">
+                      {/* pH bar */}
+                      <div>
+                        <div className="flex justify-between mb-0.5">
+                          <span>pH range</span>
+                          <span className="font-semibold text-forest-700">{c.ph_min}–{c.ph_max}</span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-cream-300 relative overflow-hidden">
+                          <div
+                            className="absolute h-full rounded-full bg-forest-400"
+                            style={{
+                              left: `${((c.ph_min - 3) / 8) * 100}%`,
+                              width: `${((c.ph_max - c.ph_min) / 8) * 100}%`,
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="h-1.5 rounded-full bg-cream-300 relative overflow-hidden">
-                        <div
-                          className="absolute h-full rounded-full bg-forest-400"
-                          style={{
-                            left: `${((c.ph_min - 3) / 8) * 100}%`,
-                            width: `${((c.ph_max - c.ph_min) / 8) * 100}%`,
-                          }}
-                        />
+
+                      {/* Yield + Price */}
+                      <div className="flex justify-between">
+                        <span>Yield</span>
+                        <span className="font-semibold text-forest-700">
+                          {c.yield_per_acre.toLocaleString()} kg/acre
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Market price</span>
+                        <span className="font-semibold text-green-600">
+                          KES {displayPrice}/kg
+                        </span>
                       </div>
                     </div>
 
-
-                    {/* Yield + Price */}
-                    <div className="flex justify-between">
-                      <span>Yield</span>
-                      <span className="font-semibold text-forest-700">
-                        {c.yield_per_acre.toLocaleString()} kg/acre
-                      </span>
+                    <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-gold-600 group-hover:text-gold-500 transition-colors">
+                      Full guide <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                     </div>
-                    <div className="flex justify-between">
-                      <span>Market price</span>
-                      <span className="font-semibold text-green-600">
-                        KES {c.price_per_kg}/kg
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-gold-600 group-hover:text-gold-500 transition-colors">
-                    Full guide <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </section>
         );

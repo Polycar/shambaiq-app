@@ -52,6 +52,36 @@ function scoreBg(s: number) {
   return "bg-red-50 border-red-200";
 }
 
+const BACKEND = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
+
+function getCookieSession(): { token?: string } | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.split("; ").find(c => c.startsWith("shambaiq_session="));
+  if (!match) return null;
+  try { return JSON.parse(decodeURIComponent(match.split("=").slice(1).join("="))); }
+  catch { return null; }
+}
+
+function saveSoilReport(res: RecommendResult) {
+  const token = getCookieSession()?.token;
+  if (!token) return;
+  fetch(`${BACKEND}/api/v1/auth/soil-log`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({
+      county: res.county,
+      crop: res.crop,
+      health_score: res.health_score,
+      estimated_cost_kes: res.budget?.total_budget ?? 0,
+      primary_fertilizer: res.comparison?.recommended ?? "",
+      is_acidic: res.is_acidic ?? (res.county_data ? res.county_data.pH < 5.5 : false),
+      is_n_low: res.is_n_low ?? false,
+      is_p_low: res.is_p_low ?? false,
+      is_k_low: res.is_k_low ?? false,
+    }),
+  }).catch(() => {/* non-blocking */});
+}
+
 /** Strip markdown **bold** markers and leading emojis from backend text */
 function clean(s: string | undefined | null): string {
   if (!s) return "";
@@ -262,6 +292,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         yield_target: yieldTarget,
       });
       setResult(res);
+      saveSoilReport(res);
 
       if (res.county_data) {
         matchCrops(resolvedCounty, acres, lang === "en" ? "English" : "Kiswahili", lat, lon)

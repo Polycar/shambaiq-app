@@ -128,7 +128,7 @@ export async function POST(request: Request) {
       ];
 
       const isGreeting = normalized.length < 40 &&
-        normalized.split(/\s+/).map(w => w.replace(/\W/g, '')).some(w => shortGreetings.includes(w));
+        normalized.split(/\s+/).map((w: string) => w.replace(/\W/g, '')).some((w: string) => shortGreetings.includes(w));
       const isAgri = agKeywords.some(kw => normalized.includes(kw));
 
       if (!isGreeting && !isAgri) {

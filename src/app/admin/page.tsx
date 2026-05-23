@@ -5,8 +5,7 @@ import {
   Lock, Store, BarChart3, AlertTriangle, FileText,
   Check, CheckCircle, X, Loader2, RefreshCw, Users, TrendingUp, MapPin, Wheat,
   PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight, Upload,
-  Sparkles, Globe, Link2, Image, Columns, Bold, Italic, Heading2, Heading3,
-  Quote, Code, ImagePlus, Download, Database, Minus,
+  Sparkles, Globe, Link2, Image, Columns,
 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
@@ -492,7 +491,7 @@ export default function AdminDashboard() {
   // ─── Tabs ───
   const tabs: { key: Tab; label: string; icon: any; badge?: number }[] = [
     { key: "stats", label: "Overview", icon: BarChart3 },
-    { key: "b2b", label: "B2B Hub", icon: Database },
+    { key: "b2b", label: "B2B Hub", icon: BarChart3 },
     { key: "crops", label: "Crop Pricing", icon: Wheat },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
@@ -578,7 +577,7 @@ export default function AdminDashboard() {
         <div className="space-y-6">
           <div className="bg-gradient-to-br from-forest-700 to-forest-800 rounded-2xl p-6 text-white">
             <div className="flex items-center gap-3 mb-2">
-              <Database size={22} className="text-gold-300" />
+              <BarChart3 size={22} className="text-gold-300" />
               <h2 className="font-display text-xl font-bold">ShambaIQ B2B Data Engine</h2>
             </div>
             <p className="text-forest-200 text-sm leading-relaxed">
@@ -643,7 +642,7 @@ export default function AdminDashboard() {
                 key: "full",
                 title: "Full Yield Dataset",
                 description: "All yield records with county, crop, yield t/ha, flags, and notes. For research partners and agri-extension services.",
-                icon: Download,
+                icon: FileText,
                 color: "text-soil-600",
                 bg: "bg-cream-50",
                 border: "border-cream-200",
@@ -663,7 +662,7 @@ export default function AdminDashboard() {
                   disabled={b2bExporting === key}
                   className={`flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${b2bExporting === key ? "bg-cream-100 text-soil-400 cursor-wait" : "bg-forest-700 hover:bg-forest-800 text-white"}`}
                 >
-                  {b2bExporting === key ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+                  {b2bExporting === key ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} className="rotate-180" />}
                   {b2bExporting === key ? "Exporting…" : "Download CSV"}
                 </button>
               </div>
@@ -1136,36 +1135,27 @@ export default function AdminDashboard() {
                             {/* Markdown toolbar */}
                             <div className="flex flex-wrap items-center gap-1 p-2 border border-cream-300 border-b-0 rounded-t-xl bg-cream-50">
                               {[
-                                { icon: Bold, label: "Bold", action: () => insert("**", "**", "bold text") },
-                                { icon: Italic, label: "Italic", action: () => insert("_", "_", "italic text") },
-                                { icon: Heading2, label: "H2", action: () => insertHeading(2) },
-                                { icon: Heading3, label: "H3", action: () => insertHeading(3) },
-                                { icon: Link2, label: "Link", action: () => insert("[", "](url)", "link text") },
-                                { icon: ImagePlus, label: "Image", action: () => setImgModal({ url: "", alt: "" }) },
-                                { icon: Quote, label: "Quote", action: () => insert("> ", "", "quoted text") },
-                                { icon: Code, label: "Code", action: () => insert("`", "`", "code") },
-                              ].map(({ icon: Icon, label, action }) => (
+                                { label: "B", title: "Bold", action: () => insert("**", "**", "bold text"), className: "font-bold" },
+                                { label: "I", title: "Italic", action: () => insert("_", "_", "italic text"), className: "italic" },
+                                { label: "H2", title: "Heading 2", action: () => insertHeading(2), className: "font-semibold" },
+                                { label: "H3", title: "Heading 3", action: () => insertHeading(3), className: "font-semibold" },
+                                { label: "Link", title: "Link", action: () => insert("[", "](url)", "link text"), className: "", icon: Link2 },
+                                { label: "Image", title: "Image", action: () => setImgModal({ url: "", alt: "" }), className: "", icon: Image },
+                                { label: "Quote", title: "Blockquote", action: () => insert("> ", "", "quoted text"), className: "" },
+                                { label: "Code", title: "Inline code", action: () => insert("`", "`", "code"), className: "font-mono" },
+                                { label: "—", title: "Divider", action: () => insert("\n\n---\n\n", "", ""), className: "" },
+                              ].map(({ label, title, action, className, icon: Icon }) => (
                                 <button
                                   key={label}
                                   type="button"
-                                  title={label}
+                                  title={title}
                                   onClick={action}
                                   className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-soil-500 hover:text-forest-700 hover:bg-cream-200 rounded-lg transition-colors"
                                 >
-                                  <Icon size={14} />
-                                  <span className="hidden sm:inline">{label}</span>
+                                  {Icon ? <Icon size={13} /> : null}
+                                  <span className={className}>{label}</span>
                                 </button>
                               ))}
-                              <div className="w-px h-5 bg-cream-300 mx-1" />
-                              <button
-                                type="button"
-                                title="Divider"
-                                onClick={() => insert("\n\n---\n\n", "", "")}
-                                className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-soil-500 hover:text-forest-700 hover:bg-cream-200 rounded-lg transition-colors"
-                              >
-                                <Minus size={14} />
-                                <span className="hidden sm:inline">Divider</span>
-                              </button>
                             </div>
                             <textarea
                               ref={editorRef}

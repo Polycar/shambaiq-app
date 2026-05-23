@@ -20,12 +20,14 @@ export default function DealerApplyPage() {
     business_name: "",
     county: "",
     town: "",
+    physical_address: "",
     phone_number: "",
     email: "",
     products_stocked: "",
     lat: null as number | null,
     lon: null as number | null,
   });
+  const [locationTab, setLocationTab] = useState<"address" | "gps">("address");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [gpsStatus, setGpsStatus] = useState<"idle" | "loading" | "done">("idle");
@@ -109,7 +111,7 @@ export default function DealerApplyPage() {
       <div className="bg-gold-50 border border-gold-200 rounded-xl p-4 mb-8 flex gap-3 items-start">
         <AlertCircle size={20} className="text-gold-600 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-gold-700">
-          All submissions are reviewed by ShambaIQ before going live. You'll be notified by email when your listing is approved.
+          All submissions are reviewed by ShambaIQ before going live. You&apos;ll be notified by email when your listing is approved.
         </p>
       </div>
 
@@ -151,7 +153,7 @@ export default function DealerApplyPage() {
             </label>
             <input
               type="text"
-              placeholder="e.g. Kangemi"
+              placeholder="e.g. Westlands"
               value={form.town}
               onChange={(e) => setForm({ ...form, town: e.target.value })}
               className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-colors"
@@ -199,25 +201,80 @@ export default function DealerApplyPage() {
             onChange={(e) => setForm({ ...form, products_stocked: e.target.value })}
             className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-colors"
           />
+          <p className="text-xs text-soil-300 mt-1">
+            You can manage detailed stock and pricing from your dealer dashboard after approval.
+          </p>
         </div>
 
-        {/* GPS */}
+        {/* Shop Location — tabbed */}
         <div>
           <label className="text-sm font-semibold text-forest-700 mb-2 block">
-            Shop Location (optional)
+            Shop Location
           </label>
-          <button
-            onClick={captureGPS}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-cream-300 rounded-xl text-soil-400 hover:border-gold-400 hover:text-forest-700 transition-colors"
-          >
-            {gpsStatus === "loading" ? (
-              <><Loader2 size={16} className="animate-spin" /> Capturing location...</>
-            ) : gpsStatus === "done" ? (
-              <><CheckCircle size={16} className="text-green-600" /> Location captured: {form.lat?.toFixed(4)}, {form.lon?.toFixed(4)}</>
-            ) : (
-              <><MapPin size={16} /> Capture shop GPS location</>
-            )}
-          </button>
+
+          {/* Tab switcher */}
+          <div className="flex rounded-xl overflow-hidden border border-cream-300 mb-3">
+            <button
+              type="button"
+              onClick={() => setLocationTab("address")}
+              className={`flex-1 py-2.5 text-sm font-semibold transition-all ${
+                locationTab === "address"
+                  ? "bg-forest-700 text-white"
+                  : "bg-cream-50 text-soil-500 hover:bg-cream-100"
+              }`}
+            >
+              Street Address
+            </button>
+            <button
+              type="button"
+              onClick={() => { setLocationTab("gps"); if (gpsStatus === "idle") captureGPS(); }}
+              className={`flex-1 py-2.5 text-sm font-semibold transition-all ${
+                locationTab === "gps"
+                  ? "bg-forest-700 text-white"
+                  : "bg-cream-50 text-soil-500 hover:bg-cream-100"
+              }`}
+            >
+              GPS Coordinates
+            </button>
+          </div>
+
+          {/* Address tab */}
+          {locationTab === "address" && (
+            <div>
+              <textarea
+                placeholder="e.g. Nairobi, Westlands, off Parklands Road, Maua Close, Kaka House, 5th Floor"
+                value={form.physical_address}
+                onChange={(e) => setForm({ ...form, physical_address: e.target.value })}
+                rows={3}
+                className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 resize-none transition-colors"
+              />
+              <p className="text-xs text-soil-300 mt-1">
+                Be as specific as possible — farmers use this to find your shop.
+              </p>
+            </div>
+          )}
+
+          {/* GPS tab */}
+          {locationTab === "gps" && (
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={captureGPS}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-cream-300 rounded-xl text-soil-400 hover:border-gold-400 hover:text-forest-700 transition-colors"
+              >
+                {gpsStatus === "loading" ? (
+                  <><Loader2 size={16} className="animate-spin" /> Capturing location...</>
+                ) : gpsStatus === "done" ? (
+                  <><CheckCircle size={16} className="text-green-600" /> Location captured: {form.lat?.toFixed(4)}, {form.lon?.toFixed(4)}</>
+                ) : (
+                  <><MapPin size={16} /> Capture shop GPS location</>
+                )}
+              </button>
+              <p className="text-xs text-soil-300">
+                GPS enables farmers to find you on the &quot;nearby agrovets&quot; map.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Error message */}

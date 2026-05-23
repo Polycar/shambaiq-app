@@ -3,7 +3,18 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
-import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, Dealer, matchCrops, CropMatch } from "@/lib/api";
+import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, Dealer, DealerProduct, matchCrops, CropMatch } from "@/lib/api";
+
+const STOCK_LABEL: Record<string, string> = {
+  in_stock: "In Stock",
+  low_stock: "Running Low",
+  out_of_stock: "Out of Stock",
+};
+const STOCK_COLOR: Record<string, string> = {
+  in_stock: "text-green-700 font-semibold",
+  low_stock: "text-amber-600 font-semibold",
+  out_of_stock: "text-red-600 font-semibold",
+};
 
 // ─── Types for serialized data passed from server ───────────────
 interface CountyData {
@@ -90,6 +101,112 @@ function clean(s: string | undefined | null): string {
     .replace(/^[\u2728\u26A0\uFE0F\u2705\u274C\u2757\u2615\u26C5\u2600\uFE0F\u2614\u2B50\uD83C-\uDBFF][\uDC00-\uDFFF]?\s*/g, "")
     .replace(/^[🚨⚠️✅❌🚀💡🌧️☀️🍃🏔️📅📡🧬📊🛒🏷️💧🌦️⛅🎯🔄📤🌍💰🌾⛈️☁️🌫️🎉]+\s*/g, "")
     .trim();
+}
+
+// ─── Agrovet card ──────────────────────────────────────────────
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
+
+function AgrovetCard({ dealer, isFirst, lang }: { dealer: Dealer; isFirst: boolean; lang: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const [products, setProducts] = useState<DealerProduct[] | null>(null);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+
+  const fetchProducts = async () => {
+    if (!dealer.dealer_id || products !== null) return;
+    setLoadingProducts(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/v1/dealers/store/${dealer.dealer_id}/products`);
+      if (res.ok) {
+        const data = await res.json();
+        setProducts(data.products || []);
+      }
+    } catch {}
+    setLoadingProducts(false);
+  };
+
+  const toggle = () => {
+    if (!expanded && dealer.dealer_id) fetchProducts();
+    setExpanded(v => !v);
+  };
+
+  const isVerified = dealer.source === "ShambaIQ Verified";
+
+  return (
+    <div
+      className="rounded-xl border transition-colors hover:border-green-300"
+      style={{ background: isFirst ? "#f0fdf4" : "#f8fafc" }}
+    >
+      <div className="p-3 flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="font-bold text-sm text-gray-800">{dealer.name}</p>
+            {isVerified && (
+              <span className="text-[10px] font-bold px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full">
+                ShambaIQ Verified
+              </span>
+            )}
+          </div>
+          {dealer.physical_address ? (
+            <p className="text-xs text-gray-500 mt-0.5">{dealer.physical_address}</p>
+          ) : (
+            <p className="text-xs text-gray-500 mt-0.5">{dealer.town || dealer.county}</p>
+          )}
+          {dealer.phone && (
+            <a href={`tel:${dealer.phone}`} className="text-xs text-blue-600 font-semibold mt-1 inline-block hover:underline">
+              {dealer.phone}
+            </a>
+          )}
+          {dealer.dealer_id && (
+            <button
+              onClick={toggle}
+              className="mt-1.5 text-xs text-forest-700 font-semibold hover:underline block"
+            >
+              {expanded
+                ? (lang === "en" ? "Hide stock" : "Ficha hisa")
+                : (lang === "en" ? "See what’s in stock" : "Ona hisa zilizopo")}
+            </button>
+          )}
+        </div>
+        <div className="text-right shrink-0">
+          {dealer.distance !== undefined && (
+            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+              {dealer.distance} km
+            </span>
+          )}
+          {dealer.rating && (
+            <p className="text-xs text-amber-600 font-semibold mt-1">{dealer.rating} / 5</p>
+          )}
+        </div>
+      </div>
+
+      {expanded && dealer.dealer_id && (
+        <div className="border-t border-gray-100 px-3 pb-3 pt-2">
+          {loadingProducts ? (
+            <p className="text-xs text-gray-400 py-2">{lang === "en" ? "Loading inventory..." : "Inapakia..."}</p>
+          ) : products && products.length > 0 ? (
+            <div className="space-y-1.5">
+              {products.map(p => (
+                <div key={p.id} className="flex items-center justify-between text-xs">
+                  <div>
+                    <span className="font-medium text-gray-800">{p.product_name}</span>
+                    {p.unit && <span className="text-gray-400 ml-1">({p.unit})</span>}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {p.price !== undefined && p.price !== null && (
+                      <span className="text-gray-600">KSh {p.price.toLocaleString()}</span>
+                    )}
+                    <span className={STOCK_COLOR[p.stock_status]}>{STOCK_LABEL[p.stock_status]}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-gray-400 py-1">{lang === "en" ? "No inventory listed yet." : "Hakuna hisa zilizoorodheshwa."}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─── Component ─────────────────────────────────────────────────
@@ -1124,38 +1241,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 {agrovets.length > 0 ? (
                   <div className="space-y-2.5">
                     {agrovets.slice(0, 10).map((d, i) => (
-                      <div
-                        key={i}
-                        className="rounded-xl border p-3 flex items-start justify-between gap-3 hover:border-green-300 transition-colors"
-                        style={{ background: i === 0 ? "#f0fdf4" : "#f8fafc" }}
-                      >
-                        <div className="min-w-0 flex-1">
-                          <p className="font-bold text-sm text-gray-800 truncate">{d.name}</p>
-                          <p className="text-xs text-gray-500 mt-0.5 truncate">
-                            📍 {d.town || d.county}
-                          </p>
-                          {d.phone && (
-                            <a
-                              href={`tel:${d.phone}`}
-                              className="text-xs text-blue-600 font-semibold mt-1 inline-block hover:underline"
-                            >
-                              📞 {d.phone}
-                            </a>
-                          )}
-                        </div>
-                        <div className="text-right shrink-0">
-                          {d.distance !== undefined && (
-                            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                              {d.distance} km
-                            </span>
-                          )}
-                          {d.rating && (
-                            <p className="text-xs text-amber-600 font-semibold mt-1">
-                              ⭐ {d.rating}
-                            </p>
-                          )}
-                        </div>
-                      </div>
+                      <AgrovetCard key={i} dealer={d} isFirst={i === 0} lang={lang} />
                     ))}
                     {agrovets.length > 10 && (
                       <p className="text-xs text-gray-400 text-center pt-1">

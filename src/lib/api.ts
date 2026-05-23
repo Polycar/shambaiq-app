@@ -86,10 +86,22 @@ export interface WeatherData {
   advice: string;
 }
 
+export interface DealerProduct {
+  id: string;
+  product_name: string;
+  category: string;
+  brand?: string;
+  stock_status: "in_stock" | "low_stock" | "out_of_stock";
+  price?: number;
+  unit?: string;
+  updated_at?: string;
+}
+
 export interface Dealer {
   name: string;
   county?: string;
   town?: string;
+  physical_address?: string;
   lat?: number;
   lon?: number;
   phone?: string;
@@ -97,6 +109,8 @@ export interface Dealer {
   distance?: number;
   rating?: number;
   source?: string;
+  dealer_id?: string;
+  products?: DealerProduct[];
 }
 
 export interface SoilPrecision {

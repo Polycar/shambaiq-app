@@ -3,23 +3,90 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   Store, Package, BarChart3, Users, MapPin, Loader2,
-  Check, CheckCircle, CheckCircle2, LogOut, Edit3, TrendingUp,
-  ChevronDown, ChevronUp, Wheat, Droplets, Lock, X,
+  Check, CheckCircle, LogOut, TrendingUp,
+  ChevronDown, ChevronUp, Wheat, Droplets, Lock, X, Plus, Trash2,
 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
+
+// ── Stock status helpers ─────────────────────────────────────────────────────
+
+const STOCK_LABELS: Record<string, string> = {
+  in_stock: "In Stock",
+  low_stock: "Running Low",
+  out_of_stock: "Out of Stock",
+};
+
+const STOCK_COLORS: Record<string, string> = {
+  in_stock: "text-green-700 font-semibold",
+  low_stock: "text-amber-600 font-semibold",
+  out_of_stock: "text-red-600 font-semibold",
+};
+
+const STOCK_BG: Record<string, string> = {
+  in_stock: "bg-green-50 border-green-200",
+  low_stock: "bg-amber-50 border-amber-200",
+  out_of_stock: "bg-red-50 border-red-200",
+};
+
+// ── Common product catalog ───────────────────────────────────────────────────
+
+const CATALOG: { name: string; category: string; unit: string }[] = [
+  { name: "DAP 50kg", category: "Fertilizer", unit: "50kg bag" },
+  { name: "CAN 50kg", category: "Fertilizer", unit: "50kg bag" },
+  { name: "Urea 50kg", category: "Fertilizer", unit: "50kg bag" },
+  { name: "NPK 17:17:17 50kg", category: "Fertilizer", unit: "50kg bag" },
+  { name: "NPK 23:23:0 50kg", category: "Fertilizer", unit: "50kg bag" },
+  { name: "MOP 50kg", category: "Fertilizer", unit: "50kg bag" },
+  { name: "Agricultural Lime 50kg", category: "Lime", unit: "50kg bag" },
+  { name: "Calcitic Lime 50kg", category: "Lime", unit: "50kg bag" },
+  { name: "Maize Seed 2kg", category: "Seed", unit: "2kg packet" },
+  { name: "Maize Seed 10kg", category: "Seed", unit: "10kg bag" },
+  { name: "Beans Seed 1kg", category: "Seed", unit: "1kg packet" },
+  { name: "Sunflower Seed 1kg", category: "Seed", unit: "1kg packet" },
+  { name: "Sorghum Seed 1kg", category: "Seed", unit: "1kg packet" },
+  { name: "Dithane M45 1kg", category: "Fungicide", unit: "1kg packet" },
+  { name: "Ridomil Gold 1kg", category: "Fungicide", unit: "1kg packet" },
+  { name: "Karate 1L", category: "Insecticide", unit: "1L bottle" },
+  { name: "Kingcode Elite 1L", category: "Insecticide", unit: "1L bottle" },
+  { name: "Duduthrin 1L", category: "Insecticide", unit: "1L bottle" },
+  { name: "Roundup 1L", category: "Herbicide", unit: "1L bottle" },
+  { name: "Weedmaster 1L", category: "Herbicide", unit: "1L bottle" },
+  { name: "Touchdown 1L", category: "Herbicide", unit: "1L bottle" },
+  { name: "Granular Foliar 1kg", category: "Foliar", unit: "1kg packet" },
+  { name: "Optimizer 1L", category: "Foliar", unit: "1L bottle" },
+];
+
+const CATEGORIES = ["Fertilizer", "Lime", "Seed", "Fungicide", "Insecticide", "Herbicide", "Foliar", "Other"];
+
+interface Product {
+  id: string;
+  product_name: string;
+  category: string;
+  brand?: string;
+  stock_status: "in_stock" | "low_stock" | "out_of_stock";
+  price?: number;
+  unit?: string;
+  updated_at?: string;
+}
 
 export default function DealerDashboard() {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
-  const [editingProducts, setEditingProducts] = useState(false);
-  const [products, setProducts] = useState("");
-  const [saving, setSaving] = useState(false);
-  const [savedMsg, setSavedMsg] = useState(false);
 
-  // Farmer needs panel
+  // Inventory
+  const [inventory, setInventory] = useState<Product[]>([]);
+  const [invLoading, setInvLoading] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [showAddPanel, setShowAddPanel] = useState(false);
+  const [addForm, setAddForm] = useState({ product_name: "", category: "Fertilizer", unit: "", price: "" });
+  const [addMode, setAddMode] = useState<"catalog" | "custom">("catalog");
+  const [saving, setSaving] = useState<Record<string, boolean>>({});
+  const [addSaving, setAddSaving] = useState(false);
+
+  // Farmer needs
   const [showNeeds, setShowNeeds] = useState(false);
   const [needs, setNeeds] = useState<any>(null);
   const [needsLoading, setNeedsLoading] = useState(false);
@@ -55,14 +122,27 @@ export default function DealerDashboard() {
       const a = await analyticsRes.json();
       setProfile(p);
       setAnalytics(a);
-      if (p.dealer?.products_stocked) setProducts(p.dealer.products_stocked);
     } catch (e) {
       console.error("Failed to fetch dealer data:", e);
     }
     setLoading(false);
   }, [token]);
 
+  const fetchInventory = useCallback(async () => {
+    if (!token) return;
+    setInvLoading(true);
+    try {
+      const res = await fetch(`${API}/api/v1/dealers/portal/inventory?token=${token}`);
+      if (res.ok) {
+        const data = await res.json();
+        setInventory(data.products || []);
+      }
+    } catch {}
+    setInvLoading(false);
+  }, [token]);
+
   useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => { if (token) fetchInventory(); }, [token, fetchInventory]);
 
   const fetchNeeds = useCallback(async () => {
     if (!token) return;
@@ -79,23 +159,79 @@ export default function DealerDashboard() {
     setShowNeeds(v => !v);
   };
 
-  const saveProducts = async () => {
+  const updateStockStatus = async (product: Product, newStatus: "in_stock" | "low_stock" | "out_of_stock") => {
     if (!token) return;
-    setSaving(true);
+    setSaving(s => ({ ...s, [product.id]: true }));
     try {
-      const res = await fetch(`${API}/api/v1/dealers/portal/products?token=${token}`, {
+      const res = await fetch(`${API}/api/v1/dealers/portal/inventory/${product.id}?token=${token}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ products_stocked: products }),
+        body: JSON.stringify({ stock_status: newStatus }),
       });
       if (res.ok) {
-        setSavedMsg(true);
-        setEditingProducts(false);
-        setTimeout(() => setSavedMsg(false), 3000);
-        fetchData();
+        setInventory(inv => inv.map(p => p.id === product.id ? { ...p, stock_status: newStatus } : p));
       }
     } catch {}
-    setSaving(false);
+    setSaving(s => ({ ...s, [product.id]: false }));
+  };
+
+  const updatePrice = async (product: Product, price: string) => {
+    if (!token) return;
+    const parsed = parseFloat(price);
+    if (isNaN(parsed) || parsed < 0) return;
+    setSaving(s => ({ ...s, [`price_${product.id}`]: true }));
+    try {
+      const res = await fetch(`${API}/api/v1/dealers/portal/inventory/${product.id}?token=${token}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ price: parsed }),
+      });
+      if (res.ok) {
+        setInventory(inv => inv.map(p => p.id === product.id ? { ...p, price: parsed } : p));
+      }
+    } catch {}
+    setSaving(s => ({ ...s, [`price_${product.id}`]: false }));
+  };
+
+  const removeProduct = async (productId: string) => {
+    if (!token) return;
+    setSaving(s => ({ ...s, [`del_${productId}`]: true }));
+    try {
+      const res = await fetch(`${API}/api/v1/dealers/portal/inventory/${productId}?token=${token}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setInventory(inv => inv.filter(p => p.id !== productId));
+      }
+    } catch {}
+    setSaving(s => ({ ...s, [`del_${productId}`]: false }));
+  };
+
+  const addProduct = async () => {
+    if (!token || !addForm.product_name || !addForm.category) return;
+    setAddSaving(true);
+    try {
+      const catalog = CATALOG.find(c => c.name === addForm.product_name);
+      const body = {
+        product_name: addForm.product_name,
+        category: addForm.category,
+        unit: addForm.unit || catalog?.unit || "",
+        stock_status: "in_stock",
+        price: addForm.price ? parseFloat(addForm.price) : undefined,
+      };
+      const res = await fetch(`${API}/api/v1/dealers/portal/inventory?token=${token}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setInventory(inv => [...inv, data.product]);
+        setAddForm({ product_name: "", category: "Fertilizer", unit: "", price: "" });
+        setShowAddPanel(false);
+      }
+    } catch {}
+    setAddSaving(false);
   };
 
   const changePassword = async () => {
@@ -138,6 +274,14 @@ export default function DealerDashboard() {
   }
 
   const dealer = profile.dealer;
+
+  // Products grouped by category, filtered by activeCategory
+  const existingNames = new Set(inventory.map(p => p.product_name));
+  const catalogOptions = CATALOG.filter(c => !existingNames.has(c.name));
+  const filteredInventory = activeCategory === "All"
+    ? inventory
+    : inventory.filter(p => p.category === activeCategory);
+  const inventoryCategories = ["All", ...Array.from(new Set(inventory.map(p => p.category))).sort()];
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -225,7 +369,6 @@ export default function DealerDashboard() {
           {analytics && (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {/* Soil Queries — clickable to show farmer needs */}
                 <button
                   onClick={toggleNeeds}
                   className="bg-white rounded-2xl border border-cream-300 p-6 text-left hover:border-forest-400 hover:shadow-md transition-all group"
@@ -235,9 +378,7 @@ export default function DealerDashboard() {
                       <TrendingUp size={20} className="text-forest-700" />
                     </div>
                     <span className="text-sm text-soil-400">Soil Queries (30 days)</span>
-                    {showNeeds
-                      ? <ChevronUp size={14} className="text-soil-400 ml-auto" />
-                      : <ChevronDown size={14} className="text-soil-400 ml-auto group-hover:text-forest-700 transition-colors" />}
+                    {showNeeds ? <ChevronUp size={14} className="text-soil-400 ml-auto" /> : <ChevronDown size={14} className="text-soil-400 ml-auto group-hover:text-forest-700 transition-colors" />}
                   </div>
                   <div className="font-display text-3xl font-bold text-forest-700">{analytics.recent_queries}</div>
                   <p className="text-xs text-gold-600 mt-1 font-medium">Click to see farmer needs →</p>
@@ -292,9 +433,7 @@ export default function DealerDashboard() {
                       <p className="text-xs text-soil-400">
                         Based on <strong className="text-forest-700">{needs.total_queries}</strong> soil queries in the last {needs.period_days} days
                       </p>
-
                       <div className="grid sm:grid-cols-2 gap-6">
-                        {/* Top Crops */}
                         <div>
                           <h3 className="text-sm font-bold text-forest-700 mb-3 flex items-center gap-2">
                             <Wheat size={14} /> Top Crops Grown
@@ -304,10 +443,7 @@ export default function DealerDashboard() {
                               <div key={i} className="flex items-center gap-2">
                                 <div className="text-xs w-5 text-soil-400 font-mono">{i + 1}.</div>
                                 <div className="flex-1 bg-cream-100 rounded-full h-2 overflow-hidden">
-                                  <div
-                                    className="bg-forest-500 h-2 rounded-full"
-                                    style={{ width: `${Math.round(c.count / needs.top_crops[0].count * 100)}%` }}
-                                  />
+                                  <div className="bg-forest-500 h-2 rounded-full" style={{ width: `${Math.round(c.count / needs.top_crops[0].count * 100)}%` }} />
                                 </div>
                                 <span className="text-sm font-medium text-forest-800 w-24 truncate">{c.crop}</span>
                                 <span className="text-xs text-soil-400 w-8 text-right">{c.count}</span>
@@ -315,8 +451,6 @@ export default function DealerDashboard() {
                             ))}
                           </div>
                         </div>
-
-                        {/* Top Fertilizers */}
                         <div>
                           <h3 className="text-sm font-bold text-forest-700 mb-3 flex items-center gap-2">
                             <Package size={14} /> Most Recommended Inputs
@@ -326,10 +460,7 @@ export default function DealerDashboard() {
                               <div key={i} className="flex items-center gap-2">
                                 <div className="text-xs w-5 text-soil-400 font-mono">{i + 1}.</div>
                                 <div className="flex-1 bg-cream-100 rounded-full h-2 overflow-hidden">
-                                  <div
-                                    className="bg-gold-400 h-2 rounded-full"
-                                    style={{ width: `${Math.round(f.count / needs.top_fertilizers[0].count * 100)}%` }}
-                                  />
+                                  <div className="bg-gold-400 h-2 rounded-full" style={{ width: `${Math.round(f.count / needs.top_fertilizers[0].count * 100)}%` }} />
                                 </div>
                                 <span className="text-sm font-medium text-forest-800 w-24 truncate">{f.name}</span>
                                 <span className="text-xs text-soil-400 w-8 text-right">{f.count}</span>
@@ -338,8 +469,6 @@ export default function DealerDashboard() {
                           </div>
                         </div>
                       </div>
-
-                      {/* Soil Deficiencies */}
                       <div>
                         <h3 className="text-sm font-bold text-forest-700 mb-3 flex items-center gap-2">
                           <Droplets size={14} /> Common Soil Deficiencies
@@ -359,35 +488,6 @@ export default function DealerDashboard() {
                           ))}
                         </div>
                       </div>
-
-                      {/* Recent Queries */}
-                      {needs.recent_queries.length > 0 && (
-                        <div>
-                          <h3 className="text-sm font-bold text-forest-700 mb-3">Recent Farmer Queries</h3>
-                          <div className="overflow-x-auto">
-                            <table className="min-w-full text-xs">
-                              <thead>
-                                <tr className="border-b border-cream-200">
-                                  <th className="text-left py-2 px-3 text-soil-500 font-semibold">Crop</th>
-                                  <th className="text-left py-2 px-3 text-soil-500 font-semibold">Recommended Inputs</th>
-                                  <th className="text-left py-2 px-3 text-soil-500 font-semibold">Budget (KSh)</th>
-                                  <th className="text-left py-2 px-3 text-soil-500 font-semibold">Date</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {needs.recent_queries.map((q: any, i: number) => (
-                                  <tr key={i} className={`border-b border-cream-100 ${i % 2 === 0 ? "bg-white" : "bg-cream-50"}`}>
-                                    <td className="py-2 px-3 font-medium text-forest-800">{q.crop}</td>
-                                    <td className="py-2 px-3 text-soil-600">{q.recommended_fert || "—"}</td>
-                                    <td className="py-2 px-3 text-soil-600">{q.total_budget?.toLocaleString() || "—"}</td>
-                                    <td className="py-2 px-3 text-soil-400">{q.date || "—"}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>
@@ -395,52 +495,181 @@ export default function DealerDashboard() {
             </>
           )}
 
-          {/* Products Manager */}
+          {/* ── Inventory Manager ──────────────────────────────────────── */}
           <div className="bg-white rounded-2xl border border-cream-300 p-6">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
                 <Package size={20} className="text-gold-500" />
-                <h2 className="font-display text-lg font-bold text-forest-700">Products You Stock</h2>
+                <div>
+                  <h2 className="font-display text-lg font-bold text-forest-700">Stock &amp; Inventory</h2>
+                  <p className="text-xs text-soil-400 mt-0.5">Update availability so farmers know what you have before visiting</p>
+                </div>
               </div>
-              {!editingProducts && (
-                <button onClick={() => setEditingProducts(true)}
-                  className="flex items-center gap-1 px-3 py-1.5 text-sm text-forest-700 border border-cream-300 rounded-lg hover:border-gold-400 transition-colors">
-                  <Edit3 size={14} /> Edit
-                </button>
-              )}
+              <button
+                onClick={() => setShowAddPanel(v => !v)}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-forest-700 hover:bg-forest-800 rounded-xl transition-colors"
+              >
+                <Plus size={14} /> Add Product
+              </button>
             </div>
 
-            {savedMsg && (
-              <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 text-sm font-semibold rounded-xl flex items-center gap-2">
-                <CheckCircle size={16} /> Products updated successfully!
+            {/* Add product panel */}
+            {showAddPanel && (
+              <div className="mb-5 bg-cream-50 border border-cream-300 rounded-xl p-4 space-y-4">
+                <div className="flex rounded-lg overflow-hidden border border-cream-300">
+                  <button onClick={() => setAddMode("catalog")} className={`flex-1 py-2 text-sm font-semibold transition-all ${addMode === "catalog" ? "bg-forest-700 text-white" : "bg-white text-soil-500 hover:bg-cream-100"}`}>From catalog</button>
+                  <button onClick={() => setAddMode("custom")} className={`flex-1 py-2 text-sm font-semibold transition-all ${addMode === "custom" ? "bg-forest-700 text-white" : "bg-white text-soil-500 hover:bg-cream-100"}`}>Custom product</button>
+                </div>
+
+                {addMode === "catalog" ? (
+                  <select
+                    value={addForm.product_name}
+                    onChange={e => {
+                      const cat = CATALOG.find(c => c.name === e.target.value);
+                      setAddForm(f => ({ ...f, product_name: e.target.value, category: cat?.category || f.category, unit: cat?.unit || f.unit }));
+                    }}
+                    className="w-full px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 bg-white focus:outline-none focus:border-gold-400"
+                  >
+                    <option value="">Select a product...</option>
+                    {CATEGORIES.map(cat => {
+                      const opts = catalogOptions.filter(c => c.category === cat);
+                      if (!opts.length) return null;
+                      return (
+                        <optgroup key={cat} label={cat}>
+                          {opts.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+                        </optgroup>
+                      );
+                    })}
+                  </select>
+                ) : (
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      placeholder="Product name (e.g. Mancozeb 1kg)"
+                      value={addForm.product_name}
+                      onChange={e => setAddForm(f => ({ ...f, product_name: e.target.value }))}
+                      className="px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 focus:outline-none focus:border-gold-400"
+                    />
+                    <select
+                      value={addForm.category}
+                      onChange={e => setAddForm(f => ({ ...f, category: e.target.value }))}
+                      className="px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 bg-white focus:outline-none focus:border-gold-400"
+                    >
+                      {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </div>
+                )}
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs font-semibold text-soil-500 mb-1 block">Price (KSh) — optional</label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 3200"
+                      value={addForm.price}
+                      onChange={e => setAddForm(f => ({ ...f, price: e.target.value }))}
+                      className="w-full px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 focus:outline-none focus:border-gold-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-soil-500 mb-1 block">Unit — optional</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 50kg bag"
+                      value={addForm.unit}
+                      onChange={e => setAddForm(f => ({ ...f, unit: e.target.value }))}
+                      className="w-full px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 focus:outline-none focus:border-gold-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button onClick={addProduct} disabled={addSaving || !addForm.product_name}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl text-sm transition-colors">
+                    {addSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />} Add to inventory
+                  </button>
+                  <button onClick={() => { setShowAddPanel(false); setAddForm({ product_name: "", category: "Fertilizer", unit: "", price: "" }); }}
+                    className="px-4 py-2.5 text-sm text-soil-400 border border-cream-300 rounded-xl hover:border-gold-400 transition-colors">Cancel</button>
+                </div>
               </div>
             )}
 
-            {editingProducts ? (
-              <div className="space-y-4">
-                <textarea value={products} onChange={e => setProducts(e.target.value)}
-                  placeholder="e.g. DAP, CAN, Urea, Maize Seeds, Pesticides..." rows={4}
-                  className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 resize-y" />
-                <div className="flex gap-3">
-                  <button onClick={saveProducts} disabled={saving}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors">
-                    {saving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />} Save
+            {/* Category filter tabs */}
+            {inventory.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {inventoryCategories.map(cat => (
+                  <button key={cat} onClick={() => setActiveCategory(cat)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${activeCategory === cat ? "bg-forest-700 text-white" : "bg-cream-100 text-soil-500 hover:bg-cream-200"}`}>
+                    {cat}
                   </button>
-                  <button onClick={() => { setEditingProducts(false); setProducts(dealer.products_stocked || ""); }}
-                    className="px-5 py-2.5 text-sm text-soil-400 border border-cream-300 rounded-xl hover:border-gold-400 transition-colors">Cancel</button>
-                </div>
+                ))}
+              </div>
+            )}
+
+            {/* Inventory table */}
+            {invLoading ? (
+              <div className="flex items-center justify-center py-10">
+                <Loader2 size={24} className="animate-spin text-forest-500" />
+              </div>
+            ) : filteredInventory.length === 0 ? (
+              <div className="text-center py-10 text-soil-400 text-sm">
+                {inventory.length === 0
+                  ? "No products added yet. Click \"Add Product\" to start building your inventory."
+                  : "No products in this category."}
               </div>
             ) : (
-              <div>
-                {dealer.products_stocked ? (
-                  <div className="flex flex-wrap gap-2">
-                    {dealer.products_stocked.split(",").map((p: string, i: number) => (
-                      <span key={i} className="px-3 py-1.5 bg-cream-100 text-forest-700 text-sm font-medium rounded-full">{p.trim()}</span>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-cream-200">
+                      <th className="text-left py-2.5 px-3 text-xs font-semibold text-soil-500 uppercase tracking-wide">Product</th>
+                      <th className="text-left py-2.5 px-3 text-xs font-semibold text-soil-500 uppercase tracking-wide">Category</th>
+                      <th className="text-left py-2.5 px-3 text-xs font-semibold text-soil-500 uppercase tracking-wide">Availability</th>
+                      <th className="text-left py-2.5 px-3 text-xs font-semibold text-soil-500 uppercase tracking-wide">Price (KSh)</th>
+                      <th className="py-2.5 px-3"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredInventory.map((product, i) => (
+                      <tr key={product.id} className={`border-b border-cream-100 ${i % 2 === 0 ? "bg-white" : "bg-cream-50"}`}>
+                        <td className="py-3 px-3">
+                          <div className="font-medium text-forest-800">{product.product_name}</div>
+                          {product.unit && <div className="text-xs text-soil-400">{product.unit}</div>}
+                        </td>
+                        <td className="py-3 px-3 text-soil-500 text-xs">{product.category}</td>
+                        <td className="py-3 px-3">
+                          <select
+                            value={product.stock_status}
+                            onChange={e => updateStockStatus(product, e.target.value as "in_stock" | "low_stock" | "out_of_stock")}
+                            disabled={saving[product.id]}
+                            className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg border focus:outline-none focus:ring-1 focus:ring-gold-400 bg-white transition-colors ${STOCK_COLORS[product.stock_status]} ${STOCK_BG[product.stock_status]}`}
+                          >
+                            <option value="in_stock" className="text-green-700">In Stock</option>
+                            <option value="low_stock" className="text-amber-600">Running Low</option>
+                            <option value="out_of_stock" className="text-red-600">Out of Stock</option>
+                          </select>
+                        </td>
+                        <td className="py-3 px-3">
+                          <PriceInput
+                            value={product.price}
+                            onSave={(price) => updatePrice(product, price)}
+                            disabled={!!saving[`price_${product.id}`]}
+                          />
+                        </td>
+                        <td className="py-3 px-3">
+                          <button
+                            onClick={() => removeProduct(product.id)}
+                            disabled={saving[`del_${product.id}`]}
+                            className="p-1.5 text-soil-300 hover:text-red-500 transition-colors disabled:opacity-50"
+                            title="Remove product"
+                          >
+                            {saving[`del_${product.id}`] ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
+                          </button>
+                        </td>
+                      </tr>
                     ))}
-                  </div>
-                ) : (
-                  <p className="text-soil-400 text-sm">No products listed yet. Click &quot;Edit&quot; to add your inventory.</p>
-                )}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
@@ -454,11 +683,52 @@ export default function DealerDashboard() {
               <div><span className="text-soil-400">Business Name</span><p className="font-semibold text-forest-700">{dealer.business_name}</p></div>
               <div><span className="text-soil-400">Phone Number</span><p className="font-semibold text-forest-700">{dealer.phone_number}</p></div>
               <div><span className="text-soil-400">Location</span><p className="font-semibold text-forest-700">{dealer.town}, {dealer.county}</p></div>
-              <div><span className="text-soil-400">Status</span><p className="font-semibold text-green-600">✓ Approved &amp; Listed</p></div>
+              {dealer.physical_address && (
+                <div><span className="text-soil-400">Address</span><p className="font-semibold text-forest-700">{dealer.physical_address}</p></div>
+              )}
+              <div><span className="text-soil-400">Status</span><p className="font-semibold text-green-600 flex items-center gap-1"><CheckCircle size={14} /> Approved &amp; Listed</p></div>
             </div>
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+// ── Inline price editor ──────────────────────────────────────────────────────
+
+function PriceInput({ value, onSave, disabled }: { value?: number; onSave: (v: string) => void; disabled: boolean }) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value !== undefined ? String(value) : "");
+
+  if (editing) {
+    return (
+      <div className="flex items-center gap-1">
+        <input
+          type="number"
+          value={draft}
+          onChange={e => setDraft(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === "Enter") { onSave(draft); setEditing(false); }
+            if (e.key === "Escape") setEditing(false);
+          }}
+          className="w-24 px-2 py-1 border border-gold-400 rounded-lg text-xs text-forest-700 focus:outline-none"
+          autoFocus
+        />
+        <button onClick={() => { onSave(draft); setEditing(false); }} disabled={disabled}
+          className="p-1 text-forest-700 hover:text-forest-900 disabled:opacity-50">
+          <Check size={12} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => { setDraft(value !== undefined ? String(value) : ""); setEditing(true); }}
+      className="text-xs text-soil-500 hover:text-forest-700 transition-colors min-w-[60px] text-left"
+    >
+      {value !== undefined ? value.toLocaleString() : <span className="text-soil-300">— set price</span>}
+    </button>
   );
 }

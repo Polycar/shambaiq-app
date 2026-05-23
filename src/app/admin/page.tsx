@@ -1,16 +1,25 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Lock, Store, BarChart3, AlertTriangle, FileText,
   Check, CheckCircle, X, Loader2, RefreshCw, Users, TrendingUp, MapPin, Wheat,
   PenLine, Eye, Trash2, Plus, Search, Phone, ChevronDown, ChevronRight, Upload,
-  Sparkles, Globe, Link2, Image, Columns,
+  Sparkles, Globe, Link2, Image, Columns, Bold, Italic, Heading2, Heading3,
+  Quote, Code, ImagePlus, Download, Database, Minus,
 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
-type Tab = "stats" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "crops" | "agrovets";
+type Tab = "stats" | "b2b" | "dealers" | "yields" | "blog" | "farmers" | "audit" | "crops" | "agrovets";
+
+function dlCSV(rows: (string | number | null | boolean)[][], name: string) {
+  const csv = rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\r\n");
+  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 const parseInlineMarkdown = (text: string): string => {
   return text
@@ -138,6 +147,9 @@ export default function AdminDashboard() {
   const [showBlogEditor, setShowBlogEditor] = useState(false);
   const [focusKeyword, setFocusKeyword] = useState("");
   const [activeEditorTab, setActiveEditorTab] = useState<'write' | 'preview' | 'split'>('write');
+  const editorRef = useRef<HTMLTextAreaElement>(null);
+  const [imgModal, setImgModal] = useState<{ url: string; alt: string } | null>(null);
+  const [b2bExporting, setB2bExporting] = useState<string | null>(null);
 
   const f = useCallback(async (url: string) => {
     const res = await fetch(`${API}${url}`, { headers: { "Authorization": `Bearer ${code}` } });
@@ -311,6 +323,158 @@ export default function AdminDashboard() {
     } catch { setCropPriceMsg({type: "error", text: "Network error"}); }
   };
 
+  // ─── Markdown toolbar helpers ───
+  const insert = useCallback((prefix: string, suffix = "", placeholder = "text") => {
+    const ta = editorRef.current;
+    if (!ta) return;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const selected = ta.value.slice(start, end) || placeholder;
+    const before = ta.value.slice(0, start);
+    const after = ta.value.slice(end);
+    const newVal = before + prefix + selected + suffix + after;
+    setBlogForm(f => ({ ...f, content: newVal }));
+    requestAnimationFrame(() => {
+      ta.focus();
+      ta.setSelectionRange(start + prefix.length, start + prefix.length + selected.length);
+    });
+  }, []);
+
+  const insertHeading = useCallback((level: number) => {
+    const ta = editorRef.current;
+    if (!ta) return;
+    const pos = ta.selectionStart;
+    const lineStart = ta.value.lastIndexOf("\n", pos - 1) + 1;
+    const lineEnd = ta.value.indexOf("\n", pos);
+    const line = ta.value.slice(lineStart, lineEnd === -1 ? undefined : lineEnd);
+    const stripped = line.replace(/^#+\s*/, "");
+    const prefix = "#".repeat(level) + " ";
+    const newVal = ta.value.slice(0, lineStart) + prefix + stripped + (lineEnd === -1 ? "" : ta.value.slice(lineEnd));
+    setBlogForm(f => ({ ...f, content: newVal }));
+    requestAnimationFrame(() => { ta.focus(); ta.setSelectionRange(lineStart + prefix.length + stripped.length, lineStart + prefix.length + stripped.length); });
+  }, []);
+
+  const insertImageFromModal = useCallback(() => {
+    if (!imgModal) return;
+    const { url, alt } = imgModal;
+    if (!url) return;
+    insert(`![${alt || "image"}](`, ")", url);
+    setImgModal(null);
+  }, [imgModal, insert]);
+
+  // ─── B2B export helpers ───
+  const exportCountyReport = useCallback(() => {
+    if (!stats?.county_distribution) return;
+    const rows: (string | number)[][] = [["County", "Farmers", "% Share"]];
+    const total = stats.county_distribution.reduce((s: number, c: any) => s + c.count, 0);
+    stats.county_distribution.forEach((c: any) => rows.push([c.county, c.count, ((c.count / total) * 100).toFixed(1)]));
+    dlCSV(rows, `shambaiq-county-report-${new Date().toISOString().slice(0, 10)}.csv`);
+  }, [stats]);
+
+  const exportCropReport = useCallback(() => {
+    if (!stats?.crop_distribution) return;
+    const rows: (string | number)[][] = [["Crop", "Farmers", "% Share"]];
+    const total = stats.crop_distribution.reduce((s: number, c: any) => s + c.count, 0);
+    stats.crop_distribution.forEach((c: any) => rows.push([c.crop, c.count, ((c.count / total) * 100).toFixed(1)]));
+    dlCSV(rows, `shambaiq-crop-report-${new Date().toISOString().slice(0, 10)}.csv`);
+  }, [stats]);
+
+  const exportNGOReport = useCallback(async () => {
+    setB2bExporting("ngo");
+    try {
+      const [countyData, cropData, priceData, yieldData] = await Promise.all([
+        f("/api/v1/analytics/stats"),
+        f("/api/v1/analytics/yields/flagged"),
+        fetch(`${API}/api/v1/crops/prices/admin`, { headers: { "Authorization": `Bearer ${code}` } }).then(r => r.ok ? r.json() : null),
+        f("/api/v1/analytics/stats"),
+      ]);
+      const rows: (string | number | null)[][] = [
+        ["ShambaIQ Impact Report for NGOs / Development Partners"],
+        ["Generated", new Date().toISOString()],
+        [],
+        ["=== FARMER REACH ==="],
+        ["Total Farmers", countyData?.total_farmers ?? ""],
+        ["Total Agrovets", countyData?.total_agrovets ?? ""],
+        ["Total Yield Records", countyData?.total_yields ?? ""],
+        [],
+        ["=== COUNTY DISTRIBUTION ==="],
+        ["County", "Farmers"],
+        ...(countyData?.county_distribution ?? []).map((c: any) => [c.county, c.count]),
+        [],
+        ["=== CROP FOCUS ==="],
+        ["Crop", "Farmers"],
+        ...(countyData?.crop_distribution ?? []).map((c: any) => [c.crop, c.count]),
+        [],
+        ["=== CURRENT MARKET PRICES ==="],
+        ["Crop", "Price (KES/kg)", "Market", "Updated"],
+        ...(priceData?.list ?? []).map((p: any) => [p.crop, p.price_per_kg, p.market, p.updated_at ?? ""]),
+        [],
+        ["=== FLAGGED YIELD ISSUES ==="],
+        ["County", "Crop", "Yield (t/ha)", "Flag", "Notes"],
+        ...(yieldData?.records ?? []).map((y: any) => [y.county, y.crop, y.yield_t_ha, y.flag, y.notes ?? ""]),
+      ];
+      dlCSV(rows, `shambaiq-ngo-impact-${new Date().toISOString().slice(0, 10)}.csv`);
+    } finally { setB2bExporting(null); }
+  }, [f, code, stats]);
+
+  const exportFullDataset = useCallback(async () => {
+    setB2bExporting("full");
+    try {
+      const rows: (string | number | null)[][] = [["County", "Crop", "Yield (t/ha)", "Flag", "Season", "Notes"]];
+      let page = 1;
+      while (true) {
+        const data = await f(`/api/v1/analytics/yields/all?page=${page}&limit=500`);
+        if (!data?.records?.length) break;
+        data.records.forEach((r: any) => rows.push([r.county, r.crop, r.yield_t_ha, r.flag ?? "", r.season ?? "", r.notes ?? ""]));
+        if (data.records.length < 500) break;
+        page++;
+      }
+      dlCSV(rows, `shambaiq-full-dataset-${new Date().toISOString().slice(0, 10)}.csv`);
+    } finally { setB2bExporting(null); }
+  }, [f]);
+
+  const exportDealerGap = useCallback(async () => {
+    setB2bExporting("dealer");
+    try {
+      const [dealerData, cropData] = await Promise.all([
+        f("/api/v1/admin/dealers?status=approved"),
+        f("/api/v1/analytics/stats"),
+      ]);
+      const dealerCounties = new Set((dealerData?.dealers ?? []).map((d: any) => d.county));
+      const allCounties = (cropData?.county_distribution ?? []).map((c: any) => c.county);
+      const rows: (string | number)[][] = [["County", "Has Dealer", "Farmer Count", "Gap Priority"]];
+      allCounties.forEach((county: string) => {
+        const hasDealers = dealerCounties.has(county);
+        const farmerCount = cropData.county_distribution.find((c: any) => c.county === county)?.count ?? 0;
+        rows.push([county, hasDealers ? "Yes" : "No", farmerCount, hasDealers ? "Covered" : farmerCount > 50 ? "High Priority" : "Medium"]);
+      });
+      dlCSV(rows, `shambaiq-dealer-gap-${new Date().toISOString().slice(0, 10)}.csv`);
+    } finally { setB2bExporting(null); }
+  }, [f]);
+
+  const exportSACCOReport = useCallback(() => {
+    if (!stats) return;
+    const rows: (string | number | null)[][] = [
+      ["ShambaIQ SACCO / Credit Partner Report"],
+      ["Generated", new Date().toISOString()],
+      [],
+      ["Metric", "Value"],
+      ["Total Registered Farmers", stats.total_farmers ?? ""],
+      ["Counties Active", stats.county_distribution?.length ?? ""],
+      ["Top Crop", stats.crop_distribution?.[0]?.crop ?? ""],
+      ["Avg Yield Records per Farmer", stats.total_yields && stats.total_farmers ? (stats.total_yields / stats.total_farmers).toFixed(2) : ""],
+      [],
+      ["=== COUNTY CREDITWORTHINESS PROXY ==="],
+      ["County", "Farmers", "Yield Records", "Risk Proxy"],
+      ...(stats.county_distribution ?? []).map((c: any) => [
+        c.county, c.count,
+        stats.yield_by_county?.[c.county] ?? "N/A",
+        c.count > 100 ? "Low Risk" : c.count > 30 ? "Medium Risk" : "High Risk",
+      ]),
+    ];
+    dlCSV(rows, `shambaiq-sacco-report-${new Date().toISOString().slice(0, 10)}.csv`);
+  }, [stats]);
+
   // ─── Login ───
   if (!auth) return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
@@ -328,6 +492,7 @@ export default function AdminDashboard() {
   // ─── Tabs ───
   const tabs: { key: Tab; label: string; icon: any; badge?: number }[] = [
     { key: "stats", label: "Overview", icon: BarChart3 },
+    { key: "b2b", label: "B2B Hub", icon: Database },
     { key: "crops", label: "Crop Pricing", icon: Wheat },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
@@ -338,6 +503,7 @@ export default function AdminDashboard() {
   ];
 
   return (
+    <>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-display text-2xl font-bold text-forest-700">Admin Dashboard</h1>
@@ -405,6 +571,147 @@ export default function AdminDashboard() {
             </div>
           </div>
         )
+      )}
+
+      {/* ═══ B2B HUB ═══ */}
+      {!loading && tab === "b2b" && (
+        <div className="space-y-6">
+          <div className="bg-gradient-to-br from-forest-700 to-forest-800 rounded-2xl p-6 text-white">
+            <div className="flex items-center gap-3 mb-2">
+              <Database size={22} className="text-gold-300" />
+              <h2 className="font-display text-xl font-bold">ShambaIQ B2B Data Engine</h2>
+            </div>
+            <p className="text-forest-200 text-sm leading-relaxed">
+              Download structured datasets for NGOs, county governments, SACCOs, agri-extensions, and input dealers.
+              These reports power B2B partnerships and are exportable as Excel-ready CSV files.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                key: "ngo",
+                title: "NGO / Dev Partner Report",
+                description: "Farmer reach, county coverage, crop focus, flagged yield issues, and current market prices. Perfect for impact reporting.",
+                icon: Users,
+                color: "text-blue-600",
+                bg: "bg-blue-50",
+                border: "border-blue-100",
+                action: exportNGOReport,
+              },
+              {
+                key: "county",
+                title: "County Distribution",
+                description: "Farmer counts per county with percentage share. Useful for county extension offices and targeting underserved areas.",
+                icon: MapPin,
+                color: "text-emerald-600",
+                bg: "bg-emerald-50",
+                border: "border-emerald-100",
+                action: exportCountyReport,
+              },
+              {
+                key: "crop",
+                title: "Crop Distribution",
+                description: "Which crops farmers are growing, ranked by adoption. Useful for seed companies and agri-input dealers.",
+                icon: Wheat,
+                color: "text-amber-600",
+                bg: "bg-amber-50",
+                border: "border-amber-100",
+                action: exportCropReport,
+              },
+              {
+                key: "dealer",
+                title: "Dealer Gap Analysis",
+                description: "Counties with farmers but no approved dealer — shows where input supply is weakest and where to open next.",
+                icon: Store,
+                color: "text-purple-600",
+                bg: "bg-purple-50",
+                border: "border-purple-100",
+                action: exportDealerGap,
+              },
+              {
+                key: "sacco",
+                title: "SACCO / Credit Partner",
+                description: "County-level creditworthiness proxy, farmer counts, and yield activity. For SACCOs designing agri-loan products.",
+                icon: TrendingUp,
+                color: "text-rose-600",
+                bg: "bg-rose-50",
+                border: "border-rose-100",
+                action: exportSACCOReport,
+              },
+              {
+                key: "full",
+                title: "Full Yield Dataset",
+                description: "All yield records with county, crop, yield t/ha, flags, and notes. For research partners and agri-extension services.",
+                icon: Download,
+                color: "text-soil-600",
+                bg: "bg-cream-50",
+                border: "border-cream-200",
+                action: exportFullDataset,
+              },
+            ].map(({ key, title, description, icon: Icon, color, bg, border, action }) => (
+              <div key={key} className={`bg-white rounded-xl border ${border} p-5 flex flex-col gap-4 hover:shadow-md transition-shadow`}>
+                <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center`}>
+                  <Icon size={20} className={color} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-forest-700 text-sm mb-1">{title}</h3>
+                  <p className="text-xs text-soil-400 leading-relaxed">{description}</p>
+                </div>
+                <button
+                  onClick={action}
+                  disabled={b2bExporting === key}
+                  className={`flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${b2bExporting === key ? "bg-cream-100 text-soil-400 cursor-wait" : "bg-forest-700 hover:bg-forest-800 text-white"}`}
+                >
+                  {b2bExporting === key ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+                  {b2bExporting === key ? "Exporting…" : "Download CSV"}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {stats?.county_distribution && (
+            <div className="bg-white rounded-xl border border-cream-200 p-5">
+              <h3 className="font-semibold text-forest-700 mb-4">Top Counties by Farmer Count</h3>
+              <div className="space-y-2">
+                {[...stats.county_distribution].sort((a: any, b: any) => b.count - a.count).slice(0, 10).map((c: any) => {
+                  const max = Math.max(...stats.county_distribution.map((x: any) => x.count));
+                  const pct = Math.round((c.count / max) * 100);
+                  return (
+                    <div key={c.county} className="flex items-center gap-3">
+                      <span className="text-xs text-soil-500 w-28 truncate">{c.county}</span>
+                      <div className="flex-1 bg-cream-100 rounded-full h-2">
+                        <div className="bg-forest-600 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                      </div>
+                      <span className="text-xs text-forest-700 font-semibold w-10 text-right">{c.count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {stats?.crop_distribution && (
+            <div className="bg-white rounded-xl border border-cream-200 p-5">
+              <h3 className="font-semibold text-forest-700 mb-4">Top Crops by Farmer Adoption</h3>
+              <div className="space-y-2">
+                {[...stats.crop_distribution].sort((a: any, b: any) => b.count - a.count).slice(0, 10).map((c: any) => {
+                  const max = Math.max(...stats.crop_distribution.map((x: any) => x.count));
+                  const pct = Math.round((c.count / max) * 100);
+                  return (
+                    <div key={c.crop} className="flex items-center gap-3">
+                      <span className="text-xs text-soil-500 w-28 truncate">{c.crop}</span>
+                      <div className="flex-1 bg-cream-100 rounded-full h-2">
+                        <div className="bg-gold-500 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                      </div>
+                      <span className="text-xs text-forest-700 font-semibold w-10 text-right">{c.count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       )}
 
       {/* ═══ CROPS ═══ */}
@@ -826,17 +1133,48 @@ export default function AdminDashboard() {
 
                         {activeEditorTab === "write" && (
                           <>
-                            <textarea 
-                              value={blogForm.content} 
-                              onChange={e => setBlogForm({ ...blogForm, content: e.target.value })} 
-                              placeholder="Write your blog post here...&#10;&#10;## Use headings&#10;&#10;**Bold text** and [links](/soil/nakuru) work.&#10;&#10;Link to county pages: [Nakuru soil report](/soil/nakuru)&#10;Link to crop pages: [Maize guide](/crops/maize)&#10;Link to the tool: [Get advice](/app)" 
-                              rows={18} 
-                              className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 font-mono text-sm focus:outline-none focus:border-gold-400 resize-y" 
-                            />
-                            <div className="bg-cream-50 rounded-lg p-3 border border-cream-200 mt-2 text-xs text-soil-400 leading-relaxed">
-                              <span className="font-semibold text-forest-700 block mb-1">Markdown formatting tips:</span>
-                              Use <code className="bg-white px-1 border rounded">## Heading Title</code> to create H2 sections. Create links with <code className="bg-white px-1 border rounded">[Link Text](/url)</code>. Add optimized images using <code className="bg-white px-1 border rounded">![Alt Text](image_url)</code>.
+                            {/* Markdown toolbar */}
+                            <div className="flex flex-wrap items-center gap-1 p-2 border border-cream-300 border-b-0 rounded-t-xl bg-cream-50">
+                              {[
+                                { icon: Bold, label: "Bold", action: () => insert("**", "**", "bold text") },
+                                { icon: Italic, label: "Italic", action: () => insert("_", "_", "italic text") },
+                                { icon: Heading2, label: "H2", action: () => insertHeading(2) },
+                                { icon: Heading3, label: "H3", action: () => insertHeading(3) },
+                                { icon: Link2, label: "Link", action: () => insert("[", "](url)", "link text") },
+                                { icon: ImagePlus, label: "Image", action: () => setImgModal({ url: "", alt: "" }) },
+                                { icon: Quote, label: "Quote", action: () => insert("> ", "", "quoted text") },
+                                { icon: Code, label: "Code", action: () => insert("`", "`", "code") },
+                              ].map(({ icon: Icon, label, action }) => (
+                                <button
+                                  key={label}
+                                  type="button"
+                                  title={label}
+                                  onClick={action}
+                                  className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-soil-500 hover:text-forest-700 hover:bg-cream-200 rounded-lg transition-colors"
+                                >
+                                  <Icon size={14} />
+                                  <span className="hidden sm:inline">{label}</span>
+                                </button>
+                              ))}
+                              <div className="w-px h-5 bg-cream-300 mx-1" />
+                              <button
+                                type="button"
+                                title="Divider"
+                                onClick={() => insert("\n\n---\n\n", "", "")}
+                                className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-soil-500 hover:text-forest-700 hover:bg-cream-200 rounded-lg transition-colors"
+                              >
+                                <Minus size={14} />
+                                <span className="hidden sm:inline">Divider</span>
+                              </button>
                             </div>
+                            <textarea
+                              ref={editorRef}
+                              value={blogForm.content}
+                              onChange={e => setBlogForm({ ...blogForm, content: e.target.value })}
+                              placeholder="Write your blog post here...&#10;&#10;## Use headings&#10;&#10;**Bold text** and [links](/soil/nakuru) work.&#10;&#10;Link to county pages: [Nakuru soil report](/soil/nakuru)&#10;Link to crop pages: [Maize guide](/crops/maize)&#10;Link to the tool: [Get advice](/app)"
+                              rows={18}
+                              className="w-full px-4 py-3 border border-cream-300 rounded-b-xl text-forest-700 font-mono text-sm focus:outline-none focus:border-gold-400 resize-y"
+                            />
                           </>
                         )}
 
@@ -1155,7 +1493,7 @@ export default function AdminDashboard() {
                                     return (
                                       <div key={idx} className="flex items-center gap-1">
                                         <Link2 size={10} className="text-soil-400 shrink-0" />
-                                        <span className="font-semibold text-forest-700 truncate max-w-[80px]">&#34;{text}&#34;</span>
+                                        <span className="font-semibold text-forest-700 truncate max-w-[80px]">"{text}"</span>
                                         <span className="text-soil-300 shrink-0">→</span>
                                         <code className="bg-white border px-1 rounded text-[9px] truncate max-w-[90px]">{url}</code>
                                       </div>
@@ -1171,7 +1509,7 @@ export default function AdminDashboard() {
                                   <div className="space-y-1 mt-1">
                                     {linkSuggestions.slice(0, 3).map((s, idx) => (
                                       <div key={idx} className="flex flex-col gap-0.5 bg-white border border-gold-150 p-1.5 rounded">
-                                        <span className="font-medium text-forest-700">Keyword: &#34;{s.keyword}&#34;</span>
+                                        <span className="font-medium text-forest-700">Keyword: "{s.keyword}"</span>
                                         <code className="text-soil-500 text-[9px] select-all font-mono">[{s.text}]({s.link})</code>
                                       </div>
                                     ))}
@@ -1220,7 +1558,7 @@ export default function AdminDashboard() {
                                       <div key={idx} className="flex items-center justify-between gap-1">
                                         <span className="truncate max-w-[100px] font-mono text-soil-400">{url.split('/').pop()}</span>
                                         {isGood ? (
-                                          <span className="text-emerald-600 font-medium flex items-center gap-0.5"><Check size={9} /> &#34;{alt}&#34;</span>
+                                          <span className="text-emerald-600 font-medium flex items-center gap-0.5"><Check size={9} /> "{alt}"</span>
                                         ) : (
                                           <span className="text-rose-500 font-semibold flex items-center gap-0.5"><AlertTriangle size={9} /> Alt missing/short</span>
                                         )}
@@ -1433,5 +1771,64 @@ export default function AdminDashboard() {
         </div>
       )}
     </div>
+
+    {/* ═══ IMAGE INSERT MODAL ═══ */}
+    {imgModal !== null && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="font-display font-bold text-forest-700 text-lg">Insert Image</h3>
+            <button onClick={() => setImgModal(null)} className="p-1.5 text-soil-400 hover:text-red-500 transition-colors"><X size={18} /></button>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-soil-500 mb-1">Image URL *</label>
+              <input
+                autoFocus
+                value={imgModal.url}
+                onChange={e => setImgModal(m => m ? { ...m, url: e.target.value } : m)}
+                placeholder="https://images.example.com/photo.jpg"
+                className="w-full px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 focus:outline-none focus:border-gold-400"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-soil-500 mb-1">Alt Text (for SEO & accessibility)</label>
+              <input
+                value={imgModal.alt}
+                onChange={e => setImgModal(m => m ? { ...m, alt: e.target.value } : m)}
+                placeholder="e.g. Maize farmer harvesting in Nakuru"
+                className="w-full px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 focus:outline-none focus:border-gold-400"
+              />
+            </div>
+            {imgModal.url && (
+              <div className="rounded-xl border border-cream-200 overflow-hidden bg-cream-50 flex items-center justify-center min-h-[120px]">
+                <img
+                  src={imgModal.url}
+                  alt={imgModal.alt || "preview"}
+                  className="max-h-48 max-w-full object-contain"
+                  onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+                />
+              </div>
+            )}
+            <div className="flex gap-3 pt-1">
+              <button
+                onClick={() => setImgModal(null)}
+                className="flex-1 py-2.5 border border-cream-300 text-soil-500 font-semibold rounded-xl text-sm hover:border-red-300 hover:text-red-500 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={insertImageFromModal}
+                disabled={!imgModal.url}
+                className="flex-1 py-2.5 bg-forest-700 text-white font-semibold rounded-xl text-sm hover:bg-forest-800 transition-colors disabled:opacity-40"
+              >
+                Insert Image
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

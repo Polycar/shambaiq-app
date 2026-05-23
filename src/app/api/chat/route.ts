@@ -34,55 +34,46 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
     }
 
-    // 2. Agricultural topic filtering to prevent prompt abuse/billing spikes
+    // 2. Agricultural topic filtering — only applied to the opening message.
+    // Follow-up messages in an active conversation are always allowed through;
+    // blocking them would cut off natural clarifying questions like "what do you mean?" or "how much?".
+    const isFirstMessage = messages.length === 1;
     const userText = messages[messages.length - 1]?.content || '';
-    
-    const isAgriculturalQuery = (text: string): boolean => {
-      const normalized = text.toLowerCase().trim();
 
-      // Permit short standard greetings and basic conversational words (less than 40 chars)
+    if (isFirstMessage) {
+      const normalized = userText.toLowerCase().trim();
+
       const shortGreetings = [
         'hi', 'hello', 'hey', 'habari', 'mambo', 'sasa', 'jambo', 'greetings', 'morning', 'afternoon', 'evening',
         'thanks', 'thank you', 'asante', 'shukran', 'please', 'help', 'usaidizi', 'ok', 'sawa', 'yes', 'no', 'ndio',
         'hapana', 'who are you', 'wewe ni nani', 'how are you', 'uhali gani', 'mambo vipi', 'niaje', 'yaliyopo', 'poa'
       ];
 
-      if (normalized.length < 40) {
-        const words = normalized.split(/\s+/).map(w => w.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, ''));
-        if (words.some(w => shortGreetings.includes(w))) {
-          return true;
-        }
-      }
-
-      // Agriculture-related keywords in English and Swahili
       const agKeywords = [
-        // English
         'soil', 'crop', 'farm', 'fertilizer', 'dap', 'can', 'urea', 'npk', 'pest', 'disease', 'seed', 'weather',
         'rain', 'yield', 'harvest', 'irrigation', 'livestock', 'poultry', 'chicken', 'cow', 'goat', 'sheep', 'pig',
         'maize', 'bean', 'potato', 'tomato', 'onion', 'cabbage', 'coffee', 'tea', 'shamba', 'mshauri', 'agronomy',
         'agronomist', 'county', 'kalro', 'ncpb', 'plant', 'doctor', 'leaf', 'stem', 'water', 'cultivat', 'grow',
-        'sow', 'plow', 'mulch', 'compost', 'manure', 'nutrient', 'nitrogen', 'phosphor', 'potass', 'ph ', 'acidity',
+        'sow', 'plow', 'mulch', 'compost', 'manure', 'nutrient', 'nitrogen', 'phosphor', 'potass', 'ph', 'acidity',
         'alkalinity', 'liming', 'erosion', 'agriculture', 'agricultural', 'agrovet', 'agribusiness', 'veterinary',
         'fodder', 'silage', 'milking', 'pasture', 'tillage', 'weed', 'herbicide', 'pesticide', 'fungicide', 'insecticide',
-        'spraying', 'nursery', 'seedling', 'transplant', 'pruning', 'grafting', 'mulching', 'drought', 'dryness',
-        'moisture', 'drainage', 'intercrop', 'rotation', 'fallow', 'greenhouse', 'hydroponic', 'organic', 'composting',
-        'vermicompost', 'bee', 'apiculture', 'honey', 'fish', 'aquaculture', 'tilapia', 'catfish', 'pond',
-
-        // Swahili
-        'shamba', 'mchanga', 'kilimo', 'mmea', 'mazao', 'mbolea', 'wadudu', 'ugonjwa', 'mbegu', 'mvua', 'hali ya hewa',
-        'mavuno', 'umwagiliaji', 'ng\'ombe', 'kuku', 'mbuzi', 'kondoo', 'nguruwe', 'mahindi', 'maharagwe', 'viazi',
-        'nyanya', 'kitunguu', 'kabeji', 'kahawa', 'chai', 'dawa', 'kulima', 'kupanda', 'palilia', 'uvunaji', 'ng\'ombe wa maziwa',
-        'mayai', 'chakula cha mifugo', 'agrovet', 'boma', 'mbolea ya jivu', 'samadi', 'dawa ya wadudu', 'magugu',
-        'kukausha', 'unyevu', 'ukame'
+        'spraying', 'nursery', 'seedling', 'transplant', 'pruning', 'grafting', 'mulching', 'drought', 'moisture',
+        'drainage', 'intercrop', 'rotation', 'fallow', 'greenhouse', 'hydroponic', 'organic', 'composting',
+        'bee', 'honey', 'fish', 'aquaculture', 'tilapia', 'pond',
+        'kilimo', 'mmea', 'mazao', 'mbolea', 'wadudu', 'ugonjwa', 'mbegu', 'mvua', 'mavuno', 'umwagiliaji',
+        'ng\'ombe', 'kuku', 'mbuzi', 'mahindi', 'maharagwe', 'viazi', 'nyanya', 'kitunguu', 'kahawa', 'chai',
+        'dawa', 'kulima', 'kupanda', 'palilia', 'samadi', 'magugu', 'unyevu', 'ukame'
       ];
 
-      return agKeywords.some(keyword => normalized.includes(keyword));
-    };
+      const isGreeting = normalized.length < 40 &&
+        normalized.split(/\s+/).map(w => w.replace(/\W/g, '')).some(w => shortGreetings.includes(w));
+      const isAgri = agKeywords.some(kw => normalized.includes(kw));
 
-    if (!isAgriculturalQuery(userText)) {
-      return NextResponse.json({
-        reply: "As Shamba Mshauri (your AI Agronomist), I am specialized only in farming, soil health, crop management, livestock, and agricultural practices in Kenya. 🌾\n\nI noticed your question isn't related to agriculture. Please feel free to ask me anything about crop diseases, fertilizers, planting timing, or soil care!"
-      });
+      if (!isGreeting && !isAgri) {
+        return NextResponse.json({
+          reply: "Shamba Mshauri is specialized in Kenyan farming — crops, soil, fertilizers, pests, and livestock. Ask me anything in those areas and I'll give you specific, practical advice."
+        });
+      }
     }
 
 
@@ -115,7 +106,7 @@ STRICT RULES — follow every one, no exceptions:
           contents,
           generationConfig: {
             temperature: 0.3,
-            maxOutputTokens: 500,
+            maxOutputTokens: 700,
           },
         }),
       }

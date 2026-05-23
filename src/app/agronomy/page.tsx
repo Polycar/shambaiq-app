@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, Bot, User, Leaf, RotateCcw } from "lucide-react";
+import { Send, Loader2, Bot, User, Leaf, RotateCcw, Lock } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
@@ -19,12 +19,26 @@ const STARTER_PROMPTS = [
   "What crops grow best in Makueni County?",
 ];
 
+function getCookieSession(): { token?: string; name?: string } | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.split("; ").find(c => c.startsWith("shambaiq_session="));
+  if (!match) return null;
+  try { return JSON.parse(decodeURIComponent(match.split("=").slice(1).join("="))); }
+  catch { return null; }
+}
+
 export default function AgronomyPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null); // null = checking
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const session = getCookieSession();
+    setLoggedIn(!!session?.token);
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -45,31 +59,27 @@ export default function AgronomyPage() {
         body: JSON.stringify({ messages: newMessages }),
       });
 
+      if (res.status === 401) {
+        setLoggedIn(false);
+        setMessages(prev => prev.slice(0, -1)); // remove the user message
+        return;
+      }
+
       if (res.ok) {
         const data = await res.json();
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: data.reply },
-        ]);
+        setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
       } else {
         const err = await res.json().catch(() => ({}));
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: `⚠️ Error: ${err.error || "Could not get a response. Please try again."}`,
-          },
-        ]);
+        setMessages(prev => [...prev, {
+          role: "assistant",
+          content: `⚠️ ${err.error || "Could not get a response. Please try again."}`,
+        }]);
       }
     } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "⚠️ Network error — please check your connection and try again.",
-        },
-      ]);
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        content: "⚠️ Network error — please check your connection and try again.",
+      }]);
     } finally {
       setLoading(false);
       inputRef.current?.focus();
@@ -88,6 +98,36 @@ export default function AgronomyPage() {
     setInput("");
     inputRef.current?.focus();
   };
+
+  // Checking session
+  if (loggedIn === null) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-64px)] bg-cream-100">
+        <Loader2 size={24} className="animate-spin text-forest-600" />
+      </div>
+    );
+  }
+
+  // Not logged in — show gate
+  if (!loggedIn) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-cream-100 px-4 text-center">
+        <div className="w-16 h-16 rounded-2xl bg-forest-700 flex items-center justify-center mb-4">
+          <Lock size={28} className="text-white" />
+        </div>
+        <h2 className="font-display text-xl font-bold text-forest-700 mb-2">Login Required</h2>
+        <p className="text-soil-400 text-sm max-w-xs mb-6">
+          Shamba Mshauri is available to registered farmers. Create a free account to get personalized agronomic advice.
+        </p>
+        <div className="flex gap-3">
+          <Link href="/profile"
+            className="px-6 py-3 bg-forest-700 hover:bg-forest-800 text-white font-bold rounded-xl transition-colors text-sm">
+            Log In / Register
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col bg-cream-100 relative" style={{ height: "calc(100vh - 64px)" }}>

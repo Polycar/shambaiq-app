@@ -72,6 +72,12 @@ export default function ProfilePage() {
   const [editLang, setEditLang] = useState("en");
   const [saving, setSaving] = useState(false);
 
+  // Change password
+  const [changingPw, setChangingPw] = useState(false);
+  const [currentPw, setCurrentPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [pwMsg, setPwMsg] = useState("");
+
   const router = useRouter();
 
   const loadProfile = useCallback(async (tok: string) => {
@@ -105,8 +111,32 @@ export default function ProfilePage() {
     }
   }, [loadProfile]);
 
+  const changePassword = async () => {
+    if (!currentPw || !newPw) { setPwMsg("Enter both fields."); return; }
+    if (newPw.length < 6) { setPwMsg("New password must be at least 6 characters."); return; }
+    setSaving(true); setPwMsg("");
+    try {
+      const res = await fetch(`${API}/api/v1/auth/change-password`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ current_password: currentPw, new_password: newPw }),
+      });
+      if (res.ok) {
+        setPwMsg("Password updated successfully.");
+        setCurrentPw(""); setNewPw("");
+        setTimeout(() => { setChangingPw(false); setPwMsg(""); }, 2000);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        setPwMsg(err.detail || "Failed. Check your current password.");
+      }
+    } catch { setPwMsg("Network error. Try again."); }
+    setSaving(false);
+  };
+
   const handleAuth = async () => {
     if (!phone || !password) { setMsg("Enter phone and password."); return; }
+    if (mode === "register" && !county) { setMsg("Please select your county."); return; }
+    if (mode === "register" && password.length < 6) { setMsg("Password must be at least 6 characters."); return; }
     setLoading(true); setMsg("");
     try {
       const endpoint = mode === "login" ? "login" : "register";
@@ -391,12 +421,27 @@ export default function ProfilePage() {
 
           {/* Account */}
           <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-            <Link href="/login?mode=change-password"
-              className="flex items-center gap-3 px-5 py-4 border-b border-cream-100 hover:bg-cream-50 transition-colors">
+            <button onClick={() => { setChangingPw(!changingPw); setPwMsg(""); }}
+              className="w-full flex items-center gap-3 px-5 py-4 border-b border-cream-100 hover:bg-cream-50 transition-colors text-left">
               <Lock size={16} className="text-soil-400" />
               <span className="text-sm font-medium text-forest-700 flex-1">Change Password</span>
-              <ChevronRight size={14} className="text-soil-300" />
-            </Link>
+              <ChevronRight size={14} className={`text-soil-300 transition-transform ${changingPw ? "rotate-90" : ""}`} />
+            </button>
+            {changingPw && (
+              <div className="px-5 py-4 border-b border-cream-100 space-y-3 bg-cream-50">
+                <input type="password" placeholder="Current password" value={currentPw}
+                  onChange={e => setCurrentPw(e.target.value)}
+                  className="w-full px-3 py-2 border border-cream-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-300" />
+                <input type="password" placeholder="New password (min 6 characters)" value={newPw}
+                  onChange={e => setNewPw(e.target.value)}
+                  className="w-full px-3 py-2 border border-cream-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-300" />
+                {pwMsg && <p className={`text-xs ${pwMsg.includes("success") ? "text-forest-600" : "text-red-500"}`}>{pwMsg}</p>}
+                <button onClick={changePassword} disabled={saving}
+                  className="w-full py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                  {saving && <Loader2 size={14} className="animate-spin" />} Update Password
+                </button>
+              </div>
+            )}
             <button onClick={logout}
               className="w-full flex items-center gap-3 px-5 py-4 hover:bg-red-50 transition-colors text-left">
               <LogOut size={16} className="text-red-500" />

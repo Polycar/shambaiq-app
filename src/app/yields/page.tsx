@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   TrendingUp,
   Plus,
@@ -34,45 +34,66 @@ interface YieldRecord {
   yield_bags_per_acre: number;
 }
 
+function getCookieSession(): { token?: string; phone?: string; name?: string } | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.split("; ").find(c => c.startsWith("shambaiq_session="));
+  if (!match) return null;
+  try { return JSON.parse(decodeURIComponent(match.split("=").slice(1).join("="))); }
+  catch { return null; }
+}
+
 export default function YieldsPage() {
   const [farmerId, setFarmerId] = useState("");
+  const [token, setToken] = useState<string | null>(null);
   const [identified, setIdentified] = useState(false);
   const [records, setRecords] = useState<YieldRecord[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Form
   const [logCrop, setLogCrop] = useState("Maize");
   const [logSeason, setLogSeason] = useState(SEASONS[SEASONS.length - 1]);
   const [logYield, setLogYield] = useState(15);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
 
+  // Auto-identify if session exists
+  useEffect(() => {
+    const session = getCookieSession();
+    if (session?.phone) {
+      setToken(session.token || null);
+      setFarmerId(session.phone);
+      loadYields(session.phone);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadYields = async (id: string) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API}/api/v1/analytics/yields/${encodeURIComponent(id)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setRecords(data.yields || (Array.isArray(data) ? data : []));
+      }
+    } catch { /* start fresh */ }
+    setIdentified(true);
+    setLoading(false);
+  };
+
   const identify = async () => {
     const id = farmerId.trim();
     if (!id) return;
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `${API}/api/v1/analytics/yields/${encodeURIComponent(id)}`
-      );
-      if (res.ok) {
-        const data = await res.json();
-        setRecords(data.yields || (Array.isArray(data) ? data : []) || []);
-      }
-    } catch {
-      // API may not be available — start fresh locally
-    }
-    setIdentified(true);
-    setLoading(false);
+    await loadYields(id);
   };
 
   const saveYield = async () => {
     setSaving(true);
     setMsg("");
     try {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
       const res = await fetch(`${API}/api/v1/analytics/yields`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           farmer_id: farmerId,
           crop: logCrop,
@@ -82,25 +103,17 @@ export default function YieldsPage() {
       });
       if (res.ok) {
         setMsg("Harvest logged! 🌾");
-        setRecords((prev) => [
-          ...prev,
-          { season: logSeason, crop: logCrop, yield_bags_per_acre: logYield },
-        ]);
+        setRecords(prev => [...prev, { season: logSeason, crop: logCrop, yield_bags_per_acre: logYield }]);
       } else {
         setMsg("Could not save. Try again.");
       }
     } catch {
-      // Save locally if offline
-      setRecords((prev) => [
-        ...prev,
-        { season: logSeason, crop: logCrop, yield_bags_per_acre: logYield },
-      ]);
+      setRecords(prev => [...prev, { season: logSeason, crop: logCrop, yield_bags_per_acre: logYield }]);
       setMsg("Saved locally (offline mode) 📱");
     }
     setSaving(false);
   };
 
-  // Group records by crop for charts
   const cropGroups = records.reduce<Record<string, YieldRecord[]>>((acc, r) => {
     if (!acc[r.crop]) acc[r.crop] = [];
     acc[r.crop].push(r);

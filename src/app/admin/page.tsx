@@ -165,11 +165,8 @@ export default function AdminDashboard() {
     else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
     else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
     else if (t === "crops") {
-      const res = await fetch(`${API}/api/v1/crops/prices/admin`, { headers: { "Authorization": `Bearer ${code}` } });
-      if (res.ok) {
-        const data = await res.json();
-        setCropPrices(data.list || []);
-      }
+      const res = await fetch(`${API}/api/v1/crops/economics`, { cache: "no-store" });
+      if (res.ok) { const data = await res.json(); setCropPrices(data.crops || []); }
     }
     else if (t === "agrovets") {
       const res = await fetch(`${API}/api/v1/admin/agrovets/csv`, { headers: { "Authorization": `Bearer ${code}` } });
@@ -498,7 +495,7 @@ export default function AdminDashboard() {
   const tabs: { key: Tab; label: string; icon: any; badge?: number }[] = [
     { key: "stats", label: "Overview", icon: BarChart3 },
     { key: "b2b", label: "B2B Hub", icon: BarChart3 },
-    { key: "crops", label: "Crop Pricing", icon: Wheat },
+    { key: "crops", label: "Crop Economics", icon: Wheat },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
@@ -730,98 +727,129 @@ export default function AdminDashboard() {
             </div>
           )}
           <div className="bg-white rounded-xl border border-cream-200 p-5">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <h3 className="font-semibold text-forest-700 flex-1">Crop Market Prices ({cropPrices.length})</h3>
-              <button onClick={downloadCropTemplate} className="flex items-center gap-1.5 px-3 py-1.5 border border-cream-300 text-soil-600 rounded-lg text-xs hover:border-forest-300 hover:text-forest-700 transition-colors">
-                <FileText size={14} /> Template
-              </button>
-              <label className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 border border-cream-300 text-soil-600 rounded-lg text-xs hover:border-forest-300 hover:text-forest-700 transition-colors">
-                {priceCSVUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-                Upload CSV
-                <input type="file" accept=".csv" className="hidden" onChange={async (e) => { const file = e.target.files?.[0]; if (file) { await handlePriceCSVUpload(file); e.target.value = ""; } }} />
-              </label>
-              <button onClick={() => setNewPriceForm({ crop: "", price_per_kg: "", unit: "KES/kg", market: "Nairobi" })} className="flex items-center gap-1.5 px-3 py-1.5 bg-forest-700 text-white rounded-lg text-xs hover:bg-forest-800 transition-colors">
-                <Plus size={14} /> Add Price
+            <div className="flex flex-wrap items-center gap-3 mb-2">
+              <div className="flex-1">
+                <h3 className="font-semibold text-forest-700">Crop Economics ({cropPrices.length})</h3>
+                <p className="text-xs text-soil-400 mt-0.5">Click any row to edit. Changes go live on the website immediately.</p>
+              </div>
+              <button
+                onClick={() => setNewPriceForm({ crop: "", price_per_kg: "", unit: "", market: "" })}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-forest-700 text-white rounded-lg text-xs hover:bg-forest-800 transition-colors"
+              >
+                <Plus size={14} /> Add Crop
               </button>
             </div>
 
             {cropPrices.length === 0 && !newPriceForm && (
-              <p className="text-soil-400 text-sm text-center py-8">
-                No crop prices yet. Upload a CSV or add manually.
-                <br /><span className="text-xs text-soil-300 mt-1 block">CSV format: crop, price_per_kg, unit, market</span>
-              </p>
+              <p className="text-soil-400 text-sm text-center py-8">Loading crop data from server…</p>
             )}
 
-            {(cropPrices.length > 0 || newPriceForm) && (
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-cream-200">
-                      <th className="text-left py-2 px-3 text-soil-500 font-semibold text-xs">Crop</th>
-                      <th className="text-left py-2 px-3 text-soil-500 font-semibold text-xs">Price/kg</th>
-                      <th className="text-left py-2 px-3 text-soil-500 font-semibold text-xs">Unit</th>
-                      <th className="text-left py-2 px-3 text-soil-500 font-semibold text-xs">Market</th>
-                      <th className="text-left py-2 px-3 text-soil-500 font-semibold text-xs">Updated</th>
-                      <th className="py-2 px-3 w-20"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {newPriceForm && (
-                      <tr className="border-b border-green-100 bg-green-50">
-                        <td className="py-1.5 px-2"><input autoFocus value={newPriceForm.crop} onChange={e => setNewPriceForm(f => f ? {...f, crop: e.target.value} : f)} placeholder="e.g. Maize" className="border border-cream-300 rounded px-2 py-1 text-xs w-full focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
-                        <td className="py-1.5 px-2"><input type="number" value={newPriceForm.price_per_kg} onChange={e => setNewPriceForm(f => f ? {...f, price_per_kg: e.target.value} : f)} placeholder="45" className="border border-cream-300 rounded px-2 py-1 text-xs w-24 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
-                        <td className="py-1.5 px-2"><input value={newPriceForm.unit} onChange={e => setNewPriceForm(f => f ? {...f, unit: e.target.value} : f)} className="border border-cream-300 rounded px-2 py-1 text-xs w-20 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
-                        <td className="py-1.5 px-2"><input value={newPriceForm.market} onChange={e => setNewPriceForm(f => f ? {...f, market: e.target.value} : f)} className="border border-cream-300 rounded px-2 py-1 text-xs w-24 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
-                        <td className="py-1.5 px-3 text-xs text-soil-400">—</td>
-                        <td className="py-1.5 px-2">
-                          <div className="flex gap-1">
-                            <button onClick={handleAddPrice} disabled={priceSaving || !newPriceForm.crop || !newPriceForm.price_per_kg} className="p-1.5 bg-forest-700 text-white rounded hover:bg-forest-800 transition-colors disabled:opacity-50">
-                              {priceSaving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
-                            </button>
-                            <button onClick={() => setNewPriceForm(null)} className="p-1.5 border border-cream-200 text-soil-500 rounded hover:border-red-300 hover:text-red-500 transition-colors"><X size={12} /></button>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                    {cropPrices.map((p: any, i: number) => (
-                      <tr key={p.id} className={`border-b border-cream-100 ${i % 2 === 0 ? "bg-white" : "bg-cream-50"}`}>
-                        {editingPrice?.id === p.id ? (
-                          <>
-                            <td className="py-1.5 px-3 text-xs font-medium text-forest-800">{p.crop}</td>
-                            <td className="py-1.5 px-2"><input type="number" value={editingPrice.price_per_kg} onChange={e => setEditingPrice((prev: any) => ({...prev, price_per_kg: e.target.value}))} className="border border-cream-300 rounded px-2 py-1 text-xs w-24 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
-                            <td className="py-1.5 px-2"><input value={editingPrice.unit} onChange={e => setEditingPrice((prev: any) => ({...prev, unit: e.target.value}))} className="border border-cream-300 rounded px-2 py-1 text-xs w-20 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
-                            <td className="py-1.5 px-2"><input value={editingPrice.market} onChange={e => setEditingPrice((prev: any) => ({...prev, market: e.target.value}))} className="border border-cream-300 rounded px-2 py-1 text-xs w-24 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
-                            <td className="py-1.5 px-3 text-xs text-soil-400">{p.updated_at ? new Date(p.updated_at).toLocaleDateString() : "—"}</td>
-                            <td className="py-1.5 px-2">
-                              <div className="flex gap-1">
-                                <button onClick={() => saveEditedPrice(p.id)} disabled={priceSaving} className="p-1.5 bg-forest-700 text-white rounded hover:bg-forest-800 transition-colors disabled:opacity-50">
-                                  {priceSaving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
-                                </button>
-                                <button onClick={() => setEditingPrice(null)} className="p-1.5 border border-cream-200 text-soil-500 rounded hover:border-red-300 hover:text-red-500 transition-colors"><X size={12} /></button>
-                              </div>
-                            </td>
-                          </>
-                        ) : (
-                          <>
-                            <td className="py-2 px-3 font-medium text-forest-800">{p.crop}</td>
-                            <td className="py-2 px-3 text-forest-700 font-semibold">KES {p.price_per_kg?.toLocaleString()}</td>
-                            <td className="py-2 px-3 text-soil-500 text-xs">{p.unit}</td>
-                            <td className="py-2 px-3 text-soil-500 text-xs">{p.market}</td>
-                            <td className="py-2 px-3 text-xs text-soil-400">{p.updated_at ? new Date(p.updated_at).toLocaleDateString() : "—"}</td>
-                            <td className="py-2 px-2">
-                              <div className="flex gap-1">
-                                <button onClick={() => setEditingPrice({ id: p.id, price_per_kg: String(p.price_per_kg), unit: p.unit, market: p.market })} className="p-1.5 text-soil-400 hover:text-forest-700 transition-colors"><PenLine size={14} /></button>
-                                <button onClick={() => deletePrice(p.id, p.crop)} className="p-1.5 text-soil-400 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
-                              </div>
-                            </td>
-                          </>
-                        )}
-                      </tr>
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="border-b border-cream-200 text-left">
+                    {["Crop","Category","pH","Yield/acre","Price/kg","N","P","K","Texture","Updated",""].map(h => (
+                      <th key={h} className="py-2 px-2 text-soil-500 font-semibold text-xs whitespace-nowrap">{h}</th>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {newPriceForm && (
+                    <tr className="border-b border-green-100 bg-green-50">
+                      <td className="py-1.5 px-2"><input autoFocus value={newPriceForm.crop} onChange={e => setNewPriceForm((f: any) => ({...f, crop: e.target.value}))} placeholder="Crop name" className="border border-cream-300 rounded px-2 py-1 text-xs w-28 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
+                      <td className="py-1.5 px-2"><select value={newPriceForm.market} onChange={e => setNewPriceForm((f: any) => ({...f, market: e.target.value}))} className="border border-cream-300 rounded px-1 py-1 text-xs focus:outline-none"><option value="">Category</option>{["Cereals","Legumes","Root & Tuber Crops","Vegetables","Cash Crops","Fruits & Trees"].map(c => <option key={c}>{c}</option>)}</select></td>
+                      <td className="py-1.5 px-2 text-xs text-soil-400">auto</td>
+                      <td className="py-1.5 px-2"><input type="number" value={newPriceForm.unit} onChange={e => setNewPriceForm((f: any) => ({...f, unit: e.target.value}))} placeholder="kg/acre" className="border border-cream-300 rounded px-2 py-1 text-xs w-20 focus:outline-none" /></td>
+                      <td className="py-1.5 px-2"><input type="number" value={newPriceForm.price_per_kg} onChange={e => setNewPriceForm((f: any) => ({...f, price_per_kg: e.target.value}))} placeholder="KES" className="border border-cream-300 rounded px-2 py-1 text-xs w-16 focus:outline-none" /></td>
+                      <td colSpan={4} className="py-1.5 px-2 text-xs text-soil-400">medium</td>
+                      <td className="py-1.5 px-2 text-xs text-soil-400">—</td>
+                      <td className="py-1.5 px-2">
+                        <div className="flex gap-1">
+                          <button
+                            onClick={async () => {
+                              if (!newPriceForm.crop) return;
+                              setPriceSaving(true); setCropPriceMsg(null);
+                              try {
+                                const res = await fetch(`${API}/api/v1/crops/admin/economics`, {
+                                  method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` },
+                                  body: JSON.stringify({ name: newPriceForm.crop, category: newPriceForm.market || "Other", price_per_kg: newPriceForm.price_per_kg ? parseFloat(newPriceForm.price_per_kg) : null, yield_per_acre: newPriceForm.unit ? parseInt(newPriceForm.unit) : null }),
+                                });
+                                if (res.ok) { setCropPriceMsg({type:"success",text:"Crop added"}); setNewPriceForm(null); fetchTab("crops"); }
+                                else { const d = await res.json(); setCropPriceMsg({type:"error",text:d.detail||"Failed"}); }
+                              } finally { setPriceSaving(false); }
+                            }}
+                            disabled={priceSaving || !newPriceForm.crop}
+                            className="p-1.5 bg-forest-700 text-white rounded hover:bg-forest-800 disabled:opacity-50"
+                          >
+                            {priceSaving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                          </button>
+                          <button onClick={() => setNewPriceForm(null)} className="p-1.5 border border-cream-200 text-soil-500 rounded hover:text-red-500"><X size={12} /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  {cropPrices.map((p: any, i: number) => (
+                    <tr key={p.id} className={`border-b border-cream-100 group ${i % 2 === 0 ? "bg-white" : "bg-cream-50"}`}>
+                      {editingPrice?.id === p.id ? (
+                        <>
+                          <td className="py-1.5 px-2 font-medium text-forest-800 text-xs">{p.name}</td>
+                          <td className="py-1.5 px-2"><select value={editingPrice.category} onChange={e => setEditingPrice((prev: any) => ({...prev, category: e.target.value}))} className="border border-cream-300 rounded px-1 py-1 text-xs focus:outline-none">{["Cereals","Legumes","Root & Tuber Crops","Vegetables","Cash Crops","Fruits & Trees","Other"].map(c => <option key={c}>{c}</option>)}</select></td>
+                          <td className="py-1.5 px-2"><span className="text-xs text-soil-500"><input type="number" step="0.5" value={editingPrice.ph_min} onChange={e => setEditingPrice((p: any) => ({...p, ph_min: e.target.value}))} className="border border-cream-300 rounded px-1 py-0.5 text-xs w-12 focus:outline-none" />–<input type="number" step="0.5" value={editingPrice.ph_max} onChange={e => setEditingPrice((p: any) => ({...p, ph_max: e.target.value}))} className="border border-cream-300 rounded px-1 py-0.5 text-xs w-12 focus:outline-none" /></span></td>
+                          <td className="py-1.5 px-2"><input type="number" value={editingPrice.yield_per_acre} onChange={e => setEditingPrice((p: any) => ({...p, yield_per_acre: e.target.value}))} className="border border-cream-300 rounded px-2 py-1 text-xs w-20 focus:outline-none" /></td>
+                          <td className="py-1.5 px-2"><input type="number" value={editingPrice.price_per_kg} onChange={e => setEditingPrice((p: any) => ({...p, price_per_kg: e.target.value}))} className="border border-cream-300 rounded px-2 py-1 text-xs w-16 focus:outline-none" /></td>
+                          {["n_need","p_need","k_need"].map(k => (
+                            <td key={k} className="py-1.5 px-1"><select value={editingPrice[k]} onChange={e => setEditingPrice((p: any) => ({...p, [k]: e.target.value}))} className="border border-cream-300 rounded px-1 py-1 text-xs focus:outline-none"><option>low</option><option>medium</option><option>high</option></select></td>
+                          ))}
+                          <td className="py-1.5 px-2"><input value={editingPrice.pref_texture} onChange={e => setEditingPrice((p: any) => ({...p, pref_texture: e.target.value}))} className="border border-cream-300 rounded px-2 py-1 text-xs w-24 focus:outline-none" /></td>
+                          <td className="py-1.5 px-2 text-xs text-soil-400">—</td>
+                          <td className="py-1.5 px-2">
+                            <div className="flex gap-1">
+                              <button
+                                onClick={async () => {
+                                  setPriceSaving(true); setCropPriceMsg(null);
+                                  try {
+                                    const res = await fetch(`${API}/api/v1/crops/admin/economics/${p.id}`, {
+                                      method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` },
+                                      body: JSON.stringify({ category: editingPrice.category, ph_min: parseFloat(editingPrice.ph_min), ph_max: parseFloat(editingPrice.ph_max), price_per_kg: parseFloat(editingPrice.price_per_kg), yield_per_acre: parseInt(editingPrice.yield_per_acre), n_need: editingPrice.n_need, p_need: editingPrice.p_need, k_need: editingPrice.k_need, pref_texture: editingPrice.pref_texture }),
+                                    });
+                                    if (res.ok) { setCropPriceMsg({type:"success",text:`${p.name} updated`}); setEditingPrice(null); fetchTab("crops"); }
+                                    else { const d = await res.json(); setCropPriceMsg({type:"error",text:d.detail||"Failed"}); }
+                                  } finally { setPriceSaving(false); }
+                                }}
+                                disabled={priceSaving}
+                                className="p-1.5 bg-forest-700 text-white rounded hover:bg-forest-800 disabled:opacity-50"
+                              >
+                                {priceSaving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                              </button>
+                              <button onClick={() => setEditingPrice(null)} className="p-1.5 border border-cream-200 text-soil-500 rounded hover:text-red-500"><X size={12} /></button>
+                            </div>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="py-2 px-2 font-medium text-forest-800 text-xs">{p.name}</td>
+                          <td className="py-2 px-2 text-xs text-soil-500">{p.category}</td>
+                          <td className="py-2 px-2 text-xs text-soil-500">{p.ph_min}–{p.ph_max}</td>
+                          <td className="py-2 px-2 text-xs text-forest-700">{p.yield_per_acre ? p.yield_per_acre.toLocaleString() : "—"}</td>
+                          <td className="py-2 px-2 text-xs font-semibold text-green-700">KES {p.price_per_kg ?? "—"}</td>
+                          <td className="py-2 px-2 text-xs text-soil-400">{p.n_need}</td>
+                          <td className="py-2 px-2 text-xs text-soil-400">{p.p_need}</td>
+                          <td className="py-2 px-2 text-xs text-soil-400">{p.k_need}</td>
+                          <td className="py-2 px-2 text-xs text-soil-400">{p.pref_texture || "—"}</td>
+                          <td className="py-2 px-2 text-xs text-soil-300">{p.updated_at ? new Date(p.updated_at).toLocaleDateString() : "—"}</td>
+                          <td className="py-2 px-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="flex gap-1">
+                              <button onClick={() => setEditingPrice({...p, price_per_kg: String(p.price_per_kg ?? ""), yield_per_acre: String(p.yield_per_acre ?? ""), ph_min: String(p.ph_min), ph_max: String(p.ph_max), pref_texture: p.pref_texture ?? ""})} className="p-1.5 text-soil-400 hover:text-forest-700 transition-colors"><PenLine size={13} /></button>
+                              <button onClick={async () => { if (!confirm(`Delete ${p.name}?`)) return; const res = await fetch(`${API}/api/v1/crops/admin/economics/${p.id}`, { method: "DELETE", headers: { "Authorization": `Bearer ${code}` } }); if (res.ok) { setCropPriceMsg({type:"success",text:`${p.name} deleted`}); fetchTab("crops"); } }} className="p-1.5 text-soil-400 hover:text-red-500 transition-colors"><Trash2 size={13} /></button>
+                            </div>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

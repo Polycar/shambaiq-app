@@ -38,9 +38,17 @@ export default function AgronomyPage() {
   useEffect(() => {
     const session = getCookieSession();
     setLoggedIn(!!session?.token);
+    // Restore persisted chat
+    try {
+      const saved = sessionStorage.getItem("agronomy_chat");
+      if (saved) setMessages(JSON.parse(saved));
+    } catch { /* ignore */ }
   }, []);
 
   useEffect(() => {
+    if (messages.length > 0) {
+      try { sessionStorage.setItem("agronomy_chat", JSON.stringify(messages)); } catch { /* ignore */ }
+    }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
@@ -96,6 +104,7 @@ export default function AgronomyPage() {
   const reset = () => {
     setMessages([]);
     setInput("");
+    try { sessionStorage.removeItem("agronomy_chat"); } catch { /* ignore */ }
     inputRef.current?.focus();
   };
 

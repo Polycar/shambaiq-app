@@ -33,6 +33,13 @@ interface DiagnosisRecord {
   crop: string | null; county: string | null; created_at: string | null;
 }
 
+interface SoilReport {
+  id: string; county: string | null; crop: string | null;
+  health_score: number; total_budget: number; recommended_fert: string | null;
+  is_acidic: boolean; is_n_low: boolean; is_p_low: boolean; is_k_low: boolean;
+  created_at: string | null;
+}
+
 function getCookieSession(): { token?: string; phone?: string; name?: string } | null {
   if (typeof document === "undefined") return null;
   const match = document.cookie.split("; ").find(c => c.startsWith("shambaiq_session="));
@@ -63,6 +70,7 @@ export default function ProfilePage() {
   // Profile data
   const [ctx, setCtx] = useState<FarmerContext | null>(null);
   const [diagnoses, setDiagnoses] = useState<DiagnosisRecord[]>([]);
+  const [soilReports, setSoilReports] = useState<SoilReport[]>([]);
   const [ctxLoading, setCtxLoading] = useState(false);
 
   // Edit state
@@ -83,9 +91,10 @@ export default function ProfilePage() {
   const loadProfile = useCallback(async (tok: string) => {
     setCtxLoading(true);
     try {
-      const [ctxRes, diagRes] = await Promise.all([
+      const [ctxRes, diagRes, soilRes] = await Promise.all([
         fetch(`${API}/api/v1/auth/me/context`, { headers: { Authorization: `Bearer ${tok}` } }),
         fetch(`${API}/api/v1/diagnosis/history?limit=3`, { headers: { Authorization: `Bearer ${tok}` } }),
+        fetch(`${API}/api/v1/auth/soil-history?limit=20`, { headers: { Authorization: `Bearer ${tok}` } }),
       ]);
       if (ctxRes.ok) {
         const data: FarmerContext = await ctxRes.json();
@@ -97,6 +106,10 @@ export default function ProfilePage() {
       if (diagRes.ok) {
         const data = await diagRes.json();
         setDiagnoses(data.history || []);
+      }
+      if (soilRes.ok) {
+        const data = await soilRes.json();
+        setSoilReports(data.history || []);
       }
     } finally {
       setCtxLoading(false);
@@ -346,6 +359,52 @@ export default function ProfilePage() {
                 </div>
                 <p className="text-xs text-soil-500 mt-3 leading-relaxed">Recommended: {ctx.latest_soil.recommended_fert}</p>
               </div>
+            </div>
+          )}
+
+          {/* Soil report history */}
+          {soilReports.length > 0 && (
+            <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
+                <h2 className="font-display font-bold text-forest-700 text-sm">Soil Report History</h2>
+                <Link href="/soil" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
+                  New report <ChevronRight size={12} />
+                </Link>
+              </div>
+              <ul className="divide-y divide-cream-200">
+                {soilReports.map(r => (
+                  <li key={r.id} className="px-5 py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-forest-700 truncate">
+                          {r.crop || "—"}{r.county ? ` · ${r.county}` : ""}
+                        </p>
+                        <p className="text-xs text-soil-400 mt-0.5">
+                          {r.created_at ? new Date(r.created_at).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" }) : ""}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 ml-3 shrink-0">
+                        <div className="text-right">
+                          <div className="text-sm font-bold text-forest-700">{r.health_score}</div>
+                          <div className="text-xs text-soil-400">score</div>
+                        </div>
+                      </div>
+                    </div>
+                    {r.recommended_fert && (
+                      <p className="text-xs text-soil-500 mt-1.5 leading-relaxed">
+                        {r.recommended_fert}
+                        {r.total_budget > 0 && ` · KES ${r.total_budget.toLocaleString()}`}
+                      </p>
+                    )}
+                    <div className="flex gap-1.5 flex-wrap mt-1.5">
+                      {r.is_acidic && <span className="px-1.5 py-0.5 bg-red-50 text-red-600 text-xs rounded-full">Acidic</span>}
+                      {r.is_n_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low N</span>}
+                      {r.is_p_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low P</span>}
+                      {r.is_k_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low K</span>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 

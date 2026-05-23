@@ -1,13 +1,39 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export const runtime = 'nodejs';
 
+const BACKEND = process.env.NEXT_PUBLIC_API_URL || 'https://api.shambaiq.com';
+
+async function logSoilReport(token: string, payload: object) {
+  try {
+    await fetch(`${BACKEND}/api/v1/auth/soil-log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(4000),
+    });
+  } catch {
+    // Non-blocking — never fail the recommendation if logging fails
+  }
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
-
   if (!apiKey) {
     return NextResponse.json({ error: 'Server misconfiguration: API key missing' }, { status: 503 });
   }
+
+  // Read session token for logging (best-effort, not required)
+  let token: string | undefined;
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get('shambaiq_session');
+    if (session?.value) {
+      const parsed = JSON.parse(decodeURIComponent(session.value));
+      token = parsed?.token;
+    }
+  } catch { /* ignore */ }
 
   try {
     const body = await request.json();
@@ -70,6 +96,22 @@ Respond ONLY with a raw JSON object in exactly this format (no markdown, no back
 
     try {
       const parsed = JSON.parse(cleaned);
+
+      // Save to backend — fire and forget, never blocks the response
+      if (token) {
+        logSoilReport(token, {
+          county,
+          crop,
+          estimated_cost_kes: parsed.estimated_cost_kes,
+          primary_fertilizer: parsed.primary_fertilizer,
+          is_acidic: soil?.pH ? soil.pH < 6.0 : false,
+          is_n_low: false,
+          is_p_low: false,
+          is_k_low: false,
+          health_score: soil?.pH ? Math.round(Math.min(100, (soil.pH / 7) * 80)) : 50,
+        });
+      }
+
       return NextResponse.json(parsed);
     } catch {
       return NextResponse.json({ error: 'Failed to parse AI response', raw: cleaned }, { status: 502 });

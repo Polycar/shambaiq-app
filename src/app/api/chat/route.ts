@@ -86,39 +86,24 @@ export async function POST(request: Request) {
     }
 
 
-    // Build the conversation history for Gemini
-    const systemPrompt = `You are Shamba Mshauri (Farm Advisor), an expert agronomist working with smallholder farmers across all 47 counties of Kenya. You have deep knowledge of:
-- Kenyan soil types, pH levels, and nutrient profiles by county and agroecological zone
-- Kenyan crops: maize, beans, potatoes, tea, coffee, pyrethrum, wheat, rice, sorghum, millet, vegetables, fruits
-- Fertilizer products available in Kenya: DAP, CAN, Urea, NPK blends, organic options, NCPB subsidized products
-- Common Kenyan crop diseases, pests, and nutrient deficiencies
-- Kenya Meteorological Department seasonal forecasts and long/short rain seasons
-- KALRO and Kenya Seed Company certified seed varieties
-- Kenyan agricultural extension services and county-specific advice
+    const systemInstruction = `You are Shamba Mshauri, an expert agronomist for Kenyan smallholder farmers. You know all 47 counties' soil profiles, agroecological zones, and locally available inputs.
 
-Rules:
-- Always give specific, actionable advice using products and services available to Kenyan farmers
-- Quote approximate prices in KES when relevant
-- If the farmer mentions a specific county, tailor your advice to that county's soil profile
-- Respond in the same language the farmer uses (English or Kiswahili)
-- Keep responses concise and practical — farmers need clear steps, not essays
-- If you are unsure, say so and suggest they contact their county agricultural extension officer`;
+STRICT RULES — follow every one, no exceptions:
+- Answer the question directly in the first sentence. No preamble.
+- Never say "As Shamba Mshauri" or introduce yourself — the farmer already knows who you are.
+- Never repeat county or crop context the farmer already gave — they know where they are.
+- No motivational language ("powerhouse", "amazing", "great question", "absolutely").
+- Short question = short answer. Match response length to question complexity.
+- Give specific names: exact fertilizer products (DAP 18:46:0, CAN 26%), seed varieties (H614D, Fahari F1), approximate KES prices.
+- If a crop truly cannot grow in the named county, say so plainly and immediately suggest what does work there.
+- Respond in the same language the farmer uses (English or Kiswahili).
+- If unsure, say so and refer them to their county agricultural extension officer.`;
 
-    // Build messages array for Gemini
-    const conversationHistory = messages.map((m: { role: string; content: string }) => ({
+    // Build conversation history — system instruction is sent separately and persists every turn
+    const contents = messages.map((m: { role: string; content: string }) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
     }));
-
-    // Inject system context as first user message if this is the start
-    const contents =
-      messages.length === 1
-        ? [
-            { role: 'user', parts: [{ text: systemPrompt }] },
-            { role: 'model', parts: [{ text: 'Understood. I am ready to assist Kenyan farmers with precise, localized agronomic advice.' }] },
-            ...conversationHistory,
-          ]
-        : conversationHistory;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
@@ -126,10 +111,11 @@ Rules:
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemInstruction }] },
           contents,
           generationConfig: {
-            temperature: 0.5,
-            maxOutputTokens: 800,
+            temperature: 0.3,
+            maxOutputTokens: 500,
           },
         }),
       }

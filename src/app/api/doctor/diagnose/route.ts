@@ -3,50 +3,82 @@ import { cookies } from 'next/headers';
 
 export const runtime = 'nodejs';
 
+const BACKEND = process.env.NEXT_PUBLIC_API_URL || 'https://api.shambaiq.com';
+
+async function fetchFarmerContext(token: string) {
+  try {
+    const res = await fetch(`${BACKEND}/api/v1/auth/me/context`, {
+      headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function saveDiagnosis(token: string, payload: object) {
+  try {
+    await fetch(`${BACKEND}/api/v1/diagnosis`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(4000),
+    });
+  } catch {
+    // Non-blocking — never fail the diagnosis if saving fails
+  }
+}
+
 export async function POST(request: Request) {
-  // Session check to protect the endpoint from unauthorized consumption
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('shambaiq_session');
   if (!sessionCookie?.value) {
     return NextResponse.json({ error: 'Unauthorized: No active session' }, { status: 401 });
   }
 
+  let token: string | undefined;
   try {
     const sessionData = JSON.parse(decodeURIComponent(sessionCookie.value));
     if (!sessionData.phone && !sessionData.token) {
       return NextResponse.json({ error: 'Unauthorized: Invalid session' }, { status: 401 });
     }
-  } catch (e) {
+    token = sessionData.token;
+  } catch {
     return NextResponse.json({ error: 'Unauthorized: Invalid session format' }, { status: 401 });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
-
-  // Surface a clear error if the key is missing (helps debug Vercel env issues)
   if (!apiKey) {
-    console.error('[PlantDoctor] GEMINI_API_KEY is not set in environment variables');
-    return NextResponse.json(
-      { error: 'Server misconfiguration: API key missing' },
-      { status: 503 }
-    );
+    return NextResponse.json({ error: 'Server misconfiguration: API key missing' }, { status: 503 });
   }
-
 
   try {
     const body = await request.json();
-    const { image } = body;
+    const { image, crop: userCrop } = body;
 
     if (!image) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 });
     }
 
-    const prompt = `You are an expert agricultural plant doctor in Kenya. Analyze this image of a plant leaf or stem.
-Identify any disease, pest, or nutrient deficiency visible.
+    // Fetch farmer context to personalise the Gemini prompt (best-effort)
+    const ctx = token ? await fetchFarmerContext(token) : null;
+    const county = ctx?.county || null;
+    const crop = userCrop || ctx?.latest_soil?.crop || ctx?.fields?.[0]?.crop || null;
 
-IMPORTANT: Respond ONLY with a raw JSON object. Do NOT use markdown, backticks, or any other formatting.
+    const locationLine = county ? `The farmer is in ${county} County, Kenya.` : 'The farmer is in Kenya.';
+    const cropLine = crop ? `The crop in the image is likely ${crop}.` : '';
 
-Use exactly this schema:
-{"condition":"Name of the disease/pest/deficiency, or Healthy if no issues","confidence":85,"treatment":"Specific, actionable treatment advice using products available at Kenyan agrovets. Include product names and dosages where possible.","prevention":"Practical prevention steps for Kenyan small-scale farmers."}`;
+    const prompt = `You are an expert plant pathologist working with Kenyan smallholder farmers.
+${locationLine}${cropLine ? ' ' + cropLine : ''}
+
+Analyze the image for any disease, pest damage, or nutrient deficiency.
+
+IMPORTANT: Respond ONLY with a raw JSON object — no markdown, no backticks.
+
+Schema:
+{"condition":"Specific disease/pest/deficiency name, or Healthy","confidence":85,"treatment":"Specific treatment using products available at Kenyan agrovets — include exact product names, dosages, and timing.","prevention":"Practical prevention steps suited to smallholder farmers${county ? ` in ${county}` : ' in Kenya'}."}`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
@@ -58,19 +90,14 @@ Use exactly this schema:
             {
               parts: [
                 { text: prompt },
-                {
-                  inline_data: {
-                    mime_type: 'image/jpeg',
-                    data: image,
-                  },
-                },
+                { inline_data: { mime_type: 'image/jpeg', data: image } },
               ],
             },
           ],
           generationConfig: {
             temperature: 0.3,
-            maxOutputTokens: 2048,
-            responseMimeType: "application/json"
+            maxOutputTokens: 1024,
+            responseMimeType: 'application/json',
           },
         }),
       }
@@ -79,41 +106,45 @@ Use exactly this schema:
     if (!response.ok) {
       const errBody = await response.text();
       console.error('[PlantDoctor] Gemini API error:', response.status, errBody);
-      return NextResponse.json(
-        { error: `Gemini API error: ${response.status}` },
-        { status: 502 }
-      );
+      return NextResponse.json({ error: `Gemini API error: ${response.status}` }, { status: 502 });
     }
 
     const data = await response.json();
     const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
 
     if (!text) {
-      console.error('[PlantDoctor] Empty response from Gemini:', JSON.stringify(data));
       return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
     }
 
-    // Strip any accidental markdown wrappers
     const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
 
+    let parsed: { condition: string; confidence: number; treatment: string; prevention: string };
     try {
-      const parsed = JSON.parse(cleaned);
-      return NextResponse.json(parsed);
+      parsed = JSON.parse(cleaned);
     } catch {
-      console.error('[PlantDoctor] JSON parse failed. Raw text:', text);
-      // Return a graceful structured response so the UI still shows something useful
-      return NextResponse.json({
+      parsed = {
         condition: 'Diagnosis Complete',
         confidence: 70,
         treatment: cleaned,
         prevention: 'Practice crop rotation and scout your fields weekly for early signs of pest or disease pressure.',
+      };
+    }
+
+    // Save to backend — fire and forget, never blocks the response
+    if (token) {
+      saveDiagnosis(token, {
+        county,
+        crop,
+        condition: parsed.condition,
+        confidence: parsed.confidence,
+        treatment: parsed.treatment,
+        prevention: parsed.prevention,
       });
     }
+
+    return NextResponse.json(parsed);
   } catch (error) {
     console.error('[PlantDoctor] Unexpected error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -173,7 +173,7 @@ ${farmerBlock ? '\n' + farmerBlock : ''}`;
           contents,
           generationConfig: {
             temperature: 0.3,
-            maxOutputTokens: 700,
+            maxOutputTokens: 1500,
           },
         }),
       }

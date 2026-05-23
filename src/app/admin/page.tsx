@@ -366,18 +366,22 @@ export default function AdminDashboard() {
 
   // ─── B2B export helpers ───
   const exportCountyReport = useCallback(() => {
-    if (!stats?.county_distribution) return;
+    const dist: Record<string, number> = stats?.county_distribution || {};
+    const entries = Object.entries(dist).sort(([,a],[,b]) => b - a);
+    if (!entries.length) return;
+    const total = entries.reduce((s, [,n]) => s + n, 0);
     const rows: (string | number)[][] = [["County", "Farmers", "% Share"]];
-    const total = stats.county_distribution.reduce((s: number, c: any) => s + c.count, 0);
-    stats.county_distribution.forEach((c: any) => rows.push([c.county, c.count, ((c.count / total) * 100).toFixed(1)]));
+    entries.forEach(([county, n]) => rows.push([county, n, ((n / total) * 100).toFixed(1)]));
     dlCSV(rows, `shambaiq-county-report-${new Date().toISOString().slice(0, 10)}.csv`);
   }, [stats]);
 
   const exportCropReport = useCallback(() => {
-    if (!stats?.crop_distribution) return;
+    const dist: Record<string, number> = stats?.crop_distribution || {};
+    const entries = Object.entries(dist).sort(([,a],[,b]) => b - a);
+    if (!entries.length) return;
+    const total = entries.reduce((s, [,n]) => s + n, 0);
     const rows: (string | number)[][] = [["Crop", "Farmers", "% Share"]];
-    const total = stats.crop_distribution.reduce((s: number, c: any) => s + c.count, 0);
-    stats.crop_distribution.forEach((c: any) => rows.push([c.crop, c.count, ((c.count / total) * 100).toFixed(1)]));
+    entries.forEach(([crop, n]) => rows.push([crop, n, ((n / total) * 100).toFixed(1)]));
     dlCSV(rows, `shambaiq-crop-report-${new Date().toISOString().slice(0, 10)}.csv`);
   }, [stats]);
 
@@ -401,11 +405,11 @@ export default function AdminDashboard() {
         [],
         ["=== COUNTY DISTRIBUTION ==="],
         ["County", "Farmers"],
-        ...(countyData?.county_distribution ?? []).map((c: any) => [c.county, c.count]),
+        ...Object.entries(countyData?.county_distribution ?? {}).sort(([,a],[,b]) => (b as number)-(a as number)).map(([county, n]) => [county, n as number]),
         [],
         ["=== CROP FOCUS ==="],
         ["Crop", "Farmers"],
-        ...(countyData?.crop_distribution ?? []).map((c: any) => [c.crop, c.count]),
+        ...Object.entries(countyData?.crop_distribution ?? {}).sort(([,a],[,b]) => (b as number)-(a as number)).map(([crop, n]) => [crop, n as number]),
         [],
         ["=== CURRENT MARKET PRICES ==="],
         ["Crop", "Price (KES/kg)", "Market", "Updated"],
@@ -443,12 +447,11 @@ export default function AdminDashboard() {
         f("/api/v1/analytics/stats"),
       ]);
       const dealerCounties = new Set((dealerData?.dealers ?? []).map((d: any) => d.county));
-      const allCounties = (cropData?.county_distribution ?? []).map((c: any) => c.county);
+      const distObj: Record<string, number> = cropData?.county_distribution ?? {};
       const rows: (string | number)[][] = [["County", "Has Dealer", "Farmer Count", "Gap Priority"]];
-      allCounties.forEach((county: string) => {
+      Object.entries(distObj).sort(([,a],[,b]) => b - a).forEach(([county, farmerCount]) => {
         const hasDealers = dealerCounties.has(county);
-        const farmerCount = cropData.county_distribution.find((c: any) => c.county === county)?.count ?? 0;
-        rows.push([county, hasDealers ? "Yes" : "No", farmerCount, hasDealers ? "Covered" : farmerCount > 50 ? "High Priority" : "Medium"]);
+        rows.push([county, hasDealers ? "Yes" : farmerCount, farmerCount, hasDealers ? "Covered" : farmerCount > 50 ? "High Priority" : "Medium"]);
       });
       dlCSV(rows, `shambaiq-dealer-gap-${new Date().toISOString().slice(0, 10)}.csv`);
     } finally { setB2bExporting(null); }
@@ -462,16 +465,16 @@ export default function AdminDashboard() {
       [],
       ["Metric", "Value"],
       ["Total Registered Farmers", stats.total_farmers ?? ""],
-      ["Counties Active", stats.county_distribution?.length ?? ""],
-      ["Top Crop", stats.crop_distribution?.[0]?.crop ?? ""],
+      ["Counties Active", Object.keys(stats.county_distribution ?? {}).length],
+      ["Top Crop", Object.entries(stats.crop_distribution ?? {}).sort(([,a],[,b]) => (b as number)-(a as number))[0]?.[0] ?? ""],
       ["Avg Yield Records per Farmer", stats.total_yields && stats.total_farmers ? (stats.total_yields / stats.total_farmers).toFixed(2) : ""],
       [],
       ["=== COUNTY CREDITWORTHINESS PROXY ==="],
       ["County", "Farmers", "Yield Records", "Risk Proxy"],
-      ...(stats.county_distribution ?? []).map((c: any) => [
-        c.county, c.count,
-        stats.yield_by_county?.[c.county] ?? "N/A",
-        c.count > 100 ? "Low Risk" : c.count > 30 ? "Medium Risk" : "High Risk",
+      ...Object.entries(stats.county_distribution ?? {}).sort(([,a],[,b]) => (b as number)-(a as number)).map(([county, n]) => [
+        county, n as number,
+        stats.yield_by_county?.[county] ?? "N/A",
+        (n as number) > 100 ? "Low Risk" : (n as number) > 30 ? "Medium Risk" : "High Risk",
       ]),
     ];
     dlCSV(rows, `shambaiq-sacco-report-${new Date().toISOString().slice(0, 10)}.csv`);
@@ -672,20 +675,21 @@ export default function AdminDashboard() {
             ))}
           </div>
 
-          {stats?.county_distribution && (
+          {stats?.county_distribution && Object.keys(stats.county_distribution).length > 0 && (
             <div className="bg-white rounded-xl border border-cream-200 p-5">
               <h3 className="font-semibold text-forest-700 mb-4">Top Counties by Farmer Count</h3>
               <div className="space-y-2">
-                {[...stats.county_distribution].sort((a: any, b: any) => b.count - a.count).slice(0, 10).map((c: any) => {
-                  const max = Math.max(...stats.county_distribution.map((x: any) => x.count));
-                  const pct = Math.round((c.count / max) * 100);
+                {Object.entries(stats.county_distribution as Record<string,number>)
+                  .sort(([,a],[,b]) => b - a).slice(0, 10).map(([county, n]) => {
+                  const max = Math.max(...Object.values(stats.county_distribution as Record<string,number>));
+                  const pct = Math.round((n / max) * 100);
                   return (
-                    <div key={c.county} className="flex items-center gap-3">
-                      <span className="text-xs text-soil-500 w-28 truncate">{c.county}</span>
+                    <div key={county} className="flex items-center gap-3">
+                      <span className="text-xs text-soil-500 w-28 truncate">{county}</span>
                       <div className="flex-1 bg-cream-100 rounded-full h-2">
                         <div className="bg-forest-600 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
                       </div>
-                      <span className="text-xs text-forest-700 font-semibold w-10 text-right">{c.count}</span>
+                      <span className="text-xs text-forest-700 font-semibold w-10 text-right">{n}</span>
                     </div>
                   );
                 })}
@@ -693,20 +697,21 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {stats?.crop_distribution && (
+          {stats?.crop_distribution && Object.keys(stats.crop_distribution).length > 0 && (
             <div className="bg-white rounded-xl border border-cream-200 p-5">
               <h3 className="font-semibold text-forest-700 mb-4">Top Crops by Farmer Adoption</h3>
               <div className="space-y-2">
-                {[...stats.crop_distribution].sort((a: any, b: any) => b.count - a.count).slice(0, 10).map((c: any) => {
-                  const max = Math.max(...stats.crop_distribution.map((x: any) => x.count));
-                  const pct = Math.round((c.count / max) * 100);
+                {Object.entries(stats.crop_distribution as Record<string,number>)
+                  .sort(([,a],[,b]) => b - a).slice(0, 10).map(([crop, n]) => {
+                  const max = Math.max(...Object.values(stats.crop_distribution as Record<string,number>));
+                  const pct = Math.round((n / max) * 100);
                   return (
-                    <div key={c.crop} className="flex items-center gap-3">
-                      <span className="text-xs text-soil-500 w-28 truncate">{c.crop}</span>
+                    <div key={crop} className="flex items-center gap-3">
+                      <span className="text-xs text-soil-500 w-28 truncate">{crop}</span>
                       <div className="flex-1 bg-cream-100 rounded-full h-2">
                         <div className="bg-gold-500 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
                       </div>
-                      <span className="text-xs text-forest-700 font-semibold w-10 text-right">{c.count}</span>
+                      <span className="text-xs text-forest-700 font-semibold w-10 text-right">{n}</span>
                     </div>
                   );
                 })}

@@ -179,6 +179,9 @@ export default function AdminDashboard() {
         setAgrovetTotal(data.count || 0);
       }
     }
+    else if (t === "b2b") {
+      if (!stats) setStats(await f("/api/v1/analytics/stats"));
+    }
     setLoading(false);
   }, [code, f, dealerFilter, farmerSearch]);
 

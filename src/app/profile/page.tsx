@@ -331,7 +331,7 @@ export default function ProfilePage() {
             <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
               <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
                 <h2 className="font-display font-bold text-forest-700 text-sm">Latest Soil Report</h2>
-                <Link href="/soil" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
+                <Link href="/app" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
                   New report <ChevronRight size={12} />
                 </Link>
               </div>
@@ -367,7 +367,7 @@ export default function ProfilePage() {
             <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
               <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
                 <h2 className="font-display font-bold text-forest-700 text-sm">Soil Report History</h2>
-                <Link href="/soil" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
+                <Link href="/app" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
                   New report <ChevronRight size={12} />
                 </Link>
               </div>
@@ -461,7 +461,7 @@ export default function ProfilePage() {
               <h2 className="font-display font-bold text-forest-700 text-sm">Quick Actions</h2>
             </div>
             {[
-              { href: "/soil", icon: <BarChart3 size={16} className="text-forest-600" />, label: "Get Soil Report", desc: "Run analysis for your shamba" },
+              { href: "/app", icon: <BarChart3 size={16} className="text-forest-600" />, label: "Get Soil Report", desc: "Run analysis for your shamba" },
               { href: "/doctor", icon: <Stethoscope size={16} className="text-red-500" />, label: "Plant Doctor", desc: "Diagnose crop diseases with AI" },
               { href: "/agronomy", icon: <Leaf size={16} className="text-gold-500" />, label: "Ask Agronomist", desc: "Chat with Shamba Mshauri" },
               { href: "/yields", icon: <BarChart3 size={16} className="text-forest-600" />, label: "My Yield History", desc: "Track your harvests" },

@@ -8,9 +8,10 @@ const navLinks = [
   { href: "/soil", label: "Soil Reports" },
   { href: "/crops", label: "Crop Guides" },
   { href: "/yields", label: "My Yields" },
-    { href: "/dealers", label: "Dealers" },
+  { href: "/dealers", label: "Dealers" },
   { href: "/doctor", label: "Plant Doctor" },
   { href: "/agronomy", label: "Ask Agronomist" },
+  { href: "/profile", label: "My Profile" },
   { href: "/dealers/apply", label: "Dealer Signup", cta: true },
 ];
 
@@ -77,12 +78,15 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
             )}
             {isLoggedIn ? (
               <div className="flex items-center gap-3 ml-4">
-                <div className="flex items-center gap-2 text-cream-300">
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-2 text-cream-300 hover:text-gold-300 transition-colors"
+                >
                   <div className="w-7 h-7 rounded-full bg-forest-600 flex items-center justify-center border border-forest-500">
                     <span className="text-xs font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
                   </div>
                   <span className="text-sm font-medium">Hi, {userName || "Farmer"}</span>
-                </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="px-3 py-1.5 border border-cream-300/20 hover:border-cream-300/40 text-cream-300 font-medium rounded-lg transition-colors text-xs"
@@ -92,7 +96,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
               </div>
             ) : (
               <Link
-                href="/login"
+                href="/profile"
                 className="ml-3 px-4 py-2 border border-cream-300/20 hover:border-cream-300/40 text-cream-300 font-medium rounded-lg transition-colors text-sm"
               >
                 Log In
@@ -137,12 +141,16 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
             ))}
             {isLoggedIn ? (
               <div className="mt-4 pt-4 border-t border-cream-300/10">
-                <div className="flex items-center gap-3 px-3 mb-3">
+                <Link
+                  href="/profile"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-3 mb-3 hover:opacity-80 transition-opacity"
+                >
                   <div className="w-8 h-8 rounded-full bg-forest-600 flex items-center justify-center border border-forest-500">
                     <span className="text-sm font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
                   </div>
-                  <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"}</span>
-                </div>
+                  <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"} · View Profile</span>
+                </Link>
                 <button
                   onClick={() => { setOpen(false); handleLogout(); }}
                   className="w-full text-left block px-3 py-2.5 rounded-lg text-sm font-medium text-cream-300 border border-cream-300/20"
@@ -152,7 +160,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
               </div>
             ) : (
               <Link
-                href="/login"
+                href="/profile"
                 onClick={() => setOpen(false)}
                 className="block px-3 py-2.5 mt-2 rounded-lg text-sm font-medium text-cream-300 border border-cream-300/20"
               >

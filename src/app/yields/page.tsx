@@ -61,15 +61,20 @@ export default function YieldsPage() {
     if (session?.phone) {
       setToken(session.token || null);
       setFarmerId(session.phone);
-      loadYields(session.phone);
+      loadYields(session.phone, session.token);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadYields = async (id: string) => {
+  const loadYields = async (id: string, tok?: string | null) => {
     setLoading(true);
     try {
-      const res = await fetch(`${API}/api/v1/analytics/yields/${encodeURIComponent(id)}`);
+      const headers: Record<string, string> = {};
+      if (tok) headers["Authorization"] = `Bearer ${tok}`;
+      const url = tok
+        ? `${API}/api/v1/analytics/yields/me`
+        : `${API}/api/v1/analytics/yields/${encodeURIComponent(id)}`;
+      const res = await fetch(url, { headers });
       if (res.ok) {
         const data = await res.json();
         setRecords(data.yields || (Array.isArray(data) ? data : []));
@@ -95,7 +100,6 @@ export default function YieldsPage() {
         method: "POST",
         headers,
         body: JSON.stringify({
-          farmer_id: farmerId,
           crop: logCrop,
           season: logSeason,
           yield_bags_per_acre: logYield,

@@ -132,16 +132,42 @@ export interface YieldEntry {
 
 // ─── Fetcher ────────────────────────────────────────────────────────────────
 
+const REQUEST_TIMEOUT_MS = 20_000;
+
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
   const url = `${BASE}${path}`;
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
+    });
+  } catch (err: unknown) {
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new Error("Request timed out. Please check your connection and try again.");
+    }
+    throw new Error("Could not reach the server. Please check your connection.");
+  } finally {
+    clearTimeout(timer);
+  }
+
   if (!res.ok) {
+    if (res.status === 429) {
+      throw new Error("You're sending too many requests. Please wait a moment and try again.");
+    }
+    if (res.status >= 500) {
+      throw new Error("The server is experiencing issues. Please try again in a few seconds.");
+    }
+    if (res.status === 401) {
+      throw new Error("Your session has expired. Please log in again.");
+    }
     const text = await res.text().catch(() => "Unknown error");
     throw new Error(`API ${res.status}: ${text}`);
   }

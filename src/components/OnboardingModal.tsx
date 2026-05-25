@@ -19,19 +19,22 @@ const CROPS = [
   "Sunflower","Onions","Tomatoes","Cabbage","Kale","Carrots","Avocado",
 ];
 
-const CHALLENGES = [
-  { value: "soil", label: "Soil fertility", icon: "🌱", desc: "My soil isn't producing well" },
-  { value: "pests", label: "Pests & disease", icon: "🐛", desc: "Crop damage from insects or disease" },
-  { value: "yield", label: "Low yield", icon: "📉", desc: "Not getting enough harvest" },
-  { value: "money", label: "Input costs", icon: "💰", desc: "Fertilizer and seeds are too expensive" },
+const FERTILIZERS = [
+  { value: "DAP (Diammonium Phosphate)", label: "DAP", desc: "Common planting fertilizer" },
+  { value: "CAN", label: "CAN", desc: "Top-dressing nitrogen" },
+  { value: "Urea", label: "Urea", desc: "High nitrogen boost" },
+  { value: "NPK 17:17:17", label: "NPK 17:17:17", desc: "Balanced for all crops" },
+  { value: "Mavuno (Planting)", label: "Mavuno", desc: "Planting blend" },
+  { value: "Manure", label: "Manure", desc: "Organic matter" },
+  { value: "None", label: "None / Not sure", desc: "First time using fertilizer" },
 ];
 
 export default function OnboardingModal() {
   const [show, setShow] = useState(false);
-  const [step, setStep] = useState(0); // 0=county, 1=crop, 2=challenge
+  const [step, setStep] = useState(0); // 0=county, 1=crop, 2=fertilizer
   const [county, setCounty] = useState("");
   const [crop, setCrop] = useState("");
-  const [challenge, setChallenge] = useState("");
+  const [fertilizer, setFertilizer] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -58,15 +61,14 @@ export default function OnboardingModal() {
 
   const finish = () => {
     localStorage.setItem("shambaiq_onboarded", "1");
-    localStorage.setItem("shambaiq_prefs", JSON.stringify({ county, crop, challenge }));
+    localStorage.setItem("shambaiq_prefs", JSON.stringify({ county, crop, fertilizer }));
     setShow(false);
-    // Navigate to /app — RecommendTool reads prefs from localStorage
     window.location.href = "/app";
   };
 
   if (!show || isLoggedIn) return null;
 
-  const steps = ["Your location", "Your crop", "Your challenge"];
+  const steps = ["Your location", "Your crop", "Your fertilizer"];
 
   return (
     <div className="fixed inset-0 z-[100] bg-forest-900/70 backdrop-blur-sm flex items-center justify-center px-4">
@@ -134,27 +136,26 @@ export default function OnboardingModal() {
             </div>
           )}
 
-          {/* Step 2 — Challenge */}
+          {/* Step 2 — Fertilizer */}
           {step === 2 && (
             <div>
               <label className="block text-sm font-bold text-forest-700 mb-1">
-                🎯 What's your main challenge right now?
+                🧪 What fertilizer do you usually use?
               </label>
-              <p className="text-xs text-soil-400 mb-4">Your plan will prioritize this.</p>
-              <div className="grid grid-cols-2 gap-3">
-                {CHALLENGES.map(ch => (
+              <p className="text-xs text-soil-400 mb-4">We'll compare it against what your soil actually needs.</p>
+              <div className="grid grid-cols-2 gap-2.5">
+                {FERTILIZERS.map(f => (
                   <button
-                    key={ch.value}
-                    onClick={() => setChallenge(ch.value)}
-                    className={`p-3.5 rounded-xl border-2 text-left transition-all ${
-                      challenge === ch.value
+                    key={f.value}
+                    onClick={() => setFertilizer(f.value)}
+                    className={`p-3 rounded-xl border-2 text-left transition-all ${
+                      fertilizer === f.value
                         ? "border-forest-600 bg-forest-50"
                         : "border-cream-300 hover:border-forest-400 hover:bg-cream-50"
                     }`}
                   >
-                    <span className="text-2xl block mb-1">{ch.icon}</span>
-                    <p className="text-xs font-bold text-forest-700">{ch.label}</p>
-                    <p className="text-[10px] text-soil-400 leading-tight mt-0.5">{ch.desc}</p>
+                    <p className="text-sm font-bold text-forest-700">{f.label}</p>
+                    <p className="text-[10px] text-soil-400 leading-tight mt-0.5">{f.desc}</p>
                   </button>
                 ))}
               </div>
@@ -185,7 +186,7 @@ export default function OnboardingModal() {
               onClick={finish}
               className="flex-[2] py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-white font-bold text-sm transition-colors flex items-center justify-center gap-2"
             >
-              Get My Free Farm Plan <ArrowRight size={15} />
+              {fertilizer ? "Get My Free Farm Plan" : "Skip & Get Farm Plan"} <ArrowRight size={15} />
             </button>
           )}
         </div>

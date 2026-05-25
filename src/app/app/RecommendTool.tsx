@@ -250,7 +250,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   // Crop Matches state
   const [cropMatches, setCropMatches] = useState<CropMatch[] | null>(null);
 
-  // Pre-fill from onboarding prefs (localStorage)
+  // Pre-fill from onboarding prefs (localStorage) + persist fertilizer choice
   useEffect(() => {
     try {
       const raw = localStorage.getItem("shambaiq_prefs");
@@ -262,9 +262,21 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         const u = CROP_UNITS[prefs.crop];
         if (u) setYieldVal(u.def);
       }
+      if (prefs.fertilizer && FERTILIZER_OPTIONS.includes(prefs.fertilizer)) {
+        setFertilizer(prefs.fertilizer);
+      }
     } catch { /* ignore */ }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Persist fertilizer choice whenever it changes
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("shambaiq_prefs");
+      const prefs = raw ? JSON.parse(raw) : {};
+      localStorage.setItem("shambaiq_prefs", JSON.stringify({ ...prefs, fertilizer }));
+    } catch { /* ignore */ }
+  }, [fertilizer]);
 
   // GPS capture
   const captureGPS = useCallback(() => {

@@ -173,133 +173,198 @@ export default function AgronomyPage() {
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4 gap-6">
-            <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
-              style={{ background: "linear-gradient(135deg, #11472a, #16a34a)" }}
-            >
-              <Bot size={32} className="text-white" />
-            </div>
-            <div>
-              <h2 className="font-display text-xl font-bold text-forest-700 mb-1">
-                Shamba Mshauri
-              </h2>
-              <p className="text-soil-400 text-sm max-w-xs">
-                Your AI agronomist for all 47 Kenyan counties. Ask anything about
-                crops, soil, fertilizers, or pests — in English or Kiswahili.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg">
-              {STARTER_PROMPTS.map((prompt) => (
-                <button
-                  key={prompt}
-                  onClick={() => send(prompt)}
-                  className="text-left text-xs px-3 py-2.5 bg-white border border-cream-300 hover:border-gold-400 hover:bg-gold-50 text-forest-700 rounded-xl transition-all leading-relaxed"
+      {/* Body: sidebar + chat */}
+      <div className="flex flex-1 overflow-hidden">
+
+        {/* ── Desktop sidebar ── */}
+        <aside className="hidden lg:flex flex-col w-64 xl:w-72 flex-shrink-0 bg-white border-r border-cream-300 overflow-y-auto">
+          {messages.length === 0 ? (
+            /* Show starter prompts when no messages */
+            <div className="p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-8 h-8 rounded-xl flex items-center justify-center"
+                  style={{ background: "linear-gradient(135deg, #11472a, #16a34a)" }}
                 >
-                  {prompt}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
-            >
-              {/* Avatar */}
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  msg.role === "user"
-                    ? "bg-gold-500"
-                    : "bg-forest-700"
-                }`}
-              >
-                {msg.role === "user" ? (
-                  <User size={14} className="text-white" />
-                ) : (
-                  <Bot size={14} className="text-white" />
-                )}
+                  <Bot size={16} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-forest-700">Shamba Mshauri</p>
+                  <p className="text-[10px] text-soil-400">AI Agronomist</p>
+                </div>
               </div>
-
-              {/* Bubble */}
-              <div
-                className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                  msg.role === "user"
-                    ? "bg-forest-700 text-white rounded-tr-sm whitespace-pre-wrap"
-                    : "bg-white border border-cream-300 text-forest-800 rounded-tl-sm"
-                }`}
-              >
-                {msg.role === "user" ? (
-                  msg.content
-                ) : (
-                  <ReactMarkdown
-                    components={{
-                      strong: ({ node, ...props }) => <strong className="font-bold" {...props} />,
-                      h3: ({ node, ...props }) => <h3 className="font-bold text-base mt-4 mb-2" {...props} />,
-                      h4: ({ node, ...props }) => <h4 className="font-bold mt-3 mb-1" {...props} />,
-                      ul: ({ node, ...props }) => <ul className="list-disc pl-5 my-2 space-y-1" {...props} />,
-                      ol: ({ node, ...props }) => <ol className="list-decimal pl-5 my-2 space-y-1" {...props} />,
-                      li: ({ node, ...props }) => <li className="pl-1" {...props} />,
-                      p: ({ node, ...props }) => <p className="mb-3 last:mb-0" {...props} />,
-                    }}
+              <p className="text-xs text-soil-400 mb-3 leading-relaxed">
+                Ask anything about crops, soil, fertilizers, or pests — in English or Kiswahili.
+              </p>
+              <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2">Try asking</p>
+              <div className="space-y-1.5">
+                {STARTER_PROMPTS.map((prompt) => (
+                  <button
+                    key={prompt}
+                    onClick={() => send(prompt)}
+                    className="w-full text-left text-xs px-3 py-2.5 bg-cream-50 border border-cream-200 hover:border-gold-400 hover:bg-gold-50 text-forest-700 rounded-xl transition-all leading-relaxed"
                   >
-                    {msg.content}
-                  </ReactMarkdown>
-                )}
+                    {prompt}
+                  </button>
+                ))}
               </div>
             </div>
-          ))
-        )}
+          ) : (
+            /* Collapsed sidebar with icons when chatting */
+            <div className="p-4 flex flex-col items-center gap-4">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: "linear-gradient(135deg, #11472a, #16a34a)" }}
+              >
+                <Bot size={20} className="text-white" />
+              </div>
+              <button
+                onClick={reset}
+                title="New conversation"
+                className="w-10 h-10 rounded-xl bg-cream-100 hover:bg-cream-200 flex items-center justify-center transition-colors"
+              >
+                <RotateCcw size={16} className="text-forest-600" />
+              </button>
+              <div className="text-center">
+                <p className="text-[10px] text-soil-300 leading-tight">New chat</p>
+              </div>
+            </div>
+          )}
+        </aside>
 
-        {/* Loading bubble */}
-        {loading && (
-          <div className="flex gap-3 flex-row">
-            <div className="w-8 h-8 rounded-full bg-forest-700 flex items-center justify-center flex-shrink-0">
-              <Bot size={14} className="text-white" />
-            </div>
-            <div className="bg-white border border-cream-300 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-2">
-              <Loader2 size={14} className="animate-spin text-forest-600" />
-              <span className="text-sm text-soil-400">Analyzing...</span>
-            </div>
+        {/* ── Main chat area ── */}
+        <div className="flex flex-col flex-1 overflow-hidden">
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+            {messages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center px-4 gap-6">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg lg:hidden"
+                  style={{ background: "linear-gradient(135deg, #11472a, #16a34a)" }}
+                >
+                  <Bot size={32} className="text-white" />
+                </div>
+                <div>
+                  <h2 className="font-display text-xl font-bold text-forest-700 mb-1">
+                    Shamba Mshauri
+                  </h2>
+                  <p className="text-soil-400 text-sm max-w-xs">
+                    Your AI agronomist for all 47 Kenyan counties. Ask anything about
+                    crops, soil, fertilizers, or pests — in English or Kiswahili.
+                  </p>
+                </div>
+                {/* Mobile: show starter prompts in main area; desktop shows them in sidebar */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg lg:hidden">
+                  {STARTER_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      onClick={() => send(prompt)}
+                      className="text-left text-xs px-3 py-2.5 bg-white border border-cream-300 hover:border-gold-400 hover:bg-gold-50 text-forest-700 rounded-xl transition-all leading-relaxed"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
+                >
+                  {/* Avatar */}
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      msg.role === "user"
+                        ? "bg-gold-500"
+                        : "bg-forest-700"
+                    }`}
+                  >
+                    {msg.role === "user" ? (
+                      <User size={14} className="text-white" />
+                    ) : (
+                      <Bot size={14} className="text-white" />
+                    )}
+                  </div>
+
+                  {/* Bubble */}
+                  <div
+                    className={`max-w-[85%] sm:max-w-[80%] lg:max-w-[60%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      msg.role === "user"
+                        ? "bg-forest-700 text-white rounded-tr-sm whitespace-pre-wrap"
+                        : "bg-white border border-cream-300 text-forest-800 rounded-tl-sm"
+                    }`}
+                  >
+                    {msg.role === "user" ? (
+                      msg.content
+                    ) : (
+                      <ReactMarkdown
+                        components={{
+                          strong: ({ node, ...props }) => <strong className="font-bold" {...props} />,
+                          h3: ({ node, ...props }) => <h3 className="font-bold text-base mt-4 mb-2" {...props} />,
+                          h4: ({ node, ...props }) => <h4 className="font-bold mt-3 mb-1" {...props} />,
+                          ul: ({ node, ...props }) => <ul className="list-disc pl-5 my-2 space-y-1" {...props} />,
+                          ol: ({ node, ...props }) => <ol className="list-decimal pl-5 my-2 space-y-1" {...props} />,
+                          li: ({ node, ...props }) => <li className="pl-1" {...props} />,
+                          p: ({ node, ...props }) => <p className="mb-3 last:mb-0" {...props} />,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+
+            {/* Loading bubble */}
+            {loading && (
+              <div className="flex gap-3 flex-row">
+                <div className="w-8 h-8 rounded-full bg-forest-700 flex items-center justify-center flex-shrink-0">
+                  <Bot size={14} className="text-white" />
+                </div>
+                <div className="bg-white border border-cream-300 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-2">
+                  <Loader2 size={14} className="animate-spin text-forest-600" />
+                  <span className="text-sm text-soil-400">Analyzing...</span>
+                </div>
+              </div>
+            )}
+            <div ref={bottomRef} />
           </div>
-        )}
-        <div ref={bottomRef} />
-      </div>
 
-      {/* Input */}
-      <div className="flex-shrink-0 bg-white border-t border-cream-300 px-4 py-3">
-        <div className="flex items-end gap-2 max-w-2xl mx-auto">
-          <textarea
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Ask about crops, soil, pests, fertilizers... (Enter to send)"
-            rows={1}
-            className="flex-1 resize-none rounded-xl border border-cream-300 focus:border-gold-400 focus:ring-1 focus:ring-gold-400 px-4 py-3 text-sm text-forest-800 placeholder:text-soil-300 outline-none transition-colors"
-            style={{ maxHeight: "120px" }}
-            onInput={(e) => {
-              const el = e.currentTarget;
-              el.style.height = "auto";
-              el.style.height = Math.min(el.scrollHeight, 120) + "px";
-            }}
-          />
-          <button
-            onClick={() => send(input)}
-            disabled={loading || !input.trim()}
-            className="p-3 rounded-xl text-white transition-all disabled:opacity-40 flex-shrink-0"
-            style={{ background: "#11472a" }}
-          >
-            <Send size={18} />
-          </button>
+          {/* Input */}
+          <div className="flex-shrink-0 bg-white border-t border-cream-300 px-4 py-3">
+            <div className="flex items-end gap-2 max-w-3xl mx-auto">
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask about crops, soil, pests, fertilizers... (Enter to send)"
+                rows={1}
+                className="flex-1 resize-none rounded-xl border border-cream-300 focus:border-gold-400 focus:ring-1 focus:ring-gold-400 px-4 py-3 text-sm text-forest-800 placeholder:text-soil-300 outline-none transition-colors"
+                style={{ maxHeight: "120px" }}
+                onInput={(e) => {
+                  const el = e.currentTarget;
+                  el.style.height = "auto";
+                  el.style.height = Math.min(el.scrollHeight, 120) + "px";
+                }}
+              />
+              <button
+                onClick={() => send(input)}
+                disabled={loading || !input.trim()}
+                className="p-3 rounded-xl text-white transition-all disabled:opacity-40 flex-shrink-0"
+                style={{ background: "#11472a" }}
+              >
+                <Send size={18} />
+              </button>
+            </div>
+            <p className="text-center text-xs text-soil-300 mt-2">
+              Powered by Gemini AI · Always verify with your local extension officer
+            </p>
+          </div>
         </div>
-        <p className="text-center text-xs text-soil-300 mt-2">
-          Powered by Gemini AI · Always verify with your local extension officer
-        </p>
+
       </div>
     </div>
   );

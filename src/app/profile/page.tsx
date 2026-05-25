@@ -220,7 +220,7 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-cream-100">
         {/* Header */}
         <div className="bg-gradient-to-br from-forest-700 to-[#1e4620] px-4 pt-10 pb-8">
-          <div className="max-w-lg mx-auto text-center">
+          <div className="max-w-5xl mx-auto text-center">
             <div className="w-16 h-16 mx-auto bg-gold-500 rounded-full flex items-center justify-center mb-3 text-white font-bold text-xl">
               {initials}
             </div>
@@ -239,273 +239,251 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="max-w-lg mx-auto px-4 py-5 space-y-4">
+        <div className="max-w-5xl mx-auto px-4 py-5">
 
-          {/* Stats row */}
-          {ctx && (
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { label: "Soil Reports", value: ctx.soil_report_count, icon: <FlaskConical size={18} className="text-forest-600" /> },
-                { label: "Diagnoses", value: ctx.diagnosis_count, icon: <Stethoscope size={18} className="text-red-500" /> },
-                { label: "Fields", value: ctx.fields.length, icon: <Leaf size={18} className="text-gold-500" /> },
-              ].map(s => (
-                <div key={s.label} className="bg-white rounded-xl p-3 border border-cream-300 text-center shadow-sm">
-                  <div className="flex justify-center mb-1">{s.icon}</div>
-                  <div className="font-bold text-lg text-forest-700">{s.value}</div>
-                  <div className="text-xs text-soil-400">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          )}
+          {/* 2-column grid on desktop */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-          {/* Profile details + edit */}
-          <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
-              <h2 className="font-display font-bold text-forest-700 text-sm">Profile Details</h2>
-              {!editing ? (
-                <button onClick={() => setEditing(true)} className="flex items-center gap-1 text-xs text-gold-600 font-semibold">
-                  <Edit2 size={12} /> Edit
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button onClick={saveProfile} disabled={saving} className="flex items-center gap-1 text-xs text-forest-600 font-semibold">
-                    {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
-                  </button>
-                  <button onClick={() => setEditing(false)} className="flex items-center gap-1 text-xs text-red-500 font-semibold">
-                    <X size={12} /> Cancel
-                  </button>
+            {/* ── Left column ── */}
+            <div className="space-y-4">
+
+              {/* Stats row */}
+              {ctx && (
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: "Soil Reports", value: ctx.soil_report_count, icon: <FlaskConical size={18} className="text-forest-600" /> },
+                    { label: "Diagnoses", value: ctx.diagnosis_count, icon: <Stethoscope size={18} className="text-red-500" /> },
+                    { label: "Fields", value: ctx.fields.length, icon: <Leaf size={18} className="text-gold-500" /> },
+                  ].map(s => (
+                    <div key={s.label} className="bg-white rounded-xl p-3 border border-cream-300 text-center shadow-sm">
+                      <div className="flex justify-center mb-1">{s.icon}</div>
+                      <div className="font-bold text-lg text-forest-700">{s.value}</div>
+                      <div className="text-xs text-soil-400">{s.label}</div>
+                    </div>
+                  ))}
                 </div>
               )}
-            </div>
 
-            <div className="px-5 py-4 space-y-4 text-sm">
-              {/* Name */}
-              <div>
-                <label className="text-xs text-soil-400 block mb-1">Full Name</label>
-                {editing ? (
-                  <input value={editName} onChange={e => setEditName(e.target.value)}
-                    className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700" />
-                ) : (
-                  <p className="text-forest-700 font-medium">{ctx?.name || "—"}</p>
-                )}
-              </div>
-
-              {/* County */}
-              <div>
-                <label className="text-xs text-soil-400 block mb-1">County</label>
-                {editing ? (
-                  <select value={editCounty} onChange={e => setEditCounty(e.target.value)}
-                    className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700">
-                    <option value="">Select county</option>
-                    {COUNTIES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                ) : (
-                  <p className="text-forest-700 font-medium">{ctx?.county || "—"}</p>
-                )}
-              </div>
-
-              {/* Language */}
-              <div>
-                <label className="text-xs text-soil-400 block mb-1">Preferred Language</label>
-                {editing ? (
-                  <select value={editLang} onChange={e => setEditLang(e.target.value)}
-                    className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700">
-                    <option value="en">English</option>
-                    <option value="sw">Kiswahili</option>
-                  </select>
-                ) : (
-                  <p className="text-forest-700 font-medium">{ctx?.language_pref === "sw" ? "Kiswahili" : "English"}</p>
-                )}
-              </div>
-
-              {/* Phone — read only */}
-              <div>
-                <label className="text-xs text-soil-400 block mb-1">Phone</label>
-                <p className="text-forest-700 font-medium">{ctx?.phone_number || "—"}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Latest soil report */}
-          {ctx?.latest_soil && (
-            <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
-                <h2 className="font-display font-bold text-forest-700 text-sm">Latest Soil Report</h2>
-                <Link href="/app" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
-                  New report <ChevronRight size={12} />
-                </Link>
-              </div>
-              <div className="px-5 py-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="font-semibold text-forest-700">{ctx.latest_soil.crop} — {ctx.latest_soil.county}</p>
-                    <p className="text-xs text-soil-400 mt-0.5">
-                      {ctx.latest_soil.scanned_at ? new Date(ctx.latest_soil.scanned_at).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" }) : ""}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-forest-700">{ctx.latest_soil.health_score}</div>
-                    <div className="text-xs text-soil-400">Health score</div>
-                  </div>
-                </div>
-                <div className="flex gap-2 flex-wrap">
-                  {ctx.latest_soil.is_acidic && <span className="px-2 py-0.5 bg-red-50 text-red-600 text-xs rounded-full font-medium">Acidic pH</span>}
-                  {ctx.latest_soil.is_n_low && <span className="px-2 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full font-medium">Low N</span>}
-                  {ctx.latest_soil.is_p_low && <span className="px-2 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full font-medium">Low P</span>}
-                  {ctx.latest_soil.is_k_low && <span className="px-2 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full font-medium">Low K</span>}
-                  {!ctx.latest_soil.is_acidic && !ctx.latest_soil.is_n_low && !ctx.latest_soil.is_p_low && !ctx.latest_soil.is_k_low && (
-                    <span className="px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded-full font-medium">No deficiencies</span>
+              {/* Profile details + edit */}
+              <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
+                  <h2 className="font-display font-bold text-forest-700 text-sm">Profile Details</h2>
+                  {!editing ? (
+                    <button onClick={() => setEditing(true)} className="flex items-center gap-1 text-xs text-gold-600 font-semibold">
+                      <Edit2 size={12} /> Edit
+                    </button>
+                  ) : (
+                    <div className="flex gap-2">
+                      <button onClick={saveProfile} disabled={saving} className="flex items-center gap-1 text-xs text-forest-600 font-semibold">
+                        {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
+                      </button>
+                      <button onClick={() => setEditing(false)} className="flex items-center gap-1 text-xs text-red-500 font-semibold">
+                        <X size={12} /> Cancel
+                      </button>
+                    </div>
                   )}
                 </div>
-                <p className="text-xs text-soil-500 mt-3 leading-relaxed">Recommended: {ctx.latest_soil.recommended_fert}</p>
-              </div>
-            </div>
-          )}
 
-          {/* Soil report history */}
-          {soilReports.length > 0 && (
-            <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
-                <h2 className="font-display font-bold text-forest-700 text-sm">Soil Report History</h2>
-                <Link href="/app" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
-                  New report <ChevronRight size={12} />
-                </Link>
-              </div>
-              <ul className="divide-y divide-cream-200">
-                {soilReports.map(r => (
-                  <li key={r.id} className="px-5 py-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-forest-700 truncate">
-                          {r.crop || "—"}{r.county ? ` · ${r.county}` : ""}
-                        </p>
-                        <p className="text-xs text-soil-400 mt-0.5">
-                          {r.created_at ? new Date(r.created_at).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" }) : ""}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 ml-3 shrink-0">
-                        <div className="text-right">
-                          <div className="text-sm font-bold text-forest-700">{r.health_score}</div>
-                          <div className="text-xs text-soil-400">score</div>
-                        </div>
-                      </div>
-                    </div>
-                    {r.recommended_fert && (
-                      <p className="text-xs text-soil-500 mt-1.5 leading-relaxed">
-                        {r.recommended_fert}
-                        {r.total_budget > 0 && ` · KES ${r.total_budget.toLocaleString()}`}
-                      </p>
+                <div className="px-5 py-4 space-y-4 text-sm">
+                  {/* Name */}
+                  <div>
+                    <label className="text-xs text-soil-400 block mb-1">Full Name</label>
+                    {editing ? (
+                      <input value={editName} onChange={e => setEditName(e.target.value)}
+                        className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700" />
+                    ) : (
+                      <p className="text-forest-700 font-medium">{ctx?.name || "—"}</p>
                     )}
-                    <div className="flex gap-1.5 flex-wrap mt-1.5">
-                      {r.is_acidic && <span className="px-1.5 py-0.5 bg-red-50 text-red-600 text-xs rounded-full">Acidic</span>}
-                      {r.is_n_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low N</span>}
-                      {r.is_p_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low P</span>}
-                      {r.is_k_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low K</span>}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                  </div>
 
-          {/* Recent diagnoses */}
-          {diagnoses.length > 0 && (
-            <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
-                <h2 className="font-display font-bold text-forest-700 text-sm">Recent Diagnoses</h2>
-                <Link href="/doctor" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
-                  New scan <ChevronRight size={12} />
-                </Link>
-              </div>
-              <ul className="divide-y divide-cream-200">
-                {diagnoses.map(d => (
-                  <li key={d.id} className="px-5 py-3 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-forest-700">{d.condition}</p>
-                      <p className="text-xs text-soil-400 mt-0.5">
-                        {[d.crop, d.created_at ? new Date(d.created_at).toLocaleDateString("en-KE", { day: "numeric", month: "short" }) : null].filter(Boolean).join(" · ")}
-                      </p>
-                    </div>
-                    {d.confidence != null && (
-                      <span className="text-xs text-soil-400 shrink-0 ml-2">{d.confidence.toFixed(0)}%</span>
+                  {/* County */}
+                  <div>
+                    <label className="text-xs text-soil-400 block mb-1">County</label>
+                    {editing ? (
+                      <select value={editCounty} onChange={e => setEditCounty(e.target.value)}
+                        className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700">
+                        <option value="">Select county</option>
+                        {COUNTIES.map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    ) : (
+                      <p className="text-forest-700 font-medium">{ctx?.county || "—"}</p>
                     )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                  </div>
 
-          {/* Fields */}
-          {ctx && ctx.fields.length > 0 && (
-            <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-              <div className="px-5 py-4 border-b border-cream-200">
-                <h2 className="font-display font-bold text-forest-700 text-sm">My Fields</h2>
-              </div>
-              <ul className="divide-y divide-cream-200">
-                {ctx.fields.map((f, i) => (
-                  <li key={i} className="px-5 py-3 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-forest-700">{f.name}</p>
-                      <p className="text-xs text-soil-400 mt-0.5">{f.crop} · {f.county}</p>
-                    </div>
-                    <span className="text-xs text-soil-400 shrink-0 ml-2">{f.size_acres} acres</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                  {/* Language */}
+                  <div>
+                    <label className="text-xs text-soil-400 block mb-1">Preferred Language</label>
+                    {editing ? (
+                      <select value={editLang} onChange={e => setEditLang(e.target.value)}
+                        className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700">
+                        <option value="en">English</option>
+                        <option value="sw">Kiswahili</option>
+                      </select>
+                    ) : (
+                      <p className="text-forest-700 font-medium">{ctx?.language_pref === "sw" ? "Kiswahili" : "English"}</p>
+                    )}
+                  </div>
 
-          {/* Quick actions */}
-          <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-            <div className="px-5 py-4 border-b border-cream-200">
-              <h2 className="font-display font-bold text-forest-700 text-sm">Quick Actions</h2>
-            </div>
-            {[
-              { href: "/app", icon: <BarChart3 size={16} className="text-forest-600" />, label: "Get Soil Report", desc: "Run analysis for your shamba" },
-              { href: "/doctor", icon: <Stethoscope size={16} className="text-red-500" />, label: "Plant Doctor", desc: "Diagnose crop diseases with AI" },
-              { href: "/agronomy", icon: <Leaf size={16} className="text-gold-500" />, label: "Ask Agronomist", desc: "Chat with Shamba Mshauri" },
-              { href: "/yields", icon: <BarChart3 size={16} className="text-forest-600" />, label: "My Yield History", desc: "Track your harvests" },
-            ].map(a => (
-              <Link key={a.href} href={a.href}
-                className="flex items-center gap-3 px-5 py-3.5 border-b border-cream-100 last:border-0 hover:bg-cream-50 transition-colors">
-                <div className="w-8 h-8 bg-cream-100 rounded-lg flex items-center justify-center shrink-0">{a.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-forest-700">{a.label}</p>
-                  <p className="text-xs text-soil-400">{a.desc}</p>
+                  {/* Phone — read only */}
+                  <div>
+                    <label className="text-xs text-soil-400 block mb-1">Phone</label>
+                    <p className="text-forest-700 font-medium">{ctx?.phone_number || "—"}</p>
+                  </div>
                 </div>
-                <ChevronRight size={14} className="text-soil-300 shrink-0" />
-              </Link>
-            ))}
-          </div>
+              </div>
 
-          {/* Account */}
-          <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
-            <button onClick={() => { setChangingPw(!changingPw); setPwMsg(""); }}
-              className="w-full flex items-center gap-3 px-5 py-4 border-b border-cream-100 hover:bg-cream-50 transition-colors text-left">
-              <Lock size={16} className="text-soil-400" />
-              <span className="text-sm font-medium text-forest-700 flex-1">Change Password</span>
-              <ChevronRight size={14} className={`text-soil-300 transition-transform ${changingPw ? "rotate-90" : ""}`} />
-            </button>
-            {changingPw && (
-              <div className="px-5 py-4 border-b border-cream-100 space-y-3 bg-cream-50">
-                <input type="password" placeholder="Current password" value={currentPw}
-                  onChange={e => setCurrentPw(e.target.value)}
-                  className="w-full px-3 py-2 border border-cream-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-300" />
-                <input type="password" placeholder="New password (min 6 characters)" value={newPw}
-                  onChange={e => setNewPw(e.target.value)}
-                  className="w-full px-3 py-2 border border-cream-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-300" />
-                {pwMsg && <p className={`text-xs ${pwMsg.includes("success") ? "text-forest-600" : "text-red-500"}`}>{pwMsg}</p>}
-                <button onClick={changePassword} disabled={saving}
-                  className="w-full py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
-                  {saving && <Loader2 size={14} className="animate-spin" />} Update Password
+              {/* Account — change password + logout */}
+              <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
+                <button onClick={() => { setChangingPw(!changingPw); setPwMsg(""); }}
+                  className="w-full flex items-center gap-3 px-5 py-4 border-b border-cream-100 hover:bg-cream-50 transition-colors text-left">
+                  <Lock size={16} className="text-soil-400" />
+                  <span className="text-sm font-medium text-forest-700 flex-1">Change Password</span>
+                  <ChevronRight size={14} className={`text-soil-300 transition-transform ${changingPw ? "rotate-90" : ""}`} />
+                </button>
+                {changingPw && (
+                  <div className="px-5 py-4 border-b border-cream-100 space-y-3 bg-cream-50">
+                    <input type="password" placeholder="Current password" value={currentPw}
+                      onChange={e => setCurrentPw(e.target.value)}
+                      className="w-full px-3 py-2 border border-cream-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-300" />
+                    <input type="password" placeholder="New password (min 6 characters)" value={newPw}
+                      onChange={e => setNewPw(e.target.value)}
+                      className="w-full px-3 py-2 border border-cream-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-300" />
+                    {pwMsg && <p className={`text-xs ${pwMsg.includes("success") ? "text-forest-600" : "text-red-500"}`}>{pwMsg}</p>}
+                    <button onClick={changePassword} disabled={saving}
+                      className="w-full py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                      {saving && <Loader2 size={14} className="animate-spin" />} Update Password
+                    </button>
+                  </div>
+                )}
+                <button onClick={logout}
+                  className="w-full flex items-center gap-3 px-5 py-4 hover:bg-red-50 transition-colors text-left">
+                  <LogOut size={16} className="text-red-500" />
+                  <span className="text-sm font-semibold text-red-600">Log Out</span>
                 </button>
               </div>
-            )}
-            <button onClick={logout}
-              className="w-full flex items-center gap-3 px-5 py-4 hover:bg-red-50 transition-colors text-left">
-              <LogOut size={16} className="text-red-500" />
-              <span className="text-sm font-semibold text-red-600">Log Out</span>
-            </button>
+
+            </div>
+
+            {/* ── Right column ── */}
+            <div className="space-y-4">
+
+              {/* Soil report history */}
+              {soilReports.length > 0 && (
+                <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
+                    <h2 className="font-display font-bold text-forest-700 text-sm">Soil Report History</h2>
+                    <Link href="/app" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
+                      New report <ChevronRight size={12} />
+                    </Link>
+                  </div>
+                  <ul className="divide-y divide-cream-200">
+                    {soilReports.map(r => (
+                      <li key={r.id} className="px-5 py-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-forest-700 truncate">
+                              {r.crop || "—"}{r.county ? ` · ${r.county}` : ""}
+                            </p>
+                            <p className="text-xs text-soil-400 mt-0.5">
+                              {r.created_at ? new Date(r.created_at).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" }) : ""}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 ml-3 shrink-0">
+                            <div className="text-right">
+                              <div className="text-sm font-bold text-forest-700">{r.health_score}</div>
+                              <div className="text-xs text-soil-400">score</div>
+                            </div>
+                          </div>
+                        </div>
+                        {r.recommended_fert && (
+                          <p className="text-xs text-soil-500 mt-1.5 leading-relaxed">
+                            {r.recommended_fert}
+                            {r.total_budget > 0 && ` · KES ${r.total_budget.toLocaleString()}`}
+                          </p>
+                        )}
+                        <div className="flex gap-1.5 flex-wrap mt-1.5">
+                          {r.is_acidic && <span className="px-1.5 py-0.5 bg-red-50 text-red-600 text-xs rounded-full">Acidic</span>}
+                          {r.is_n_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low N</span>}
+                          {r.is_p_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low P</span>}
+                          {r.is_k_low && <span className="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-xs rounded-full">Low K</span>}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Recent diagnoses */}
+              {diagnoses.length > 0 && (
+                <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
+                    <h2 className="font-display font-bold text-forest-700 text-sm">Recent Diagnoses</h2>
+                    <Link href="/doctor" className="text-xs text-gold-600 font-semibold flex items-center gap-0.5">
+                      New scan <ChevronRight size={12} />
+                    </Link>
+                  </div>
+                  <ul className="divide-y divide-cream-200">
+                    {diagnoses.map(d => (
+                      <li key={d.id} className="px-5 py-3 flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-semibold text-forest-700">{d.condition}</p>
+                          <p className="text-xs text-soil-400 mt-0.5">
+                            {[d.crop, d.created_at ? new Date(d.created_at).toLocaleDateString("en-KE", { day: "numeric", month: "short" }) : null].filter(Boolean).join(" · ")}
+                          </p>
+                        </div>
+                        {d.confidence != null && (
+                          <span className="text-xs text-soil-400 shrink-0 ml-2">{d.confidence.toFixed(0)}%</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Fields */}
+              {ctx && ctx.fields.length > 0 && (
+                <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
+                  <div className="px-5 py-4 border-b border-cream-200">
+                    <h2 className="font-display font-bold text-forest-700 text-sm">My Fields</h2>
+                  </div>
+                  <ul className="divide-y divide-cream-200">
+                    {ctx.fields.map((f, i) => (
+                      <li key={i} className="px-5 py-3 flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-semibold text-forest-700">{f.name}</p>
+                          <p className="text-xs text-soil-400 mt-0.5">{f.crop} · {f.county}</p>
+                        </div>
+                        <span className="text-xs text-soil-400 shrink-0 ml-2">{f.size_acres} acres</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Quick actions */}
+              <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
+                <div className="px-5 py-4 border-b border-cream-200">
+                  <h2 className="font-display font-bold text-forest-700 text-sm">Quick Actions</h2>
+                </div>
+                {[
+                  { href: "/app", icon: <BarChart3 size={16} className="text-forest-600" />, label: "Get Soil Report", desc: "Run analysis for your shamba" },
+                  { href: "/doctor", icon: <Stethoscope size={16} className="text-red-500" />, label: "Plant Doctor", desc: "Diagnose crop diseases with AI" },
+                  { href: "/agronomy", icon: <Leaf size={16} className="text-gold-500" />, label: "Ask Agronomist", desc: "Chat with Shamba Mshauri" },
+                  { href: "/yields", icon: <BarChart3 size={16} className="text-forest-600" />, label: "My Yield History", desc: "Track your harvests" },
+                ].map(a => (
+                  <Link key={a.href} href={a.href}
+                    className="flex items-center gap-3 px-5 py-3.5 border-b border-cream-100 last:border-0 hover:bg-cream-50 transition-colors">
+                    <div className="w-8 h-8 bg-cream-100 rounded-lg flex items-center justify-center shrink-0">{a.icon}</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-forest-700">{a.label}</p>
+                      <p className="text-xs text-soil-400">{a.desc}</p>
+                    </div>
+                    <ChevronRight size={14} className="text-soil-300 shrink-0" />
+                  </Link>
+                ))}
+              </div>
+
+            </div>
           </div>
 
         </div>

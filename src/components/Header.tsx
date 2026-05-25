@@ -4,7 +4,16 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Logo from "./Logo";
 
-const navLinks = [
+// Links shown in the desktop center nav
+const mainNavLinks = [
+  { href: "/app", label: "Get Farm Plan" },
+  { href: "/doctor", label: "Plant Doctor" },
+  { href: "/agronomy", label: "Ask Agronomist" },
+  { href: "/soil", label: "Soil Data" },
+];
+
+// All links shown in mobile hamburger
+const mobileNavLinks = [
   { href: "/app", label: "Get Farm Plan" },
   { href: "/doctor", label: "Plant Doctor" },
   { href: "/agronomy", label: "Ask Agronomist" },
@@ -43,49 +52,43 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          {/* Logo — left */}
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
             <Logo size={28} showText={false} />
             <span className="font-display text-xl font-bold text-cream-100 group-hover:text-gold-300 transition-colors">
               Shamba<span className="text-gold-400">IQ</span>
             </span>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-0.5">
-            {navLinks.map((link) =>
-              link.cta ? (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="ml-3 px-5 py-2 bg-gold-500 hover:bg-gold-400 text-white font-semibold rounded-lg transition-colors text-sm"
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    isActive(link.href)
-                      ? "text-gold-400 bg-gold-500/10"
-                      : "text-cream-300 hover:text-gold-300 hover:bg-cream-200/5"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
+          {/* Desktop center nav — 4 links only */}
+          <nav className="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
+            {mainNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  isActive(link.href)
+                    ? "text-gold-400 bg-gold-500/10"
+                    : "text-cream-300 hover:text-gold-300 hover:bg-cream-200/5"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Desktop right side — avatar or login */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
             {isLoggedIn ? (
-              <div className="flex items-center gap-3 ml-4">
+              <>
                 <Link
                   href="/profile"
-                  className="flex items-center gap-2 text-cream-300 hover:text-gold-300 transition-colors"
+                  className="w-8 h-8 rounded-full bg-gold-500 hover:bg-gold-400 flex items-center justify-center border-2 border-gold-400/40 transition-colors"
+                  title={`View profile — ${userName || "Farmer"}`}
                 >
-                  <div className="w-7 h-7 rounded-full bg-forest-600 flex items-center justify-center border border-forest-500">
-                    <span className="text-xs font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
-                  </div>
-                  <span className="text-sm font-medium">Hi, {userName || "Farmer"}</span>
+                  <span className="text-sm font-bold text-white leading-none">
+                    {userName?.charAt(0).toUpperCase() || "F"}
+                  </span>
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -93,16 +96,16 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
                 >
                   Logout
                 </button>
-              </div>
+              </>
             ) : (
               <Link
                 href="/profile"
-                className="ml-3 px-4 py-2 border border-cream-300/20 hover:border-cream-300/40 text-cream-300 font-medium rounded-lg transition-colors text-sm"
+                className="px-4 py-2 border border-cream-300/20 hover:border-cream-300/40 text-cream-300 font-medium rounded-lg transition-colors text-sm"
               >
                 Log In
               </Link>
             )}
-          </nav>
+          </div>
 
           {/* Mobile toggle */}
           <button
@@ -120,10 +123,10 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
           </button>
         </div>
 
-        {/* Mobile nav */}
+        {/* Mobile nav — all links including My Yields, Dealers, My Profile, Dealer Signup */}
         {open && (
           <nav className="lg:hidden slide-down pb-5 space-y-1 border-t border-forest-600/40 mt-1 pt-3 overflow-hidden">
-            {navLinks.map((link) => (
+            {mobileNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -146,7 +149,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 px-3 mb-3 hover:opacity-80 transition-opacity"
                 >
-                  <div className="w-8 h-8 rounded-full bg-forest-600 flex items-center justify-center border border-forest-500">
+                  <div className="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center border-2 border-gold-400/40">
                     <span className="text-sm font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
                   </div>
                   <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"} · View Profile</span>

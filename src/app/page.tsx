@@ -58,67 +58,139 @@ export default function HomePage() {
         <div className="absolute bottom-10 left-[10%] w-48 h-48 rounded-full bg-forest-300/[0.08] blur-3xl animate-float" style={{ animationDelay: "3s" }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-32">
-          <div className="max-w-3xl">
-            {/* Badge */}
-            <div className="fade-up inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-sm font-medium mb-8">
-              <Satellite size={14} strokeWidth={2} />
-              Powered by 30m precision satellite data
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* ── Left column: copy + CTAs + stats ── */}
+            <div>
+              {/* Badge */}
+              <div className="fade-up inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-sm font-medium mb-8">
+                <Satellite size={14} strokeWidth={2} />
+                Powered by 30m precision satellite data
+              </div>
+
+              {/* Headline */}
+              <h1 className="fade-up fade-up-delay-1 font-display text-[2.75rem] md:text-7xl font-bold text-cream-100 leading-[1.08] mb-6 tracking-tight">
+                Know your soil.
+                <br />
+                <span className="text-gold-400">Grow with precision.</span>
+              </h1>
+
+              {/* Subheadline */}
+              <p className="fade-up fade-up-delay-2 text-lg md:text-xl text-cream-300/90 mb-10 leading-relaxed max-w-2xl">
+                Free soil analysis, fertilizer plans, and crop recommendations for
+                all 47 Kenyan counties. Data-driven farming for every shamba.
+              </p>
+
+              {/* CTAs */}
+              <div className="fade-up fade-up-delay-3 flex flex-wrap gap-4">
+                <Link
+                  href="/app"
+                  className="group px-8 py-4 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25 flex items-center gap-2"
+                >
+                  Get Free Advice
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  href="/soil"
+                  className="px-8 py-4 bg-cream-200/10 hover:bg-cream-200/20 text-cream-200 font-semibold rounded-xl text-lg transition-colors border border-cream-200/20 hover:border-cream-200/30"
+                >
+                  Browse Soil Data
+                </Link>
+              </div>
+
+              {/* ─── Stats bar ─── */}
+              <div className="fade-up fade-up-delay-4 mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-2xl">
+                {[
+                  { n: "47", label: "Counties", icon: MapPin },
+                  { n: "25", label: "Crops", icon: Wheat },
+                  { n: wardCount.toLocaleString(), label: "Wards", icon: Layers },
+                  { n: "Free", label: "Forever", icon: Leaf },
+                ].map((s) => {
+                  const Icon = s.icon;
+                  return (
+                    <div key={s.label} className="text-center group">
+                      <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-cream-100/[0.06] mb-3 group-hover:bg-gold-500/10 transition-colors">
+                        <Icon size={18} className="text-gold-400" strokeWidth={1.8} />
+                      </div>
+                      <div className="font-display text-4xl md:text-5xl font-extrabold text-gold-400 leading-none">
+                        {s.n}
+                      </div>
+                      <div className="text-xs text-cream-400 mt-1.5 font-medium tracking-widest uppercase">
+                        {s.label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Headline */}
-            <h1 className="fade-up fade-up-delay-1 font-display text-[2.75rem] md:text-7xl font-bold text-cream-100 leading-[1.08] mb-6 tracking-tight">
-              Know your soil.
-              <br />
-              <span className="text-gold-400">Grow with precision.</span>
-            </h1>
-
-            {/* Subheadline */}
-            <p className="fade-up fade-up-delay-2 text-lg md:text-xl text-cream-300/90 mb-10 leading-relaxed max-w-2xl">
-              Free soil analysis, fertilizer plans, and crop recommendations for
-              all 47 Kenyan counties. Data-driven farming for every shamba.
-            </p>
-
-            {/* CTAs */}
-            <div className="fade-up fade-up-delay-3 flex flex-wrap gap-4">
-              <Link
-                href="/app"
-                className="group px-8 py-4 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25 flex items-center gap-2"
-              >
-                Get Free Advice
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/soil"
-                className="px-8 py-4 bg-cream-200/10 hover:bg-cream-200/20 text-cream-200 font-semibold rounded-xl text-lg transition-colors border border-cream-200/20 hover:border-cream-200/30"
-              >
-                Browse Soil Data
-              </Link>
-            </div>
-          </div>
-
-          {/* ─── Stats bar ─── */}
-          <div className="fade-up fade-up-delay-4 mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-2xl">
-            {[
-              { n: "47", label: "Counties", icon: MapPin },
-              { n: "25", label: "Crops", icon: Wheat },
-              { n: wardCount.toLocaleString(), label: "Wards", icon: Layers },
-              { n: "Free", label: "Forever", icon: Leaf },
-            ].map((s) => {
-              const Icon = s.icon;
-              return (
-                <div key={s.label} className="text-center group">
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-cream-100/[0.06] mb-3 group-hover:bg-gold-500/10 transition-colors">
-                    <Icon size={18} className="text-gold-400" strokeWidth={1.8} />
+            {/* ── Right column: floating soil report mockup card (desktop only) ── */}
+            <div className="hidden lg:flex items-center justify-center">
+              <div className="relative w-full max-w-sm">
+                {/* Glow behind card */}
+                <div className="absolute inset-0 rounded-3xl bg-gold-500/10 blur-2xl scale-110" />
+                {/* Card */}
+                <div className="relative bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-6 shadow-2xl">
+                  {/* Card header */}
+                  <div className="flex items-center justify-between mb-5">
+                    <div>
+                      <p className="text-cream-200 text-xs font-medium tracking-wide uppercase mb-0.5">Soil Report</p>
+                      <h3 className="text-white font-display font-bold text-base leading-tight">Nakuru County · Maize</h3>
+                    </div>
+                    {/* Health score circle */}
+                    <div className="relative w-16 h-16 shrink-0">
+                      <svg viewBox="0 0 56 56" className="w-full h-full -rotate-90">
+                        <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="5" />
+                        <circle
+                          cx="28" cy="28" r="22"
+                          fill="none"
+                          stroke="#16a34a"
+                          strokeWidth="5"
+                          strokeLinecap="round"
+                          strokeDasharray={`${(74 / 100) * 138.2} 138.2`}
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-white font-bold text-lg leading-none">74</span>
+                        <span className="text-green-300 text-[9px] font-medium leading-none mt-0.5">Good</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="font-display text-4xl md:text-5xl font-extrabold text-gold-400 leading-none">
-                    {s.n}
+
+                  {/* Nutrient mini-bars */}
+                  <div className="space-y-3 mb-5">
+                    {[
+                      { label: "pH", value: "6.2", pct: 64, color: "#16a34a" },
+                      { label: "Nitrogen", value: "1.4 g/kg", pct: 56, color: "#f59e0b" },
+                      { label: "Phosphorus", value: "28 mg/kg", pct: 70, color: "#16a34a" },
+                      { label: "Potassium", value: "310 mg/kg", pct: 78, color: "#16a34a" },
+                    ].map((n) => (
+                      <div key={n.label}>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-cream-300">{n.label}</span>
+                          <span className="font-semibold text-white">{n.value}</span>
+                        </div>
+                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all"
+                            style={{ width: `${n.pct}%`, backgroundColor: n.color }}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="text-xs text-cream-400 mt-1.5 font-medium tracking-widest uppercase">
-                    {s.label}
+
+                  {/* Recommendation pill */}
+                  <div className="bg-green-500/20 border border-green-400/30 rounded-xl px-4 py-3 mb-3">
+                    <p className="text-green-200 text-xs font-semibold leading-relaxed">
+                      Recommended: DAP 18:46:0 · 50kg/acre
+                    </p>
                   </div>
+
+                  {/* Cost */}
+                  <p className="text-gold-300 text-sm font-bold text-center">KES 3,200 estimated cost</p>
                 </div>
-              );
-            })}
+              </div>
+            </div>
           </div>
         </div>
       </section>

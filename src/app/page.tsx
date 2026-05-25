@@ -22,6 +22,9 @@ import {
   getWards,
 } from "@/lib/data";
 import PersonalizedBanner from "@/components/PersonalizedBanner";
+import PersonalizedSection from "@/components/PersonalizedSection";
+import HeroRightColumn from "@/components/HeroRightColumn";
+import OnboardingModal from "@/components/OnboardingModal";
 
 
 export default function HomePage() {
@@ -40,6 +43,9 @@ export default function HomePage() {
 
   return (
     <>
+      {/* ─── FIRST-TIME ONBOARDING (guests only) ─── */}
+      <OnboardingModal />
+
       {/* ─── PERSONALIZED BANNER (logged-in users only) ─── */}
       <PersonalizedBanner />
 
@@ -127,77 +133,21 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* ── Right column: floating soil report mockup card (desktop only) ── */}
+            {/* ── Right column: soil report card (real data for logged-in, mockup for guests) ── */}
             <div className="hidden lg:flex items-center justify-center">
               <div className="relative w-full max-w-sm">
-                {/* Glow behind card */}
                 <div className="absolute inset-0 rounded-3xl bg-gold-500/10 blur-2xl scale-110" />
-                {/* Card */}
-                <div className="relative bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-6 shadow-2xl">
-                  {/* Card header */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div>
-                      <p className="text-cream-200 text-xs font-medium tracking-wide uppercase mb-0.5">Soil Report</p>
-                      <h3 className="text-white font-display font-bold text-base leading-tight">Nakuru County · Maize</h3>
-                    </div>
-                    {/* Health score circle */}
-                    <div className="relative w-16 h-16 shrink-0">
-                      <svg viewBox="0 0 56 56" className="w-full h-full -rotate-90">
-                        <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="5" />
-                        <circle
-                          cx="28" cy="28" r="22"
-                          fill="none"
-                          stroke="#16a34a"
-                          strokeWidth="5"
-                          strokeLinecap="round"
-                          strokeDasharray={`${(74 / 100) * 138.2} 138.2`}
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-white font-bold text-lg leading-none">74</span>
-                        <span className="text-green-300 text-[9px] font-medium leading-none mt-0.5">Good</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Nutrient mini-bars */}
-                  <div className="space-y-3 mb-5">
-                    {[
-                      { label: "pH", value: "6.2", pct: 64, color: "#16a34a" },
-                      { label: "Nitrogen", value: "1.4 g/kg", pct: 56, color: "#f59e0b" },
-                      { label: "Phosphorus", value: "28 mg/kg", pct: 70, color: "#16a34a" },
-                      { label: "Potassium", value: "310 mg/kg", pct: 78, color: "#16a34a" },
-                    ].map((n) => (
-                      <div key={n.label}>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className="text-cream-300">{n.label}</span>
-                          <span className="font-semibold text-white">{n.value}</span>
-                        </div>
-                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all"
-                            style={{ width: `${n.pct}%`, backgroundColor: n.color }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Recommendation pill */}
-                  <div className="bg-green-500/20 border border-green-400/30 rounded-xl px-4 py-3 mb-3">
-                    <p className="text-green-200 text-xs font-semibold leading-relaxed">
-                      Recommended: DAP 18:46:0 · 50kg/acre
-                    </p>
-                  </div>
-
-                  {/* Cost */}
-                  <p className="text-gold-300 text-sm font-bold text-center">KES 3,200 estimated cost</p>
+                <div className="relative">
+                  <HeroRightColumn />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ─── PERSONALIZED SECTION (logged-in users with a soil report) ─── */}
+      <PersonalizedSection />
 
       {/* ─── FEATURE CARDS ─────────────────────────────────── */}
       <section className="py-16 md:py-24 bg-cream-100">

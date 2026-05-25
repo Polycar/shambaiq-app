@@ -5,12 +5,12 @@ import { useState, useEffect } from "react";
 import Logo from "./Logo";
 
 const navLinks = [
-  { href: "/soil", label: "Soil Reports" },
-  { href: "/crops", label: "Crop Guides" },
-  { href: "/yields", label: "My Yields" },
-  { href: "/dealers", label: "Dealers" },
+  { href: "/app", label: "Get Farm Plan" },
   { href: "/doctor", label: "Plant Doctor" },
   { href: "/agronomy", label: "Ask Agronomist" },
+  { href: "/soil", label: "Soil Data" },
+  { href: "/yields", label: "My Yields" },
+  { href: "/dealers", label: "Dealers" },
   { href: "/profile", label: "My Profile" },
   { href: "/dealers/apply", label: "Dealer Signup", cta: true },
 ];

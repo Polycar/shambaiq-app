@@ -91,7 +91,7 @@ export default function HomePage() {
                 href="/soil"
                 className="px-8 py-4 bg-cream-200/10 hover:bg-cream-200/20 text-cream-200 font-semibold rounded-xl text-lg transition-colors border border-cream-200/20 hover:border-cream-200/30"
               >
-                Explore Counties
+                Browse Soil Data
               </Link>
             </div>
           </div>
@@ -195,8 +195,8 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-10 md:mb-12">
             <div>
-              <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 leading-tight">County Soil Reports</h2>
-              <p className="text-soil-400 mt-2 text-lg">Healthiest soils across Kenya</p>
+              <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 leading-tight">County Soil Data</h2>
+              <p className="text-soil-400 mt-2 text-lg">Tap any county to get your free farm plan</p>
             </div>
             <Link href="/soil" className="hidden sm:flex items-center gap-1 text-gold-600 hover:text-gold-700 font-semibold text-sm transition-colors">
               All 47 counties <ArrowRight size={14} />
@@ -204,7 +204,7 @@ export default function HomePage() {
           </div>
           <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible no-scrollbar">
             {topCounties.map((c) => (
-              <Link key={c.slug} href={`/soil/${c.slug}`} className="w-[85vw] shrink-0 sm:w-[350px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group">
+              <Link key={c.slug} href={`/app`} className="w-[85vw] shrink-0 sm:w-[350px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group relative overflow-hidden">
                 <div className="flex items-start justify-between mb-5">
                   <div>
                     <h3 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{c.county}</h3>
@@ -232,6 +232,10 @@ export default function HomePage() {
                       </div>
                     </div>
                   ))}
+                </div>
+                <div className="mt-4 pt-3 border-t border-cream-200 flex items-center justify-between">
+                  <span className="text-xs font-bold text-gold-600">Get farm plan for {c.county}</span>
+                  <ArrowRight size={14} className="text-gold-500 group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
             ))}

@@ -490,7 +490,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             <rect width="100%" height="100%" fill="url(#tgrid)" />
           </svg>
         </div>
-        <div className="relative max-w-2xl mx-auto px-4 py-10 text-center">
+        <div className="relative max-w-7xl mx-auto px-4 py-10 text-center">
           <div className="absolute top-4 right-4">
             <button
               onClick={() => setLang(lang === "en" ? "sw" : "en")}
@@ -512,8 +512,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         </div>
       </section>
 
-      <div className="mx-auto max-w-2xl px-4 py-6 space-y-5">
-        {/* ── FORM ──────────────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:items-start">
+
+        {/* ── LEFT COLUMN: Form ─────────────────────────── */}
+        <div className="lg:sticky lg:top-20 space-y-5">
         <div className="bg-white rounded-2xl shadow-sm border border-cream-300 p-6 space-y-4">
           <h2 className="font-display text-xl font-bold text-forest-700">
             {t("form_title", lang)}
@@ -788,6 +791,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
           )}
         </div>
+        </div>
+        {/* end LEFT column */}
+
+        {/* ── RIGHT COLUMN: Results ─────────────────────── */}
+        <div className="space-y-5">
 
         {/* ── LOADING SKELETON ──────────────────────────────── */}
         {loading && (
@@ -1303,6 +1311,25 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             <p className="text-red-800 font-semibold">{result.error}</p>
           </div>
         )}
+
+        {/* empty state — show when no results yet */}
+        {!loading && !result && !geminiAdvice && (
+          <div className="hidden lg:flex flex-col items-center justify-center h-full min-h-[400px] text-center px-8 rounded-2xl border-2 border-dashed border-cream-300 bg-cream-50">
+            <div className="w-16 h-16 rounded-2xl bg-forest-700/8 flex items-center justify-center mb-4">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2d5a27" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <p className="font-display text-lg font-bold text-forest-700 mb-2">Your results will appear here</p>
+            <p className="text-sm text-soil-400 max-w-xs">Select your county, crop, and farm size on the left — then get your free soil analysis and fertilizer plan.</p>
+          </div>
+        )}
+
+        </div>
+        {/* end RIGHT column */}
+
+        </div>
+        {/* end grid */}
       </div>
     </div>
   );

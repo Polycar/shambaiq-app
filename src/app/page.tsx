@@ -21,6 +21,7 @@ import {
   computeSoilHealthScore,
   getWards,
 } from "@/lib/data";
+import PersonalizedBanner from "@/components/PersonalizedBanner";
 
 
 export default function HomePage() {
@@ -39,6 +40,9 @@ export default function HomePage() {
 
   return (
     <>
+      {/* ─── PERSONALIZED BANNER (logged-in users only) ─── */}
+      <PersonalizedBanner />
+
       {/* ─── HERO ─────────────────────────────────────────── */}
       <section className="relative bg-gradient-to-br from-forest-800 via-forest-700 to-[#1e4620] overflow-hidden grain">
         {/* Grid pattern */}

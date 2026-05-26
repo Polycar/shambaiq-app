@@ -74,31 +74,23 @@ ${locationLine}${cropLine ? ' ' + cropLine : ''}
 
 Analyze the image carefully and identify the exact disease, pest, or nutrient deficiency shown.
 
-STRICT RULES — follow every one:
-- treatment_steps: numbered steps the farmer can take TODAY. Each step MUST name the exact product (e.g. "Ridomil Gold MZ 68 WP"), the exact dose (e.g. "40g per 20L water"), and when/how to apply. Minimum 3 steps.
-- products: 2-4 real products sold at Kenyan agrovets with approximate KES retail prices.
-- prevention: specific to THIS disease — what protectant spray, resistant variety, or cultural practice prevents this exact pathogen. Do NOT say "practice crop rotation" unless rotation is a primary control for this specific disease. Be specific.
+Rules:
+- treatment_steps: 3 numbered steps the farmer can take TODAY, each naming the exact product, dose, and method.
+- products: 2-3 real products sold at Kenyan agrovets with approximate KES retail prices.
+- prevention: specific to THIS disease.
 - severity: "Low", "Moderate", "High", or "Critical".
-- notes: warnings about resistance, re-entry intervals, or when to call an extension officer.
-- If the plant looks healthy, set condition to "Healthy", confidence to 95+, and give maintenance advice in notes.
-- NEVER give vague or generic advice. Name products. Give doses.
+- notes: resistance warnings or referral advice.
+- If healthy, set condition to "Healthy", confidence 95+.
 
-Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text:
+Return ONLY a JSON object, no markdown, no extra text:
 {
-  "condition": "Exact name of disease/pest/deficiency or Healthy",
+  "condition": "Disease name or Healthy",
   "confidence": 85,
   "severity": "Moderate",
-  "treatment_steps": [
-    "Step 1: Remove and destroy all infected plant material immediately — do not compost it.",
-    "Step 2: Spray Ridomil Gold MZ 68 WP at 40g per 20L water, covering both sides of all leaves. Apply in the evening.",
-    "Step 3: Repeat spray every 10–14 days until symptoms stop spreading. Use Dithane M-45 as an alternating product to prevent resistance."
-  ],
-  "products": [
-    {"name": "Ridomil Gold MZ 68 WP", "price_kes": "~KES 850 per 100g"},
-    {"name": "Dithane M-45", "price_kes": "~KES 600 per 200g"}
-  ],
-  "prevention": "Specific prevention for this exact disease.",
-  "notes": "Any resistance warnings, re-entry periods, or referral advice."
+  "treatment_steps": ["Step 1: ...", "Step 2: ...", "Step 3: ..."],
+  "products": [{"name": "Product", "price_kes": "~KES 850 per 100g"}],
+  "prevention": "...",
+  "notes": "..."
 }`;
 
     const response = await fetch(
@@ -117,8 +109,7 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
           ],
           generationConfig: {
             temperature: 0.2,
-            maxOutputTokens: 1500,
-            responseMimeType: 'application/json',
+            maxOutputTokens: 2048,
           },
         }),
       }
@@ -134,10 +125,11 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
     const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
 
     if (!text) {
+      console.error('[PlantDoctor] Empty text. Full response:', JSON.stringify(data));
       return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
     }
 
-    // Strip any residual markdown fences, then fall back to regex extraction
+    // Strip markdown fences, then extract JSON object via regex
     let textToParse = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
     if (!textToParse.startsWith('{')) {
       const match = textToParse.match(/\{[\s\S]*\}/);

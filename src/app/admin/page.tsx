@@ -268,7 +268,7 @@ export default function AdminDashboard() {
     if (!post.content) {
       fetch(`${API}/api/v1/blog/admin/${post.id}`, { headers: { "Authorization": `Bearer ${code}` } })
         .then(r => r.ok ? r.json() : null)
-        .then(d => { if (d) setBlogForm(prev => ({ ...prev, content: d.content || "", meta_title: d.meta_title || prev.meta_title, meta_description: d.meta_description || prev.meta_description })); });
+        .then((d: any) => { if (d) setBlogForm((prev: any) => ({ ...prev, content: d.content || "", meta_title: d.meta_title || prev.meta_title, meta_description: d.meta_description || prev.meta_description })); });
     }
   };
 
@@ -1077,7 +1077,7 @@ export default function AdminDashboard() {
                         <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
                         <p className="text-xs text-soil-400">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
                       </div>
-                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
+                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setFocusKeyword(""); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
                     </div>
                     
                     <div className="space-y-5">

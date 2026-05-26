@@ -152,35 +152,44 @@ export default function AdminDashboard() {
   const [b2bExporting, setB2bExporting] = useState<string | null>(null);
 
   const f = useCallback(async (url: string) => {
-    const res = await fetch(`${API}${url}`, { headers: { "Authorization": `Bearer ${code}` } });
-    if (res.ok) return res.json();
-    return null;
+    try {
+      const res = await fetch(`${API}${url}`, { headers: { "Authorization": `Bearer ${code}` } });
+      if (res.ok) return res.json();
+      return null;
+    } catch {
+      return null;
+    }
   }, [code]);
 
   const fetchTab = useCallback(async (t: Tab) => {
     setLoading(true);
-    if (t === "stats") { setStats(await f("/api/v1/analytics/stats")); setSummary(await f("/api/v1/admin/summary")); }
-    else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
-    else if (t === "yields") { const y = await f("/api/v1/analytics/yields/flagged"); setYields(y?.records || []); }
-    else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
-    else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
-    else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
-    else if (t === "crops") {
-      const res = await fetch(`${API}/api/v1/crops/economics`, { cache: "no-store" });
-      if (res.ok) { const data = await res.json(); setCropPrices(data.crops || []); }
-    }
-    else if (t === "agrovets") {
-      const res = await fetch(`${API}/api/v1/admin/agrovets/csv`, { headers: { "Authorization": `Bearer ${code}` } });
-      if (res.ok) {
-        const data = await res.json();
-        setAgrovets(data.agrovets || []);
-        setAgrovetTotal(data.count || 0);
+    try {
+      if (t === "stats") { setStats(await f("/api/v1/analytics/stats")); setSummary(await f("/api/v1/admin/summary")); }
+      else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
+      else if (t === "yields") { const y = await f("/api/v1/analytics/yields/flagged"); setYields(y?.records || []); }
+      else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
+      else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
+      else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
+      else if (t === "crops") {
+        const res = await fetch(`${API}/api/v1/crops/economics`, { cache: "no-store" });
+        if (res.ok) { const data = await res.json(); setCropPrices(data.crops || []); }
       }
+      else if (t === "agrovets") {
+        const res = await fetch(`${API}/api/v1/admin/agrovets/csv`, { headers: { "Authorization": `Bearer ${code}` } });
+        if (res.ok) {
+          const data = await res.json();
+          setAgrovets(data.agrovets || []);
+          setAgrovetTotal(data.count || 0);
+        }
+      }
+      else if (t === "b2b") {
+        if (!stats) setStats(await f("/api/v1/analytics/stats"));
+      }
+    } catch (err) {
+      console.error("[Admin] fetchTab error:", err);
+    } finally {
+      setLoading(false);
     }
-    else if (t === "b2b") {
-      if (!stats) setStats(await f("/api/v1/analytics/stats"));
-    }
-    setLoading(false);
   }, [code, f, dealerFilter, farmerSearch]);
 
   const login = async () => {

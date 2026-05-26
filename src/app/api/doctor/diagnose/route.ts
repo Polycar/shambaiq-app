@@ -103,7 +103,7 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
 }`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -153,7 +153,6 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
       products?: { name: string; price_kes: string }[];
       prevention?: string;
       notes?: string;
-      // legacy fields kept for history compatibility
       treatment?: string;
     };
 

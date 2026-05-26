@@ -103,7 +103,7 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
 }`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -119,6 +119,7 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
           generationConfig: {
             temperature: 0.2,
             maxOutputTokens: 1500,
+            responseMimeType: 'application/json',
           },
         }),
       }
@@ -137,7 +138,12 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
       return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
     }
 
-    const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    // Strip any residual markdown fences, then fall back to regex extraction
+    let textToParse = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    if (!textToParse.startsWith('{')) {
+      const match = textToParse.match(/\{[\s\S]*\}/);
+      if (match) textToParse = match[0];
+    }
 
     let parsed: {
       condition: string;
@@ -152,7 +158,7 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
     };
 
     try {
-      parsed = JSON.parse(cleaned);
+      parsed = JSON.parse(textToParse);
     } catch {
       console.error('[PlantDoctor] JSON parse failed. Raw text:', text);
       return NextResponse.json({ error: 'Could not parse AI response. Please try again.' }, { status: 502 });

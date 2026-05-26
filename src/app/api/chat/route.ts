@@ -38,18 +38,15 @@ async function fetchFarmerContext(token: string): Promise<FarmerContext | null> 
 
 function buildFarmerContextBlock(ctx: FarmerContext): string {
   const lines: string[] = ['--- FARMER PROFILE (use this — do not ask the farmer to repeat it) ---'];
-
   if (ctx.name) lines.push(`Name: ${ctx.name}`);
   if (ctx.county) lines.push(`Home county: ${ctx.county}`);
   if (ctx.language_pref && ctx.language_pref !== 'en') lines.push(`Preferred language: ${ctx.language_pref}`);
-
   if (ctx.fields.length > 0) {
     const fieldSummary = ctx.fields
       .map(f => `${f.name} (${f.size_acres} acres, ${f.crop}, ${f.county})`)
       .join('; ');
     lines.push(`Registered fields: ${fieldSummary}`);
   }
-
   if (ctx.latest_soil) {
     const s = ctx.latest_soil;
     const deficiencies = [
@@ -60,13 +57,11 @@ function buildFarmerContextBlock(ctx: FarmerContext): string {
     ].filter(Boolean).join(', ') || 'none detected';
     lines.push(`Latest soil scan (${s.scanned_at?.slice(0, 10) ?? 'unknown date'}): county=${s.county}, crop=${s.crop}, health score=${s.health_score}/100, deficiencies=${deficiencies}, recommended fert=${s.recommended_fert}`);
   }
-
   lines.push('---');
   return lines.join('\n');
 }
 
 export async function POST(request: Request) {
-  // 1. Session check
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('shambaiq_session');
   if (!sessionCookie?.value) {
@@ -96,49 +91,65 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
     }
 
-    // 2. Agricultural topic filtering — only applied to the opening message.
-    // Follow-up messages in an active conversation are always allowed through;
-    // blocking them would cut off natural clarifying questions like "what do you mean?" or "how much?".
     const isFirstMessage = messages.length === 1;
     const userText = messages[messages.length - 1]?.content || '';
+    const normalized = userText.toLowerCase().trim();
 
-    if (isFirstMessage) {
-      const normalized = userText.toLowerCase().trim();
+    const shortGreetings = [
+      'hi', 'hello', 'hey', 'habari', 'mambo', 'sasa', 'jambo', 'greetings', 'morning', 'afternoon', 'evening',
+      'thanks', 'thank you', 'asante', 'shukran', 'please', 'help', 'usaidizi', 'ok', 'sawa', 'yes', 'no', 'ndio',
+      'hapana', 'who are you', 'wewe ni nani', 'how are you', 'uhali gani', 'mambo vipi', 'niaje', 'yaliyopo', 'poa',
+    ];
 
-      const shortGreetings = [
-        'hi', 'hello', 'hey', 'habari', 'mambo', 'sasa', 'jambo', 'greetings', 'morning', 'afternoon', 'evening',
-        'thanks', 'thank you', 'asante', 'shukran', 'please', 'help', 'usaidizi', 'ok', 'sawa', 'yes', 'no', 'ndio',
-        'hapana', 'who are you', 'wewe ni nani', 'how are you', 'uhali gani', 'mambo vipi', 'niaje', 'yaliyopo', 'poa',
-      ];
+    const agKeywords = [
+      'soil', 'crop', 'farm', 'fertilizer', 'dap', 'can', 'urea', 'npk', 'pest', 'disease', 'seed', 'weather',
+      'rain', 'yield', 'harvest', 'irrigation', 'livestock', 'poultry', 'chicken', 'cow', 'goat', 'sheep', 'pig',
+      'maize', 'bean', 'potato', 'tomato', 'onion', 'cabbage', 'coffee', 'tea', 'shamba', 'mshauri', 'agronomy',
+      'agronomist', 'county', 'kalro', 'ncpb', 'plant', 'doctor', 'leaf', 'stem', 'water', 'cultivat', 'grow',
+      'sow', 'plow', 'mulch', 'compost', 'manure', 'nutrient', 'nitrogen', 'phosphor', 'potass', 'ph', 'acidity',
+      'alkalinity', 'liming', 'erosion', 'agriculture', 'agricultural', 'agrovet', 'agribusiness', 'veterinary',
+      'fodder', 'silage', 'milking', 'pasture', 'tillage', 'weed', 'herbicide', 'pesticide', 'fungicide', 'insecticide',
+      'spraying', 'nursery', 'seedling', 'transplant', 'pruning', 'grafting', 'mulching', 'drought', 'moisture',
+      'drainage', 'intercrop', 'rotation', 'fallow', 'greenhouse', 'hydroponic', 'organic', 'composting',
+      'bee', 'honey', 'fish', 'aquaculture', 'tilapia', 'pond',
+      'kilimo', 'mmea', 'mazao', 'mbolea', 'wadudu', 'ugonjwa', 'mbegu', 'mvua', 'mavuno', 'umwagiliaji',
+      "ng'ombe", 'kuku', 'mbuzi', 'mahindi', 'maharagwe', 'viazi', 'nyanya', 'kitunguu', 'kahawa', 'chai',
+      'dawa', 'kulima', 'kupanda', 'palilia', 'samadi', 'magugu', 'unyevu', 'ukame',
+    ];
 
-      const agKeywords = [
-        'soil', 'crop', 'farm', 'fertilizer', 'dap', 'can', 'urea', 'npk', 'pest', 'disease', 'seed', 'weather',
-        'rain', 'yield', 'harvest', 'irrigation', 'livestock', 'poultry', 'chicken', 'cow', 'goat', 'sheep', 'pig',
-        'maize', 'bean', 'potato', 'tomato', 'onion', 'cabbage', 'coffee', 'tea', 'shamba', 'mshauri', 'agronomy',
-        'agronomist', 'county', 'kalro', 'ncpb', 'plant', 'doctor', 'leaf', 'stem', 'water', 'cultivat', 'grow',
-        'sow', 'plow', 'mulch', 'compost', 'manure', 'nutrient', 'nitrogen', 'phosphor', 'potass', 'ph', 'acidity',
-        'alkalinity', 'liming', 'erosion', 'agriculture', 'agricultural', 'agrovet', 'agribusiness', 'veterinary',
-        'fodder', 'silage', 'milking', 'pasture', 'tillage', 'weed', 'herbicide', 'pesticide', 'fungicide', 'insecticide',
-        'spraying', 'nursery', 'seedling', 'transplant', 'pruning', 'grafting', 'mulching', 'drought', 'moisture',
-        'drainage', 'intercrop', 'rotation', 'fallow', 'greenhouse', 'hydroponic', 'organic', 'composting',
-        'bee', 'honey', 'fish', 'aquaculture', 'tilapia', 'pond',
-        'kilimo', 'mmea', 'mazao', 'mbolea', 'wadudu', 'ugonjwa', 'mbegu', 'mvua', 'mavuno', 'umwagiliaji',
-        "ng'ombe", 'kuku', 'mbuzi', 'mahindi', 'maharagwe', 'viazi', 'nyanya', 'kitunguu', 'kahawa', 'chai',
-        'dawa', 'kulima', 'kupanda', 'palilia', 'samadi', 'magugu', 'unyevu', 'ukame',
-      ];
+    const words = normalized.split(/\s+/).map((w: string) => w.replace(/\W/g, ''));
+    const isPureGreeting = isFirstMessage &&
+      normalized.length < 40 &&
+      words.some((w: string) => shortGreetings.includes(w)) &&
+      !agKeywords.some(kw => normalized.includes(kw));
 
-      const isGreeting = normalized.length < 40 &&
-        normalized.split(/\s+/).map((w: string) => w.replace(/\W/g, '')).some((w: string) => shortGreetings.includes(w));
-      const isAgri = agKeywords.some(kw => normalized.includes(kw));
+    // Pure greeting — reply warmly and invite the question, no Gemini call needed
+    if (isPureGreeting) {
+      const farmerCtx = sessionData.token ? await fetchFarmerContext(sessionData.token) : null;
+      const firstName = farmerCtx?.name?.split(' ')[0] || null;
+      const isSwahili = ['habari', 'mambo', 'sasa', 'jambo', 'niaje', 'habari yako', 'poa', 'yaliyopo'].some(g => normalized.includes(g));
 
-      if (!isGreeting && !isAgri) {
-        return NextResponse.json({
-          reply: "Shamba Mshauri is specialized in Kenyan farming — crops, soil, fertilizers, pests, and livestock. Ask me anything in those areas and I'll give you specific, practical advice.",
-        });
+      let reply: string;
+      if (isSwahili) {
+        reply = firstName
+          ? `Habari ${firstName}! Mimi ni Shamba Mshauri, mshauri wako wa kilimo. Ninaweza kukusaidia na nini leo — udongo, mazao, mbolea, au wadudu?`
+          : `Habari! Mimi ni Shamba Mshauri, mshauri wako wa kilimo wa Kenya. Ninaweza kukusaidia na nini leo — udongo, mazao, mbolea, au wadudu?`;
+      } else {
+        reply = firstName
+          ? `Hi ${firstName}! I'm Shamba Mshauri, your AI agronomist. What farming question can I help you with today?`
+          : `Hi! I'm Shamba Mshauri, your AI agronomist for all 47 Kenyan counties. What farming question can I help you with today?`;
       }
+      return NextResponse.json({ reply });
     }
 
-    // 3. Fetch farmer context from backend (best-effort, never blocks the chat if it fails)
+    // Off-topic first message — redirect
+    if (isFirstMessage && !agKeywords.some(kw => normalized.includes(kw))) {
+      return NextResponse.json({
+        reply: "Shamba Mshauri is specialized in Kenyan farming — crops, soil, fertilizers, pests, and livestock. Ask me anything in those areas and I'll give you specific, practical advice.",
+      });
+    }
+
+    // Fetch farmer context for Gemini calls
     const farmerCtx = sessionData.token ? await fetchFarmerContext(sessionData.token) : null;
     const farmerBlock = farmerCtx ? buildFarmerContextBlock(farmerCtx) : '';
 
@@ -157,7 +168,6 @@ STRICT RULES — follow every one, no exceptions:
 - If farmer profile data is provided below, use it silently — do NOT say "based on your profile" or similar; just give advice that naturally reflects what you know about them.
 ${farmerBlock ? '\n' + farmerBlock : ''}`;
 
-    // Build conversation history — system instruction persists every turn via systemInstruction field
     const contents = messages.map((m: { role: string; content: string }) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
@@ -171,10 +181,7 @@ ${farmerBlock ? '\n' + farmerBlock : ''}`;
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemInstruction }] },
           contents,
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 1500,
-          },
+          generationConfig: { temperature: 0.3, maxOutputTokens: 1500 },
         }),
       }
     );

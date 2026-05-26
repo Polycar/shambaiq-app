@@ -1,4 +1,3 @@
-"use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
@@ -141,7 +140,7 @@ export default function AdminDashboard() {
 
   // Blog editor
   const [editing, setEditing] = useState<any>(null);
-  const [blogForm, setBlogForm] = useState({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
+  const [blogForm, setBlogForm] = useState({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" });
   const [blogSaving, setBlogSaving] = useState(false);
   const [showBlogEditor, setShowBlogEditor] = useState(false);
   const [focusKeyword, setFocusKeyword] = useState("");
@@ -193,32 +192,52 @@ export default function AdminDashboard() {
 
   // Actions
   const reviewDealer = async (id: string, status: string) => {
+    let declineReason = "";
+    if (status === "declined") {
+      declineReason = window.prompt("Reason for declining (optional):") || "";
+    }
     setActionLoading(id);
-    await fetch(`${API}/api/v1/dealers/applications/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin" }) });
-    setDealers(prev => prev.filter(d => d.id !== id));
+    const drRes = await fetch(`${API}/api/v1/dealers/applications/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin", ...(declineReason ? { decline_reason: declineReason } : {}) }) });
+    if (drRes.ok) {
+      setDealers(prev => prev.filter(d => d.id !== id));
+    } else {
+      alert(`Action failed (${drRes.status}) — please try again.`);
+    }
     setActionLoading(null);
   };
 
   const reviewYield = async (id: number, status: string) => {
     setActionLoading(String(id));
-    await fetch(`${API}/api/v1/analytics/yields/${id}/review`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin" }) });
-    setYields(prev => prev.filter(y => y.id !== id));
+    const yrRes = await fetch(`${API}/api/v1/analytics/yields/${id}/review`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin" }) });
+    if (yrRes.ok) {
+      setYields(prev => prev.filter(y => y.id !== id));
+    } else {
+      alert(`Action failed (${yrRes.status}) — please try again.`);
+    }
     setActionLoading(null);
   };
 
-  const saveBlogPost = async () => {
+  const saveBlogPost = async (statusOverride?: string) => {
+    const payload = {
+      ...blogForm,
+      ...(statusOverride ? { status: statusOverride } : {}),
+      focus_keyword: focusKeyword.trim() || blogForm.focus_keyword,
+      meta_title: blogForm.meta_title || blogForm.title,
+      meta_description: blogForm.meta_description || blogForm.excerpt,
+    };
     setBlogSaving(true);
     try {
       const res = editing
-        ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(blogForm) })
-        : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(blogForm) });
+        ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) })
+        : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) });
 
       if (res.ok) {
         setEditing(null);
         setShowBlogEditor(false);
         setActiveEditorTab("write");
-        setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
-        alert(editing ? "Blog post updated successfully!" : "Blog post created successfully!");
+        setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" });
+        setFocusKeyword("");
+        alert(statusOverride === "published" ? "Post published!" : editing ? "Blog post updated!" : "Blog post created!");
         fetchTab("blog");
       } else {
         const err = await res.json().catch(() => ({}));
@@ -243,10 +262,13 @@ export default function AdminDashboard() {
     setEditing(post);
     setShowBlogEditor(true);
     setActiveEditorTab("write");
-    setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
-    // Fetch full content if not already present
+    setFocusKeyword(post.focus_keyword || "");
+    setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "", focus_keyword: post.focus_keyword || "", meta_title: post.meta_title || post.title || "", meta_description: post.meta_description || post.excerpt || "", featured_image: post.featured_image || "" });
+    // Use admin single-post endpoint so drafts work too
     if (!post.content) {
-      fetch(`${API}/api/v1/blog/${post.slug}`).then(r => r.ok ? r.json() : null).then(d => { if (d) setBlogForm(f => ({ ...f, content: d.content })); });
+      fetch(`${API}/api/v1/blog/admin/${post.id}`, { headers: { "Authorization": `Bearer ${code}` } })
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d) setBlogForm(prev => ({ ...prev, content: d.content || "", meta_title: d.meta_title || prev.meta_title, meta_description: d.meta_description || prev.meta_description })); });
     }
   };
 
@@ -919,7 +941,7 @@ export default function AdminDashboard() {
             <>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" }); setFocusKeyword(""); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
               </div>
               {posts.length === 0 ? <p className="text-center py-12 text-soil-400">No blog posts yet.</p> : (
                 <div className="space-y-3">
@@ -1241,8 +1263,8 @@ export default function AdminDashboard() {
                           {blogSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
                           {editing ? "Update Post" : "Create Post"}
                         </button>
-                        {editing && blogForm.status === "draft" && (
-                          <button onClick={async () => { const updatedForm = { ...blogForm, status: "published" }; setBlogForm(updatedForm); setBlogSaving(true); try { const res = editing ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(updatedForm) }) : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(updatedForm) }); if (res.ok) { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); alert("Post published!"); fetchTab("blog"); } else { const err = await res.json().catch(() => ({})); alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed (${res.status})`); } } finally { setBlogSaving(false); } }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl shadow-sm transition-colors">Publish Now</button>
+                                                {editing && blogForm.status === "draft" && (
+                          <button onClick={() => saveBlogPost("published")} disabled={blogSaving || !blogForm.title || !blogForm.content} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 disabled:opacity-50 text-white font-semibold rounded-xl shadow-sm transition-colors">Publish Now</button>
                         )}
                       </div>
                     </div>

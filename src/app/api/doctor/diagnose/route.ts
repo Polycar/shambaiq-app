@@ -62,7 +62,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 });
     }
 
-    // Fetch farmer context to personalise the prompt (best-effort)
     const ctx = token ? await fetchFarmerContext(token) : null;
     const county = ctx?.county || null;
     const crop = userCrop || ctx?.latest_soil?.crop || ctx?.fields?.[0]?.crop || null;
@@ -103,7 +102,7 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
 }`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

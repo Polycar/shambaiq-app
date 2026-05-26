@@ -1261,7 +1261,7 @@ export default function AdminDashboard() {
                       </div>
                       
                       <div className="flex gap-3 pt-2">
-                        <button onClick={saveBlogPost} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors shadow-sm">
+                        <button onClick={() => saveBlogPost()} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors shadow-sm">
                           {blogSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
                           {editing ? "Update Post" : "Create Post"}
                         </button>

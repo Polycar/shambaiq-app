@@ -930,7 +930,7 @@ export default function AdminDashboard() {
       {/* ═══ YIELDS ═══ */}
       {!loading && tab === "yields" && (
         <div>
-          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-400">No flagged yields.</p></div> : (
+          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-forest-700 font-semibold">All clear</p><p className="text-soil-400 text-sm mt-1">No yield records need review right now.</p></div> : (
             <div className="space-y-4">
               {yields.map(y => (
                 <div key={y.id} className="bg-white rounded-xl border border-cream-300 p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">

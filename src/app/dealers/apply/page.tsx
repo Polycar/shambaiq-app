@@ -53,23 +53,33 @@ export default function DealerApplyPage() {
     }
 
     setStatus("loading");
+
+    let res: Response;
     try {
-      const res = await fetch(`${API_BASE}/api/v1/dealers/apply`, {
+      res = await fetch(`${API_BASE}/api/v1/dealers/apply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
-      if (res.ok) {
-        setStatus("success");
-        setMessage(data.message || "Application submitted successfully!");
-      } else {
-        setStatus("error");
-        setMessage(data.message || data.detail || "Something went wrong. Please try again.");
-      }
     } catch {
       setStatus("error");
-      setMessage("Network error. Please check your connection and try again.");
+      setMessage("Could not reach the server. Please check your internet connection and try again.");
+      return;
+    }
+
+    let data: any = {};
+    try {
+      data = await res.json();
+    } catch {
+      // Server returned a non-JSON body (e.g. HTML error page)
+    }
+
+    if (res.ok) {
+      setStatus("success");
+      setMessage(data.message || "Application submitted successfully!");
+    } else {
+      setStatus("error");
+      setMessage(data.detail || data.message || `Server error (${res.status}). Please try again later.`);
     }
   };
 

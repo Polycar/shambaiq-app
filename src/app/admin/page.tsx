@@ -151,6 +151,11 @@ export default function AdminDashboard() {
   const [imgModal, setImgModal] = useState<{ url: string; alt: string } | null>(null);
   const [b2bExporting, setB2bExporting] = useState<string | null>(null);
 
+  // OTP Lookup
+  const [otpIdentifier, setOtpIdentifier] = useState("");
+  const [otpResult, setOtpResult] = useState<any>(null);
+  const [otpLoading, setOtpLoading] = useState(false);
+
   const f = useCallback(async (url: string) => {
     try {
       const res = await fetch(`${API}${url}`, { headers: { "Authorization": `Bearer ${code}` } });
@@ -1811,7 +1816,63 @@ export default function AdminDashboard() {
 
       {/* ═══ AUDIT LOG ═══ */}
       {!loading && tab === "audit" && (
-        <div>
+        <div className="space-y-6">
+          {/* OTP Lookup Tool */}
+          <div className="bg-white rounded-xl border border-cream-300 p-5">
+            <h3 className="font-display font-bold text-forest-700 text-base mb-1">OTP Lookup</h3>
+            <p className="text-xs text-soil-400 mb-4">Look up an active password-reset OTP for a user who didn&apos;t receive the email.</p>
+            <div className="flex gap-3">
+              <input
+                value={otpIdentifier}
+                onChange={e => { setOtpIdentifier(e.target.value); setOtpResult(null); }}
+                placeholder="Email or phone number"
+                className="flex-1 px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 focus:outline-none focus:border-gold-400"
+                onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); (async () => { if (!otpIdentifier.trim()) return; setOtpLoading(true); setOtpResult(null); try { const res = await fetch(`${API}/api/v1/auth/admin/lookup-otp?identifier=${encodeURIComponent(otpIdentifier.trim())}`, { headers: { "Authorization": `Bearer ${code}` } }); const d = await res.json(); setOtpResult({ ...d, status: res.status }); } catch { setOtpResult({ status: 0, message: "Network error" }); } finally { setOtpLoading(false); } })(); } }}
+              />
+              <button
+                onClick={async () => {
+                  if (!otpIdentifier.trim()) return;
+                  setOtpLoading(true);
+                  setOtpResult(null);
+                  try {
+                    const res = await fetch(`${API}/api/v1/auth/admin/lookup-otp?identifier=${encodeURIComponent(otpIdentifier.trim())}`, { headers: { "Authorization": `Bearer ${code}` } });
+                    const d = await res.json();
+                    setOtpResult({ ...d, status: res.status });
+                  } catch {
+                    setOtpResult({ status: 0, message: "Network error" });
+                  } finally {
+                    setOtpLoading(false);
+                  }
+                }}
+                disabled={otpLoading || !otpIdentifier.trim()}
+                className="px-5 py-2.5 bg-forest-700 text-white text-sm font-semibold rounded-xl hover:bg-forest-800 transition-colors disabled:opacity-40 flex items-center gap-2"
+              >
+                {otpLoading ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
+                Lookup
+              </button>
+            </div>
+            {otpResult && (
+              <div className={`mt-3 rounded-xl px-4 py-3 text-sm ${otpResult.otp ? "bg-amber-50 border border-amber-200" : "bg-cream-50 border border-cream-200"}`}>
+                {otpResult.status === 404 ? (
+                  <p className="text-red-600 font-medium">User not found. Check the email or phone number.</p>
+                ) : otpResult.status === 403 ? (
+                  <p className="text-red-600 font-medium">Access denied.</p>
+                ) : otpResult.status === 0 ? (
+                  <p className="text-red-600 font-medium">Network error — could not reach the server.</p>
+                ) : otpResult.otp ? (
+                  <div className="space-y-1">
+                    <p className="text-soil-500">Account: <span className="font-medium text-forest-700">{otpResult.user_email}</span></p>
+                    <p className="text-soil-500">OTP: <span className="font-bold text-2xl tracking-widest text-amber-700">{otpResult.otp}</span></p>
+                    <p className="text-soil-500">Expires in: <span className="font-medium text-forest-700">{Math.floor(otpResult.expires_in / 60)}m {otpResult.expires_in % 60}s</span></p>
+                  </div>
+                ) : (
+                  <p className="text-soil-500">No active OTP for <span className="font-medium text-forest-700">{otpResult.user_email}</span>. The user hasn&apos;t requested a reset, or it already expired.</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Audit Log */}
           {audit.length === 0 ? <p className="text-center py-16 text-soil-400">No audit entries yet.</p> : (
             <div className="bg-white rounded-xl border border-cream-300 overflow-hidden overflow-x-auto">
               <table className="w-full text-sm">

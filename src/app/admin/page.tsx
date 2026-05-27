@@ -149,6 +149,7 @@ export default function AdminDashboard() {
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const [imgModal, setImgModal] = useState<{ url: string; alt: string } | null>(null);
   const [b2bExporting, setB2bExporting] = useState<string | null>(null);
+  const [aiGenerating, setAiGenerating] = useState(false);
 
   const f = useCallback(async (url: string) => {
     const res = await fetch(`${API}${url}`, { headers: { "Authorization": `Bearer ${code}` } });
@@ -918,8 +919,38 @@ export default function AdminDashboard() {
           {!showBlogEditor && !editing ? (
             <>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                <div>
+                  <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
+                  <p className="text-xs text-soil-400 mt-0.5">AI auto-posts every Monday 08:00 EAT</p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={async () => {
+                      if (!confirm("Generate and publish an AI blog post now?")) return;
+                      setAiGenerating(true);
+                      try {
+                        const res = await fetch(`${API}/api/v1/blog/admin/auto-generate`, {
+                          method: "POST",
+                          headers: { "Authorization": `Bearer ${code}` },
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                          alert(`✓ Published: "${data.title}"\n\n/blog/${data.slug}`);
+                          fetchTab("blog");
+                        } else {
+                          alert(data.detail || "AI generation failed");
+                        }
+                      } catch { alert("Network error"); }
+                      finally { setAiGenerating(false); }
+                    }}
+                    disabled={aiGenerating}
+                    className="flex items-center gap-2 px-4 py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold rounded-xl disabled:opacity-50"
+                  >
+                    {aiGenerating ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                    {aiGenerating ? "Generating…" : "AI Generate"}
+                  </button>
+                  <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                </div>
               </div>
               {posts.length === 0 ? <p className="text-center py-12 text-soil-400">No blog posts yet.</p> : (
                 <div className="space-y-3">

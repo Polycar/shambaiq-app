@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, Bot, User, Leaf, RotateCcw, Lock } from "lucide-react";
+import { Send, Loader2, Bot, User, Leaf, RotateCcw, Lock, ChevronLeft, Clock } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
@@ -9,6 +9,14 @@ interface Message {
   role: "user" | "assistant";
   content: string;
 }
+
+interface ConversationSummary {
+  id: string;
+  title: string;
+  updated_at: string | null;
+}
+
+const BACKEND = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 const STARTER_PROMPTS = [
   "My maize leaves are turning yellow in Nakuru — what's wrong?",
@@ -27,30 +35,87 @@ function getCookieSession(): { token?: string; name?: string } | null {
   catch { return null; }
 }
 
+function relativeTime(iso: string | null): string {
+  if (!iso) return "";
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
 export default function AgronomyPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(null); // null = checking
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [conversations, setConversations] = useState<ConversationSummary[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const session = getCookieSession();
     setLoggedIn(!!session?.token);
-    // Restore persisted chat
-    try {
-      const saved = sessionStorage.getItem("agronomy_chat");
-      if (saved) setMessages(JSON.parse(saved));
-    } catch { /* ignore */ }
+    if (session?.token) {
+      loadConversations(session.token);
+    }
   }, []);
 
   useEffect(() => {
-    if (messages.length > 0) {
-      try { sessionStorage.setItem("agronomy_chat", JSON.stringify(messages)); } catch { /* ignore */ }
-    }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  async function loadConversations(token: string) {
+    setHistoryLoading(true);
+    try {
+      const res = await fetch(`${BACKEND}/api/v1/chat/conversations`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setConversations(data.conversations ?? []);
+      }
+    } catch { /* ignore */ }
+    finally { setHistoryLoading(false); }
+  }
+
+  async function loadConversation(id: string) {
+    const session = getCookieSession();
+    if (!session?.token) return;
+    try {
+      const res = await fetch(`${BACKEND}/api/v1/chat/conversations/${id}`, {
+        headers: { Authorization: `Bearer ${session.token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setMessages(data.messages.map((m: { role: string; content: string }) => ({
+          role: m.role as "user" | "assistant",
+          content: m.content,
+        })));
+        setConversationId(id);
+        setShowHistory(false);
+      }
+    } catch { /* ignore */ }
+  }
+
+  async function deleteConversation(id: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    const session = getCookieSession();
+    if (!session?.token) return;
+    try {
+      await fetch(`${BACKEND}/api/v1/chat/conversations/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${session.token}` },
+      });
+      setConversations(prev => prev.filter(c => c.id !== id));
+      if (conversationId === id) reset();
+    } catch { /* ignore */ }
+  }
 
   const send = async (text: string) => {
     if (!text.trim() || loading) return;
@@ -64,18 +129,24 @@ export default function AgronomyPage() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: newMessages, conversation_id: conversationId }),
       });
 
       if (res.status === 401) {
         setLoggedIn(false);
-        setMessages(prev => prev.slice(0, -1)); // remove the user message
+        setMessages(prev => prev.slice(0, -1));
         return;
       }
 
       if (res.ok) {
         const data = await res.json();
         setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
+        if (data.conversation_id && data.conversation_id !== conversationId) {
+          setConversationId(data.conversation_id);
+          // Refresh sidebar conversation list
+          const session = getCookieSession();
+          if (session?.token) loadConversations(session.token);
+        }
       } else {
         const err = await res.json().catch(() => ({}));
         setMessages(prev => [...prev, {
@@ -104,11 +175,11 @@ export default function AgronomyPage() {
   const reset = () => {
     setMessages([]);
     setInput("");
-    try { sessionStorage.removeItem("agronomy_chat"); } catch { /* ignore */ }
+    setConversationId(null);
+    setShowHistory(false);
     inputRef.current?.focus();
   };
 
-  // Checking session
   if (loggedIn === null) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-64px)] bg-cream-100">
@@ -117,7 +188,6 @@ export default function AgronomyPage() {
     );
   }
 
-  // Not logged in — show gate
   if (!loggedIn) {
     return (
       <div className="flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-cream-100 px-4 text-center">
@@ -151,16 +221,19 @@ export default function AgronomyPage() {
             <p className="text-xs text-green-200 leading-none">ShambaIQ</p>
             <h1 className="font-bold text-sm leading-tight">
               Shamba Mshauri
-              <span className="font-normal text-green-200 ml-1">
-                — AI Agronomist
-              </span>
+              <span className="font-normal text-green-200 ml-1">— AI Agronomist</span>
             </h1>
           </div>
         </Link>
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-green-200 hidden sm:block">
-            🇰🇪 Kenya-specific advice
-          </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-green-200 hidden sm:block">🇰🇪 Kenya-specific advice</span>
+          <button
+            onClick={() => setShowHistory(v => !v)}
+            className="p-1.5 rounded-lg hover:bg-white/10 transition-colors lg:hidden"
+            title="Chat history"
+          >
+            <Clock size={16} className="text-green-200" />
+          </button>
           {messages.length > 0 && (
             <button
               onClick={reset}
@@ -173,15 +246,25 @@ export default function AgronomyPage() {
         </div>
       </div>
 
-      {/* Body: sidebar + chat */}
+      {/* Body */}
       <div className="flex flex-1 overflow-hidden">
 
-        {/* ── Desktop sidebar ── */}
-        <aside className="hidden lg:flex flex-col w-64 xl:w-72 flex-shrink-0 bg-white border-r border-cream-300 overflow-y-auto">
-          {messages.length === 0 ? (
-            /* Show starter prompts when no messages */
-            <div className="p-4">
-              <div className="flex items-center gap-2 mb-4">
+        {/* Sidebar (desktop always visible / mobile: showHistory toggle) */}
+        <aside className={`
+          ${showHistory ? "flex" : "hidden"} lg:flex
+          flex-col w-64 xl:w-72 flex-shrink-0 bg-white border-r border-cream-300 overflow-y-auto
+        `}>
+          {/* Mobile back button */}
+          <div className="lg:hidden flex items-center gap-2 px-4 py-3 border-b border-cream-200">
+            <button onClick={() => setShowHistory(false)} className="p-1 rounded hover:bg-cream-100">
+              <ChevronLeft size={18} className="text-forest-700" />
+            </button>
+            <span className="text-sm font-bold text-forest-700">Chat History</span>
+          </div>
+
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
                 <div
                   className="w-8 h-8 rounded-xl flex items-center justify-center"
                   style={{ background: "linear-gradient(135deg, #11472a, #16a34a)" }}
@@ -193,48 +276,97 @@ export default function AgronomyPage() {
                   <p className="text-[10px] text-soil-400">AI Agronomist</p>
                 </div>
               </div>
-              <p className="text-xs text-soil-400 mb-3 leading-relaxed">
-                Ask anything about crops, soil, fertilizers, or pests — in English or Kiswahili.
-              </p>
-              <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2">Try asking</p>
-              <div className="space-y-1.5">
-                {STARTER_PROMPTS.map((prompt) => (
-                  <button
-                    key={prompt}
-                    onClick={() => send(prompt)}
-                    className="w-full text-left text-xs px-3 py-2.5 bg-cream-50 border border-cream-200 hover:border-gold-400 hover:bg-gold-50 text-forest-700 rounded-xl transition-all leading-relaxed"
-                  >
-                    {prompt}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            /* Collapsed sidebar with icons when chatting */
-            <div className="p-4 flex flex-col items-center gap-4">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg, #11472a, #16a34a)" }}
-              >
-                <Bot size={20} className="text-white" />
-              </div>
               <button
                 onClick={reset}
                 title="New conversation"
-                className="w-10 h-10 rounded-xl bg-cream-100 hover:bg-cream-200 flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-lg bg-cream-100 hover:bg-cream-200 flex items-center justify-center transition-colors"
               >
-                <RotateCcw size={16} className="text-forest-600" />
+                <RotateCcw size={13} className="text-forest-600" />
               </button>
-              <div className="text-center">
-                <p className="text-[10px] text-soil-300 leading-tight">New chat</p>
-              </div>
             </div>
-          )}
+
+            {/* Starter prompts when no conversation active */}
+            {messages.length === 0 && conversations.length === 0 && (
+              <>
+                <p className="text-xs text-soil-400 mb-3 leading-relaxed">
+                  Ask anything about crops, soil, fertilizers, or pests — in English or Kiswahili.
+                </p>
+                <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2">Try asking</p>
+                <div className="space-y-1.5">
+                  {STARTER_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      onClick={() => { setShowHistory(false); send(prompt); }}
+                      className="w-full text-left text-xs px-3 py-2.5 bg-cream-50 border border-cream-200 hover:border-gold-400 hover:bg-gold-50 text-forest-700 rounded-xl transition-all leading-relaxed"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Past conversations */}
+            {conversations.length > 0 && (
+              <>
+                <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2 mt-1">Recent chats</p>
+                {historyLoading ? (
+                  <div className="flex justify-center py-4">
+                    <Loader2 size={16} className="animate-spin text-forest-600" />
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    {conversations.map(c => (
+                      <button
+                        key={c.id}
+                        onClick={() => loadConversation(c.id)}
+                        className={`group w-full text-left px-3 py-2.5 rounded-xl border transition-all text-xs leading-snug ${
+                          conversationId === c.id
+                            ? "border-gold-400 bg-gold-50 text-forest-700"
+                            : "border-cream-200 bg-cream-50 hover:border-gold-300 hover:bg-gold-50 text-forest-700"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-1">
+                          <span className="line-clamp-2 flex-1">{c.title}</span>
+                          <button
+                            onClick={(e) => deleteConversation(c.id, e)}
+                            className="opacity-0 group-hover:opacity-100 text-soil-300 hover:text-red-400 transition-all flex-shrink-0 mt-0.5"
+                            title="Delete"
+                          >
+                            ×
+                          </button>
+                        </div>
+                        <span className="text-soil-300 text-[10px] mt-0.5 block">
+                          {relativeTime(c.updated_at)}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {messages.length === 0 && (
+                  <>
+                    <div className="my-3 border-t border-cream-200" />
+                    <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2">Try asking</p>
+                    <div className="space-y-1.5">
+                      {STARTER_PROMPTS.slice(0, 3).map((prompt) => (
+                        <button
+                          key={prompt}
+                          onClick={() => { setShowHistory(false); send(prompt); }}
+                          className="w-full text-left text-xs px-3 py-2.5 bg-cream-50 border border-cream-200 hover:border-gold-400 hover:bg-gold-50 text-forest-700 rounded-xl transition-all leading-relaxed"
+                        >
+                          {prompt}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </div>
         </aside>
 
-        {/* ── Main chat area ── */}
-        <div className="flex flex-col flex-1 overflow-hidden">
-          {/* Messages */}
+        {/* Main chat area */}
+        <div className={`flex flex-col flex-1 overflow-hidden ${showHistory ? "hidden lg:flex" : "flex"}`}>
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-4 gap-6">
@@ -245,15 +377,11 @@ export default function AgronomyPage() {
                   <Bot size={32} className="text-white" />
                 </div>
                 <div>
-                  <h2 className="font-display text-xl font-bold text-forest-700 mb-1">
-                    Shamba Mshauri
-                  </h2>
+                  <h2 className="font-display text-xl font-bold text-forest-700 mb-1">Shamba Mshauri</h2>
                   <p className="text-soil-400 text-sm max-w-xs">
-                    Your AI agronomist for all 47 Kenyan counties. Ask anything about
-                    crops, soil, fertilizers, or pests — in English or Kiswahili.
+                    Your AI agronomist for all 47 Kenyan counties. Ask anything about crops, soil, fertilizers, or pests — in English or Kiswahili.
                   </p>
                 </div>
-                {/* Mobile: show starter prompts in main area; desktop shows them in sidebar */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg lg:hidden">
                   {STARTER_PROMPTS.map((prompt) => (
                     <button
@@ -272,12 +400,9 @@ export default function AgronomyPage() {
                   key={i}
                   className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
                 >
-                  {/* Avatar */}
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      msg.role === "user"
-                        ? "bg-gold-500"
-                        : "bg-forest-700"
+                      msg.role === "user" ? "bg-gold-500" : "bg-forest-700"
                     }`}
                   >
                     {msg.role === "user" ? (
@@ -286,8 +411,6 @@ export default function AgronomyPage() {
                       <Bot size={14} className="text-white" />
                     )}
                   </div>
-
-                  {/* Bubble */}
                   <div
                     className={`max-w-[85%] sm:max-w-[80%] lg:max-w-[60%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                       msg.role === "user"
@@ -317,7 +440,6 @@ export default function AgronomyPage() {
               ))
             )}
 
-            {/* Loading bubble */}
             {loading && (
               <div className="flex gap-3 flex-row">
                 <div className="w-8 h-8 rounded-full bg-forest-700 flex items-center justify-center flex-shrink-0">

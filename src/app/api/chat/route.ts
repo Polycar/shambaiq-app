@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 export const runtime = 'nodejs';
 
 const BACKEND = process.env.NEXT_PUBLIC_API_URL || 'https://api.shambaiq.com';
+const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
 
 interface FarmerContext {
   name: string | null;
@@ -61,6 +62,141 @@ function buildFarmerContextBlock(ctx: FarmerContext): string {
   return lines.join('\n');
 }
 
+// ── Tool definitions for Gemini function calling ──────────────────────────────
+
+const TOOL_DECLARATIONS = [
+  {
+    name: 'get_soil_data',
+    description: 'Retrieve real soil health data for a Kenyan county — pH, nitrogen, phosphorus, potassium levels and a health score. Use this when the farmer asks about their soil or before making fertilizer recommendations.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        county: { type: 'STRING', description: 'Kenyan county name e.g. "Nakuru", "Kisii", "Meru"' },
+      },
+      required: ['county'],
+    },
+  },
+  {
+    name: 'get_fertilizer_plan',
+    description: 'Generate a specific fertilizer recommendation plan for a crop in a county. Use this when the farmer wants a detailed fertilizer schedule or application rates.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        county: { type: 'STRING', description: 'Kenyan county name' },
+        crop: { type: 'STRING', description: 'Crop name e.g. "Maize", "Beans", "Tomato"' },
+        farm_size_acres: { type: 'NUMBER', description: 'Farm size in acres (default 1.0)' },
+        budget_kes: { type: 'NUMBER', description: 'Farmer budget in KES (optional, default 5000)' },
+      },
+      required: ['county', 'crop'],
+    },
+  },
+  {
+    name: 'find_dealers',
+    description: 'Find approved agrovet dealers and fertilizer stockists in a county. Use when the farmer asks where to buy inputs, fertilizers, or seeds.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        county: { type: 'STRING', description: 'Kenyan county name' },
+      },
+      required: ['county'],
+    },
+  },
+  {
+    name: 'get_weather',
+    description: 'Get current weather conditions and forecast for a Kenyan county. Use when the farmer asks about rain, planting windows, or whether to spray.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        county: { type: 'STRING', description: 'Kenyan county name' },
+      },
+      required: ['county'],
+    },
+  },
+];
+
+// ── Tool executors ─────────────────────────────────────────────────────────────
+
+async function executeTool(name: string, args: Record<string, unknown>): Promise<string> {
+  try {
+    if (name === 'get_soil_data') {
+      const county = encodeURIComponent(String(args.county));
+      const res = await fetch(`${BACKEND}/api/v1/county/${county}/soil`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!res.ok) return `No soil data found for ${args.county}.`;
+      const data = await res.json();
+      return JSON.stringify(data);
+    }
+
+    if (name === 'get_fertilizer_plan') {
+      const res = await fetch(`${BACKEND}/api/v1/recommend`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          county: args.county,
+          crop: args.crop,
+          farm_size_acres: args.farm_size_acres ?? 1.0,
+          current_fertilizer: 'DAP (Diammonium Phosphate)',
+          lang: 'English',
+          price_mode: 'Subsidized',
+        }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) return `Could not generate fertilizer plan for ${args.crop} in ${args.county}.`;
+      const data = await res.json();
+      return JSON.stringify(data);
+    }
+
+    if (name === 'find_dealers') {
+      const county = encodeURIComponent(String(args.county));
+      const res = await fetch(`${BACKEND}/api/v1/dealers/${county}`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!res.ok) return `No dealers found in ${args.county}.`;
+      const data = await res.json();
+      return JSON.stringify(data);
+    }
+
+    if (name === 'get_weather') {
+      const county = encodeURIComponent(String(args.county));
+      const res = await fetch(`${BACKEND}/api/v1/weather/county/${county}`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!res.ok) return `No weather data available for ${args.county}.`;
+      const data = await res.json();
+      return JSON.stringify(data);
+    }
+
+    return `Unknown tool: ${name}`;
+  } catch (err) {
+    return `Tool ${name} failed: ${String(err)}`;
+  }
+}
+
+// ── Persist conversation to backend (fire-and-forget, non-blocking) ───────────
+
+async function persistConversation(
+  token: string,
+  messages: { role: string; content: string }[],
+  conversationId: string | null
+): Promise<string | null> {
+  try {
+    const res = await fetch(`${BACKEND}/api/v1/chat/conversations`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ conversation_id: conversationId, messages }),
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.conversation_id ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// ── Main handler ───────────────────────────────────────────────────────────────
+
 export async function POST(request: Request) {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('shambaiq_session');
@@ -85,7 +221,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { messages } = body;
+    const { messages, conversation_id = null } = body;
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
@@ -114,7 +250,7 @@ export async function POST(request: Request) {
       'bee', 'honey', 'fish', 'aquaculture', 'tilapia', 'pond',
       'kilimo', 'mmea', 'mazao', 'mbolea', 'wadudu', 'ugonjwa', 'mbegu', 'mvua', 'mavuno', 'umwagiliaji',
       "ng'ombe", 'kuku', 'mbuzi', 'mahindi', 'maharagwe', 'viazi', 'nyanya', 'kitunguu', 'kahawa', 'chai',
-      'dawa', 'kulima', 'kupanda', 'palilia', 'samadi', 'magugu', 'unyevu', 'ukame',
+      'dawa', 'kulima', 'kupanda', 'palilia', 'samadi', 'magugu', 'unyevu', 'ukame', 'dealer', 'stockist', 'buy',
     ];
 
     const words = normalized.split(/\s+/).map((w: string) => w.replace(/\W/g, ''));
@@ -123,7 +259,6 @@ export async function POST(request: Request) {
       words.some((w: string) => shortGreetings.includes(w)) &&
       !agKeywords.some(kw => normalized.includes(kw));
 
-    // Pure greeting — reply warmly and invite the question, no Gemini call needed
     if (isPureGreeting) {
       const farmerCtx = sessionData.token ? await fetchFarmerContext(sessionData.token) : null;
       const firstName = farmerCtx?.name?.split(' ')[0] || null;
@@ -139,21 +274,23 @@ export async function POST(request: Request) {
           ? `Hi ${firstName}! I'm Shamba Mshauri, your AI agronomist. What farming question can I help you with today?`
           : `Hi! I'm Shamba Mshauri, your AI agronomist for all 47 Kenyan counties. What farming question can I help you with today?`;
       }
-      return NextResponse.json({ reply });
+      return NextResponse.json({ reply, conversation_id: null });
     }
 
-    // Off-topic first message — redirect
     if (isFirstMessage && !agKeywords.some(kw => normalized.includes(kw))) {
       return NextResponse.json({
         reply: "Shamba Mshauri is specialized in Kenyan farming — crops, soil, fertilizers, pests, and livestock. Ask me anything in those areas and I'll give you specific, practical advice.",
+        conversation_id: null,
       });
     }
 
-    // Fetch farmer context for Gemini calls
+    // Fetch farmer context
     const farmerCtx = sessionData.token ? await fetchFarmerContext(sessionData.token) : null;
     const farmerBlock = farmerCtx ? buildFarmerContextBlock(farmerCtx) : '';
 
     const systemInstruction = `You are Shamba Mshauri, an expert agronomist for Kenyan smallholder farmers. You know all 47 counties' soil profiles, agroecological zones, and locally available inputs.
+
+You have access to real-time tools — use them proactively when a question involves soil, fertilizer plans, dealer locations, or weather. Do not guess when you can look it up.
 
 STRICT RULES — follow every one, no exceptions:
 - Answer the question directly in the first sentence. No preamble.
@@ -165,41 +302,84 @@ STRICT RULES — follow every one, no exceptions:
 - If a crop truly cannot grow in the named county, say so plainly and immediately suggest what does work there.
 - Respond in the same language the farmer uses (English or Kiswahili).
 - If unsure, say so and refer them to their county agricultural extension officer.
-- If farmer profile data is provided below, use it silently — do NOT say "based on your profile" or similar; just give advice that naturally reflects what you know about them.
+- If farmer profile data is provided below, use it silently — do NOT say "based on your profile" or similar.
 ${farmerBlock ? '\n' + farmerBlock : ''}`;
 
-    const contents = messages.map((m: { role: string; content: string }) => ({
+    // Build contents array
+    let contents = messages.map((m: { role: string; content: string }) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
     }));
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
-      {
+    // ── Agentic loop — up to 5 rounds of tool calls ────────────────────────────
+    let finalText = '';
+    for (let round = 0; round < 5; round++) {
+      const response = await fetch(`${GEMINI_BASE}?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemInstruction }] },
           contents,
+          tools: [{ functionDeclarations: TOOL_DECLARATIONS }],
           generationConfig: { temperature: 0.3, maxOutputTokens: 1500 },
         }),
-      }
-    );
+      });
 
-    if (!response.ok) {
-      const errBody = await response.text();
-      console.error('[Chat] Gemini API error:', response.status, errBody);
-      return NextResponse.json({ error: `Gemini API error: ${response.status}` }, { status: 502 });
+      if (!response.ok) {
+        const errBody = await response.text();
+        console.error('[Chat] Gemini error:', response.status, errBody);
+        return NextResponse.json({ error: `Gemini API error: ${response.status}` }, { status: 502 });
+      }
+
+      const data = await response.json();
+      const candidate = data?.candidates?.[0];
+      const parts = candidate?.content?.parts ?? [];
+
+      // Check if there are function calls in the response
+      const functionCalls = parts.filter((p: Record<string, unknown>) => p.functionCall);
+
+      if (functionCalls.length === 0) {
+        // No tool calls — extract text and exit loop
+        finalText = parts.find((p: Record<string, unknown>) => p.text)?.text ?? '';
+        break;
+      }
+
+      // Add model response (with function calls) to contents
+      contents = [...contents, { role: 'model', parts }];
+
+      // Execute all tool calls in parallel
+      const toolResults = await Promise.all(
+        functionCalls.map(async (part: { functionCall: { name: string; args: Record<string, unknown> } }) => {
+          const { name, args } = part.functionCall;
+          const result = await executeTool(name, args ?? {});
+          return {
+            functionResponse: {
+              name,
+              response: { result },
+            },
+          };
+        })
+      );
+
+      // Add tool results to contents and loop
+      contents = [...contents, { role: 'user', parts: toolResults }];
     }
 
-    const data = await response.json();
-    const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-
-    if (!text) {
+    if (!finalText) {
       return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
     }
 
-    return NextResponse.json({ reply: text });
+    // Persist conversation to backend (non-blocking — don't let a save failure break the response)
+    let savedConversationId: string | null = conversation_id;
+    if (sessionData.token) {
+      const allMessages = [
+        ...messages,
+        { role: 'assistant', content: finalText },
+      ];
+      savedConversationId = await persistConversation(sessionData.token, allMessages, conversation_id);
+    }
+
+    return NextResponse.json({ reply: finalText, conversation_id: savedConversationId });
   } catch (error) {
     console.error('[Chat] Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

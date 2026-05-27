@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -142,7 +141,7 @@ export default function AdminDashboard() {
 
   // Blog editor
   const [editing, setEditing] = useState<any>(null);
-  const [blogForm, setBlogForm] = useState({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" });
+  const [blogForm, setBlogForm] = useState({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
   const [blogSaving, setBlogSaving] = useState(false);
   const [showBlogEditor, setShowBlogEditor] = useState(false);
   const [focusKeyword, setFocusKeyword] = useState("");
@@ -150,51 +149,38 @@ export default function AdminDashboard() {
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const [imgModal, setImgModal] = useState<{ url: string; alt: string } | null>(null);
   const [b2bExporting, setB2bExporting] = useState<string | null>(null);
-
-  // OTP Lookup
-  const [otpIdentifier, setOtpIdentifier] = useState("");
-  const [otpResult, setOtpResult] = useState<any>(null);
-  const [otpLoading, setOtpLoading] = useState(false);
+  const [aiGenerating, setAiGenerating] = useState(false);
 
   const f = useCallback(async (url: string) => {
-    try {
-      const res = await fetch(`${API}${url}`, { headers: { "Authorization": `Bearer ${code}` } });
-      if (res.ok) return res.json();
-      return null;
-    } catch {
-      return null;
-    }
+    const res = await fetch(`${API}${url}`, { headers: { "Authorization": `Bearer ${code}` } });
+    if (res.ok) return res.json();
+    return null;
   }, [code]);
 
   const fetchTab = useCallback(async (t: Tab) => {
     setLoading(true);
-    try {
-      if (t === "stats") { setStats(await f("/api/v1/analytics/stats")); setSummary(await f("/api/v1/admin/summary")); }
-      else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
-      else if (t === "yields") { const y = await f("/api/v1/analytics/yields/flagged"); setYields(y?.records || []); }
-      else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
-      else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
-      else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
-      else if (t === "crops") {
-        const res = await fetch(`${API}/api/v1/crops/economics`, { cache: "no-store" });
-        if (res.ok) { const data = await res.json(); setCropPrices(data.crops || []); }
-      }
-      else if (t === "agrovets") {
-        const res = await fetch(`${API}/api/v1/admin/agrovets/csv`, { headers: { "Authorization": `Bearer ${code}` } });
-        if (res.ok) {
-          const data = await res.json();
-          setAgrovets(data.agrovets || []);
-          setAgrovetTotal(data.count || 0);
-        }
-      }
-      else if (t === "b2b") {
-        if (!stats) setStats(await f("/api/v1/analytics/stats"));
-      }
-    } catch (err) {
-      console.error("[Admin] fetchTab error:", err);
-    } finally {
-      setLoading(false);
+    if (t === "stats") { setStats(await f("/api/v1/analytics/stats")); setSummary(await f("/api/v1/admin/summary")); }
+    else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
+    else if (t === "yields") { const y = await f("/api/v1/analytics/yields/flagged"); setYields(y?.records || []); }
+    else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
+    else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
+    else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
+    else if (t === "crops") {
+      const res = await fetch(`${API}/api/v1/crops/economics`, { cache: "no-store" });
+      if (res.ok) { const data = await res.json(); setCropPrices(data.crops || []); }
     }
+    else if (t === "agrovets") {
+      const res = await fetch(`${API}/api/v1/admin/agrovets/csv`, { headers: { "Authorization": `Bearer ${code}` } });
+      if (res.ok) {
+        const data = await res.json();
+        setAgrovets(data.agrovets || []);
+        setAgrovetTotal(data.count || 0);
+      }
+    }
+    else if (t === "b2b") {
+      if (!stats) setStats(await f("/api/v1/analytics/stats"));
+    }
+    setLoading(false);
   }, [code, f, dealerFilter, farmerSearch]);
 
   const login = async () => {
@@ -208,52 +194,32 @@ export default function AdminDashboard() {
 
   // Actions
   const reviewDealer = async (id: string, status: string) => {
-    let declineReason = "";
-    if (status === "declined") {
-      declineReason = window.prompt("Reason for declining (optional):") || "";
-    }
     setActionLoading(id);
-    const drRes = await fetch(`${API}/api/v1/dealers/applications/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin", ...(declineReason ? { decline_reason: declineReason } : {}) }) });
-    if (drRes.ok) {
-      setDealers(prev => prev.filter(d => d.id !== id));
-    } else {
-      alert(`Action failed (${drRes.status}) — please try again.`);
-    }
+    await fetch(`${API}/api/v1/dealers/applications/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin" }) });
+    setDealers(prev => prev.filter(d => d.id !== id));
     setActionLoading(null);
   };
 
   const reviewYield = async (id: number, status: string) => {
     setActionLoading(String(id));
-    const yrRes = await fetch(`${API}/api/v1/analytics/yields/${id}/review`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin" }) });
-    if (yrRes.ok) {
-      setYields(prev => prev.filter(y => y.id !== id));
-    } else {
-      alert(`Action failed (${yrRes.status}) — please try again.`);
-    }
+    await fetch(`${API}/api/v1/analytics/yields/${id}/review`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify({ status, officer_id: "admin" }) });
+    setYields(prev => prev.filter(y => y.id !== id));
     setActionLoading(null);
   };
 
-  const saveBlogPost = async (statusOverride?: string) => {
-    const payload = {
-      ...blogForm,
-      ...(statusOverride ? { status: statusOverride } : {}),
-      focus_keyword: focusKeyword.trim() || blogForm.focus_keyword,
-      meta_title: blogForm.meta_title || blogForm.title,
-      meta_description: blogForm.meta_description || blogForm.excerpt,
-    };
+  const saveBlogPost = async () => {
     setBlogSaving(true);
     try {
       const res = editing
-        ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) })
-        : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) });
+        ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(blogForm) })
+        : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(blogForm) });
 
       if (res.ok) {
         setEditing(null);
         setShowBlogEditor(false);
         setActiveEditorTab("write");
-        setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" });
-        setFocusKeyword("");
-        alert(statusOverride === "published" ? "Post published!" : editing ? "Blog post updated!" : "Blog post created!");
+        setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
+        alert(editing ? "Blog post updated successfully!" : "Blog post created successfully!");
         fetchTab("blog");
       } else {
         const err = await res.json().catch(() => ({}));
@@ -278,13 +244,10 @@ export default function AdminDashboard() {
     setEditing(post);
     setShowBlogEditor(true);
     setActiveEditorTab("write");
-    setFocusKeyword(post.focus_keyword || "");
-    setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "", focus_keyword: post.focus_keyword || "", meta_title: post.meta_title || post.title || "", meta_description: post.meta_description || post.excerpt || "", featured_image: post.featured_image || "" });
-    // Use admin single-post endpoint so drafts work too
+    setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
+    // Fetch full content if not already present
     if (!post.content) {
-      fetch(`${API}/api/v1/blog/admin/${post.id}`, { headers: { "Authorization": `Bearer ${code}` } })
-        .then(r => r.ok ? r.json() : null)
-        .then((d: any) => { if (d) setBlogForm((prev: any) => ({ ...prev, content: d.content || "", meta_title: d.meta_title || prev.meta_title, meta_description: d.meta_description || prev.meta_description })); });
+      fetch(`${API}/api/v1/blog/${post.slug}`).then(r => r.ok ? r.json() : null).then(d => { if (d) setBlogForm(f => ({ ...f, content: d.content })); });
     }
   };
 
@@ -930,7 +893,7 @@ export default function AdminDashboard() {
       {/* ═══ YIELDS ═══ */}
       {!loading && tab === "yields" && (
         <div>
-          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-forest-700 font-semibold">All clear</p><p className="text-soil-400 text-sm mt-1">No yield records need review right now.</p></div> : (
+          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-400">No flagged yields.</p></div> : (
             <div className="space-y-4">
               {yields.map(y => (
                 <div key={y.id} className="bg-white rounded-xl border border-cream-300 p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
@@ -956,8 +919,38 @@ export default function AdminDashboard() {
           {!showBlogEditor && !editing ? (
             <>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
-                <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" }); setFocusKeyword(""); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                <div>
+                  <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
+                  <p className="text-xs text-soil-400 mt-0.5">AI auto-posts every Monday 08:00 EAT</p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={async () => {
+                      if (!confirm("Generate and publish an AI blog post now?")) return;
+                      setAiGenerating(true);
+                      try {
+                        const res = await fetch(`${API}/api/v1/blog/admin/auto-generate`, {
+                          method: "POST",
+                          headers: { "Authorization": `Bearer ${code}` },
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                          alert(`✓ Published: "${data.title}"\n\n/blog/${data.slug}`);
+                          fetchTab("blog");
+                        } else {
+                          alert(data.detail || "AI generation failed");
+                        }
+                      } catch { alert("Network error"); }
+                      finally { setAiGenerating(false); }
+                    }}
+                    disabled={aiGenerating}
+                    className="flex items-center gap-2 px-4 py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold rounded-xl disabled:opacity-50"
+                  >
+                    {aiGenerating ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                    {aiGenerating ? "Generating…" : "AI Generate"}
+                  </button>
+                  <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                </div>
               </div>
               {posts.length === 0 ? <p className="text-center py-12 text-soil-400">No blog posts yet.</p> : (
                 <div className="space-y-3">
@@ -1093,7 +1086,7 @@ export default function AdminDashboard() {
                         <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
                         <p className="text-xs text-soil-400">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
                       </div>
-                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setFocusKeyword(""); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read", focus_keyword: "", meta_title: "", meta_description: "", featured_image: "" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
+                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
                     </div>
                     
                     <div className="space-y-5">
@@ -1275,12 +1268,12 @@ export default function AdminDashboard() {
                       </div>
                       
                       <div className="flex gap-3 pt-2">
-                        <button onClick={() => saveBlogPost()} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors shadow-sm">
+                        <button onClick={saveBlogPost} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors shadow-sm">
                           {blogSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
                           {editing ? "Update Post" : "Create Post"}
                         </button>
-                                                {editing && blogForm.status === "draft" && (
-                          <button onClick={() => saveBlogPost("published")} disabled={blogSaving || !blogForm.title || !blogForm.content} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 disabled:opacity-50 text-white font-semibold rounded-xl shadow-sm transition-colors">Publish Now</button>
+                        {editing && blogForm.status === "draft" && (
+                          <button onClick={async () => { const updatedForm = { ...blogForm, status: "published" }; setBlogForm(updatedForm); setBlogSaving(true); try { const res = editing ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(updatedForm) }) : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(updatedForm) }); if (res.ok) { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); alert("Post published!"); fetchTab("blog"); } else { const err = await res.json().catch(() => ({})); alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed (${res.status})`); } } finally { setBlogSaving(false); } }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl shadow-sm transition-colors">Publish Now</button>
                         )}
                       </div>
                     </div>
@@ -1816,63 +1809,7 @@ export default function AdminDashboard() {
 
       {/* ═══ AUDIT LOG ═══ */}
       {!loading && tab === "audit" && (
-        <div className="space-y-6">
-          {/* OTP Lookup Tool */}
-          <div className="bg-white rounded-xl border border-cream-300 p-5">
-            <h3 className="font-display font-bold text-forest-700 text-base mb-1">OTP Lookup</h3>
-            <p className="text-xs text-soil-400 mb-4">Look up an active password-reset OTP for a user who didn&apos;t receive the email.</p>
-            <div className="flex gap-3">
-              <input
-                value={otpIdentifier}
-                onChange={e => { setOtpIdentifier(e.target.value); setOtpResult(null); }}
-                placeholder="Email or phone number"
-                className="flex-1 px-3 py-2.5 border border-cream-300 rounded-xl text-sm text-forest-700 focus:outline-none focus:border-gold-400"
-                onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); (async () => { if (!otpIdentifier.trim()) return; setOtpLoading(true); setOtpResult(null); try { const res = await fetch(`${API}/api/v1/auth/admin/lookup-otp?identifier=${encodeURIComponent(otpIdentifier.trim())}`, { headers: { "Authorization": `Bearer ${code}` } }); const d = await res.json(); setOtpResult({ ...d, status: res.status }); } catch { setOtpResult({ status: 0, message: "Network error" }); } finally { setOtpLoading(false); } })(); } }}
-              />
-              <button
-                onClick={async () => {
-                  if (!otpIdentifier.trim()) return;
-                  setOtpLoading(true);
-                  setOtpResult(null);
-                  try {
-                    const res = await fetch(`${API}/api/v1/auth/admin/lookup-otp?identifier=${encodeURIComponent(otpIdentifier.trim())}`, { headers: { "Authorization": `Bearer ${code}` } });
-                    const d = await res.json();
-                    setOtpResult({ ...d, status: res.status });
-                  } catch {
-                    setOtpResult({ status: 0, message: "Network error" });
-                  } finally {
-                    setOtpLoading(false);
-                  }
-                }}
-                disabled={otpLoading || !otpIdentifier.trim()}
-                className="px-5 py-2.5 bg-forest-700 text-white text-sm font-semibold rounded-xl hover:bg-forest-800 transition-colors disabled:opacity-40 flex items-center gap-2"
-              >
-                {otpLoading ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
-                Lookup
-              </button>
-            </div>
-            {otpResult && (
-              <div className={`mt-3 rounded-xl px-4 py-3 text-sm ${otpResult.otp ? "bg-amber-50 border border-amber-200" : "bg-cream-50 border border-cream-200"}`}>
-                {otpResult.status === 404 ? (
-                  <p className="text-red-600 font-medium">User not found. Check the email or phone number.</p>
-                ) : otpResult.status === 403 ? (
-                  <p className="text-red-600 font-medium">Access denied.</p>
-                ) : otpResult.status === 0 ? (
-                  <p className="text-red-600 font-medium">Network error — could not reach the server.</p>
-                ) : otpResult.otp ? (
-                  <div className="space-y-1">
-                    <p className="text-soil-500">Account: <span className="font-medium text-forest-700">{otpResult.user_email}</span></p>
-                    <p className="text-soil-500">OTP: <span className="font-bold text-2xl tracking-widest text-amber-700">{otpResult.otp}</span></p>
-                    <p className="text-soil-500">Expires in: <span className="font-medium text-forest-700">{Math.floor(otpResult.expires_in / 60)}m {otpResult.expires_in % 60}s</span></p>
-                  </div>
-                ) : (
-                  <p className="text-soil-500">No active OTP for <span className="font-medium text-forest-700">{otpResult.user_email}</span>. The user hasn&apos;t requested a reset, or it already expired.</p>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Audit Log */}
+        <div>
           {audit.length === 0 ? <p className="text-center py-16 text-soil-400">No audit entries yet.</p> : (
             <div className="bg-white rounded-xl border border-cream-300 overflow-hidden overflow-x-auto">
               <table className="w-full text-sm">

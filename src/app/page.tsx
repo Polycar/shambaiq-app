@@ -106,6 +106,12 @@ export default function HomePage() {
                   Browse Soil Data
                 </Link>
               </div>
+              <p className="fade-up fade-up-delay-4 mt-4 text-sm text-cream-400/70">
+                Are you an agrovet or input dealer?{" "}
+                <Link href="/dealers/apply" className="text-gold-400 hover:text-gold-300 font-semibold underline underline-offset-2 transition-colors">
+                  Register your business →
+                </Link>
+              </p>
 
               {/* ─── Stats bar ─── */}
               <div className="fade-up fade-up-delay-4 mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-2xl">

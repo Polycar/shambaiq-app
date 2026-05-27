@@ -43,6 +43,8 @@ export default function Footer() {
               <li><Link href="/crops" className="hover:text-gold-400 transition-colors">All 25 Crops</Link></li>
               <li><Link href="/zones" className="hover:text-gold-400 transition-colors">Agroecological Zones</Link></li>
               <li><Link href="/dealers" className="hover:text-gold-400 transition-colors">Agrovet Directory</Link></li>
+              <li><Link href="/dealers/apply" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">Become a Dealer →</Link></li>
+              <li><Link href="/dealer/login" className="hover:text-gold-400 transition-colors">Dealer Login</Link></li>
             </ul>
           </div>
 

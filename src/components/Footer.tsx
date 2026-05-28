@@ -75,9 +75,11 @@ export default function Footer() {
           <p className="text-xs text-cream-500">
             © {new Date().getFullYear()} ShambaIQ. Soil data powered by 30m precision satellite mapping.
           </p>
-          <p className="text-xs text-cream-500">
-            Built for Kenyan farmers 🇰🇪
-          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="text-xs text-cream-500 hover:text-gold-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-xs text-cream-500 hover:text-gold-400 transition-colors">Terms of Service</Link>
+            <p className="text-xs text-cream-500">Built for Kenyan farmers 🇰🇪</p>
+          </div>
         </div>
       </div>
     </footer>

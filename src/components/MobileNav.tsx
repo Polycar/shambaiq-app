@@ -38,6 +38,7 @@ export default function MobileNav() {
                 size={22}
                 strokeWidth={isActive ? 2.5 : 1.8}
                 className={isActive ? "text-forest-700" : ""}
+                aria-hidden="true"
               />
               <span
                 className={`text-[10px] leading-tight truncate max-w-full ${

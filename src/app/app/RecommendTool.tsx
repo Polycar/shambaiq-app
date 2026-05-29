@@ -595,10 +595,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             <div className="space-y-4">
               {/* County */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="county-select" className="block text-sm font-medium text-gray-700 mb-1">
                   📍 {t("form_county", lang)}
                 </label>
                 <select
+                  id="county-select"
                   value={county}
                   onChange={(e) => {
                     setCounty(e.target.value);
@@ -620,10 +621,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               {/* Subcounty */}
               {subcounties.length > 0 && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="subcounty-select" className="block text-sm font-medium text-gray-700 mb-1">
                     🏘️ {t("form_subcounty", lang)}
                   </label>
                   <select
+                    id="subcounty-select"
                     value={subcounty}
                     onChange={(e) => {
                       setSubcounty(e.target.value);
@@ -642,10 +644,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               {/* Ward */}
               {wardList.length > 0 && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="ward-select" className="block text-sm font-medium text-gray-700 mb-1">
                     🎯 {t("form_ward", lang)}
                   </label>
                   <select
+                    id="ward-select"
                     value={ward}
                     onChange={(e) => setWard(e.target.value)}
                     className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
@@ -680,10 +683,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Crop + Fertilizer */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-forest-600 mb-1">
+              <label htmlFor="crop-select" className="block text-sm font-medium text-forest-600 mb-1">
                 🌾 {t("form_crop", lang)}
               </label>
               <select
+                id="crop-select"
                 value={crop}
                 onChange={(e) => {
                   setCrop(e.target.value);
@@ -699,10 +703,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-forest-600 mb-1">
+              <label htmlFor="fertilizer-select" className="block text-sm font-medium text-forest-600 mb-1">
                 🧪 {t("form_fert", lang)}
               </label>
               <select
+                id="fertilizer-select"
                 value={fertilizer}
                 onChange={(e) => setFertilizer(e.target.value)}
                 className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
@@ -717,10 +722,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Acres + Price Mode */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-forest-600 mb-1">
+              <label htmlFor="acres-input" className="block text-sm font-medium text-forest-600 mb-1">
                 📐 {t("form_acres", lang)}
               </label>
               <input
+                id="acres-input"
                 type="number"
                 value={acres}
                 onChange={(e) => setAcres(Math.max(0.25, parseFloat(e.target.value) || 0.25))}
@@ -731,10 +737,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-forest-600 mb-1">
+              <label htmlFor="price-mode-select" className="block text-sm font-medium text-forest-600 mb-1">
                 💰 {lang === "en" ? "Price Basis" : "Msingi wa Bei"}
               </label>
               <select
+                id="price-mode-select"
                 value={priceMode}
                 onChange={(e) => setPriceMode(e.target.value as "Subsidized" | "Commercial")}
                 className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
@@ -761,20 +768,20 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {labMode && (
               <div className="grid grid-cols-2 gap-3 mt-3">
                 <div>
-                  <label className="text-xs text-gray-500">{t("form_lab_ph", lang)}</label>
-                  <input type="number" step={0.1} value={labPH} onChange={(e) => setLabPH(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  <label htmlFor="lab-ph" className="text-xs text-gray-500">{t("form_lab_ph", lang)}</label>
+                  <input id="lab-ph" type="number" step={0.1} value={labPH} onChange={(e) => setLabPH(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500">{t("form_lab_n", lang)}</label>
-                  <input type="number" step={0.1} value={labN} onChange={(e) => setLabN(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  <label htmlFor="lab-n" className="text-xs text-gray-500">{t("form_lab_n", lang)}</label>
+                  <input id="lab-n" type="number" step={0.1} value={labN} onChange={(e) => setLabN(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500">{t("form_lab_p", lang)}</label>
-                  <input type="number" step={1} value={labP} onChange={(e) => setLabP(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  <label htmlFor="lab-p" className="text-xs text-gray-500">{t("form_lab_p", lang)}</label>
+                  <input id="lab-p" type="number" step={1} value={labP} onChange={(e) => setLabP(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500">{t("form_lab_k", lang)}</label>
-                  <input type="number" step={10} value={labK} onChange={(e) => setLabK(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  <label htmlFor="lab-k" className="text-xs text-gray-500">{t("form_lab_k", lang)}</label>
+                  <input id="lab-k" type="number" step={10} value={labK} onChange={(e) => setLabK(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
                 </div>
               </div>
             )}

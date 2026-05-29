@@ -310,7 +310,7 @@ export default function DoctorPage() {
                         {result.products.map((p, i) => (
                           <div key={i} className="flex items-center justify-between bg-cream-50 border border-cream-200 rounded-xl px-3 py-2">
                             <span className="text-forest-700 font-medium text-xs">{p.name}</span>
-                            <span className="text-gold-600 font-bold text-xs">{p.price_kes}</span>
+                            <span className="text-gold-700 font-bold text-xs">{p.price_kes}</span>
                           </div>
                         ))}
                       </div>

@@ -84,7 +84,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
                 <Link
                   href="/profile"
                   className="w-8 h-8 rounded-full bg-gold-500 hover:bg-gold-400 flex items-center justify-center border-2 border-gold-400/40 transition-colors"
-                  title={`View profile — ${userName || "Farmer"}`}
+                  aria-label={`View profile — ${userName || "Farmer"}`}
                 >
                   <span className="text-sm font-bold text-white leading-none">
                     {userName?.charAt(0).toUpperCase() || "F"}

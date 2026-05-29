@@ -54,12 +54,12 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <a href="mailto:info@shambaiq.com" className="hover:text-gold-400 transition-colors flex items-center gap-2">
-                  <Mail size={13} /> info@shambaiq.com
+                  <Mail size={13} aria-hidden="true" /> info@shambaiq.com
                 </a>
               </li>
               <li>
                 <a href="https://wa.me/254748042633" target="_blank" rel="noopener noreferrer" className="hover:text-gold-400 transition-colors flex items-center gap-2">
-                  <MessageCircle size={13} /> +254 748 042 633
+                  <MessageCircle size={13} aria-hidden="true" /> +254 748 042 633
                 </a>
               </li>
               <li><Link href="/blog" className="hover:text-gold-400 transition-colors">ShambaIQ Blog</Link></li>

@@ -20,6 +20,8 @@ export default function ScoreRing({
         height={size}
         viewBox="0 0 100 100"
         className="transform -rotate-90"
+        role="img"
+        aria-label={`${label}: ${score} out of 100`}
       >
         <circle
           cx="50"

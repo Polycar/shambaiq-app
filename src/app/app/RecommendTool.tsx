@@ -746,8 +746,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               })}
             </div>
           </div>
-            </div>
-          </div>
 
           {/* Acres + Price Mode */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

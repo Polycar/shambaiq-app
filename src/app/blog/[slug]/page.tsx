@@ -27,6 +27,11 @@ const STATIC_SLUGS = [
   "sweet-potato-farming-homa-bay",
   "dairy-farming-nandi",
   "bean-farming-kakamega",
+  "maize-farming-nakuru-yield-guide",
+  "cabbage-farming-kiambu-highland-soils",
+  "wheat-farming-uasin-gishu-yield-guide",
+  "tomato-farming-kirinyaga-mwea-soils",
+  "sweet-potato-farming-homa-bay-guide",
 ];
 
 interface Post {

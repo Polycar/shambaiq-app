@@ -17,7 +17,7 @@ import {
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ROUTE: /blog/sweet-potato-farming-homa-bay-guide
+// ROUTE: /blog/sweet-potato-farming-homa-bay
 // CALENDAR: Day 16–18 | seo_content_calendar.xlsx + ShambaIQ_SEO_Strategy.md
 // INTENT: Informational & Sustainable
 // FOCUS KW: "sweet potato farming Homa Bay"

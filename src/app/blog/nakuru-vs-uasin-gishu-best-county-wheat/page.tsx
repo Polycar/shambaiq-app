@@ -146,7 +146,7 @@ export default function WheatCountyComparison() {
               Nakuru's soils (pH {nakuru?.pH || "5.88"}) allow wheat roots to absorb phosphorus easily without lime intervention. Farmers in Mau Narok routinely record wheat yields of **25 to 30 bags per acre**, compared to **18 to 22 bags per acre** in Uasin Gishu unless liming is actively practiced.
             </p>
             <p className="text-soil-500 leading-relaxed font-bold text-forest-700">
-              🏆 Soil Chemistry Champion: Nakuru County
+              Soil Chemistry Champion: Nakuru County
             </p>
           </section>
         </div>

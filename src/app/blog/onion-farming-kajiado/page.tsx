@@ -81,10 +81,10 @@ export default function OnionFarmingKajiado() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Kajiado Onion Boom</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Onions (*Allium cepa*) have transformed Kajiado County—specifically districts like Isinya, Loitokitok, Kimana, and Kajiado Central—into lucrative farming hubs. The abundant solar radiation, high temperatures, and vast flat plains are ideal for high-yield bulb formation.
+              Onions (<em>Allium cepa</em>) have transformed Kajiado County—specifically districts like Isinya, Loitokitok, Kimana, and Kajiado Central—into lucrative farming hubs. The abundant solar radiation, high temperatures, and vast flat plains are ideal for high-yield bulb formation.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              However, farming in a semi-arid zone comes with technical requirements. Success hinges on a precise balance between **Drip Irrigation management**, soil organic carbon conservation, and targeted mineral fertilization.
+              However, farming in a semi-arid zone comes with technical requirements. Success hinges on a precise balance between <strong>Drip Irrigation management</strong>, soil organic carbon conservation, and targeted mineral fertilization.
             </p>
           </section>
 
@@ -118,7 +118,7 @@ export default function OnionFarmingKajiado() {
               </div>
             </div>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Kajiado's average soil pH of **{kajiado?.pH || "6.55"}** is outstanding. Onions struggle in highly acidic soils (under 5.5) where aluminum toxicity limits roots, but thrive in Kajiado's neutral range. However, the low Organic Carbon limits water-holding capacity.
+              Kajiado's average soil pH of <strong>{kajiado?.pH || "6.55"}</strong> is outstanding. Onions struggle in highly acidic soils (under 5.5) where aluminum toxicity limits roots, but thrive in Kajiado's neutral range. However, the low Organic Carbon limits water-holding capacity.
             </p>
             <p className="text-soil-500 leading-relaxed">
               Before planting, it is mandatory to incorporate high volumes of composted farmyard manure (at least 5–10 tonnes per acre). Read our <Link href="/blog/organic-soil-enrichment-kenya-soil-carbon" className="text-gold-600 hover:underline font-semibold">organic carbon enrichment guide</Link> to learn proper carbon restoration strategies.

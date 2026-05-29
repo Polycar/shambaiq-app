@@ -78,7 +78,7 @@ export default function KakamegaMavunoGuide() {
               Western Kenya, particularly Kakamega County, is known for its excellent rainfall and agricultural potential. However, decades of continuous maize farming and heavy applications of Diammonium Phosphate (DAP) have severely acidified the soil. 
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              When the soil pH drops below **5.5**, a critical chemical reaction occurs. The phosphorus contained in standard DAP becomes chemically locked by active aluminium and iron ions. Even though a farmer purchases and spreads the fertilizer, their crops are unable to absorb the phosphorus, leading to stunted roots, purplish leaves, and poor yields.
+              When the soil pH drops below <strong>5.5</strong>, a critical chemical reaction occurs. The phosphorus contained in standard DAP becomes chemically locked by active aluminium and iron ions. Even though a farmer purchases and spreads the fertilizer, their crops are unable to absorb the phosphorus, leading to stunted roots, purplish leaves, and poor yields.
             </p>
           </section>
 
@@ -113,13 +113,13 @@ export default function KakamegaMavunoGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Solution: Why Mavuno Outperforms DAP</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              **Mavuno (Planting) Fertilizer** is specifically blended to mitigate soil acidity. Unlike DAP, which has an acidifying effect on the soil, Mavuno contains:
+              <strong>Mavuno (Planting) Fertilizer</strong> is specifically blended to mitigate soil acidity. Unlike DAP, which has an acidifying effect on the soil, Mavuno contains:
             </p>
             <ul className="list-disc pl-5 my-2 space-y-2 text-soil-500 leading-relaxed">
-              <li>**Calcium (Ca)**: Directly neutralizes soil acids and improves cell wall strength in maize.</li>
-              <li>**Magnesium (Mg)**: Restores active photosynthesis, correcting the yellowing leaves common in Western shambas.</li>
-              <li>**Sulphur (S)**: Promotes protein synthesis and optimal crop vigor.</li>
-              <li>**Micronutrients (Boron, Zinc)**: Crucial for uniform pollination and high grain density.</li>
+              <li><strong>Calcium (Ca)</strong>: Directly neutralizes soil acids and improves cell wall strength in maize.</li>
+              <li><strong>Magnesium (Mg)</strong>: Restores active photosynthesis, correcting the yellowing leaves common in Western shambas.</li>
+              <li><strong>Sulphur (S)</strong>: Promotes protein synthesis and optimal crop vigor.</li>
+              <li><strong>Micronutrients (Boron, Zinc)</strong>: Crucial for uniform pollination and high grain density.</li>
             </ul>
             <p className="text-soil-500 leading-relaxed mt-4">
               By using Mavuno instead of DAP, the phosphorus remains fully available even in highly acidic soils, resulting in thicker roots, stronger stalks, and a yield improvement of up to 40%. For detailed, crop-specific practices in the Western zone, consult our <Link href="/blog/bean-farming-kakamega" className="text-gold-600 hover:underline font-semibold">Kakamega bean farming guide</Link> which highlights crucial seed inoculation methods.

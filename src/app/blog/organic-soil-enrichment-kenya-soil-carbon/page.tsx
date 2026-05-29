@@ -71,17 +71,17 @@ export default function OrganicSoilGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Carbon Crisis in Kenyan Soils</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              When farmers notice their yields dropping, their immediate instinct is often to buy more chemical fertilizers. However, if your soil has depleted organic carbon, chemical inputs are largely wasted. Without **Soil Organic Matter (SOM)**, fertilizers simply leach away into local waterways or lock up in the soil, unavailable to plant roots.
+              When farmers notice their yields dropping, their immediate instinct is often to buy more chemical fertilizers. However, if your soil has depleted organic carbon, chemical inputs are largely wasted. Without <strong>Soil Organic Matter (SOM)</strong>, fertilizers simply leach away into local waterways or lock up in the soil, unavailable to plant roots.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Decades of intense tillage, over-reliance on chemical inputs, and burning crop residues have left many Kenyan shambas depleted of carbon. Healthy agricultural soil should ideally have a soil organic carbon content of **above 2.0%**. Today, many intensive cropping areas in Central and Rift Valley Kenya have dropped below **1.2%**, severely limiting crop health and water retention.
+              Decades of intense tillage, over-reliance on chemical inputs, and burning crop residues have left many Kenyan shambas depleted of carbon. Healthy agricultural soil should ideally have a soil organic carbon content of <strong>above 2.0%</strong>. Today, many intensive cropping areas in Central and Rift Valley Kenya have dropped below <strong>1.2%</strong>, severely limiting crop health and water retention.
             </p>
           </section>
 
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Understanding the Soil Organic Carbon Loop</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Soil organic carbon behaves like a giant sponge. Each 1% increase in soil organic carbon allows the soil to hold an estimated **20,000 gallons of water per acre**. This makes carbon building the absolute single most important defense against drought and changing seasonal weather.
+              Soil organic carbon behaves like a giant sponge. Each 1% increase in soil organic carbon allows the soil to hold an estimated <strong>20,000 gallons of water per acre</strong>. This makes carbon building the absolute single most important defense against drought and changing seasonal weather.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
               Furthermore, organic carbon provides the biological food for beneficial soil microbes. These microbes secrete organic acids that naturally unlock phosphorus bonded to iron and aluminum—a common problem discussed in our <Link href="/blog/why-soil-is-acidic-kenya" className="text-gold-600 hover:underline font-semibold">soil acidity guide</Link>.
@@ -104,12 +104,12 @@ export default function OrganicSoilGuide() {
 
             <h3 className="font-display text-xl font-bold text-forest-700 mt-6 mb-2">2. Plant Nitrogen-Fixing Cover Crops</h3>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Leaving the soil bare between seasons allows hot tropical sun to oxidize and burn away organic carbon. Always plant a cover crop like **Desmodium, Mucuna, or Lablab**. These legumes absorb nitrogen from the air and pump carbon sugars directly through their roots into the soil biology, enriching the shamba naturally.
+              Leaving the soil bare between seasons allows hot tropical sun to oxidize and burn away organic carbon. Always plant a cover crop like <strong>Desmodium, Mucuna, or Lablab</strong>. These legumes absorb nitrogen from the air and pump carbon sugars directly through their roots into the soil biology, enriching the shamba naturally.
             </p>
 
             <h3 className="font-display text-xl font-bold text-forest-700 mt-6 mb-2">3. Thermal Composting over Raw Manure</h3>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Adding raw animal manure directly to fields is common, but much of its nitrogen evaporates as ammonia gas and weed seeds are spread. **Composting manure** together with dry carbon materials (straw, dry grass) and green materials (weeds, leaves) creating a dark, crumbly compost locks in the nutrients and populates the shamba with millions of beneficial fungi.
+              Adding raw animal manure directly to fields is common, but much of its nitrogen evaporates as ammonia gas and weed seeds are spread. <strong>Composting manure</strong> together with dry carbon materials (straw, dry grass) and green materials (weeds, leaves) creating a dark, crumbly compost locks in the nutrients and populates the shamba with millions of beneficial fungi.
             </p>
           </section>
 

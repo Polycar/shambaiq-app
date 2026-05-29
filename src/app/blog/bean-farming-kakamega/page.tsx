@@ -80,10 +80,10 @@ export default function BeanFarmingKakamega() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Commercial Potential of Dry Beans in Kakamega</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Common beans (*Phaseolus vulgaris*) are the primary source of plant-based protein and the second most widely grown crop in Kakamega County. Grown either as a pure stand or intercropped with maize in sub-counties like Lurambi, Malava, Mumias, and Butere, beans provide quick cash and food security.
+              Common beans (<em>Phaseolus vulgaris</em>) are the primary source of plant-based protein and the second most widely grown crop in Kakamega County. Grown either as a pure stand or intercropped with maize in sub-counties like Lurambi, Malava, Mumias, and Butere, beans provide quick cash and food security.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              However, average bean harvests in Kakamega remain disappointingly low—often under **2 to 3 bags per acre**—compared to the crop's genetic potential of **8 to 12 bags**. This performance gap is driven by a lack of phosphorus, poor nitrogen-fixation biology, and acidic soil management.
+              However, average bean harvests in Kakamega remain disappointingly low—often under <strong>2 to 3 bags per acre</strong>—compared to the crop's genetic potential of <strong>8 to 12 bags</strong>. This performance gap is driven by a lack of phosphorus, poor nitrogen-fixation biology, and acidic soil management.
             </p>
           </section>
 
@@ -114,7 +114,7 @@ export default function BeanFarmingKakamega() {
               </div>
             </div>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Beans prefer a soil pH of 6.0 to 7.0. Kakamega's average soil pH of **{kakamega?.pH || "5.63"}** is **moderately acidic**.
+              Beans prefer a soil pH of 6.0 to 7.0. Kakamega's average soil pH of <strong>{kakamega?.pH || "5.63"}</strong> is <strong>moderately acidic</strong>.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
               Under this acidity level, applying traditional Diammonium Phosphate (DAP) fertilizer backfires. The highly acidic soil locks up the phosphorus in DAP, stunting bean roots, while the ammonium in DAP continues to acidify the soil further. 
@@ -127,23 +127,23 @@ export default function BeanFarmingKakamega() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Biological Secret: Rhizobium Inoculation</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Beans are legumes that have a unique cooperative relationship with soil bacteria called *Rhizobium*. The bacteria form tiny nodules on bean roots, capturing free nitrogen from the atmosphere and converting it into natural plant fertilizer.
+              Beans are legumes that have a unique cooperative relationship with soil bacteria called <em>Rhizobium</em>. The bacteria form tiny nodules on bean roots, capturing free nitrogen from the atmosphere and converting it into natural plant fertilizer.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              However, in Kakamega's acidic soils, native *Rhizobium* populations are extremely low, and the plants remain nitrogen-deficient. 
+              However, in Kakamega's acidic soils, native <em>Rhizobium</em> populations are extremely low, and the plants remain nitrogen-deficient. 
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
               The solution is seed inoculation:
             </p>
             <ul className="list-disc pl-5 my-2 space-y-2 text-soil-500 leading-relaxed">
               <li>
-                <strong className="text-forest-700">The Inoculant</strong>: Purchase a commercial *Rhizobium* powder (such as Biofix, manufactured by MIRCEN or MEA). A single 100g packet costs under KES 350 and covers enough seeds for one acre.
+                <strong className="text-forest-700">The Inoculant</strong>: Purchase a commercial <em>Rhizobium</em> powder (such as Biofix, manufactured by MIRCEN or MEA). A single 100g packet costs under KES 350 and covers enough seeds for one acre.
               </li>
               <li>
                 <strong className="text-forest-700">Application</strong>: Dissolve two tablespoons of sugar in a cup of warm water (to act as a sticker). Mix this sticky syrup with bean seeds, then sprinkle the inoculant powder over them until every seed is coated.
               </li>
               <li>
-                <strong className="text-forest-700">Result</strong>: Seeds must be planted immediately in moist soil, away from direct sunlight. The inoculated beans will fix up to **80% of their nitrogen requirements naturally**, eliminating the need for expensive top-dressing nitrogen.
+                <strong className="text-forest-700">Result</strong>: Seeds must be planted immediately in moist soil, away from direct sunlight. The inoculated beans will fix up to <strong>80% of their nitrogen requirements naturally</strong>, eliminating the need for expensive top-dressing nitrogen.
               </li>
             </ul>
           </section>
@@ -166,7 +166,7 @@ export default function BeanFarmingKakamega() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Optimal Planting Fertilizers & Costs</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Legumes need a strong initial dose of **Phosphorus** to grow roots and support nitrogen nodulation, but very little nitrogen. Acidic-buffered, multi-nutrient fertilizers like Mavuno Planting or compound NPK are far superior to DAP:
+              Legumes need a strong initial dose of <strong>Phosphorus</strong> to grow roots and support nitrogen nodulation, but very little nitrogen. Acidic-buffered, multi-nutrient fertilizers like Mavuno Planting or compound NPK are far superior to DAP:
             </p>
             <div className="overflow-x-auto mb-6">
               <table className="w-full text-sm border-collapse">

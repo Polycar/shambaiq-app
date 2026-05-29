@@ -81,7 +81,7 @@ export default function FertilizerCalculatorGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Baseline Fertilizer Requirements (per Acre)</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              These guidelines are based on average Kenyan soil nutrient levels and standard certified seed yield targets. All bag counts refer to standard **50kg fertilizer bags**.
+              These guidelines are based on average Kenyan soil nutrient levels and standard certified seed yield targets. All bag counts refer to standard <strong>50kg fertilizer bags</strong>.
             </p>
             <div className="overflow-x-auto mb-6 border rounded-2xl">
               <table className="w-full text-sm border-collapse">
@@ -116,13 +116,13 @@ export default function FertilizerCalculatorGuide() {
               <div className="p-4 rounded-xl border border-cream-200 bg-cream-50/50">
                 <h3 className="font-bold text-forest-700 mb-1">Planting Fertilizer (DAP / NPK / SSP)</h3>
                 <p className="text-sm text-soil-500 leading-relaxed">
-                  These fertilizers are high in **Phosphorus (P)**. Phosphorus is crucial for early root establishment and seed germination. Since phosphorus moves very slowly in the soil, it must be placed directly in the furrow or hole at planting time so early roots can reach it.
+                  These fertilizers are high in <strong>Phosphorus (P)</strong>. Phosphorus is crucial for early root establishment and seed germination. Since phosphorus moves very slowly in the soil, it must be placed directly in the furrow or hole at planting time so early roots can reach it.
                 </p>
               </div>
               <div className="p-4 rounded-xl border border-cream-200 bg-cream-50/50">
                 <h3 className="font-bold text-forest-700 mb-1">Top-Dressing Fertilizer (CAN / Urea)</h3>
                 <p className="text-sm text-soil-500 leading-relaxed">
-                  These fertilizers are high in **Nitrogen (N)**. Nitrogen drives fast vegetative growth, greening, and stalk thickness. Unlike phosphorus, nitrogen dissolves instantly in rain and leaches away. Applying it too early is wasteful; apply it only when the crop is active (e.g. knee-height).
+                  These fertilizers are high in <strong>Nitrogen (N)</strong>. Nitrogen drives fast vegetative growth, greening, and stalk thickness. Unlike phosphorus, nitrogen dissolves instantly in rain and leaches away. Applying it too early is wasteful; apply it only when the crop is active (e.g. knee-height).
                 </p>
               </div>
             </div>
@@ -168,11 +168,11 @@ export default function FertilizerCalculatorGuide() {
             </p>
             <ul className="list-disc pl-5 my-2 space-y-2 text-soil-500 leading-relaxed">
               <li>
-                **Subsidized Rates**: KES {((dapPrice?.subsidized || 2500) + (canPrice?.subsidized || 2500)).toLocaleString()} total per acre.
+                <strong>Subsidized Rates</strong>: KES {((dapPrice?.subsidized || 2500) + (canPrice?.subsidized || 2500)).toLocaleString()} total per acre.
                 <span className="text-xs text-soil-400 block">DAP (subsidized) = KES {dapPrice?.subsidized?.toLocaleString() || "2,500"} | CAN (subsidized) = KES {canPrice?.subsidized?.toLocaleString() || "2,500"}</span>
               </li>
               <li>
-                **Commercial Rates**: KES {((dapPrice?.commercial || 6200) + (canPrice?.commercial || 5200)).toLocaleString()} total per acre.
+                <strong>Commercial Rates</strong>: KES {((dapPrice?.commercial || 6200) + (canPrice?.commercial || 5200)).toLocaleString()} total per acre.
                 <span className="text-xs text-soil-400 block">DAP (commercial) = KES {dapPrice?.commercial?.toLocaleString() || "6,200"} | CAN (commercial) = KES {canPrice?.commercial?.toLocaleString() || "5,200"}</span>
               </li>
             </ul>

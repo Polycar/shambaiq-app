@@ -84,7 +84,7 @@ export default function DairyFarmingNandi() {
               Nandi County is one of the highest-producing dairy zones in East Africa. Highland regions like Kapsabet, Nandi Hills, and Kabiyet offer cool, temperate weather and ample rainfall, which are perfect for purebred dairy cattle (Holstein-Friesians, Ayrshires, Guernseys, and Jerseys).
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              However, dairy profitability isn't determined in the milking parlor—it is determined in the shamba. High-producing cows require huge amounts of **Crude Protein** and **Energy**. Relying on natural, unfertilized pastures results in stunted, low-nutrition grazing, which forces farmers to spend fortunes on commercial dairy meals. The secret to high profit margins is high-nutrient fodder production.
+              However, dairy profitability isn't determined in the milking parlor—it is determined in the shamba. High-producing cows require huge amounts of <strong>Crude Protein</strong> and <strong>Energy</strong>. Relying on natural, unfertilized pastures results in stunted, low-nutrition grazing, which forces farmers to spend fortunes on commercial dairy meals. The secret to high profit margins is high-nutrient fodder production.
             </p>
           </section>
 
@@ -115,7 +115,7 @@ export default function DairyFarmingNandi() {
               </div>
             </div>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Nandi has some of the healthiest soils in Kenya. With an average pH of **{nandi?.pH || "6.17"}**, the soil is only slightly acidic and sits in the ideal zone for high-yield agriculture. Total nitrogen (**{nandi?.nitrogen || "1.37"} g/kg**) and phosphorus (**{nandi?.phosphorus || "26.4"} mg/kg**) are exceptionally strong.
+              Nandi has some of the healthiest soils in Kenya. With an average pH of <strong>{nandi?.pH || "6.17"}</strong>, the soil is only slightly acidic and sits in the ideal zone for high-yield agriculture. Total nitrogen (<strong>{nandi?.nitrogen || "1.37"} g/kg</strong>) and phosphorus (<strong>{nandi?.phosphorus || "26.4"} mg/kg</strong>) are exceptionally strong.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
               Unlike the heavily acidic Central Highlands counties (detailed in our <Link href="/blog/why-soil-is-acidic-kenya" className="text-gold-600 hover:underline font-semibold">soil acidity guide</Link>), Nandi's pH doesn't lock phosphorus. This allows fodder crops to establish deep, vigorous root networks easily.
@@ -128,10 +128,10 @@ export default function DairyFarmingNandi() {
                 Fodder grass turns pale yellow and growth rates stall.
               </li>
               <li>
-                The **Crude Protein** content of the grass plummets from an optimal 14% to under 6%.
+                The <strong>Crude Protein</strong> content of the grass plummets from an optimal 14% to under 6%.
               </li>
               <li>
-                Cows consume large volumes of dry matter but remain protein-deficient, resulting in a **20% to 35% drop in milk yields**.
+                Cows consume large volumes of dry matter but remain protein-deficient, resulting in a <strong>20% to 35% drop in milk yields</strong>.
               </li>
             </ul>
           </section>

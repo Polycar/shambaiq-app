@@ -73,10 +73,10 @@ export default function TomatoFarmingGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Tomato Goldmine: Kenya's Most Demanded Horticrop</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Tomato (*Solanum lycopersicum*) is the absolute crown jewel of commercial vegetable farming in Kenya. Counties like Kirinyaga (specifically the Mwea irrigation plains) and Kiambu supply the bulk of tomatoes consumed in Nairobi's major markets.
+              Tomato (<em>Solanum lycopersicum</em>) is the absolute crown jewel of commercial vegetable farming in Kenya. Counties like Kirinyaga (specifically the Mwea irrigation plains) and Kiambu supply the bulk of tomatoes consumed in Nairobi's major markets.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Because of high consumption rates, tomato farming can be incredibly lucrative, with net profits exceeding **KES 200,000 per acre** under optimal management. However, tomatoes are also highly sensitive crops. A single physiological mistake or pest outbreak (like Tomato Leafminer / *Tuta absoluta*) can destroy an entire field within days.
+              Because of high consumption rates, tomato farming can be incredibly lucrative, with net profits exceeding <strong>KES 200,000 per acre</strong> under optimal management. However, tomatoes are also highly sensitive crops. A single physiological mistake or pest outbreak (like Tomato Leafminer / <em>Tuta absoluta</em>) can destroy an entire field within days.
             </p>
           </section>
 
@@ -109,10 +109,10 @@ export default function TomatoFarmingGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Calcium Connection: Preventing Blossom End Rot</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Ask any tomato farmer in Mwea or Limuru about their biggest heartbreak, and they will tell you about **Blossom End Rot**. 
+              Ask any tomato farmer in Mwea or Limuru about their biggest heartbreak, and they will tell you about <strong>Blossom End Rot</strong>. 
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              This condition appears as a flat, dark, leathery patch at the bottom of the tomato fruit. It is caused by **Calcium (Ca) deficiency**. However, the root cause is rarely a lack of calcium in the soil itself. Instead, it is usually caused by **irregular watering**. 
+              This condition appears as a flat, dark, leathery patch at the bottom of the tomato fruit. It is caused by <strong>Calcium (Ca) deficiency</strong>. However, the root cause is rarely a lack of calcium in the soil itself. Instead, it is usually caused by <strong>irregular watering</strong>. 
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
               Calcium is translocated through the plant solely via water evaporation (transpiration). If the soil dries out completely and is then heavily flooded, the plant cannot absorb calcium uniformly, causing cells in developing fruit to collapse.
@@ -120,8 +120,8 @@ export default function TomatoFarmingGuide() {
             <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl mb-4 text-soil-500">
               <strong className="text-amber-800 font-bold block mb-1">Blossom End Rot Prevention Protocol:</strong>
               <ul className="list-disc pl-5 space-y-1.5 text-sm">
-                <li>Maintain uniform soil moisture using **drip irrigation**. Don't let your soil alternate between desert-dry and flooded.</li>
-                <li>Apply **Calcium Ammonium Nitrate (CAN)** as your primary nitrogen top-dresser. CAN contains soluble calcium that immediately stabilizes fruit cell walls.</li>
+                <li>Maintain uniform soil moisture using <strong>drip irrigation</strong>. Don't let your soil alternate between desert-dry and flooded.</li>
+                <li>Apply <strong>Calcium Ammonium Nitrate (CAN)</strong> as your primary nitrogen top-dresser. CAN contains soluble calcium that immediately stabilizes fruit cell walls.</li>
                 <li>Apply foliar calcium sprays during early flowering and fruit set.</li>
               </ul>
             </div>

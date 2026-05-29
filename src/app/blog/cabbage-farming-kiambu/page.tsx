@@ -81,17 +81,17 @@ export default function CabbageFarmingKiambu() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">The Commercial Potential of Cabbages in Kiambu</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Cabbage (*Brassica oleracea var. capitata*) is one of the most profitable short-season cash crops in Kiambu County. High demand from nearby Nairobi markets, coupled with optimal high-altitude rainfall in sub-counties like Limuru, Gatundu, Githunguri, and Lari, makes Kiambu a cabbage-growing powerhouse.
+              Cabbage (<em>Brassica oleracea var. capitata</em>) is one of the most profitable short-season cash crops in Kiambu County. High demand from nearby Nairobi markets, coupled with optimal high-altitude rainfall in sub-counties like Limuru, Gatundu, Githunguri, and Lari, makes Kiambu a cabbage-growing powerhouse.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              However, despite excellent climate conditions, many farmers struggle with head splitting, light heads, and devastating outbreaks of **Clubroot disease**. The secret to overcoming these challenges lies in understanding and modifying Kiambu's soil profile.
+              However, despite excellent climate conditions, many farmers struggle with head splitting, light heads, and devastating outbreaks of <strong>Clubroot disease</strong>. The secret to overcoming these challenges lies in understanding and modifying Kiambu's soil profile.
             </p>
           </section>
 
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Kiambu Soil Analysis: Acidity & Calcium Locking</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Cabbages are heavy feeders that require neutral to slightly acidic soils (pH 6.0 to 6.8). They also have a very high demand for **Calcium** to build firm, crisp, rot-resistant heads. Let's look at the actual data for Kiambu County:
+              Cabbages are heavy feeders that require neutral to slightly acidic soils (pH 6.0 to 6.8). They also have a very high demand for <strong>Calcium</strong> to build firm, crisp, rot-resistant heads. Let's look at the actual data for Kiambu County:
             </p>
             <div className="p-5 bg-white rounded-xl border border-cream-300 mb-6">
               <span className="font-semibold text-forest-700 block text-lg mb-2">Kiambu County Soil Chemistry Profile</span>
@@ -115,14 +115,14 @@ export default function CabbageFarmingKiambu() {
               </div>
             </div>
             <p className="text-soil-500 leading-relaxed mb-4">
-              With an average pH of **{kiambu?.pH || "5.28"}**, Kiambu's Central Highlands volcanic soils are **moderately to strongly acidic**. In such acidic environments:
+              With an average pH of <strong>{kiambu?.pH || "5.28"}</strong>, Kiambu's Central Highlands volcanic soils are <strong>moderately to strongly acidic</strong>. In such acidic environments:
             </p>
             <ul className="list-disc pl-5 my-2 space-y-2 text-soil-500 leading-relaxed">
               <li>
                 <strong className="text-forest-700">Clubroot Disease (Plasmodiophora brassicae)</strong> thrives. The soil-borne fungus spreads rapidly in acidic, wet soils, causing swollen, distorted roots that choke the plant.
               </li>
               <li>
-                <strong className="text-forest-700">Calcium Deficiency</strong> is induced, causing *internal tip-burn* (blackening inside the head) and soft, light heads that split easily.
+                <strong className="text-forest-700">Calcium Deficiency</strong> is induced, causing <em>internal tip-burn</em> (blackening inside the head) and soft, light heads that split easily.
               </li>
               <li>
                 <strong className="text-forest-700">Phosphorus locking</strong> occurs, leaving young cabbage transplants stunted. Learn why in our <Link href="/blog/why-soil-is-acidic-kenya" className="text-gold-600 hover:underline font-semibold">soil acidity guide</Link>.
@@ -133,7 +133,7 @@ export default function CabbageFarmingKiambu() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Clubroot Defeat Strategy</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              To defend your crop against Clubroot, you must alter the soil pH. The fungus cannot germinate or infect roots when the soil pH is above **6.2**.
+              To defend your crop against Clubroot, you must alter the soil pH. The fungus cannot germinate or infect roots when the soil pH is above <strong>6.2</strong>.
             </p>
             <ol className="list-decimal pl-5 my-2 space-y-3 text-soil-500 leading-relaxed">
               <li>
@@ -169,7 +169,7 @@ export default function CabbageFarmingKiambu() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Cabbage Feeding Guide & Costs</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Cabbages require a continuous supply of **Nitrogen** for foliage growth and **Calcium** for head firmness.
+              Cabbages require a continuous supply of <strong>Nitrogen</strong> for foliage growth and <strong>Calcium</strong> for head firmness.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
               For top-dressing, <Link href="/blog/dap-vs-can-vs-npk-fertilizer-guide" className="text-gold-600 hover:underline font-semibold">Calcium Ammonium Nitrate (CAN)</Link> is the gold standard. It provides fast-acting nitrogen and crucial calcium without making the soil more acidic.

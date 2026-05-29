@@ -73,10 +73,10 @@ export default function PotatoFarmingGuide() {
           <section className="mb-10">
             <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Why the Mt. Kenya Region Dominates Potato Production</h2>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Irish potato (*Solanum tuberosum*) is Kenya's second most important food crop after maize. The cold highland climates of Meru and Nyeri counties offer the absolute ideal environment for potatoes—abundant rainfall, high altitudes (above 1,500m), and rich volcanic soils.
+              Irish potato (<em>Solanum tuberosum</em>) is Kenya's second most important food crop after maize. The cold highland climates of Meru and Nyeri counties offer the absolute ideal environment for potatoes—abundant rainfall, high altitudes (above 1,500m), and rich volcanic soils.
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              However, despite these premium natural conditions, many smallholder potato farmers in Nyeri and Meru harvest under **5 to 8 tonnes per acre**, whereas the crop's genetic potential exceeds **15 to 20 tonnes**. The primary barrier isn't weather—it is a combination of recycled low-grade seeds, high soil acidity, and improper fertilizer choices.
+              However, despite these premium natural conditions, many smallholder potato farmers in Nyeri and Meru harvest under <strong>5 to 8 tonnes per acre</strong>, whereas the crop's genetic potential exceeds <strong>15 to 20 tonnes</strong>. The primary barrier isn't weather—it is a combination of recycled low-grade seeds, high soil acidity, and improper fertilizer choices.
             </p>
           </section>
 
@@ -102,7 +102,7 @@ export default function PotatoFarmingGuide() {
               </div>
             </div>
             <p className="text-soil-500 leading-relaxed">
-              If your shamba's pH drops below **5.2**, phosphorus becomes locked by aluminum ions, depriving the growing tubers of rooting energy. If you suspect severe acidity, review our <Link href="/blog/why-soil-is-acidic-kenya" className="text-gold-600 hover:underline font-semibold">soil acidity guide</Link> to understand mitigation techniques.
+              If your shamba's pH drops below <strong>5.2</strong>, phosphorus becomes locked by aluminum ions, depriving the growing tubers of rooting energy. If you suspect severe acidity, review our <Link href="/blog/why-soil-is-acidic-kenya" className="text-gold-600 hover:underline font-semibold">soil acidity guide</Link> to understand mitigation techniques.
             </p>
           </section>
 
@@ -130,7 +130,7 @@ export default function PotatoFarmingGuide() {
               Potatoes are heavy feeders, requiring balanced nutrition for leaf development (Nitrogen) and tuber growth (Phosphorus & Potassium). 
             </p>
             <p className="text-soil-500 leading-relaxed mb-4">
-              Many farmers use standard NPK or DAP at planting. However, potatoes require a high amount of **Potassium** during tuber formation to ensure heavy, high-grade potatoes. Using balanced blends or adding a top-dressing fertilizer can double your grades:
+              Many farmers use standard NPK or DAP at planting. However, potatoes require a high amount of <strong>Potassium</strong> during tuber formation to ensure heavy, high-grade potatoes. Using balanced blends or adding a top-dressing fertilizer can double your grades:
             </p>
             <div className="overflow-x-auto mb-6">
               <table className="w-full text-sm border-collapse">

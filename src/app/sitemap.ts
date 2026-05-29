@@ -26,6 +26,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/dealers`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/dealers/apply`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
+    { url: `${BASE}/api`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/embed`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
   ];
 
   // ── 2. Blog Posts ────────────────────────────────────────────

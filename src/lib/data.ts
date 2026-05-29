@@ -154,6 +154,11 @@ export function getCrops(): CropEconomics[] {
   return _crops;
 }
 
+/** Call this after writing crop_economics.csv so the next request re-reads the file. */
+export function invalidateCropsCache(): void {
+  _crops = null;
+}
+
 export function getCropBySlug(slug: string): CropEconomics | undefined {
   return getCrops().find(c => c.slug === slug);
 }
@@ -568,7 +573,6 @@ export const UI_STRINGS: Record<Lang, Record<string, string>> = {
   },
 };
 
-// ─── Fertilizer options (from Streamlit app) ───────
 export const FERTILIZER_OPTIONS = [
   "DAP (Diammonium Phosphate)",
   "CAN",
@@ -577,6 +581,7 @@ export const FERTILIZER_OPTIONS = [
   "Mavuno (Planting)",
   "YaraMila Cereal",
   "SSP / TSP",
+  "Potassium Sulphate / MOP",
   "Manure",
   "None",
 ];

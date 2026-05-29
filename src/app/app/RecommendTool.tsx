@@ -225,7 +225,8 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [subcounty, setSubcounty] = useState("");
   const [ward, setWard] = useState("");
   const [crop, setCrop] = useState("");
-  const [fertilizer, setFertilizer] = useState(FERTILIZER_OPTIONS[0]);
+  const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>([FERTILIZER_OPTIONS[0]]);
+  const fertilizer = useMemo(() => selectedFertilizers.join(" + "), [selectedFertilizers]);
   const [acres, setAcres] = useState(1);
   const [priceMode, setPriceMode] = useState<"Subsidized" | "Commercial">("Subsidized");
   const [labMode, setLabMode] = useState(false);
@@ -680,42 +681,71 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
           )}
 
-          {/* Crop + Fertilizer */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label htmlFor="crop-select" className="block text-sm font-medium text-forest-600 mb-1">
-                🌾 {t("form_crop", lang)}
-              </label>
-              <select
-                id="crop-select"
-                value={crop}
-                onChange={(e) => {
-                  setCrop(e.target.value);
-                  const u = CROP_UNITS[e.target.value];
-                  setYieldVal(u ? u.def : null);
-                }}
-                className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
-              >
-                <option value="">—</option>
-                {crops.map((c) => (
-                  <option key={c.slug} value={c.crop}>{c.crop}</option>
-                ))}
-              </select>
+          {/* Crop Selection */}
+          <div>
+            <label htmlFor="crop-select" className="block text-sm font-medium text-forest-600 mb-1">
+              🌾 {t("form_crop", lang)}
+            </label>
+            <select
+              id="crop-select"
+              value={crop}
+              onChange={(e) => {
+                setCrop(e.target.value);
+                const u = CROP_UNITS[e.target.value];
+                setYieldVal(u ? u.def : null);
+              }}
+              className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
+            >
+              <option value="">—</option>
+              {crops.map((c) => (
+                <option key={c.slug} value={c.crop}>{c.crop}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Fertilizer Selection (Premium Multi-Select Chips) */}
+          <div>
+            <label className="block text-sm font-medium text-forest-600 mb-2">
+              🧪 {t("form_fert", lang)}
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {FERTILIZER_OPTIONS.map((f) => {
+                const isSelected = selectedFertilizers.includes(f);
+                return (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => {
+                      if (f === "None") {
+                        setSelectedFertilizers(["None"]);
+                      } else {
+                        let next = selectedFertilizers.filter((x) => x !== "None");
+                        if (isSelected) {
+                          next = next.filter((x) => x !== f);
+                          if (next.length === 0) {
+                            next = ["None"];
+                          }
+                        } else {
+                          next.push(f);
+                        }
+                        setSelectedFertilizers(next);
+                      }
+                    }}
+                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-semibold text-left transition-all ${
+                      isSelected
+                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm scale-[1.02]"
+                        : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
+                    }`}
+                  >
+                    <span className="shrink-0 flex items-center justify-center w-4 h-4 rounded-full border border-current">
+                      {isSelected ? "✓" : ""}
+                    </span>
+                    <span className="truncate">{f}</span>
+                  </button>
+                );
+              })}
             </div>
-            <div>
-              <label htmlFor="fertilizer-select" className="block text-sm font-medium text-forest-600 mb-1">
-                🧪 {t("form_fert", lang)}
-              </label>
-              <select
-                id="fertilizer-select"
-                value={fertilizer}
-                onChange={(e) => setFertilizer(e.target.value)}
-                className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
-              >
-                {FERTILIZER_OPTIONS.map((f) => (
-                  <option key={f} value={f}>{f}</option>
-                ))}
-              </select>
+          </div>
             </div>
           </div>
 

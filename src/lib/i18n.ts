@@ -172,6 +172,7 @@ export const FERTILIZER_OPTIONS = [
   "Mavuno (Planting)",
   "YaraMila Cereal",
   "SSP / TSP",
+  "Potassium Sulphate / MOP",
   "Manure",
   "None",
 ];

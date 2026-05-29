@@ -148,6 +148,46 @@ function renderContent(raw: string) {
       continue;
     }
 
+    // --- Markdown Tables ---
+    if (line.trim().startsWith("|") && line.trim().endsWith("|")) {
+      const tableLines: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+        tableLines.push(lines[i]);
+        i++;
+      }
+      if (tableLines.length >= 2) {
+        const parseRow = (row: string) =>
+          row.split("|").slice(1, -1).map((c) => c.trim());
+        const headers = parseRow(tableLines[0]);
+        // skip separator row (index 1)
+        const bodyRows = tableLines.slice(2).map(parseRow);
+
+        elements.push(
+          <div key={k++} className="overflow-x-auto my-6 rounded-xl border border-cream-300">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-forest-700/10">
+                  {headers.map((h, j) => (
+                    <th key={j} className="px-4 py-3 text-left font-semibold text-forest-700 whitespace-nowrap" dangerouslySetInnerHTML={{ __html: parseInline(h) }} />
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {bodyRows.map((row, ri) => (
+                  <tr key={ri} className={ri % 2 === 0 ? "bg-white" : "bg-cream-50"}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} className="px-4 py-3 text-soil-500 border-t border-cream-200" dangerouslySetInnerHTML={{ __html: parseInline(cell) }} />
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+        continue;
+      }
+    }
+
     if (/^[-*] /.test(line)) {
       const items: string[] = [];
       while (i < lines.length && /^[-*] /.test(lines[i])) {
@@ -201,7 +241,8 @@ function renderContent(raw: string) {
       !/^\d+\. /.test(lines[i]) &&
       !lines[i].startsWith("> ") &&
       !/^---+$/.test(lines[i].trim()) &&
-      !/^!\[/.test(lines[i])
+      !/^!\[/.test(lines[i]) &&
+      !(lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|"))
     ) {
       paraLines.push(lines[i]);
       i++;

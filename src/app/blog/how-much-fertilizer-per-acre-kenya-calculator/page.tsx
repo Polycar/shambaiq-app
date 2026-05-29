@@ -7,7 +7,7 @@ import RelatedPosts from "@/components/RelatedPosts";
 import { makeArticleSchema, makeBreadcrumbSchema, makeFAQSchema, BASE_URL, WEBSITE_SCHEMA, ORGANIZATION } from "@/lib/schema";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 
-const POST = getPostBySlug("nakuru-vs-uasin-gishu-best-county-wheat")!;
+const POST = getPostBySlug("how-much-fertilizer-per-acre-kenya-calculator")!;
 
 export const metadata: Metadata = {
   title: POST.metaTitle,
@@ -23,11 +23,11 @@ export const metadata: Metadata = {
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
 const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: POST.title, url: `${BASE_URL}/blog/${POST.slug}` }]);
 const faqSchema = makeFAQSchema([
-  { question: "Which county produces the most wheat in Kenya?", answer: "Uasin Gishu County is Kenya's largest wheat-producing county by volume, accounting for approximately 40 to 45 percent of national production. Nakuru is second at 25 to 30 percent. Trans Nzoia, Laikipia, and Narok contribute the remainder. Uasin Gishu's advantage is scale — larger average farm sizes and more established wheat mechanisation infrastructure, including combine harvesters available for hire during harvest windows." },
-  { question: "What is the best wheat variety for Nakuru County?", answer: "For Nakuru County's altitude of 1,800 to 2,200m: Eagle 10, Kenya Fahari, and Kenya Shindo are the top performers in KARI trials. Eagle 10 has the best stem rust resistance profile and is recommended as the primary variety after the Ug99 stem rust outbreak established itself in East Africa. Kenya Fahari produces slightly higher yields in favourable seasons but is more susceptible to yellow stripe rust, which is a seasonal risk in Nakuru's cooler, wetter areas." },
-  { question: "What is the best wheat variety for Uasin Gishu?", answer: "For Uasin Gishu's altitude of 1,800 to 2,400m: Kenya Fahari, Eagle 10, and NGANO 1 are recommended. The Eldoret Basin's slightly lower humidity compared to Nakuru's Rift Valley floor reduces foliar disease pressure in most seasons, making Kenya Fahari's yield advantage more consistently realisable in Uasin Gishu. NGANO 1 shows strong Ug99 resistance and competitive yield — worth trialling on commercial farms." },
-  { question: "How much wheat per acre in Kenya?", answer: "With correct variety, soil pH 6.0 to 7.0, 1.5 bags of DAP at planting, and propiconazole preventive spray at tillering, Nakuru and Uasin Gishu farmers achieve 15 to 22 bags of 90 kg per acre. National average wheat yield is approximately 12 bags per acre. The yield gap is primarily explained by insufficient phosphorus at planting and missed fungicide applications that allow yellow rust or stem rust to reduce grain fill." },
-  { question: "Is wheat farming profitable in Kenya 2026?", answer: "At 18 bags per acre and KES 4,500 per 90 kg bag (NCPB price), revenue is KES 81,000 per acre. Input costs including 1.5 bags DAP, 1 bag CAN, certified seed, fungicide, and labour total approximately KES 25,000 to 32,000 per acre. Net margin of KES 49,000 to 56,000 per acre makes wheat one of the most profitable grain crops for Nakuru and Uasin Gishu highlands." },]);
+  { question: "How many bags of DAP per acre for maize in Kenya?", answer: "The standard recommendation for Kenyan highland maize is 1 bag (50 kg) of DAP per acre at planting, applied in the planting furrow. This provides 9 kg of nitrogen and 23 kg of phosphorus per acre. On strongly acidic soils below pH 5.5, DAP efficiency is reduced by 40 to 60 percent through phosphorus fixation — lime before applying DAP on these soils. On soils with confirmed adequate phosphorus above 20 mg/kg, reduce DAP to 25 kg per acre and redirect the saving to CAN top-dressing." },
+  { question: "How many bags of CAN per acre for maize in Kenya?", answer: "1 bag (50 kg) of CAN per acre as a top-dress at knee height is the standard recommendation for Kenyan highland maize. This provides 13 kg of nitrogen per acre — sufficient for yields of 20 to 28 bags per acre at standard plant populations. For higher yield targets of 30 bags and above on fertile limed soils, a second CAN application of 25 kg per acre at tasselling is used by commercial farmers." },
+  { question: "How much fertilizer per acre for cabbage in Kenya?", answer: "Cabbage in highland counties like Kiambu requires 3 applications: DAP at 50 kg per acre at transplanting, CAN at 50 kg per acre at 3 weeks, and CAN at 50 kg per acre at 6 weeks. Total: 1.5 bags DAP plus 2 bags CAN per acre. Foliar micronutrients — boron at week 4, calcium at weeks 3 and 6 — are essential for Kiambu's acidic soils." },
+  { question: "How much fertilizer per acre for tomatoes in Kenya?", answer: "Tomatoes require the most intensive programme of Kenya's common vegetables. Basal: DAP at 50 kg per acre at transplanting. Top-dress schedule: CAN at 50 kg per acre at weeks 2, 5, and 8. Potassium sulfate at 25 kg per acre at first fruit set (week 8 to 10) improves fruit size and shelf life. Calcium nitrate foliar at weeks 3, 6, and 9 prevents blossom end rot." },
+  { question: "Do I need fertilizer for beans in Kenya?", answer: "Beans need phosphorus at planting but do not benefit from nitrogen fertilizer — they fix their own nitrogen through Rhizobium bacteria. The correct programme: rock phosphate at 50 kg per acre or DAP at 25 to 30 kg per acre at planting, Rhizobium inoculant on the seed, and lime if pH is below 5.5. No CAN, no urea, no top-dressing. Applying nitrogen to beans suppresses Rhizobium nodulation and reduces the nitrogen fixation that would benefit the following maize crop." },]);
 
 export default function Page() {
   const relatedPosts = getRelatedPosts(POST, 3);
@@ -44,7 +44,7 @@ export default function Page() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Nakuru vs Uasin Gishu: <span className="text-gold-600">Which Is Kenya's Best Wheat County?</span>
+                How Much Fertilizer Per Acre in Kenya: <span className="text-gold-600">Rates by Crop, County, and Soil Type</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">{POST.metaDescription}</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
@@ -61,7 +61,7 @@ export default function Page() {
             </figure>
 
             <div className="prose prose-lg max-w-none text-soil-600 mb-8">
-              <p>Nakuru and Uasin Gishu are Kenya's two dominant wheat-growing counties, accounting for over 70 percent of the country's annual wheat production. Both offer excellent altitude, rainfall, and soil conditions for wheat — but they are not identical environments, and the differences matter for variety selection, disease management, and profitability. ShambaIQ's precision soil mapping and agronomic analysis reveals where each county has the advantage and how farmers in each should manage the differences.</p>
+              <p>The most common fertilizer question from Kenyan smallholder farmers is also the most variable: how much do I use? The answer depends on your soil's existing nutrient levels, the crop you are growing, your county's agroecological zone, and the specific product you are using. A blanket answer of '1 bag of DAP and 1 bag of CAN' is accurate for highland maize but wrong for beans, wrong for onions in Kajiado, and wrong for any crop on unlimed acidic soils where fertilizer efficiency collapses. This guide provides correct rates for Kenya's 10 most common crop-county combinations.</p>
             </div>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-8 mb-8">

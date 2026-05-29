@@ -1,194 +1,287 @@
-import Link from "next/link";
 import { Metadata } from "next";
-import { getCountySoils, getCrops, computeSoilHealthScore, getSeedsByCrop, getCropCalendars, getTopDressing, getPrices, slugify } from "@/lib/data";
+import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import AuthorCard from "@/components/AuthorCard";
+import RelatedPosts from "@/components/RelatedPosts";
+import TableOfContents, { TOCItem } from "@/components/TableOfContents";
+import { makeArticleSchema, makeBreadcrumbSchema, makeFAQSchema, makeHowToSchema, BASE_URL, WEBSITE_SCHEMA, ORGANIZATION } from "@/lib/schema";
+import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
+
+const POST = getPostBySlug("complete-maize-farming-guide-kenya")!;
 
 export const metadata: Metadata = {
-  title: "The Complete Maize Farming Guide for Kenya — Soil, Seeds, Fertilizer",
-  description:
-    "Everything you need to grow maize in Kenya. Best counties ranked by soil suitability, certified seed varieties, fertilizer plans with budget, and planting calendar for all seasons.",
-  openGraph: { title: "Complete Maize Farming Guide — Kenya", images: ["/api/og/crop/maize"] },
+  title: POST.metaTitle,
+  description: POST.metaDescription,
+  alternates: { canonical: `${BASE_URL}/blog/${POST.slug}` },
+  openGraph: { type: "article", url: `${BASE_URL}/blog/${POST.slug}`, title: POST.metaTitle, description: POST.metaDescription, images: [{ url: `${BASE_URL}/api/og?type=blog&slug=${POST.slug}`, width: 1200, height: 630, alt: POST.imageAlt }], publishedTime: POST.datePublished, modifiedTime: POST.dateModified, authors: [`${BASE_URL}/about`], section: POST.section, tags: POST.secondaryKeywords, siteName: "ShambaIQ", locale: "en_KE" },
+  twitter: { card: "summary_large_image", site: "@shambaiq_ke", creator: "@polycarp_agri", title: POST.metaTitle, description: POST.metaDescription, images: [`${BASE_URL}/api/og?type=blog&slug=${POST.slug}`] },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+  keywords: [POST.focusKeyword, ...POST.secondaryKeywords, ...(POST.kiswahiliKeywords ?? [])],
+  authors: [{ name: "Polycarp Andabwa", url: `${BASE_URL}/about` }],
 };
 
-export default function MaizeFarmingGuide() {
-  const counties = getCountySoils();
-  const maizeCrop = getCrops().find((c) => c.crop === "Maize");
-  const seeds = getSeedsByCrop("Maize");
-  const calendars = getCropCalendars().filter((c) => c.crop === "Maize");
-  const topDressing = getTopDressing().filter((c) => c.crop === "Maize");
-  const prices = getPrices();
+const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop Guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
-  const rankedCounties = counties
-    .map((c) => {
-      let score = 100;
-      if (c.pH < 5.5) score -= Math.min(40, (5.5 - c.pH) * 20);
-      else if (c.pH > 7.5) score -= Math.min(40, (c.pH - 7.5) * 20);
-      if (c.nitrogen < 1.2) score -= Math.min(20, ((1.2 - c.nitrogen) / 1.2) * 30);
-      if (c.phosphorus < 20) score -= Math.min(20, ((20 - c.phosphorus) / 20) * 25);
-      if (c.potassium < 150) score -= Math.min(20, ((150 - c.potassium) / 150) * 25);
-      return { ...c, maizeScore: Math.max(0, Math.round(score)) };
-    })
-    .sort((a, b) => b.maizeScore - a.maizeScore);
+const faqSchema = makeFAQSchema([
+  { question: "How many bags of maize can I get per acre in Kenya?", answer: "With optimal soil pH (6.0–6.8), correct fertilizer application (1 bag DAP at planting + 1 bag CAN top-dress), a certified hybrid variety suited to your altitude, and adequate rainfall or irrigation, Kenyan farmers in highland counties achieve 25 to 35 bags of 90 kg per acre. In highland zones with good management and two seasons, 30 bags per acre is a realistic target. In ASAL zones with drought-tolerant varieties and good management, 12 to 20 bags per acre is achievable. Average Kenyan smallholder maize yield is currently 8 to 12 bags per acre — most of the gap is explained by soil pH, wrong variety, and fertilizer timing errors that ShambaIQ can identify for your specific farm." },
+  { question: "What is the best maize variety in Kenya 2026?", answer: "The best maize variety depends on your altitude and county. For the highlands (1,500–2,200m): H614D, DK8031, and WH507 consistently top performance trials. For mid-altitude (1,200–1,500m): DK777, SC403, and Pioneer 3253 perform best. For lowlands and ASAL zones: DUMA 43, WH505, and DK8031 are the most drought-tolerant certified varieties. Never use recycled seed from the previous season's hybrid harvest — hybrid seed loses its yield advantage in the second generation and produces 30 to 40 percent lower yields than fresh certified F1 seed." },
+  { question: "When should I apply DAP and CAN fertilizer for maize in Kenya?", answer: "Apply DAP at planting — place it in the furrow 5 cm below and 5 cm beside the seed, never in direct seed contact. Standard rate is 50 kg per acre (1 bag). Apply CAN as a top-dress when maize is knee-high — approximately 4 to 6 weeks after germination when the plants are 45 to 60 cm tall. At this growth stage nitrogen drives the rapid leaf area expansion and tassel development that determines yield potential. Standard CAN rate is 50 kg per acre. Do not apply CAN at planting — it volatilises rapidly from the surface and provides little benefit compared to well-timed knee-high application." },
+  { question: "How do I control fall armyworm in maize in Kenya?", answer: "Fall armyworm (Spodoptera frugiperda) is now endemic across Kenya's maize belt. Scout weekly from seedling emergence — look for ragged leaf damage and frass (dark green or brown pellets) in the whorl. At 10 percent infestation, spray with emamectin benzoate (Escort, Proclaim) or chlorantraniliprole (Coragen) into the whorl rather than on leaf surfaces — armyworm feeds in the whorl where it is protected from surface sprays. Early morning spraying (6–9am) reaches larvae when they are feeding rather than sheltering. Spray windows of 7 days are required — a single spray rarely provides complete control." },
+  { question: "What causes yellow leaves in maize?", answer: "Yellow maize leaves have multiple causes that require different treatments. Uniform yellowing of lower leaves spreading upward: nitrogen deficiency — apply CAN immediately. V-shaped yellow from leaf tip on lower leaves: potassium deficiency. Interveinal yellowing on young upper leaves: zinc deficiency — common on alkaline soils. Pale yellowing across all leaves with stunted plants: soil pH below 5.5 causing aluminium toxicity or phosphorus lockout — lime required. Yellowing with purple streaks: phosphorus deficiency in cold soils. Irregular yellow patches with wilting: grey leaf spot or northern corn leaf blight — fungicide required. Get a precise diagnosis at shambaiq.com." },
+  { question: "Is it worth lime maize fields in Kenya?", answer: "On soils below pH 5.5 — which covers much of Central Kenya, Western Kenya, and the Mount Kenya counties — liming maize fields returns between KES 3 and KES 8 for every KES 1 spent on lime, through improved fertilizer efficiency, elimination of aluminium toxicity, and direct yield increase. At pH 4.8, maize yields 40 to 60 percent below its potential regardless of how much fertilizer is applied. Liming 1 acre to pH 6.0 costs KES 10,000 to 21,000 depending on starting pH, adds 10 to 20 bags of maize at KES 3,500 per bag, and the effect lasts 3 to 4 seasons. The ROI is among the highest of any farm investment available to Kenyan smallholders." },
+]);
 
-  const bestCounties = rankedCounties.slice(0, 10);
-  const worstCounties = rankedCounties.slice(-5);
+const howToSchema = makeHowToSchema({
+  name: "How to Grow Maize in Kenya — Complete Step-by-Step Guide",
+  description: "The complete guide to growing high-yield maize in Kenya covering variety selection, soil preparation, fertilizer application, pest management, and harvest.",
+  totalTime: "P120D",
+  estimatedCost: { currency: "KES", value: "12000–22000 per acre" },
+  supply: ["Certified hybrid maize seed (H614D, DK8031, or DUMA 43 depending on zone)", "DAP fertilizer (50 kg per acre at planting)", "CAN fertilizer (50 kg per acre top-dress)", "Agricultural lime (if pH below 5.8)", "Emamectin benzoate or chlorantraniliprole for fall armyworm"],
+  tool: ["Hand jab planter or ox plough", "Knapsack sprayer", "ShambaIQ precision tool"],
+  steps: [
+    { name: "Get your farm's soil pH and choose the right variety", text: "Use ShambaIQ at shambaiq.com to get your farm's soil pH and recommended maize variety for your altitude and county. Variety selection is the single most impactful decision — a highland variety planted in lowland conditions or vice versa loses 30 to 50 percent of its yield potential before any other management decisions are made." },
+    { name: "Lime if soil pH is below 5.8", text: "If ShambaIQ or a soil test shows pH below 5.8, apply agricultural lime at least 3 to 4 weeks before planting. At pH 4.8 to 5.2 apply 2 tonnes of dolomitic lime per acre. At pH 5.2 to 5.5 apply 1 to 1.5 tonnes. At pH 5.5 to 5.8 apply 500 kg to 1 tonne. Incorporate lime to 15 cm depth. Do not apply DAP in the same week as lime — wait at least 3 weeks." },
+    { name: "Plant certified seed at onset of rains", text: "Plant certified F1 hybrid seed at the first reliable rains when soil moisture is available at 5 cm depth. Spacing: 75 cm between rows and 25 cm within rows, one seed per hole 3 to 5 cm deep. This gives approximately 53,000 plants per acre. Apply DAP at 50 kg per acre in the furrow 5 cm below and beside the seed — never in direct contact." },
+    { name: "Top-dress with CAN at knee height", text: "Apply CAN at 50 kg per acre when maize reaches 45 to 60 cm height — approximately 4 to 6 weeks after planting. Apply in a ring 5 to 10 cm from the stem base. If rainfall is delayed after CAN application, the nitrogen volatilises before uptake — timing CAN application before predicted rain improves efficiency significantly." },
+    { name: "Scout for fall armyworm from week 2", text: "Inspect 10 to 20 plants per field twice per week from week 2. Look for ragged whorl damage and frass. Spray emamectin benzoate into the whorl at 10 percent plant infestation. Early intervention at under 20 percent infestation costs less and is more effective than reactive spraying on widespread populations." },
+    { name: "Harvest at correct moisture and store properly", text: "Harvest when husks are brown and seeds dent at the crown — approximately 120 days after planting for most highland hybrids. Field-dry on the stalk for 2 to 3 weeks after maturity, then harvest and strip husks. Dry shelled grain to below 13 percent moisture before bagging. Treat with Actellic Super or hermetic bags against weevils before storage." },
+  ],
+});
 
-  const articleSchema = {
-    "@context": "https://schema.org", "@type": "Article",
-    headline: "The Complete Maize Farming Guide for Kenya",
-    author: { "@type": "Organization", name: "ShambaIQ" },
-    datePublished: "2026-05-01", dateModified: "2026-05-16",
-  };
+const TOC_ITEMS: TOCItem[] = [
+  { id: "why-yields-low", label: "Why Most Kenyan Maize Yields Are Low", level: 2 },
+  { id: "varieties", label: "Choosing the Right Maize Variety by Zone", level: 2 },
+  { id: "soil-prep", label: "Soil Preparation and pH Management", level: 2 },
+  { id: "fertilizer", label: "DAP and CAN Fertilizer Programme", level: 2 },
+  { id: "pests", label: "Fall Armyworm and Disease Control", level: 2 },
+  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
+  { id: "budget", label: "Cost and Revenue Budget Per Acre", level: 2 },
+  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+];
 
-  const faqSchema = {
-    "@context": "https://schema.org", "@type": "FAQPage",
-    mainEntity: [
-      { "@type": "Question", name: "What is the best county for growing maize in Kenya?", acceptedAnswer: { "@type": "Answer", text: `Based on soil analysis, ${bestCounties[0]?.county} County scores highest for maize suitability with a score of ${bestCounties[0]?.maizeScore}, thanks to its pH of ${bestCounties[0]?.pH} and nitrogen level of ${bestCounties[0]?.nitrogen} g/kg.` } },
-      { "@type": "Question", name: "How many bags of fertilizer per acre for maize?", acceptedAnswer: { "@type": "Answer", text: "For maize, the standard recommendation is 1-1.5 bags of DAP (or Mavuno for acidic soils) at planting, plus 1-1.5 bags of CAN for top dressing at knee-height stage. Exact amounts depend on your specific soil nutrient levels." } },
-      { "@type": "Question", name: "What is the best maize seed variety in Kenya?", acceptedAnswer: { "@type": "Answer", text: `Popular certified varieties include ${seeds.slice(0, 3).map(s => s.variety).join(", ")}. The best choice depends on your altitude, rainfall, and desired maturity period.` } },
-    ],
-  };
-
+export default function CompleteMaizeGuidePage() {
+  const relatedPosts = getRelatedPosts(POST, 3);
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "Maize Farming Guide" }]} />
-
-        <header className="mb-10">
-          <span className="px-3 py-1 bg-forest-700/10 text-forest-700 text-xs font-semibold rounded-full">Crop Guide</span>
-          <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mt-4 mb-3">The Complete Maize Farming Guide for Kenya</h1>
-          <p className="text-soil-400 leading-relaxed max-w-2xl">Soil requirements, best counties, seed varieties, fertilizer plans, and seasonal timing — backed by satellite data for all 47 counties.</p>
-          <div className="text-xs text-soil-300 mt-4">Updated May 2026 · 10 min read</div>
-        </header>
-
-        <div className="prose prose-forest max-w-none">
-          <section className="mb-10">
-            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">What Maize Needs From Your Soil</h2>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              Maize thrives in soil with a pH between {maizeCrop?.ph_min} and {maizeCrop?.ph_max}. Below pH 5.5, phosphorus becomes chemically locked in the soil and unavailable to roots — even if your soil test shows adequate P levels. This is why counties in the <Link href="/zones/central-highlands" className="text-gold-600 hover:underline font-medium">Central Highlands</Link> often struggle with maize despite having otherwise decent nutrient levels.
-            </p>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              For nitrogen, maize is a heavy feeder. Soils with less than 1.2 g/kg of total nitrogen will show yellowing leaves by the tasseling stage unless supplemented with top dressing. Phosphorus above 20 mg/kg and potassium above 150 mg/kg complete the picture for a healthy maize crop.
-            </p>
-            <p className="text-soil-500 leading-relaxed">
-              For the full technical breakdown of all <Link href="/crops/maize" className="text-gold-600 hover:underline font-medium">maize soil requirements</Link>, see our crop page with certified seed varieties and economics.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Best Counties for Maize</h2>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              We scored all 47 counties against maize&apos;s specific soil requirements. The <Link href="/zones/rift-valley" className="text-gold-600 hover:underline font-medium">Rift Valley</Link> dominates, with <Link href={`/soil/${bestCounties[0]?.slug}`} className="text-gold-600 hover:underline font-medium">{bestCounties[0]?.county}</Link> and <Link href={`/soil/${bestCounties[1]?.slug}`} className="text-gold-600 hover:underline font-medium">{bestCounties[1]?.county}</Link> leading the pack.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-3 mb-6">
-              {bestCounties.map((c, i) => (
-                <Link key={c.slug} href={`/soil/${c.slug}/maize`} className="flex items-center gap-3 p-3 rounded-xl border border-cream-300 hover:border-gold-400 transition-colors">
-                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white bg-green-600">{i + 1}</span>
-                  <div className="flex-1">
-                    <span className="font-semibold text-forest-700">{c.county}</span>
-                    <span className="text-xs text-soil-400 ml-2">pH {c.pH}</span>
-                  </div>
-                  <span className="font-bold text-forest-700">{c.maizeScore}</span>
-                </Link>
-              ))}
-            </div>
-            <p className="text-soil-500 leading-relaxed">
-              Notice that even top-ranked counties don&apos;t score a perfect 100. This is because the sigmoid scoring model accounts for diminishing returns — having pH 6.5 is only marginally better than 6.3 for maize, not dramatically so. What matters is being within the acceptable range, not hitting an exact number.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Counties to Avoid (Or Amend Heavily)</h2>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              The most challenging counties for maize are in the arid zones where alkaline pH locks nutrients. {worstCounties.slice(0, 3).map((c, i) => (
-                <span key={c.slug}>{i > 0 && ", "}<Link href={`/soil/${c.slug}`} className="text-gold-600 hover:underline font-medium">{c.county} (pH {c.pH})</Link></span>
-              ))} all score below {worstCounties[2]?.maizeScore} for maize. If you farm in these counties, consider drought-tolerant alternatives like <Link href="/crops/sorghum" className="text-gold-600 hover:underline font-medium">sorghum</Link> or <Link href="/crops/cowpeas" className="text-gold-600 hover:underline font-medium">cowpeas</Link>.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Smart Crop Rotations for Maize</h2>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              Growing maize year after year on the same shamba depletes nitrogen and encourages pests like stalk borer. Rotating maize with legumes (like beans or cowpeas) or tubers (like potatoes) breaks pest cycles and naturally restores soil nutrients. In highland districts like Meru and Nyeri, potatoes serve as an exceptionally profitable rotation crop. For high-yielding practices, see our <Link href="/blog/meru-nyeri-potato-farming-guide" className="text-gold-600 hover:underline font-semibold">Meru & Nyeri potato guide</Link>.
-            </p>
-          </section>
-
-          {seeds.length > 0 && (
-            <section className="mb-10">
-              <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Certified Seed Varieties</h2>
-              <p className="text-soil-500 leading-relaxed mb-4">
-                Choosing the right variety for your altitude and season is as important as soil preparation. Here are certified maize varieties for Kenya:
+      <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop Guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
+          <article itemScope itemType="https://schema.org/BlogPosting">
+            <meta itemProp="datePublished" content={POST.datePublished} />
+            <meta itemProp="dateModified" content={POST.dateModified} />
+            <meta itemProp="author" content="Polycarp Andabwa" />
+            <meta itemProp="publisher" content="ShambaIQ" />
+            <header className="mb-8">
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <Link href="/blog?category=crop-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Crop Guides</Link>
+                <Link href="/crops/maize" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Maize</Link>
+                <span className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full">All Counties</span>
+              </div>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                Complete Maize Farming Guide Kenya 2026: <span className="text-gold-600">From Soil to 30 Bags Per Acre</span>
+              </h1>
+              <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
+                The average Kenyan smallholder maize farmer harvests 8 to 12 bags per acre. The precision farmer on the same soil in the same county harvests 25 to 35. The difference is not luck, land size, or expensive equipment. It is four decisions made correctly: soil pH before anything, the right variety for the right altitude, fertilizer applied at the right time, and fall armyworm caught early. This guide covers every step from soil to storage with specific recommendations for Kenya's seven major maize-growing agroecological zones.
               </p>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
-                  <thead><tr className="bg-cream-100"><th className="px-3 py-2 text-left font-semibold text-forest-700">Variety</th><th className="px-3 py-2 text-left font-semibold text-forest-700">Breeder</th><th className="px-3 py-2 text-left font-semibold text-forest-700">Altitude</th><th className="px-3 py-2 text-left font-semibold text-forest-700">Maturity</th><th className="px-3 py-2 text-left font-semibold text-forest-700">Yield</th></tr></thead>
-                  <tbody>
-                    {seeds.map((s, i) => (
-                      <tr key={i} className="border-t border-cream-200"><td className="px-3 py-2 font-medium text-forest-700">{s.variety}</td><td className="px-3 py-2 text-soil-400">{s.breeder}</td><td className="px-3 py-2 text-soil-400">{s.altitude_zone}</td><td className="px-3 py-2 text-soil-400">{s.maturity_days}</td><td className="px-3 py-2 text-soil-400">{s.yield_bags} bags</td></tr>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+                <AuthorCard compact />
+                <span className="text-soil-300 hidden sm:block">·</span>
+                <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
+                <span className="text-soil-300">·</span>
+                <span>{POST.readingTimeMin} min read</span>
+              </div>
+            </header>
+
+            <figure className="mb-8 rounded-2xl overflow-hidden bg-cream-200">
+              <img src={POST.image} alt={POST.imageAlt} width={1200} height={630} className="w-full h-72 object-cover" itemProp="image" loading="eager" />
+              <figcaption className="text-xs text-soil-300 px-4 py-2 text-center">High-yield maize crop in the Rift Valley highlands, Kenya. Source: ShambaIQ field data.</figcaption>
+            </figure>
+
+            <section>
+              <h2 id="why-yields-low" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Most Kenyan Maize Yields Are Low</h2>
+              <p className="text-soil-600 leading-relaxed mb-4">Kenya's national average maize yield of 1.7 tonnes per hectare (roughly 10 bags per acre) is among the lowest in Sub-Saharan Africa for a country with highland potential. Four fixable problems account for most of the gap between current yields and achievable yields.</p>
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                {[
+                  { problem: "Wrong soil pH", impact: "40–60% yield loss", detail: "Most maize in Central and Western Kenya is grown on soils at pH 4.8 to 5.5. Aluminium toxicity at this pH destroys root tips before they can absorb fertilizer. The fertilizer is applied — it goes nowhere." },
+                  { problem: "Wrong variety for the altitude", impact: "20–40% yield loss", detail: "A highland variety planted in the lowlands fails to silk and set grain properly. A lowland variety in the highlands takes too long to mature. Variety-altitude mismatch is extremely common and almost never discussed by agrovets." },
+                  { problem: "CAN applied at planting instead of knee-height", impact: "15–30% efficiency loss", detail: "CAN applied at planting volatilises from the soil surface before root uptake. Knee-height CAN is absorbed by an established root system during rapid growth — the same nitrogen does 3× the work." },
+                  { problem: "Fall armyworm left uncontrolled", impact: "20–80% yield loss in outbreak years", detail: "Fall armyworm is now endemic and reaches economic threshold levels on 60 to 70 percent of Kenyan farms in outbreak seasons. A single spray missed at the early whorl stage can destroy 50 percent of a stand within one week." },
+                ].map((item) => (
+                  <div key={item.problem} className="bg-white border border-cream-300 rounded-xl p-4">
+                    <h3 className="font-semibold text-forest-800 mb-1 text-sm">{item.problem}</h3>
+                    <p className="text-xs font-bold text-red-600 mb-2">{item.impact}</p>
+                    <p className="text-xs text-soil-500 leading-relaxed">{item.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Choosing the Right Maize Variety by Zone</h2>
+              <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
+                <table className="w-full text-sm">
+                  <caption className="sr-only">Best maize varieties by altitude and agroecological zone Kenya</caption>
+                  <thead className="bg-forest-700 text-white">
+                    <tr>{["Zone", "Altitude", "Key Counties", "Top Varieties", "Days to Maturity", "Yield Potential"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                  </thead>
+                  <tbody className="divide-y divide-cream-200">
+                    {[
+                      ["Highland", "1,800–2,400m", "Nyandarua, Nyeri upper, Meru upper", "H614D, WH507", "140–160 days", "28–38 bags/acre"],
+                      ["Upper Midland", "1,500–1,800m", "Nakuru, Uasin Gishu, Trans Nzoia", "DK8031, H614D, SC403", "120–140 days", "25–35 bags/acre"],
+                      ["Midland", "1,200–1,500m", "Kakamega, Nandi, Kisii, Embu", "DK777, Pioneer 3253, SC403", "100–120 days", "20–28 bags/acre"],
+                      ["Lower Midland", "900–1,200m", "Machakos, Makueni, Kitui lowlands", "WH505, DK8031, DUMA 43", "90–110 days", "14–22 bags/acre"],
+                      ["Semi-arid", "600–900m", "Kajiado, Baringo lowlands, Kwale", "DUMA 43, WH505", "85–100 days", "10–18 bags/acre"],
+                    ].map(([zone, alt, counties, vars, days, yield_], i) => (
+                      <tr key={zone as string} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
+                        <td className="px-3 py-3 font-semibold text-forest-800">{zone}</td>
+                        <td className="px-3 py-3 text-xs text-soil-500">{alt}</td>
+                        <td className="px-3 py-3 text-xs text-soil-400">{counties}</td>
+                        <td className="px-3 py-3 font-mono text-xs text-forest-700">{vars}</td>
+                        <td className="px-3 py-3 text-xs">{days}</td>
+                        <td className="px-3 py-3 font-semibold text-green-700 text-xs">{yield_}</td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             </section>
-          )}
 
-          <section className="mb-10">
-            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Fertilizer Plan</h2>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              Maize fertilization happens in two stages. At planting, apply DAP (for soils with pH above 5.5) or Mavuno (for acidic soils) to provide phosphorus for root establishment. At knee-height (week 4-5), top dress with CAN to supply the nitrogen burst needed for tasseling and grain fill.
-            </p>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              For a detailed comparison of all fertilizer options, see our guide on <Link href="/blog/dap-vs-can-vs-npk-fertilizer-guide" className="text-gold-600 hover:underline font-medium">DAP vs CAN vs NPK</Link>. If your soil is acidic, read <Link href="/blog/why-soil-is-acidic-kenya" className="text-gold-600 hover:underline font-medium">why your soil is acidic and how to fix it</Link> before choosing your planting fertilizer.
-            </p>
-            {prices.length > 0 && (
-              <div className="bg-cream-50 rounded-xl p-4 border border-cream-200">
-                <h3 className="font-semibold text-forest-700 mb-2 text-sm">Current Fertilizer Prices (2026)</h3>
-                <div className="grid grid-cols-3 gap-2 text-xs">
-                  <span className="font-semibold text-soil-400">Fertilizer</span><span className="font-semibold text-soil-400">Subsidized</span><span className="font-semibold text-soil-400">Commercial</span>
-                  {prices.slice(0, 5).map((p) => (
-                    <><span key={p.fertilizer} className="text-forest-700">{p.fertilizer}</span><span className="text-green-600">KES {p.subsidized.toLocaleString()}</span><span className="text-soil-400">KES {p.commercial.toLocaleString()}</span></>
-                  ))}
-                </div>
-              </div>
-            )}
-          </section>
-
-          <section className="mb-10">
-            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Planting Calendar</h2>
-            <p className="text-soil-500 leading-relaxed mb-4">
-              Kenya has two main planting seasons for maize. The Long Rains (March–May) are the primary season for most of the country. The Short Rains (October–December) offer a second crop opportunity in areas with bimodal rainfall. Timing your planting to coincide with the first reliable rains is critical — late planting reduces yield by approximately 2% per day of delay.
-            </p>
-            {calendars.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
-                  <thead><tr className="bg-cream-100"><th className="px-3 py-2 text-left font-semibold text-forest-700">Season</th><th className="px-3 py-2 text-left font-semibold text-forest-700">Month 1</th><th className="px-3 py-2 text-left font-semibold text-forest-700">Month 2</th><th className="px-3 py-2 text-left font-semibold text-forest-700">Month 3</th></tr></thead>
-                  <tbody>
-                    {calendars.map((cal, i) => (
-                      <tr key={i} className="border-t border-cream-200"><td className="px-3 py-2 font-medium text-forest-700">{cal.season}</td><td className="px-3 py-2 text-soil-400">{cal.month1}</td><td className="px-3 py-2 text-soil-400">{cal.month2}</td><td className="px-3 py-2 text-soil-400">{cal.month3}</td></tr>
+            <section>
+              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">DAP and CAN Fertilizer Programme</h2>
+              <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
+                <table className="w-full text-sm">
+                  <caption className="sr-only">Maize fertilizer programme Kenya DAP CAN application timing and rates</caption>
+                  <thead className="bg-forest-700 text-white">
+                    <tr>{["Stage", "Fertilizer", "Rate/Acre", "Placement", "Critical Timing"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                  </thead>
+                  <tbody className="divide-y divide-cream-200">
+                    {[
+                      ["At planting", "DAP", "50 kg (1 bag)", "5cm below & beside seed in furrow", "Same day as planting — never contact seed directly"],
+                      ["Knee height (4–6 wks)", "CAN", "50 kg (1 bag)", "Ring 5–10 cm from stem base", "Apply before rain — within 24 hrs of forecast"],
+                      ["Optional: low P soils", "TSP or Rock Phosphate", "25–50 kg", "Broadcast and incorporate before planting", "Soils where P below 10 mg/kg — check ShambaIQ first"],
+                      ["Optional: acidic soils", "Dolomitic lime", "1–2.5 t/acre", "Broadcast and incorporate", "At least 3 weeks before DAP application"],
+                    ].map(([stage, fert, rate, place, timing], i) => (
+                      <tr key={stage as string} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
+                        <td className="px-4 py-3 font-semibold text-forest-800">{stage}</td>
+                        <td className="px-4 py-3 font-mono text-xs text-gold-700">{fert}</td>
+                        <td className="px-4 py-3 text-soil-600">{rate}</td>
+                        <td className="px-4 py-3 text-xs text-soil-400">{place}</td>
+                        <td className="px-4 py-3 text-xs text-red-700 font-medium">{timing}</td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            )}
-          </section>
+            </section>
 
-          <section className="mb-10">
-            <h2 className="font-display text-2xl font-bold text-forest-700 mb-4">Get a Plan for Your Specific Farm</h2>
-            <p className="text-soil-500 leading-relaxed">
-              This guide covers maize farming at a national level. For advice tailored to your specific county, ward, and farm size — including exact bag quantities, costs, and nearest dealers — use ShambaIQ&apos;s <Link href="/app" className="text-gold-600 hover:underline font-medium">recommendation tool</Link>. It takes 30 seconds and covers all 47 counties with data from precision satellite soil mapping.
-            </p>
-          </section>
-        </div>
+            <section>
+              <h2 id="pests" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Fall Armyworm and Disease Control</h2>
+              <div className="space-y-3 mb-6">
+                {[
+                  { pest: "Fall Armyworm (Spodoptera frugiperda)", timing: "Week 2 onwards", threshold: "10% plant infestation", product: "Emamectin benzoate or Chlorantraniliprole into whorl", note: "Spray into the whorl, not on leaf surfaces. Scout twice weekly. One spray at threshold is far more effective than three sprays on established populations." },
+                  { pest: "Stalk borers (Busseola fusca)", timing: "Week 3–8", threshold: "15% dead hearts", product: "Cypermethin or Lambdacyhalothrin into whorl at knee height", note: "Endemic across all Kenyan maize zones. Stalk borer and fall armyworm often co-occur — select products with efficacy against both." },
+                  { pest: "Grey Leaf Spot (Cercospora zeae-maydis)", timing: "After tasselling", threshold: "Visible lesions on lower 3 leaves", product: "Propiconazole or Azoxystrobin foliar", note: "Most damaging in humid highland conditions. H614D has moderate tolerance. Single application at early symptom is sufficient in most seasons." },
+                  { pest: "Northern Corn Leaf Blight (Exserohilum turcicum)", timing: "After tasselling", threshold: "Lesions on upper canopy leaves", product: "Mancozeb or Propiconazole foliar", note: "Favoured by cool humid conditions in highland maize zones. Variety resistance varies — check KEPHIS variety data for your seed source." },
+                ].map((item) => (
+                  <div key={item.pest} className="bg-white border border-cream-300 rounded-xl p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                      <h3 className="font-semibold text-forest-800 text-sm">{item.pest}</h3>
+                      <span className="text-xs bg-red-50 border border-red-200 text-red-700 px-2.5 py-0.5 rounded-full">Threshold: {item.threshold}</span>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-2 text-xs mb-2">
+                      <div><span className="text-soil-400">Timing: </span><span className="text-soil-600">{item.timing}</span></div>
+                      <div><span className="text-soil-400">Product: </span><span className="font-medium text-forest-700">{item.product}</span></div>
+                    </div>
+                    <p className="text-xs text-soil-400 border-t border-cream-200 pt-2">{item.note}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
 
-        <div className="mt-10 bg-forest-700 rounded-2xl p-8 text-center">
-          <h2 className="font-display text-2xl font-bold text-cream-100 mb-3">Plan your maize season</h2>
-          <p className="text-cream-400 mb-6">Get a personalized maize fertilizer plan with budget for your county.</p>
-          <Link href="/app" className="inline-block px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors">Get Free Advice →</Link>
+            <section>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Growing Maize in Kenya</h2>
+              <ol className="space-y-4">
+                {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
+                  <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
+                    <div className="w-9 h-9 rounded-full bg-forest-700 text-white text-sm font-bold flex items-center justify-center flex-shrink-0">{i + 1}</div>
+                    <div>
+                      <h3 className="font-semibold text-forest-800 mb-1" itemProp="name">{step.name}</h3>
+                      <p className="text-sm text-soil-500 leading-relaxed" itemProp="text">{step.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            <section>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and Revenue Budget Per Acre — Kenyan Maize 2026</h2>
+              <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
+                <table className="w-full text-sm">
+                  <thead className="bg-forest-700 text-white">
+                    <tr>{["Item", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                  </thead>
+                  <tbody className="divide-y divide-cream-200">
+                    {[["Certified hybrid seed (2 kg)", "1,600"], ["DAP (1 bag)", "4,200"], ["CAN (1 bag)", "3,500"], ["Lime (if needed — amortised)", "3,000"], ["Fall armyworm sprays x2", "2,500"], ["Labour planting + weeding + harvest", "5,000"]].map(([item, total], i) => (
+                      <tr key={item as string} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
+                        <td className="px-4 py-3 text-forest-800">{item}</td>
+                        <td className="px-4 py-3 font-semibold text-forest-700">{total}</td>
+                      </tr>
+                    ))}
+                    <tr className="bg-forest-700 text-white"><td className="px-4 py-3 font-bold">TOTAL COST</td><td className="px-4 py-3 font-bold">KES 19,800</td></tr>
+                    <tr className="bg-gold-50"><td className="px-4 py-3 font-bold text-gold-800">Revenue (28 bags × KES 3,500)</td><td className="px-4 py-3 font-bold text-gold-800">KES 98,000</td></tr>
+                    <tr className="bg-green-50"><td className="px-4 py-3 font-bold text-green-800">Net Margin</td><td className="px-4 py-3 font-bold text-green-800">KES 78,200</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
+              <p className="text-sm font-semibold uppercase tracking-widest text-forest-300 mb-2">Free Precision Tool</p>
+              <h3 className="text-xl font-display font-bold mb-3">{POST.ctaText}</h3>
+              <p className="text-forest-200 text-sm mb-5">ShambaIQ gives you your county's soil pH, phosphorus and nitrogen levels, and the best maize variety for your specific location. Free, no sign-up required.</p>
+              <Link href={POST.ctaLink} className="inline-block bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold px-7 py-3 rounded-xl transition-colors">Get My Maize Recommendation</Link>
+            </div>
+
+            <section id="faq" aria-labelledby="faq-heading">
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <div className="space-y-4">
+                {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
+                  <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
+                    <summary className="flex justify-between items-center gap-3 px-5 py-4 cursor-pointer list-none font-semibold text-forest-800 hover:text-forest-600" itemProp="name">
+                      {item.name}<span className="text-gold-500 flex-shrink-0 text-lg group-open:rotate-45 transition-transform">+</span>
+                    </summary>
+                    <div className="px-5 pb-4 text-sm text-soil-600 leading-relaxed border-t border-cream-200" itemProp="acceptedAnswer" itemScope itemType="https://schema.org/Answer">
+                      <div itemProp="text">{item.acceptedAnswer.text}</div>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </section>
+            <AuthorCard />
+          </article>
+
+          <aside className="hidden lg:block">
+            <div className="sticky top-6 space-y-6">
+              <TableOfContents items={TOC_ITEMS} />
+              <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Maize Quick Facts</p>
+                <div className="space-y-2 text-sm">
+                  {[["National avg yield", "8–12 bags/acre"], ["Precision avg yield", "25–35 bags/acre"], ["Key input #1", "Correct variety"], ["Key input #2", "Soil pH ≥ 5.8"], ["Key input #3", "CAN at knee height"], ["Biggest pest", "Fall armyworm"], ["Best certification", "KEPHIS F1 seed"]].map(([k, v]) => (
+                    <div key={k as string} className="flex justify-between gap-2">
+                      <span className="text-soil-400 text-xs">{k}</span>
+                      <span className="font-medium text-forest-700 text-right text-xs">{v}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
-      </article>
+        <RelatedPosts posts={relatedPosts} heading="More Crop Guides" />
+      </div>
     </>
   );
 }

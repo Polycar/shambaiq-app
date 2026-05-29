@@ -7,7 +7,7 @@ import RelatedPosts from "@/components/RelatedPosts";
 import { makeArticleSchema, makeBreadcrumbSchema, makeFAQSchema, BASE_URL, WEBSITE_SCHEMA, ORGANIZATION } from "@/lib/schema";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 
-const POST = getPostBySlug("nakuru-vs-uasin-gishu-best-county-wheat")!;
+const POST = getPostBySlug("yellow-maize-leaves-soil-deficiency-kenya")!;
 
 export const metadata: Metadata = {
   title: POST.metaTitle,
@@ -23,11 +23,11 @@ export const metadata: Metadata = {
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
 const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: POST.title, url: `${BASE_URL}/blog/${POST.slug}` }]);
 const faqSchema = makeFAQSchema([
-  { question: "Which county produces the most wheat in Kenya?", answer: "Uasin Gishu County is Kenya's largest wheat-producing county by volume, accounting for approximately 40 to 45 percent of national production. Nakuru is second at 25 to 30 percent. Trans Nzoia, Laikipia, and Narok contribute the remainder. Uasin Gishu's advantage is scale — larger average farm sizes and more established wheat mechanisation infrastructure, including combine harvesters available for hire during harvest windows." },
-  { question: "What is the best wheat variety for Nakuru County?", answer: "For Nakuru County's altitude of 1,800 to 2,200m: Eagle 10, Kenya Fahari, and Kenya Shindo are the top performers in KARI trials. Eagle 10 has the best stem rust resistance profile and is recommended as the primary variety after the Ug99 stem rust outbreak established itself in East Africa. Kenya Fahari produces slightly higher yields in favourable seasons but is more susceptible to yellow stripe rust, which is a seasonal risk in Nakuru's cooler, wetter areas." },
-  { question: "What is the best wheat variety for Uasin Gishu?", answer: "For Uasin Gishu's altitude of 1,800 to 2,400m: Kenya Fahari, Eagle 10, and NGANO 1 are recommended. The Eldoret Basin's slightly lower humidity compared to Nakuru's Rift Valley floor reduces foliar disease pressure in most seasons, making Kenya Fahari's yield advantage more consistently realisable in Uasin Gishu. NGANO 1 shows strong Ug99 resistance and competitive yield — worth trialling on commercial farms." },
-  { question: "How much wheat per acre in Kenya?", answer: "With correct variety, soil pH 6.0 to 7.0, 1.5 bags of DAP at planting, and propiconazole preventive spray at tillering, Nakuru and Uasin Gishu farmers achieve 15 to 22 bags of 90 kg per acre. National average wheat yield is approximately 12 bags per acre. The yield gap is primarily explained by insufficient phosphorus at planting and missed fungicide applications that allow yellow rust or stem rust to reduce grain fill." },
-  { question: "Is wheat farming profitable in Kenya 2026?", answer: "At 18 bags per acre and KES 4,500 per 90 kg bag (NCPB price), revenue is KES 81,000 per acre. Input costs including 1.5 bags DAP, 1 bag CAN, certified seed, fungicide, and labour total approximately KES 25,000 to 32,000 per acre. Net margin of KES 49,000 to 56,000 per acre makes wheat one of the most profitable grain crops for Nakuru and Uasin Gishu highlands." },]);
+  { question: "Why are my maize leaves turning yellow in Kenya?", answer: "Yellow maize leaves in Kenya have eight possible causes: nitrogen deficiency (most common — yellowing from leaf tip moving upward on older lower leaves), aluminium toxicity from low soil pH (pale overall yellowing with stunted plants that do not respond to fertilizer), phosphorus deficiency in cold soils (purple-red tinting with slow growth), zinc deficiency on alkaline soils (interveinal striping on young leaves), sulphur deficiency (yellowing of youngest leaves), grey leaf spot fungal disease (rectangular tan-grey lesions between veins), northern corn leaf blight (long cigar-shaped tan lesions), and maize streak virus (bright yellow streaks along leaf veins)." },
+  { question: "How do I fix yellow maize leaves in Kenya?", answer: "The fix depends entirely on the cause. Nitrogen deficiency: apply CAN at 50 kg per acre immediately. Aluminium toxicity from low pH: lime and wait — CAN will not help. Zinc deficiency: spray zinc sulfate at 2g per litre. Sulphur deficiency: spray ammonium sulfate foliar. Grey leaf spot: spray propiconazole or mancozeb. Maize streak virus: remove infected plants — no cure exists." },
+  { question: "What does nitrogen deficiency look like in maize?", answer: "Nitrogen deficiency in maize produces a characteristic V-shaped yellowing starting from the leaf tip and progressing back along the midrib. Yellowing begins on lower, older leaves first and moves up the plant as deficiency progresses. The plant looks pale green to yellow overall in severe cases. Unlike most deficiency symptoms, nitrogen deficiency responds visibly within 5 to 7 days of CAN top-dress application on soils above pH 5.5." },
+  { question: "What does aluminium toxicity look like in maize in Kenya?", answer: "Aluminium toxicity on acidic soils produces a pale, washed-out yellowing across all leaves rather than the tip-to-base pattern of nitrogen deficiency. Plants are uniformly stunted with fewer leaves. Root systems are shallow and stubby with dark brown root tips. The critical diagnostic sign is that these plants do not respond to nitrogen or phosphorus fertilizer — only liming above pH 5.5 reverses the symptoms." },
+  { question: "Can yellow maize leaves recover after treatment?", answer: "Yellow leaves that have already turned yellow do not return to green after treatment — the chlorophyll damage is permanent in those specific leaves. However, new leaves emerging after correct treatment grow green and normal, and yield potential recovers. Nitrogen-deficient maize that receives CAN at early yellowing (V4 to V6 stage) typically recovers to 85 to 95 percent of potential. Aluminium-toxic maize on unlimed soils cannot fully recover within the same season." },]);
 
 export default function Page() {
   const relatedPosts = getRelatedPosts(POST, 3);
@@ -44,7 +44,7 @@ export default function Page() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Nakuru vs Uasin Gishu: <span className="text-gold-600">Which Is Kenya's Best Wheat County?</span>
+                Yellow Maize Leaves in Kenya: <span className="text-gold-600">Diagnosing Soil Deficiency vs Disease</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">{POST.metaDescription}</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
@@ -61,7 +61,7 @@ export default function Page() {
             </figure>
 
             <div className="prose prose-lg max-w-none text-soil-600 mb-8">
-              <p>Nakuru and Uasin Gishu are Kenya's two dominant wheat-growing counties, accounting for over 70 percent of the country's annual wheat production. Both offer excellent altitude, rainfall, and soil conditions for wheat — but they are not identical environments, and the differences matter for variety selection, disease management, and profitability. ShambaIQ's precision soil mapping and agronomic analysis reveals where each county has the advantage and how farmers in each should manage the differences.</p>
+              <p>Yellow maize leaves are the most common crop distress signal reported by Kenyan smallholder farmers, and they have at least eight distinct causes — each requiring a completely different treatment. Applying CAN to yellow maize caused by aluminium toxicity wastes money and does nothing. Applying lime to yellow maize caused by nitrogen deficiency misses the actual problem. A correct visual diagnosis takes less than 5 minutes in the field and immediately narrows the cause to one or two options. This guide provides the precise diagnostic criteria for each cause of yellow maize leaves in Kenya's farming conditions.</p>
             </div>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-8 mb-8">

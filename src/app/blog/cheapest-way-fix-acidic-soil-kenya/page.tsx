@@ -7,7 +7,7 @@ import RelatedPosts from "@/components/RelatedPosts";
 import { makeArticleSchema, makeBreadcrumbSchema, makeFAQSchema, BASE_URL, WEBSITE_SCHEMA, ORGANIZATION } from "@/lib/schema";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 
-const POST = getPostBySlug("nakuru-vs-uasin-gishu-best-county-wheat")!;
+const POST = getPostBySlug("cheapest-way-fix-acidic-soil-kenya")!;
 
 export const metadata: Metadata = {
   title: POST.metaTitle,
@@ -23,11 +23,11 @@ export const metadata: Metadata = {
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
 const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: POST.title, url: `${BASE_URL}/blog/${POST.slug}` }]);
 const faqSchema = makeFAQSchema([
-  { question: "Which county produces the most wheat in Kenya?", answer: "Uasin Gishu County is Kenya's largest wheat-producing county by volume, accounting for approximately 40 to 45 percent of national production. Nakuru is second at 25 to 30 percent. Trans Nzoia, Laikipia, and Narok contribute the remainder. Uasin Gishu's advantage is scale — larger average farm sizes and more established wheat mechanisation infrastructure, including combine harvesters available for hire during harvest windows." },
-  { question: "What is the best wheat variety for Nakuru County?", answer: "For Nakuru County's altitude of 1,800 to 2,200m: Eagle 10, Kenya Fahari, and Kenya Shindo are the top performers in KARI trials. Eagle 10 has the best stem rust resistance profile and is recommended as the primary variety after the Ug99 stem rust outbreak established itself in East Africa. Kenya Fahari produces slightly higher yields in favourable seasons but is more susceptible to yellow stripe rust, which is a seasonal risk in Nakuru's cooler, wetter areas." },
-  { question: "What is the best wheat variety for Uasin Gishu?", answer: "For Uasin Gishu's altitude of 1,800 to 2,400m: Kenya Fahari, Eagle 10, and NGANO 1 are recommended. The Eldoret Basin's slightly lower humidity compared to Nakuru's Rift Valley floor reduces foliar disease pressure in most seasons, making Kenya Fahari's yield advantage more consistently realisable in Uasin Gishu. NGANO 1 shows strong Ug99 resistance and competitive yield — worth trialling on commercial farms." },
-  { question: "How much wheat per acre in Kenya?", answer: "With correct variety, soil pH 6.0 to 7.0, 1.5 bags of DAP at planting, and propiconazole preventive spray at tillering, Nakuru and Uasin Gishu farmers achieve 15 to 22 bags of 90 kg per acre. National average wheat yield is approximately 12 bags per acre. The yield gap is primarily explained by insufficient phosphorus at planting and missed fungicide applications that allow yellow rust or stem rust to reduce grain fill." },
-  { question: "Is wheat farming profitable in Kenya 2026?", answer: "At 18 bags per acre and KES 4,500 per 90 kg bag (NCPB price), revenue is KES 81,000 per acre. Input costs including 1.5 bags DAP, 1 bag CAN, certified seed, fungicide, and labour total approximately KES 25,000 to 32,000 per acre. Net margin of KES 49,000 to 56,000 per acre makes wheat one of the most profitable grain crops for Nakuru and Uasin Gishu highlands." },]);
+  { question: "Is wood ash a good substitute for lime in Kenya?", answer: "Wood ash partially substitutes for lime on soils at pH 5.5 to 6.0, providing meaningful correction at low or zero cost for farmers who generate it on-farm. Wood ash has a neutralising value of approximately 30 to 50 percent of agricultural lime. Apply at 1 to 2 tonnes per acre to raise pH by 0.2 to 0.5 units. It also supplies potassium and calcium. On strongly acidic soils below pH 5.0, wood ash alone cannot achieve adequate correction — agricultural lime is necessary." },
+  { question: "Does compost reduce soil acidity in Kenya?", answer: "Compost raises soil pH slightly through two mechanisms: decomposing organic matter consumes hydrogen ions, and organic acids form stable complexes with aluminium, reducing its toxicity even at unchanged pH. At 3 to 5 tonnes per acre per season, compost typically raises pH by 0.1 to 0.3 units — a meaningful but partial correction. Compost and lime work better together than either alone — the combination is the most effective and cost-efficient approach for building soil health in acidic Kenyan highland soils." },
+  { question: "How much does it cost to lime 1 acre in Kenya?", answer: "Liming cost depends on starting pH. At pH 5.0 to 5.5 requiring 1.5 tonnes per acre: 30 bags at KES 700 = KES 21,000. At pH 4.5 to 5.0 requiring 2 tonnes: 40 bags = KES 28,000. Lime amortises over 3 to 4 seasons — annual cost per acre is KES 5,000 to 9,000. County governments subsidise lime in some years through NCPB and agricultural offices — check with your ward agricultural officer before purchasing at full retail price." },
+  { question: "What is the cheapest way to fix acidic soil without buying lime?", answer: "For farmers who cannot afford agricultural lime immediately, four low-cost or zero-cost approaches provide partial correction: wood ash at 1 to 2 tonnes per acre (zero cost if generated on-farm), termite hill soil which is naturally alkaline at 2 to 3 tonnes per acre, bone meal at 100 to 200 kg per acre on mildly acidic soils, and compost at 3 to 5 tonnes per acre which improves pH buffering. None of these fully substitute for lime on strongly acidic soils below pH 5.0." },
+  { question: "Which lime is cheapest in Kenya — agricultural lime, dolomite, or calcite?", answer: "Agricultural lime price varies significantly by region. In the Rift Valley near Eldoret and Nakuru (close to limestone deposits), prices range from KES 600 to 750 per 50 kg bag. In Western Kenya, transport costs push prices to KES 700 to 900 per bag. In Meru and Nyeri, prices reach KES 800 to 1,000 per bag. Dolomitic lime is 10 to 15 percent more expensive than calcitic but provides magnesium that Meru and Nyeri's leached soils need — making it better value for these counties. Bulk purchase through cooperatives typically reduces price by 15 to 25 percent." },]);
 
 export default function Page() {
   const relatedPosts = getRelatedPosts(POST, 3);
@@ -44,7 +44,7 @@ export default function Page() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Nakuru vs Uasin Gishu: <span className="text-gold-600">Which Is Kenya's Best Wheat County?</span>
+                Cheapest Way to Fix Acidic Soil in Kenya: <span className="text-gold-600">Lime vs Wood Ash vs Compost — Cost-Benefit Comparison</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">{POST.metaDescription}</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
@@ -61,7 +61,7 @@ export default function Page() {
             </figure>
 
             <div className="prose prose-lg max-w-none text-soil-600 mb-8">
-              <p>Nakuru and Uasin Gishu are Kenya's two dominant wheat-growing counties, accounting for over 70 percent of the country's annual wheat production. Both offer excellent altitude, rainfall, and soil conditions for wheat — but they are not identical environments, and the differences matter for variety selection, disease management, and profitability. ShambaIQ's precision soil mapping and agronomic analysis reveals where each county has the advantage and how farmers in each should manage the differences.</p>
+              <p>Agricultural lime is the correct treatment for acidic soil in Kenya — but at KES 700 to 900 per 50 kg bag and 20 to 50 bags per acre required, the upfront cost is a real barrier for smallholder farmers. Wood ash, compost, and other organic amendments offer partial correction at lower cost or zero cost for farmers who generate these materials on-farm. This guide compares the cost-effectiveness of each approach for different starting pH levels and farm sizes, with realistic assessments of what each amendment can and cannot achieve.</p>
             </div>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-8 mb-8">

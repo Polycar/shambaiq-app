@@ -18,7 +18,7 @@ export const ORGANIZATION = {
     width: 512,
     height: 512,
   },
-  sameAs: ["https://github.com/Polycat/shambaiq", "https://twitter.com/shambaiq_ke"],
+  sameAs: ["https://github.com/Polycat", "https://twitter.com/shambaiq_ke"],
   description:
     "Kenya's precision soil intelligence platform. Satellite-powered soil scores and agronomic recommendations for all 47 counties.",
 };
@@ -84,7 +84,7 @@ export const AUTHOR_PERSON = {
   ],
   sameAs: [
     "https://github.com/Polycat",
-    "https://linkedin.com/in/polycarp-andabwa",
+    "https://www.linkedin.com/in/polycarp-a-a7174916b/",
   ],
 };
 
@@ -94,7 +94,7 @@ export const WEBSITE_SCHEMA = {
   url: BASE_URL,
   name: "ShambaIQ",
   publisher: { "@id": `${BASE_URL}/#organization` },
-  inLanguage: ["en-KE", "sw-KE"],
+  inLanguage: "en-KE",
   potentialAction: {
     "@type": "SearchAction",
     target: { "@type": "EntryPoint", urlTemplate: `${BASE_URL}/soil/{county}` },

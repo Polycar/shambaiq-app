@@ -23,7 +23,7 @@ import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 // FOCUS KW: "sweet potato farming Homa Bay"
 // ─────────────────────────────────────────────────────────────────────────────
 
-const POST = getPostBySlug("sweet-potato-farming-homa-bay")!;
+const POST = getPostBySlug("sweet-potato-farming-homa-bay-guide")!;
 
 // ── 1. Next.js Metadata (title, meta description, OG, Twitter, canonical, hreflang) ──
 
@@ -37,10 +37,6 @@ export const metadata: Metadata = {
   // ── Canonical ──
   alternates: {
     canonical: `${BASE_URL}/blog/${POST.slug}`,
-    languages: {
-      "sw-KE": `${BASE_URL}/sw/blogu/kilimo-cha-viazi-vitamu-homa-bay`,
-      "en-KE": `${BASE_URL}/blog/${POST.slug}`,
-    },
   },
 
   // ── Open Graph ──
@@ -49,14 +45,7 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/blog/${POST.slug}`,
     title: POST.metaTitle,
     description: POST.metaDescription,
-    images: [
-      {
-        url: `${BASE_URL}${POST.image}`,
-        width: 1200,
-        height: 630,
-        alt: POST.imageAlt,
-      },
-    ],
+    images: [{ url: `${BASE_URL}/api/og?type=blog&slug=${POST.slug}`, width: 1200, height: 630, alt: POST.imageAlt }],
     publishedTime: POST.datePublished,
     modifiedTime: POST.dateModified,
     authors: [`${BASE_URL}/about`],
@@ -73,7 +62,7 @@ export const metadata: Metadata = {
     creator: "@polycarp_agri",
     title: POST.metaTitle,
     description: POST.metaDescription,
-    images: [`${BASE_URL}${POST.image}`],
+    images: [`${BASE_URL}/api/og?type=blog&slug=${POST.slug}`],
   },
 
   // ── Robots ──
@@ -390,11 +379,11 @@ export default function SweetPotatoHomaBayPage() {
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
-                      ["Soil pH", "5.6 – 6.2", "5.5 – 6.5", "Optimal"],
-                      ["Total Nitrogen (g/kg)", "1.2 – 1.8", "Low N preferred", "Good (no excess)"],
-                      ["Extractable Phosphorus (mg/kg)", "8 – 18", "> 10 mg/kg", "Marginal"],
-                      ["Extractable Potassium (mg/kg)", "60 – 110", "> 150 mg/kg", "Deficient — supplement"],
-                      ["Organic Carbon (g/kg)", "8 – 15", "> 10 g/kg", "Adequate"],
+                      ["Soil pH", "5.6 – 6.2", "5.5 – 6.5", "✅ Optimal"],
+                      ["Total Nitrogen (g/kg)", "1.2 – 1.8", "Low N preferred", "✅ Good (no excess)"],
+                      ["Extractable Phosphorus (mg/kg)", "8 – 18", "> 10 mg/kg", "⚠️ Marginal"],
+                      ["Extractable Potassium (mg/kg)", "60 – 110", "> 150 mg/kg", "❌ Deficient — supplement"],
+                      ["Organic Carbon (g/kg)", "8 – 15", "> 10 g/kg", "✅ Adequate"],
                     ].map(([nutrient, value, optimum, status], i) => (
                       <tr key={nutrient} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
                         <td className="px-4 py-3 font-medium text-forest-800">{nutrient}</td>
@@ -478,12 +467,12 @@ export default function SweetPotatoHomaBayPage() {
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
-                      ["Mavuno Sweet Potato", "4-14-27", "Best choice", "High K exactly matches Homa Bay deficiency"],
-                      ["NPK 17:17:17", "17-17-17", "Acceptable", "Balanced but K still lower than ideal"],
-                      ["DAP (18:46:0)", "18-46-0", "Avoid", "Zero potassium — useless for tubers"],
-                      ["CAN (26% N)", "26-0-0", "Never use", "Pure nitrogen — causes vine excess, kills yield"],
-                      ["Urea (46% N)", "46-0-0", "Never use", "Same as CAN, worse effect on tubers"],
-                      ["Organic compost", "Variable", "Excellent base", "Improves K availability and soil structure"],
+                      ["Mavuno Sweet Potato", "4-14-27", "✅ Best choice", "High K exactly matches Homa Bay deficiency"],
+                      ["NPK 17:17:17", "17-17-17", "⚠️ Acceptable", "Balanced but K still lower than ideal"],
+                      ["DAP (18:46:0)", "18-46-0", "❌ Avoid", "Zero potassium — useless for tubers"],
+                      ["CAN (26% N)", "26-0-0", "❌ Never use", "Pure nitrogen — causes vine excess, kills yield"],
+                      ["Urea (46% N)", "46-0-0", "❌ Never use", "Same as CAN, worse effect on tubers"],
+                      ["Organic compost", "Variable", "✅ Excellent base", "Improves K availability and soil structure"],
                     ].map(([fert, npk, use, why], i) => (
                       <tr key={fert as string} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
                         <td className="px-4 py-3 font-semibold text-forest-800">{fert}</td>

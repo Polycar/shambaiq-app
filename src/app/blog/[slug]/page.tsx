@@ -11,13 +11,34 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 const SITE_URL = "https://www.shambaiq.com";
 
 const STATIC_SLUGS = [
-  "kenya-soil-health-rankings-2026",
+  // ── New Descriptive Slugs ──
+  "kenya-county-soil-rankings-2026",
   "complete-maize-farming-guide-kenya",
+  "why-your-soil-is-acidic-kenya",
+  "dap-vs-can-vs-npk-fertilizer-guide-kenya",
+  "maize-farming-nakuru-yield-guide",
+  "cabbage-farming-kiambu-highland-soils",
+  "wheat-farming-uasin-gishu-yield-guide",
+  "tomato-farming-kirinyaga-mwea-soils",
+  "onion-farming-kajiado-dryland-guide",
+  "sweet-potato-farming-homa-bay-guide",
+  "acidic-soil-treatment-meru-nyeri",
+  "organic-soil-restoration-machakos",
+  "dairy-fodder-farming-nandi-county",
+  "bean-farming-kakamega-double-harvest",
+  "kakamega-soil-western-kenya-mavuno",
+  "farming-semi-arid-kenya-machakos-makueni-kitui",
+  "nakuru-vs-uasin-gishu-best-county-wheat",
+  "how-much-fertilizer-per-acre-kenya-calculator",
+  "long-rains-2026-what-to-plant-kenya",
+  "yellow-maize-leaves-soil-deficiency-kenya",
+  "cheapest-way-fix-acidic-soil-kenya",
+
+  // ── Old Slugs ──
+  "kenya-soil-health-rankings-2026",
   "why-soil-is-acidic-kenya",
   "dap-vs-can-vs-npk-fertilizer-guide",
   "kakamega-soil-mavuno-not-dap",
-  "farming-semi-arid-kenya-machakos-makueni-kitui",
-  "nakuru-vs-uasin-gishu-best-county-wheat",
   "how-much-fertilizer-per-acre-calculator",
   "meru-nyeri-potato-farming-guide",
   "organic-soil-enrichment-kenya-soil-carbon",
@@ -27,11 +48,6 @@ const STATIC_SLUGS = [
   "sweet-potato-farming-homa-bay",
   "dairy-farming-nandi",
   "bean-farming-kakamega",
-  "maize-farming-nakuru-yield-guide",
-  "cabbage-farming-kiambu-highland-soils",
-  "wheat-farming-uasin-gishu-yield-guide",
-  "tomato-farming-kirinyaga-mwea-soils",
-  "sweet-potato-farming-homa-bay-guide",
 ];
 
 interface Post {

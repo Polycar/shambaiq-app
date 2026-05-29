@@ -7,7 +7,7 @@ import RelatedPosts from "@/components/RelatedPosts";
 import { makeArticleSchema, makeBreadcrumbSchema, makeFAQSchema, BASE_URL, WEBSITE_SCHEMA, ORGANIZATION } from "@/lib/schema";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 
-const POST = getPostBySlug("nakuru-vs-uasin-gishu-best-county-wheat")!;
+const POST = getPostBySlug("kakamega-soil-western-kenya-mavuno")!;
 
 export const metadata: Metadata = {
   title: POST.metaTitle,
@@ -23,11 +23,11 @@ export const metadata: Metadata = {
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
 const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: POST.title, url: `${BASE_URL}/blog/${POST.slug}` }]);
 const faqSchema = makeFAQSchema([
-  { question: "Which county produces the most wheat in Kenya?", answer: "Uasin Gishu County is Kenya's largest wheat-producing county by volume, accounting for approximately 40 to 45 percent of national production. Nakuru is second at 25 to 30 percent. Trans Nzoia, Laikipia, and Narok contribute the remainder. Uasin Gishu's advantage is scale — larger average farm sizes and more established wheat mechanisation infrastructure, including combine harvesters available for hire during harvest windows." },
-  { question: "What is the best wheat variety for Nakuru County?", answer: "For Nakuru County's altitude of 1,800 to 2,200m: Eagle 10, Kenya Fahari, and Kenya Shindo are the top performers in KARI trials. Eagle 10 has the best stem rust resistance profile and is recommended as the primary variety after the Ug99 stem rust outbreak established itself in East Africa. Kenya Fahari produces slightly higher yields in favourable seasons but is more susceptible to yellow stripe rust, which is a seasonal risk in Nakuru's cooler, wetter areas." },
-  { question: "What is the best wheat variety for Uasin Gishu?", answer: "For Uasin Gishu's altitude of 1,800 to 2,400m: Kenya Fahari, Eagle 10, and NGANO 1 are recommended. The Eldoret Basin's slightly lower humidity compared to Nakuru's Rift Valley floor reduces foliar disease pressure in most seasons, making Kenya Fahari's yield advantage more consistently realisable in Uasin Gishu. NGANO 1 shows strong Ug99 resistance and competitive yield — worth trialling on commercial farms." },
-  { question: "How much wheat per acre in Kenya?", answer: "With correct variety, soil pH 6.0 to 7.0, 1.5 bags of DAP at planting, and propiconazole preventive spray at tillering, Nakuru and Uasin Gishu farmers achieve 15 to 22 bags of 90 kg per acre. National average wheat yield is approximately 12 bags per acre. The yield gap is primarily explained by insufficient phosphorus at planting and missed fungicide applications that allow yellow rust or stem rust to reduce grain fill." },
-  { question: "Is wheat farming profitable in Kenya 2026?", answer: "At 18 bags per acre and KES 4,500 per 90 kg bag (NCPB price), revenue is KES 81,000 per acre. Input costs including 1.5 bags DAP, 1 bag CAN, certified seed, fungicide, and labour total approximately KES 25,000 to 32,000 per acre. Net margin of KES 49,000 to 56,000 per acre makes wheat one of the most profitable grain crops for Nakuru and Uasin Gishu highlands." },]);
+  { question: "What is Mavuno fertilizer?", answer: "Mavuno is a range of compound fertilizers manufactured by MEA Fertilizers for Kenya's market, formulated with NPK ratios calibrated for East African soils. Mavuno Planting (26:10:10) provides nitrogen, phosphorus, and potassium simultaneously. Mavuno Top Dress (30:0:10) provides nitrogen and potassium for top-dressing. Unlike DAP (18:46:0) which provides only nitrogen and very high phosphorus, Mavuno's balanced formulations are appropriate when phosphorus needs are moderate but potassium deficiency is also present." },
+  { question: "Is Mavuno better than DAP for maize in Kakamega?", answer: "On Kakamega's leached soils where phosphorus is deficient (below 10 mg/kg), DAP provides more phosphorus per kilogram and per shilling than Mavuno Planting. DAP at 18:46:0 delivers 46 percent phosphorus — more than four times Mavuno Planting's 10 percent. If phosphorus is the primary limiting nutrient, DAP is more cost-effective. However, on Kakamega farms where potassium is also deficient (below 80 mg/kg), Mavuno Planting supplies potassium while DAP does not. ShambaIQ identifies which nutrients are limiting on your specific farm." },
+  { question: "How much Mavuno fertilizer per acre for maize in Kakamega?", answer: "For Kakamega maize using Mavuno Planting as the basal fertilizer: apply 50 kg (1 bag) in the planting furrow at the same rate as DAP. Follow with Mavuno Top Dress at 50 kg per acre or CAN at 50 kg per acre at knee height. The choice between Mavuno Top Dress and CAN depends on whether your soil shows potassium deficiency — if K is below 80 mg/kg, Mavuno Top Dress provides both N and K simultaneously." },
+  { question: "What does Mavuno fertilizer contain?", answer: "Mavuno Planting (26:10:10:4S) contains 26% nitrogen, 10% phosphorus, 10% potassium, and 4% sulfur. Mavuno Top Dress (30:0:10:5S) contains 30% nitrogen, 0% phosphorus, 10% potassium, and 5% sulfur. The sulfur content is agronomically significant for Kakamega's leached soils where sulfur deficiency occurs — deficiency symptoms mimic nitrogen deficiency but do not respond to nitrogen application." },
+  { question: "Is Mavuno fertilizer good for beans in Kakamega?", answer: "For beans in Kakamega, Mavuno Planting is not recommended because its high nitrogen (26%) suppresses Rhizobium nodule formation. Beans fix their own nitrogen and do not benefit from nitrogen fertilizer. The correct basal for beans is rock phosphate or low-rate DAP at 25 kg per acre, providing phosphorus for root development without nitrogen that disrupts biological fixation." },]);
 
 export default function Page() {
   const relatedPosts = getRelatedPosts(POST, 3);
@@ -44,7 +44,7 @@ export default function Page() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Nakuru vs Uasin Gishu: <span className="text-gold-600">Which Is Kenya's Best Wheat County?</span>
+                Kakamega Soil Guide: <span className="text-gold-600">Mavuno Fertilizer vs DAP on Western Kenya Soils</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">{POST.metaDescription}</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
@@ -61,7 +61,7 @@ export default function Page() {
             </figure>
 
             <div className="prose prose-lg max-w-none text-soil-600 mb-8">
-              <p>Nakuru and Uasin Gishu are Kenya's two dominant wheat-growing counties, accounting for over 70 percent of the country's annual wheat production. Both offer excellent altitude, rainfall, and soil conditions for wheat — but they are not identical environments, and the differences matter for variety selection, disease management, and profitability. ShambaIQ's precision soil mapping and agronomic analysis reveals where each county has the advantage and how farmers in each should manage the differences.</p>
+              <p>Mavuno is Kenya's most popular compound fertilizer brand — a range of formulations developed specifically for Kenya's diverse soil types. In Kakamega County's phosphorus-deficient, slightly acidic soils, the question of whether to use Mavuno or DAP is one of the most common fertilizer decisions smallholder farmers face. The answer depends on your specific soil nutrient profile and the crop you are growing. This guide uses ShambaIQ's precision soil data for Kakamega to show exactly when Mavuno outperforms DAP and when DAP remains the better choice.</p>
             </div>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-8 mb-8">

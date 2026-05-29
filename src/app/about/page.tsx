@@ -238,7 +238,7 @@ export default function AboutPage() {
                 Read the Blog
               </Link>
               <Link
-                href="https://github.com/Polycat/shambaiq"
+                href="https://github.com/Polycat"
                 className="border border-cream-300 text-soil-500 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-cream-50 transition-colors"
                 rel="noopener noreferrer"
                 target="_blank"

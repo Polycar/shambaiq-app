@@ -1,21 +1,13 @@
 import { MetadataRoute } from "next";
-import {
-  getCountySoils,
-  getCrops,
-  getZones,
-  getWards,
-  slugify,
-} from "@/lib/data";
+import { ALL_POSTS } from "@/lib/blog-data";
+import { ALL_COUNTIES, ALL_CROPS, ALL_ZONES } from "@/lib/site-data";
+import { getWards, slugify } from "@/lib/data";
 
 const BASE = "https://www.shambaiq.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const counties = getCountySoils();
-  const crops = getCrops();
-  const zones = getZones();
-  const wards = getWards();
-
   const now = new Date().toISOString();
+  const wards = getWards();
 
   // ── 1. Static Pages ────────────────────────────────────────────
   const staticPages: MetadataRoute.Sitemap = [
@@ -30,74 +22,72 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/embed`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
   ];
 
-  // ── 2. Blog Posts ────────────────────────────────────────────
-  const blogPosts: MetadataRoute.Sitemap = [
-    { url: `${BASE}/blog/kenya-soil-health-rankings-2026`, lastModified: "2026-05-01", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/complete-maize-farming-guide-kenya`, lastModified: "2026-05-01", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/why-soil-is-acidic-kenya`, lastModified: "2026-05-01", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/dap-vs-can-vs-npk-fertilizer-guide`, lastModified: "2026-05-01", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/kakamega-soil-mavuno-not-dap`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/farming-semi-arid-kenya-machakos-makueni-kitui`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/nakuru-vs-uasin-gishu-best-county-wheat`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/how-much-fertilizer-per-acre-calculator`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/meru-nyeri-potato-farming-guide`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/organic-soil-enrichment-kenya-soil-carbon`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/tomato-farming-guide-kiambu-kirinyaga`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/cabbage-farming-kiambu`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/onion-farming-kajiado`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/sweet-potato-farming-homa-bay`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/dairy-farming-nandi`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-    { url: `${BASE}/blog/bean-farming-kakamega`, lastModified: "2026-05-21", changeFrequency: "yearly", priority: 0.8 },
-  ];
+  // ── 2. Dynamic Blog Pages ──────────────────────────────────────────
+  const blogPages: MetadataRoute.Sitemap = ALL_POSTS.map((post) => ({
+    url: `${BASE}/blog/${post.slug}`,
+    lastModified: post.dateModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
 
   // ── 3. Top-Level Directories (Zones, Counties, Crops, Dealers) ──
-  const zonePages: MetadataRoute.Sitemap = zones.map((zone) => ({
-    url: `${BASE}/zones/${slugify(zone)}`, lastModified: now, changeFrequency: "monthly", priority: 0.7,
+  const zonePages: MetadataRoute.Sitemap = ALL_ZONES.map((zone) => ({
+    url: `${BASE}/zones/${zone.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
   }));
 
-  const countyPages: MetadataRoute.Sitemap = counties.map((c) => ({
-    url: `${BASE}/soil/${c.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.8,
+  const countyPages: MetadataRoute.Sitemap = ALL_COUNTIES.map((c) => ({
+    url: `${BASE}/soil/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
   }));
 
-  const dealerPages: MetadataRoute.Sitemap = counties.map((c) => ({
-    url: `${BASE}/dealers/${c.slug}`, lastModified: now, changeFrequency: "weekly", priority: 0.6,
+  const dealerPages: MetadataRoute.Sitemap = ALL_COUNTIES.map((c) => ({
+    url: `${BASE}/dealers/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
   }));
 
-  const cropPages: MetadataRoute.Sitemap = crops.map((c) => ({
-    url: `${BASE}/crops/${c.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.8,
+  const cropPages: MetadataRoute.Sitemap = ALL_CROPS.map((c) => ({
+    url: `${BASE}/crops/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
   }));
 
   // ── 4. Deep Combinations (County × Crop) ───────────────────────
-  const comboPages: MetadataRoute.Sitemap = counties.flatMap((county) =>
-    crops.map((crop) => ({
+  const comboPages: MetadataRoute.Sitemap = ALL_COUNTIES.flatMap((county) =>
+    ALL_CROPS.map((crop) => ({
       url: `${BASE}/soil/${county.slug}/${crop.slug}`,
       lastModified: now,
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.6,
     }))
   );
 
   // ── 5. Hyper-Local Wards ─────────────────────────────────────────
   const wardPages: MetadataRoute.Sitemap = wards.map((w) => {
-    const county = counties.find((c) => c.county.toLowerCase() === w.county.toLowerCase());
+    const county = ALL_COUNTIES.find((c) => c.name.toLowerCase() === w.county.toLowerCase());
     const countySlug = county ? county.slug : slugify(w.county);
     return {
       url: `${BASE}/soil/${countySlug}/ward/${w.slug}`,
       lastModified: now,
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.5,
     };
   });
 
-  // Total URLs generated: ~2,725
-  // Safely under the Next.js/Google 50,000 URL limit for a single sitemap file.
   return [
     ...staticPages,
-    ...blogPosts,
+    ...blogPages,
     ...zonePages,
     ...countyPages,
-    ...dealerPages,
     ...cropPages,
+    ...dealerPages,
     ...comboPages,
     ...wardPages,
   ];

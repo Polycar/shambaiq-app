@@ -46,7 +46,7 @@ export const ALL_POSTS: BlogPost[] = [
   // ── WEEK 1 — Foundation Posts [STR] ────────────────────────────────────────
 
   {
-    slug: "kenya-soil-health-rankings-2026",
+    slug: "kenya-county-soil-rankings-2026",
     title: "2026 Kenya Soil Health Report: All 47 Counties Ranked",
     metaTitle: "Kenya Soil Health Rankings 2026 — All 47 Counties | ShambaIQ",
     metaDescription:
@@ -93,7 +93,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "why-soil-is-acidic-kenya",
+    slug: "why-your-soil-is-acidic-kenya",
     title: "Why Your Soil Is Acidic — And What To Do About It",
     metaTitle: "Acidic Soil Kenya — Causes, Fix, Lime Guide | ShambaIQ",
     metaDescription:
@@ -116,7 +116,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "dap-vs-can-vs-npk-fertilizer-guide",
+    slug: "dap-vs-can-vs-npk-fertilizer-guide-kenya",
     title: "DAP vs CAN vs NPK: Which Fertilizer Does Your Farm Need?",
     metaTitle: "DAP vs CAN vs NPK Kenya — Which Fertilizer to Use | ShambaIQ",
     metaDescription:
@@ -141,7 +141,32 @@ export const ALL_POSTS: BlogPost[] = [
   // ── COUNTY × CROP DEEP DIVES [XLS] ─────────────────────────────────────────
 
   {
-    slug: "cabbage-farming-kiambu",
+    slug: "maize-farming-nakuru-yield-guide",
+    title: "Nakuru County Maize Guide: Maximize Yields This Season",
+    metaTitle: "Maize Farming in Nakuru — Fertilizer, Soil, Yields | ShambaIQ",
+    metaDescription:
+      "Nakuru maize farming guide: pH 6.0–6.8 loam soils in Rongai, Njoro, Molo. Basal NPK 23:21:0 or DAP + CAN top-dressing plan, certified varieties, and KES budget per acre.",
+    focusKeyword: "maize farming in Nakuru",
+    secondaryKeywords: ["Nakuru county soil pH", "best maize fertilizer Kenya", "Nakuru rainfall season", "NPK 23:21:0 maize Nakuru"],
+    kiswahiliKeywords: ["kilimo cha mahindi Nakuru", "mbolea ya mahindi Nakuru"],
+    searchIntent: "Commercial & Transactional",
+    datePublished: "2026-06-02",
+    dateModified: "2026-06-02",
+    readingTimeMin: 8,
+    wordCount: 1500,
+    image: "/images/blog/maize-nakuru-county-guide.jpg",
+    imageAlt: "Maize field at flowering stage in Nakuru County, Rift Valley Kenya",
+    category: "County Farming Guides",
+    county: "nakuru",
+    crop: "maize",
+    ctaText: "Optimize Your Yield: Get a tailored fertilizer budget instantly. Use the ShambaIQ Precision Tool for Nakuru Maize.",
+    ctaLink: "/app?county=nakuru&crop=maize",
+    section: "County Farming Guides",
+    calendarDay: "Day 1–3",
+  },
+
+  {
+    slug: "cabbage-farming-kiambu-highland-soils",
     title: "Cabbage Farming in Kiambu: A High-Yield Guide for Highland Soils",
     metaTitle: "Cabbage Farming Kiambu — Soil, Lime, Spacing Guide | ShambaIQ",
     metaDescription:
@@ -166,29 +191,32 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "nakuru-vs-uasin-gishu-best-county-wheat",
-    title: "Nakuru vs Uasin Gishu: Which County Is Best for Wheat?",
-    metaTitle: "Nakuru vs Uasin Gishu Wheat Farming Comparison | ShambaIQ",
+    slug: "wheat-farming-uasin-gishu-yield-guide",
+    title: "Uasin Gishu Wheat Guide: Data-Driven Yield Maximization",
+    metaTitle: "Wheat Farming Uasin Gishu — Fertilizer, Soil Data | ShambaIQ",
     metaDescription:
-      "Data-driven comparison of Nakuru and Uasin Gishu for wheat production. Soil pH, phosphorus levels, rainfall reliability, and yield potential — side by side from precision soil mapping data.",
-    focusKeyword: "best county wheat farming Kenya",
-    secondaryKeywords: ["Nakuru wheat farming", "Uasin Gishu wheat soil", "wheat yield comparison Kenya", "Rift Valley wheat"],
-    searchIntent: "Informational & Commercial",
-    datePublished: "2026-07-14",
-    dateModified: "2026-07-14",
-    readingTimeMin: 7,
-    wordCount: 1400,
-    image: "/images/blog/nakuru-vs-uasin-gishu-wheat.jpg",
-    imageAlt: "Side by side soil profile comparison of Nakuru loam and Uasin Gishu clay loam for wheat farming",
+      "Uasin Gishu wheat farming: clay loams in Eldoret and Moiben with low phosphorus. High-P planting compound recommendations, local stockist pricing, and yield targets.",
+    focusKeyword: "wheat farming Uasin Gishu",
+    secondaryKeywords: ["wheat fertilizer schedule Kenya", "best soil for wheat Kenya", "Uasin Gishu agricultural extension", "phosphorus deficiency wheat"],
+    kiswahiliKeywords: ["kilimo cha ngano Uasin Gishu", "mbolea ya ngano Kenya"],
+    searchIntent: "Commercial & Transactional",
+    datePublished: "2026-06-09",
+    dateModified: "2026-06-09",
+    readingTimeMin: 8,
+    wordCount: 1500,
+    image: "/images/blog/wheat-farming-uasin-gishu-eldoret.jpg",
+    imageAlt: "Golden wheat crop ready for harvest on Uasin Gishu plateau near Eldoret Kenya",
     category: "County Farming Guides",
-    ctaText: "Compare your county's wheat suitability score against neighbouring counties.",
-    ctaLink: "/app?crop=wheat",
+    county: "uasin-gishu",
+    crop: "wheat",
+    ctaText: "Max out Wheat Outputs: Get the precise fertilizer bags you need at ShambaIQ Wheat Fertilizer Optimizer.",
+    ctaLink: "/app?county=uasin-gishu&crop=wheat",
     section: "County Farming Guides",
-    calendarDay: "Month 2",
+    calendarDay: "Day 7–9",
   },
 
   {
-    slug: "tomato-farming-guide-kiambu-kirinyaga",
+    slug: "tomato-farming-kirinyaga-mwea-soils",
     title: "Tomato Farming in Kirinyaga: Maximizing Yields in Mwea's Black Cotton Soils",
     metaTitle: "Tomato Farming Kirinyaga — Mwea Soil, Calcium Fix | ShambaIQ",
     metaDescription:
@@ -213,7 +241,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "onion-farming-kajiado",
+    slug: "onion-farming-kajiado-dryland-guide",
     title: "High-Yield Onion Farming in Kajiado: A Drylands Goldmine",
     metaTitle: "Onion Farming Kajiado — Alkaline Soil, Drip Irrigation | ShambaIQ",
     metaDescription:
@@ -238,7 +266,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "sweet-potato-farming-homa-bay",
+    slug: "sweet-potato-farming-homa-bay-guide",
     title: "Sweet Potato Farming in Homa Bay: The Complete Lake Victoria Shore Guide",
     metaTitle: "Sweet Potato Farming Homa Bay — Soil, Fertilizer, Yields | ShambaIQ",
     metaDescription:
@@ -267,12 +295,12 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "meru-nyeri-potato-farming-guide",
-    title: "Potato Farming in Meru & Nyeri: Shangi Guide & Soil Science",
-    metaTitle: "Potato Farming in Meru & Nyeri — Shangi Guide | ShambaIQ",
+    slug: "acidic-soil-treatment-meru-nyeri",
+    title: "Acidic Soil Treatment: Restoring Crop Vitality in Meru and Nyeri",
+    metaTitle: "Acidic Soil Meru Nyeri — Lime Treatment, pH Fix | ShambaIQ",
     metaDescription:
       "Meru and Nyeri have volcanic soils below pH 5.0 that lock out NPK. Dolomitic vs calcitic lime comparison, phosphorus fixation chemistry explained, and lime application calculator.",
-    focusKeyword: "potato farming in Meru and Nyeri",
+    focusKeyword: "acidic soil treatment Kenya",
     secondaryKeywords: ["agricultural lime application Kenya", "soil pH Meru Nyeri", "Mavuno fertilizer soil correction", "phosphorus fixation acidic soil Kenya"],
     kiswahiliKeywords: ["udongo wa tindikali Meru", "chokaa ya kilimo Kenya"],
     searchIntent: "Informational",
@@ -291,7 +319,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "organic-soil-enrichment-kenya-soil-carbon",
+    slug: "organic-soil-restoration-machakos",
     title: "Building Soil Organic Matter in Machakos: A Dryland Restoration Guide",
     metaTitle: "Organic Farming Machakos — Soil Carbon, Cover Crops | ShambaIQ",
     metaDescription:
@@ -315,7 +343,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "dairy-farming-nandi",
+    slug: "dairy-fodder-farming-nandi-county",
     title: "Dairy Farming in Nandi: Integrating Fodder Crops and Organic Manures",
     metaTitle: "Dairy Farming Nandi — Fodder Crops, Silage, Manure | ShambaIQ",
     metaDescription:
@@ -340,7 +368,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "bean-farming-kakamega",
+    slug: "bean-farming-kakamega-double-harvest",
     title: "Precision Bean Cultivation in Kakamega: Double Your Harvests",
     metaTitle: "Bean Farming Kakamega — Rhizobium, Soil, Yields | ShambaIQ",
     metaDescription:
@@ -364,8 +392,10 @@ export const ALL_POSTS: BlogPost[] = [
     calendarDay: "Day 28–30",
   },
 
+  // ── MONTH 2 — Data Reports & County Comparisons [STR] ──────────────────────
+
   {
-    slug: "kakamega-soil-mavuno-not-dap",
+    slug: "kakamega-soil-western-kenya-mavuno",
     title: "Kakamega Soil: Why Western Kenya Needs Mavuno, Not DAP",
     metaTitle: "Kakamega Soil Analysis — Mavuno vs DAP Western Kenya | ShambaIQ",
     metaDescription:
@@ -411,7 +441,29 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "how-much-fertilizer-per-acre-calculator",
+    slug: "nakuru-vs-uasin-gishu-best-county-wheat",
+    title: "Nakuru vs Uasin Gishu: Which County Is Best for Wheat?",
+    metaTitle: "Nakuru vs Uasin Gishu Wheat Farming Comparison | ShambaIQ",
+    metaDescription:
+      "Data-driven comparison of Nakuru and Uasin Gishu for wheat production. Soil pH, phosphorus levels, rainfall reliability, and yield potential — side by side from precision soil mapping data.",
+    focusKeyword: "best county wheat farming Kenya",
+    secondaryKeywords: ["Nakuru wheat farming", "Uasin Gishu wheat soil", "wheat yield comparison Kenya", "Rift Valley wheat"],
+    searchIntent: "Informational & Commercial",
+    datePublished: "2026-07-14",
+    dateModified: "2026-07-14",
+    readingTimeMin: 7,
+    wordCount: 1400,
+    image: "/images/blog/nakuru-vs-uasin-gishu-wheat.jpg",
+    imageAlt: "Side by side soil profile comparison of Nakuru loam and Uasin Gishu clay loam for wheat farming",
+    category: "County Farming Guides",
+    ctaText: "Compare your county's wheat suitability score against neighbouring counties.",
+    ctaLink: "/app?crop=wheat",
+    section: "County Farming Guides",
+    calendarDay: "Month 2",
+  },
+
+  {
+    slug: "how-much-fertilizer-per-acre-kenya-calculator",
     title: "How Much Fertilizer Per Acre? A Kenya Crop-by-Crop Calculator",
     metaTitle: "Fertilizer Per Acre Kenya — 25 Crops Calculator | ShambaIQ",
     metaDescription:
@@ -431,6 +483,78 @@ export const ALL_POSTS: BlogPost[] = [
     ctaLink: "/app",
     section: "Fertilizer Guides",
     calendarDay: "Month 2",
+  },
+
+  // ── MONTH 3 — Seasonal & Problem-Based [STR + NEW] ─────────────────────────
+
+  {
+    slug: "long-rains-2026-what-to-plant-kenya",
+    title: "Long Rains 2026: What to Plant This Season in Your County",
+    metaTitle: "What to Plant Long Rains 2026 Kenya — County Guide | ShambaIQ",
+    metaDescription:
+      "County-by-county planting guide for Kenya's 2026 long rains season. Optimal crops by soil type, agroecological zone, and rainfall forecast. Updated with climate data.",
+    focusKeyword: "what to plant long rains 2026 Kenya",
+    secondaryKeywords: ["long rains planting calendar Kenya", "when to plant maize Kenya 2026", "March April planting Kenya", "seasonal farming guide Kenya"],
+    kiswahiliKeywords: ["kupanda wakati wa mvua Kenya", "kalenda ya kilimo Kenya 2026"],
+    searchIntent: "Informational",
+    datePublished: "2026-02-20",
+    dateModified: "2026-02-20",
+    readingTimeMin: 9,
+    wordCount: 1700,
+    image: "/images/blog/long-rains-2026-planting-kenya.jpg",
+    imageAlt: "Kenyan farmer preparing seedbed ahead of 2026 long rains season March planting",
+    category: "Seasonal Guides",
+    ctaText: "Get a season-specific planting and fertilizer plan built from your county's soil data.",
+    ctaLink: "/app",
+    section: "Seasonal Guides",
+    calendarDay: "Month 3",
+  },
+
+  {
+    slug: "yellow-maize-leaves-soil-deficiency-kenya",
+    title: "Yellow Maize Leaves? Here's Exactly What Your Soil Is Missing",
+    metaTitle: "Yellow Maize Leaves Kenya — Soil Deficiency Diagnosis | ShambaIQ",
+    metaDescription:
+      "Yellow maize leaves can mean nitrogen, iron, zinc, or magnesium deficiency — each needs a different fix. Diagnose by leaf pattern, confirm with soil data, fix with the right fertilizer.",
+    focusKeyword: "yellow maize leaves Kenya",
+    secondaryKeywords: ["maize nitrogen deficiency Kenya", "yellowing maize leaves causes", "how to fix yellow maize", "iron deficiency maize Kenya"],
+    kiswahiliKeywords: ["majani ya mahindi manjano", "tatizo la mahindi Kenya"],
+    searchIntent: "Informational",
+    datePublished: "2026-07-28",
+    dateModified: "2026-07-28",
+    readingTimeMin: 7,
+    wordCount: 1300,
+    image: "/images/blog/yellow-maize-leaves-nitrogen-deficiency.jpg",
+    imageAlt: "Maize plant with yellow leaves showing nitrogen deficiency in Kenyan farm",
+    category: "Crop Health",
+    crop: "maize",
+    ctaText: "Check if your county's soil has the deficiency causing yellow leaves — get a fix plan.",
+    ctaLink: "/app?crop=maize",
+    section: "Crop Health",
+    calendarDay: "Month 3",
+  },
+
+  {
+    slug: "cheapest-way-fix-acidic-soil-kenya",
+    title: "The Cheapest Way to Fix Acidic Soil in Kenya",
+    metaTitle: "Cheap Acidic Soil Fix Kenya — Lime Cost Guide | ShambaIQ",
+    metaDescription:
+      "Agricultural lime vs dolomite vs wood ash: which is cheapest per pH unit gained in Kenya? Real prices, application rates, and which 22 counties need it most. Data-driven guide.",
+    focusKeyword: "cheapest way fix acidic soil Kenya",
+    secondaryKeywords: ["wood ash soil pH Kenya", "agricultural lime price Kenya", "dolomite vs calcitic lime Kenya", "cheap lime alternative Kenya"],
+    kiswahiliKeywords: ["njia ya bei rahisi ya kurekebisha udongo", "chokaa ya bei nafuu Kenya"],
+    searchIntent: "Informational",
+    datePublished: "2026-08-04",
+    dateModified: "2026-08-04",
+    readingTimeMin: 8,
+    wordCount: 1500,
+    image: "/images/blog/cheap-acidic-soil-fix-kenya-lime.jpg",
+    imageAlt: "Agricultural lime bags stacked at Kenyan agrovet showing price per 50kg bag",
+    category: "Soil Health",
+    ctaText: "Calculate exactly how much lime your farm needs and the total cost at current market prices.",
+    ctaLink: "/app",
+    section: "Soil Health",
+    calendarDay: "Month 3",
   },
 ];
 

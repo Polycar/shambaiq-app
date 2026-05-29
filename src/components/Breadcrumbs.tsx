@@ -1,47 +1,87 @@
 import Link from "next/link";
+import JsonLd from "./JsonLd";
 
-interface Crumb {
-  label: string;
+interface BreadcrumbItem {
+  label?: string;
+  name?: string;
   href?: string;
+  url?: string;
 }
 
-export default function Breadcrumbs({ items }: { items: Crumb[] }) {
+interface BreadcrumbsProps {
+  items: BreadcrumbItem[];
+}
+
+export default function Breadcrumbs({ items }: BreadcrumbsProps) {
+  // Normalize each crumb so both name/url and label/href are supported
+  const normalizedItems = items.map(item => ({
+    name: item.name || item.label || "",
+    url: item.url || item.href || "",
+  }));
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.label,
-      ...(item.href ? { item: `https://shambaiq.com${item.href}` } : {}),
-    })),
+    itemListElement: normalizedItems.map((item, i) => {
+      const element: any = {
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+      };
+      if (item.url) {
+        element.item = item.url.startsWith("http")
+          ? item.url
+          : `https://shambaiq.com${item.url}`;
+      }
+      return element;
+    }),
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <nav aria-label="Breadcrumb" className="text-sm text-soil-400 mb-6">
-        <ol className="flex flex-wrap items-center gap-1.5">
-          {items.map((item, i) => (
-            <li key={i} className="flex items-center gap-1.5">
-              {i > 0 && <span className="text-cream-400">›</span>}
-              {item.href ? (
-                <Link
-                  href={item.href}
-                  className="hover:text-gold-600 transition-colors"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <span className="text-forest-700 font-medium">
-                  {item.label}
-                </span>
-              )}
-            </li>
-          ))}
+      <JsonLd schemas={jsonLd} />
+      <nav aria-label="breadcrumb" className="text-sm text-soil-400 mb-6">
+        <ol
+          itemScope
+          itemType="https://schema.org/BreadcrumbList"
+          className="flex flex-wrap items-center gap-1.5"
+        >
+          {normalizedItems.map((item, i) => {
+            const isLast = i === normalizedItems.length - 1;
+            return (
+              <li
+                key={i}
+                itemProp="itemListElement"
+                itemScope
+                itemType="https://schema.org/ListItem"
+                className="flex items-center gap-1.5"
+              >
+                {i > 0 && (
+                  <span aria-hidden="true" className="text-cream-400 select-none">
+                    ›
+                  </span>
+                )}
+                {isLast || !item.url ? (
+                  <span
+                    itemProp="name"
+                    aria-current="page"
+                    className="text-forest-700 font-medium truncate max-w-[200px]"
+                  >
+                    {item.name}
+                  </span>
+                ) : (
+                  <Link
+                    href={item.url}
+                    itemProp="item"
+                    className="hover:text-gold-600 transition-colors duration-150"
+                  >
+                    <span itemProp="name">{item.name}</span>
+                  </Link>
+                )}
+                <meta itemProp="position" content={String(i + 1)} />
+              </li>
+            );
+          })}
         </ol>
       </nav>
     </>

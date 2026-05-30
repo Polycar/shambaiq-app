@@ -7,7 +7,7 @@ Kale (Sukuma),5.5,7.0,high,medium,medium,36,6000,Clay Loam
 Wheat,6.0,7.5,high,high,medium,115,1200,Clay
 Sorghum,5.0,7.5,low,low,low,80,1200,Clay
 Avocado,5.0,6.5,medium,medium,high,50,3000,Sandy Loam
-Tea,4.5,6.0,high,medium,medium,25,3000,Clay
+Tea,4.5,5.5,high,medium,medium,25,3000,Clay
 Finger Millet,5.0,7.0,low,low,low,100,600,Sandy
 Cassava,5.0,8.0,low,low,medium,15,5000,Sandy
 Sweet Potato,5.0,7.0,low,medium,high,25,4000,Sandy Loam
@@ -24,3 +24,20 @@ Pigeon Peas,5.0,7.0,low,low,low,90,600,Sandy
 Rice (Upland),5.0,7.0,high,medium,medium,120,2000,Clay
 Sisal,5.5,8.5,low,low,low,100,1000,Sandy
 Pyrethrum,5.5,6.5,medium,high,medium,250,500,Loam
+Watermelon,6.0,7.5,medium,high,high,30,8000,Sandy Loam
+Green Grams,5.5,7.0,low,medium,low,100,500,Sandy
+Sugarcane,5.5,7.5,high,high,high,5,30000,Clay Loam
+Capsicum,6.0,7.0,high,high,high,120,6000,Loam
+Chilies,5.5,6.8,medium,medium,high,150,4000,Loam
+Dhania,6.0,7.0,high,low,medium,40,3000,Sandy Loam
+Garlic,6.0,7.0,high,high,high,250,4000,Sandy Loam
+Bananas,5.5,7.0,high,medium,high,15,8000,Loam
+Cashew Nuts,5.0,7.0,low,medium,medium,100,1000,Sandy
+Coconuts,5.5,8.0,medium,medium,high,30,4000,Sandy
+Lucerne,6.2,7.5,low,high,medium,20,8000,Loam
+Snow Peas,6.0,7.0,low,high,medium,150,3000,Sandy Loam
+Arrowroots,5.5,7.0,high,high,high,60,6000,Clay
+Passion Fruit,6.0,7.0,high,high,high,100,5000,Loam
+Pixie Oranges,5.5,7.0,medium,medium,high,150,4000,Sandy Loam
+Pawpaw,6.0,7.0,high,high,high,50,8000,Sandy Loam
+Wambugu Apples,5.8,7.0,medium,high,medium,200,3000,Loam

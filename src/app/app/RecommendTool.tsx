@@ -268,6 +268,8 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [subcounty, setSubcounty] = useState("");
   const [ward, setWard] = useState("");
   const [crop, setCrop] = useState("");
+  const [cropSearch, setCropSearch] = useState("");
+  const [valErrors, setValErrors] = useState<{ county?: boolean; crop?: boolean }>({});
   const [companionCrop, setCompanionCrop] = useState("");
   const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>(["None"]);
   const fertilizer = useMemo(() => selectedFertilizers.join(" + "), [selectedFertilizers]);
@@ -278,6 +280,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [labN, setLabN] = useState(1.0);
   const [labP, setLabP] = useState(20.0);
   const [labK, setLabK] = useState(150.0);
+
+  // Filter crops based on search
+  const filteredCrops = useMemo(() => {
+    if (!cropSearch) return crops;
+    return crops.filter(c => c.crop.toLowerCase().includes(cropSearch.toLowerCase()));
+  }, [crops, cropSearch]);
 
   // Result state
   const [result, setResult] = useState<RecommendResult | null>(null);
@@ -419,18 +427,19 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   } | null>(null);
 
   const handleSubmit = useCallback(async () => {
-    if (locMode === "gps" && !gpsLat) {
-      setError(lang === "en" ? "Capture GPS first" : "Pata GPS kwanza");
-      return;
-    }
+    let errors: { county?: boolean; crop?: boolean } = {};
     if (locMode === "region" && !county) {
-      setError(t("form_select_first", lang));
-      return;
+      errors.county = true;
     }
     if (!crop) {
-      setError(lang === "en" ? "Select a crop" : "Chagua zao");
+      errors.crop = true;
+    }
+    if (Object.keys(errors).length > 0) {
+      setValErrors(errors);
+      setError(lang === "en" ? "Please fill in all highlighted fields" : "Tafadhali jaza maeneo yote yaliyosisitizwa");
       return;
     }
+    setValErrors({});
     setLoading(true);
     const startTime = Date.now();
     setError("");
@@ -526,15 +535,15 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
     if (!result) return "";
     const tl = result.timeline;
     const lines = [
-      `🌱 ShambaIQ (${result.county})`,
-      `Crop: ${result.crop}`,
-      `Score: ${result.health_score}`,
+      `ShambaIQ Precision Report: ${result.county}`,
+      `Primary Crop: ${result.crop}`,
+      `Soil Health Score: ${result.health_score}`,
       "",
-      ...result.budget.breakdown.map((l) => `🛒 ${l}`),
-      `Budget: KES ${result.budget.total_budget.toLocaleString()}`,
+      ...result.budget.breakdown.map((l) => `${clean(l)}`),
+      `Total Budget Estimate: KES ${result.budget.total_budget.toLocaleString()}`,
     ];
     if (tl) {
-      lines.push("", `M1: ${tl.month_1}`, `M2: ${tl.month_2}`, `M3: ${tl.month_3}`);
+      lines.push("", `Month 1: ${clean(tl.month_1)}`, `Month 2: ${clean(tl.month_2)}`, `Month 3: ${clean(tl.month_3)}`);
     }
     return `https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`;
   }, [result]);
@@ -651,8 +660,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     setSubcounty("");
                     setWard("");
                     setResult(null);
+                    setValErrors(prev => ({ ...prev, county: false }));
                   }}
-                  className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
+                  className={`w-full rounded-xl border bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-all ${
+                    valErrors.county ? "border-red-500 ring-1 ring-red-500" : "border-cream-300"
+                  }`}
                 >
                   <option value="">{t("form_select_county", lang)}</option>
                   {counties.map((c) => (
@@ -726,69 +738,100 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
           {/* Crop Selection (Premium Vertical Scroll Ribbon) */}
           <div>
-            <label className="block text-sm font-medium text-forest-600 mb-1">
-              {t("form_crop", lang)}
-            </label>
-            <div className="flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border border-cream-300 rounded-xl bg-cream-50/50">
-              {crops.map((c) => {
-                const isSelected = crop === c.crop;
-                return (
-                  <button
-                    key={c.slug}
-                    type="button"
-                    onClick={() => {
-                      setCrop(c.crop);
-                      const u = CROP_UNITS[c.crop];
-                      setYieldVal(u ? u.def : null);
-                      if (companionCrop === c.crop) setCompanionCrop("");
-                    }}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                      isSelected
-                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
-                        : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
-                    }`}
-                  >
-                    {c.crop}
-                  </button>
-                );
-              })}
+            <div className="flex justify-between items-center mb-1">
+              <label className="block text-sm font-medium text-forest-600">
+                {t("form_crop", lang)} {crop && <span className="text-xs bg-forest-100 text-forest-700 px-2 py-0.5 rounded-full font-bold ml-1">{crop}</span>}
+              </label>
+            </div>
+            <input
+              type="text"
+              placeholder={lang === "en" ? "Search crops..." : "Tafuta mazao..."}
+              value={cropSearch}
+              onChange={(e) => setCropSearch(e.target.value)}
+              className="w-full mb-1.5 rounded-lg border border-cream-300 bg-cream-50 px-2.5 py-1.5 text-xs text-forest-800 focus:border-forest-600 outline-none transition-colors"
+            />
+            <div className={`flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border rounded-xl bg-cream-50/50 transition-colors ${
+              valErrors.crop ? "border-red-500 ring-1 ring-red-500" : "border-cream-300"
+            }`}>
+              {filteredCrops.length > 0 ? (
+                filteredCrops.map((c) => {
+                  const isSelected = crop === c.crop;
+                  return (
+                    <button
+                      key={c.slug}
+                      type="button"
+                      onClick={() => {
+                        setCrop(c.crop);
+                        const u = CROP_UNITS[c.crop];
+                        setYieldVal(u ? u.def : null);
+                        setValErrors(prev => ({ ...prev, crop: false }));
+                        if (companionCrop === c.crop) setCompanionCrop("");
+                      }}
+                      className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center ${
+                        isSelected
+                          ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
+                          : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
+                      }`}
+                    >
+                      <span>{c.crop}</span>
+                      {isSelected && <span className="text-xs font-bold">✓</span>}
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="text-xs text-soil-400 p-4 text-center">
+                  {lang === "en" ? "No crops found" : "Hakuna mazao yaliyopatikana"}
+                </div>
+              )}
             </div>
           </div>
 
           {/* Companion Crop / Intercropping (Premium Vertical Scroll Ribbon) */}
           <div>
-            <label className="block text-sm font-medium text-forest-600 mb-1">
-              {lang === "en" ? "Companion Crop (Optional)" : "Zao la Pili (Kwa Hiari)"}
-            </label>
+            <div className="flex justify-between items-center mb-1">
+              <label className="block text-sm font-medium text-forest-600">
+                {lang === "en" ? "Companion Crop (Optional)" : "Zao la Pili (Kwa Hiari)"} {companionCrop && <span className="text-xs bg-forest-100 text-forest-700 px-2 py-0.5 rounded-full font-bold ml-1">{companionCrop}</span>}
+              </label>
+            </div>
             <div className="flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border border-cream-300 rounded-xl bg-cream-50/50">
-              <button
-                type="button"
-                onClick={() => setCompanionCrop("")}
-                className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                  companionCrop === ""
-                    ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
-                    : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
-                }`}
-              >
-                {lang === "en" ? "None / Pure Stand" : "Hakuna"}
-              </button>
-              {crops.filter(c => c.crop !== crop).map((c) => {
-                const isSelected = companionCrop === c.crop;
-                return (
+              {!crop ? (
+                <div className="text-xs text-soil-400 p-4 text-center">
+                  {lang === "en" ? "Please select a primary crop first" : "Tafadhali chagua zao kuu kwanza"}
+                </div>
+              ) : (
+                <>
                   <button
-                    key={c.slug}
                     type="button"
-                    onClick={() => setCompanionCrop(c.crop)}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                      isSelected
+                    onClick={() => setCompanionCrop("")}
+                    className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center ${
+                      companionCrop === ""
                         ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
                         : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
                     }`}
                   >
-                    {c.crop}
+                    <span>{lang === "en" ? "None / Pure Stand" : "Hakuna"}</span>
+                    {companionCrop === "" && <span className="text-xs font-bold">✓</span>}
                   </button>
-                );
-              })}
+                  {crops.filter(c => c.crop !== crop).map((c) => {
+                    const isSelected = companionCrop === c.crop;
+                    return (
+                      <button
+                        key={c.slug}
+                        type="button"
+                        onClick={() => setCompanionCrop(c.crop)}
+                        className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center ${
+                          isSelected
+                            ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
+                            : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
+                        }`}
+                      >
+                        <span>{c.crop}</span>
+                        {isSelected && <span className="text-xs font-bold">✓</span>}
+                      </button>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </div>
 
@@ -1072,11 +1115,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   {result.intercrop_audit.notes.map((note: string, idx: number) => {
                     const isReject = note.includes("Conflict") || note.includes("Inhibition") || note.includes("Toxicity") || note.includes("Veto") || note.includes("Mzozo") || note.includes("Uzuiaji") || note.includes("Sumu");
                     const isWarning = note.includes("Warning") || note.includes("Ilani");
+                    const isAlternative = note.includes("instead") || note.includes("Alternatives") || note.includes("badala yake") || note.includes("Mbadala");
                     return (
-                      <div key={idx} className={`rounded-xl px-3 py-2.5 text-xs flex items-start gap-2 ${
-                        isReject ? "bg-red-50 text-red-800 border border-red-100" : 
-                        isWarning ? "bg-amber-50 text-amber-800 border border-amber-100" : 
-                        "bg-green-50 text-green-800 border border-green-100"
+                      <div key={idx} className={`rounded-xl px-3 py-2.5 text-xs flex items-start gap-2 border ${
+                        isAlternative ? "bg-blue-50 text-blue-800 border-blue-200 font-medium" :
+                        isReject ? "bg-red-50 text-red-800 border-red-100" : 
+                        isWarning ? "bg-amber-50 text-amber-800 border-amber-100" : 
+                        "bg-green-50 text-green-800 border-green-100"
                       }`}>
                         <span className="leading-relaxed">{note}</span>
                       </div>

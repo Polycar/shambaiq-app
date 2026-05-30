@@ -247,6 +247,9 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [agrLoading, setAgrLoading] = useState(false);
   const [agrShown, setAgrShown] = useState(false);
 
+  // Companion crop for intercrop analysis
+  const [companionCrop, setCompanionCrop] = useState("");
+
   // Crop Matches state
   const [cropMatches, setCropMatches] = useState<CropMatch[] | null>(null);
 
@@ -423,6 +426,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         overrides,
         price_mode: priceMode,
         yield_target: yieldTarget,
+        companion_crop: companionCrop || undefined,
       });
       setResult(res);
       saveSoilReport(res);
@@ -474,7 +478,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
       }
       setLoading(false);
     }
-  }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
+  }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties, companionCrop]);
 
   // WhatsApp share
   const whatsappUrl = useMemo(() => {
@@ -718,6 +722,27 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               </select>
             </div>
           </div>
+
+          {/* Companion Crop (Intercrop Analysis) */}
+          {crop && (
+            <div>
+              <label htmlFor="companion-crop-select" className="block text-sm font-medium text-forest-600 mb-1">
+                🌿 {lang === "en" ? "Intercrop Companion" : "Zao la Kuchanganya"}{" "}
+                <span className="text-xs font-normal text-gray-400">({lang === "en" ? "optional" : "hiari"})</span>
+              </label>
+              <select
+                id="companion-crop-select"
+                value={companionCrop}
+                onChange={(e) => setCompanionCrop(e.target.value)}
+                className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
+              >
+                <option value="">{lang === "en" ? "— None (Pure Stand)" : "— Bila Mchanganyiko"}</option>
+                {crops.filter((c) => c.crop !== crop).map((c) => (
+                  <option key={c.slug} value={c.crop}>{c.crop}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Acres + Price Mode */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1029,6 +1054,173 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     </tbody>
                   </table>
                 </div>
+              </div>
+            )}
+
+            {/* Intercrop Analysis */}
+            {result.intercrop_audit && (
+              <div className="rounded-2xl border bg-white p-5">
+                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
+                  🌿 {lang === "en" ? "Intercrop Analysis" : "Uchambuzi wa Kilimo cha Pamoja"}
+                </h3>
+
+                {/* Status badge */}
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-3 ${
+                  result.intercrop_audit.compatible
+                    ? result.intercrop_audit.status === "WARNING"
+                      ? "bg-amber-100 text-amber-700 border border-amber-200"
+                      : "bg-green-100 text-green-700 border border-green-200"
+                    : "bg-red-100 text-red-700 border border-red-200"
+                }`}>
+                  {result.intercrop_audit.compatible
+                    ? result.intercrop_audit.status === "WARNING" ? "⚠️" : "✅"
+                    : "❌"}
+                  {result.intercrop_audit.status}
+                </div>
+
+                {/* Notes */}
+                {result.intercrop_audit.notes.length > 0 && (
+                  <div className="space-y-1.5 mb-4">
+                    {result.intercrop_audit.notes.map((note, i) => {
+                      const isCaution = note.toLowerCase().includes("caution") || note.toLowerCase().includes("warning") || note.toLowerCase().includes("ilani") || note.toLowerCase().includes("tahadhari");
+                      const isGood = note.toLowerCase().includes("great") || note.toLowerCase().includes("bonus") || note.toLowerCase().includes("proven") || note.toLowerCase().includes("nzuri") || note.toLowerCase().includes("faida") || note.toLowerCase().includes("bure");
+                      const bg = isCaution ? "bg-amber-50 border-amber-200 text-amber-800" : isGood ? "bg-green-50 border-green-200 text-green-800" : "bg-gray-50 border-gray-200 text-gray-700";
+                      return (
+                        <div key={i} className={`rounded-lg border px-3 py-2 text-xs leading-relaxed ${bg}`}>
+                          {note}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Soil Fit per crop */}
+                {result.intercrop_audit.soil_fit && Object.keys(result.intercrop_audit.soil_fit).length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                      {lang === "en" ? "Soil Suitability" : "Mwafaka wa Udongo"}
+                    </p>
+                    <div className="space-y-2">
+                      {Object.entries(result.intercrop_audit.soil_fit).map(([cropName, fit]) => (
+                        <div key={cropName}>
+                          <div className="flex justify-between text-xs font-medium mb-1">
+                            <span className="font-semibold text-gray-700">{cropName}</span>
+                            <span className={fit.score >= 75 ? "text-green-700" : fit.score >= 50 ? "text-amber-600" : "text-red-600"}>
+                              {fit.score}/100 — {fit.verdict.split("—")[0].trim()}
+                            </span>
+                          </div>
+                          <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all"
+                              style={{
+                                width: `${fit.score}%`,
+                                background: fit.score >= 75 ? "#16a34a" : fit.score >= 50 ? "#f59e0b" : "#ef4444",
+                              }}
+                            />
+                          </div>
+                          {fit.issues.length > 0 && (
+                            <p className="text-[10px] text-red-600 mt-0.5">{fit.issues.join(" · ")}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* N-Fixation savings */}
+                {result.intercrop_audit.n_fixation && (
+                  <div className="rounded-xl bg-green-50 border border-green-200 p-3 mb-4">
+                    <p className="text-xs font-bold text-green-700 mb-1.5">
+                      🌱 {lang === "en" ? "Biological N-Fixation Benefit" : "Faida ya Nitrojeni ya Kiasili"}
+                    </p>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                      <span className="text-gray-600">{lang === "en" ? "N fixed per acre" : "N inayonaswa/ekari"}</span>
+                      <span className="font-semibold text-gray-800">{result.intercrop_audit.n_fixation.fixed_kg_per_acre} kg</span>
+                      <span className="text-gray-600">{lang === "en" ? "CAN bags saved/acre" : "Mifuko ya CAN iliyookolewa/ekari"}</span>
+                      <span className="font-semibold text-gray-800">{result.intercrop_audit.n_fixation.can_bags_saved_per_acre} bags</span>
+                      <span className="text-gray-600">{lang === "en" ? "KES saved per acre" : "KES zilizookolewa/ekari"}</span>
+                      <span className="font-bold text-green-700">KES {result.intercrop_audit.n_fixation.kes_saved_per_acre.toLocaleString()}</span>
+                      {acres !== 1 && (
+                        <>
+                          <span className="text-gray-600">{lang === "en" ? `KES saved (${acres} acres)` : `KES zilizookolewa (ekari ${acres})`}</span>
+                          <span className="font-bold text-green-700">KES {result.intercrop_audit.n_fixation.kes_saved_total.toLocaleString()}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Planting Layout */}
+                {result.intercrop_audit.layout && (
+                  <div className="mb-4">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                      {lang === "en" ? "Planting Layout" : "Mpangilio wa Upandaji"}
+                    </p>
+                    <div className="space-y-2 text-xs text-gray-700">
+                      <div className="rounded-lg border border-blue-100 bg-blue-50 px-3 py-2">
+                        <span className="font-semibold text-blue-700">{lang === "en" ? "Arrangement: " : "Mpangilio: "}</span>
+                        {result.intercrop_audit.layout.arrangement}
+                      </div>
+                      <div className="rounded-lg border border-amber-100 bg-amber-50 px-3 py-2">
+                        <span className="font-semibold text-amber-700">{lang === "en" ? "Timing: " : "Wakati: "}</span>
+                        {result.intercrop_audit.layout.timing}
+                      </div>
+                      <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2">
+                        <span className="font-semibold text-gray-600">{lang === "en" ? "Spacing: " : "Nafasi: "}</span>
+                        {result.intercrop_audit.layout.spacing}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Income comparison */}
+                {result.intercrop_audit.economics && (
+                  <div>
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                      {lang === "en" ? "Income Comparison" : "Ulinganisho wa Mapato"}
+                    </p>
+                    <div className="rounded-xl border border-gray-100 overflow-hidden mb-2">
+                      <div className="grid grid-cols-3 bg-gray-50 text-[10px] font-bold text-gray-500 uppercase tracking-wider px-3 py-1.5">
+                        <span>{lang === "en" ? "Crop" : "Zao"}</span>
+                        <span className="text-center">{lang === "en" ? "Monocrop" : "Kilimo Kimoja"}</span>
+                        <span className="text-right">{lang === "en" ? "Intercrop" : "Kilimo cha Pamoja"}</span>
+                      </div>
+                      {Object.entries(result.intercrop_audit.economics.monocrop_income).map(([cropName, monoIncome]) => {
+                        const ler = result.intercrop_audit!.economics!.ler_estimate;
+                        const totalIntercrop = result.intercrop_audit!.economics!.intercrop_income_estimate;
+                        const monoTotal = Object.values(result.intercrop_audit!.economics!.monocrop_income).reduce((a, b) => a + b, 0);
+                        const cropShare = monoTotal > 0 ? monoIncome / monoTotal : 0.5;
+                        const myIntercropShare = Math.round(totalIntercrop * cropShare);
+                        return (
+                          <div key={cropName} className="grid grid-cols-3 px-3 py-2 border-t border-gray-100 text-xs">
+                            <span className="font-medium text-gray-700">{cropName}</span>
+                            <span className="text-center text-gray-600">KES {monoIncome.toLocaleString()}</span>
+                            <span className="text-right font-semibold text-green-700">KES {myIntercropShare.toLocaleString()}</span>
+                          </div>
+                        );
+                      })}
+                      <div className="grid grid-cols-3 px-3 py-2 border-t border-gray-200 bg-green-50 text-xs font-bold">
+                        <span className="text-gray-700">{lang === "en" ? "Total" : "Jumla"}</span>
+                        <span className="text-center text-gray-600">
+                          KES {Math.max(...Object.values(result.intercrop_audit.economics.monocrop_income)).toLocaleString()}
+                          <span className="font-normal text-gray-400"> (best)</span>
+                        </span>
+                        <span className="text-right text-green-700">KES {result.intercrop_audit.economics.intercrop_income_estimate.toLocaleString()}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className={`px-2 py-0.5 rounded-full font-bold ${
+                        result.intercrop_audit.economics.advantage_pct > 0
+                          ? "bg-green-100 text-green-700"
+                          : "bg-amber-100 text-amber-700"
+                      }`}>
+                        {result.intercrop_audit.economics.advantage_pct > 0 ? "+" : ""}
+                        {result.intercrop_audit.economics.advantage_pct.toFixed(1)}%
+                      </span>
+                      <span className="text-gray-500">LER {result.intercrop_audit.economics.ler_estimate.toFixed(1)} · {result.intercrop_audit.economics.note}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

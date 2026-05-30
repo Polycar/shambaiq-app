@@ -7,6 +7,9 @@ import {
   getCountyBySlug,
   getCropBySlug,
   scoreCropForCounty,
+  N_THRESHOLDS,
+  P_THRESHOLDS,
+  K_THRESHOLDS,
   getSeedsByCrop,
   getTopDressing,
   getPrices,
@@ -134,8 +137,8 @@ export default async function CountyCropPage({ params }: PageProps) {
                         }`}
                       >
                         {county.pH >= crop.ph_min && county.pH <= crop.ph_max
-                          ? "✓ OK"
-                          : "⚠ Adjust"}
+                          ? "OK"
+                          : "Adjust"}
                       </span>
                     </td>
                   </tr>
@@ -145,18 +148,24 @@ export default async function CountyCropPage({ params }: PageProps) {
                       val: county.nitrogen,
                       unit: "g/kg",
                       need: crop.n_need,
+                      min: N_THRESHOLDS[crop.n_need] ?? 0.8,
+                      ok: county.nitrogen >= (N_THRESHOLDS[crop.n_need] ?? 0.8),
                     },
                     {
                       label: "Phosphorus",
                       val: county.phosphorus,
                       unit: "mg/kg",
                       need: crop.p_need,
+                      min: P_THRESHOLDS[crop.p_need] ?? 12,
+                      ok: county.phosphorus >= (P_THRESHOLDS[crop.p_need] ?? 12),
                     },
                     {
                       label: "Potassium",
                       val: county.potassium,
                       unit: "mg/kg",
                       need: crop.k_need,
+                      min: K_THRESHOLDS[crop.k_need] ?? 150,
+                      ok: county.potassium >= (K_THRESHOLDS[crop.k_need] ?? 150),
                     },
                   ].map((row) => (
                     <tr key={row.label} className="border-b border-cream-200">
@@ -166,12 +175,18 @@ export default async function CountyCropPage({ params }: PageProps) {
                       <td className="py-3 text-right">
                         {row.val} {row.unit}
                       </td>
-                      <td className="py-3 text-right capitalize">
-                        {row.need}
+                      <td className="py-3 text-right capitalize text-soil-400 text-xs">
+                        min {row.min} {row.unit}
                       </td>
                       <td className="py-3 text-right">
-                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-cream-200 text-soil-500">
-                          {row.need}
+                        <span
+                          className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                            row.ok
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {row.ok ? "OK" : "Low"}
                         </span>
                       </td>
                     </tr>

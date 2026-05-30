@@ -257,39 +257,41 @@ export function getCountyCoords(): CountyCoord[] {
 }
 
 // ─── Scoring ───────────────────────────────────────
+
+// Shared nutrient thresholds — same qualitative levels used across scoring,
+// soil report Status column, and backend cap logic.
+export const N_THRESHOLDS: Record<string, number> = { high: 1.2, medium: 0.8, low: 0.5 };
+export const P_THRESHOLDS: Record<string, number> = { high: 20, medium: 12, low: 6 };
+export const K_THRESHOLDS: Record<string, number> = { high: 200, medium: 150, low: 100 };
+
 export function scoreCropForCounty(county: CountySoil, crop: CropEconomics): number {
+  // pH outside range — hard cap, not fixable in a season
+  const phOk = county.pH >= crop.ph_min && county.pH <= crop.ph_max;
+  if (!phOk) {
+    const gap = county.pH < crop.ph_min
+      ? crop.ph_min - county.pH
+      : county.pH - crop.ph_max;
+    return Math.max(0, Math.round((100 - Math.min(80, gap * 25)) * 0.94));
+  }
+
   let score = 100;
 
-  // pH
-  if (county.pH < crop.ph_min) {
-    score -= Math.min(40, (crop.ph_min - county.pH) * 20);
-  } else if (county.pH > crop.ph_max) {
-    score -= Math.min(40, (county.pH - crop.ph_max) * 20);
-  }
+  const nMin = N_THRESHOLDS[crop.n_need] ?? 0.8;
+  const pMin = P_THRESHOLDS[crop.p_need] ?? 12;
+  const kMin = K_THRESHOLDS[crop.k_need] ?? 150;
 
-  // Nitrogen
-  const nThresholds: Record<string, number> = { high: 1.2, medium: 0.8, low: 0.5 };
-  const nMin = nThresholds[crop.n_need] || 0.8;
-  if (county.nitrogen < nMin) {
-    score -= Math.min(20, ((nMin - county.nitrogen) / nMin) * 30);
-  }
+  if (county.nitrogen < nMin)   score -= Math.min(20, ((nMin - county.nitrogen) / nMin) * 30);
+  if (county.phosphorus < pMin) score -= Math.min(20, ((pMin - county.phosphorus) / pMin) * 25);
+  if (county.potassium < kMin)  score -= Math.min(20, ((kMin - county.potassium) / kMin) * 25);
 
-  // Phosphorus
-  const pThresholds: Record<string, number> = { high: 20, medium: 12, low: 6 };
-  const pMin = pThresholds[crop.p_need] || 12;
-  if (county.phosphorus < pMin) {
-    score -= Math.min(20, ((pMin - county.phosphorus) / pMin) * 25);
-  }
+  const nutrientGap = (county.nitrogen < nMin ? 1 : 0) +
+                      (county.phosphorus < pMin ? 1 : 0) +
+                      (county.potassium < kMin ? 1 : 0);
 
-  // Potassium
-  const kThresholds: Record<string, number> = { high: 200, medium: 150, low: 100 };
-  const kMin = kThresholds[crop.k_need] || 150;
-  if (county.potassium < kMin) {
-    score -= Math.min(20, ((kMin - county.potassium) / kMin) * 25);
-  }
-
-  // Scale score to a realistic maximum of 94% due to non-soil field factors
-  return Math.max(0, Math.round(score * 0.94));
+  // Cap at 55 when any nutrient is below minimum — consistent with
+  // the backend Alternative Crops scorer and SPAA soil_fit logic.
+  const raw = Math.min(score, nutrientGap > 0 ? 55 : 100);
+  return Math.max(0, Math.round(raw * 0.94));
 }
 
 export function getTopCropsForCounty(county: CountySoil, limit = 8): { crop: CropEconomics; score: number }[] {

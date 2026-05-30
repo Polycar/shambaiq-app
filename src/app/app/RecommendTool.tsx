@@ -209,6 +209,50 @@ function AgrovetCard({ dealer, isFirst, lang }: { dealer: Dealer; isFirst: boole
   );
 }
 
+const CROP_EMOJIS: Record<string, string> = {
+  "Maize": "🌽",
+  "Wheat": "🌾",
+  "Sorghum": "🌾",
+  "Millet": "🌾",
+  "Finger Millet": "🌾",
+  "Rice": "🍚",
+  "Rice (Lowland/Paddy)": "🌾",
+  "Beans": "🫘",
+  "Cowpeas": "🫘",
+  "Green Grams": "🫘",
+  "Pigeon Peas": "🫘",
+  "Soybeans": "🫘",
+  "Tomato": "🍅",
+  "Cabbage": "🥬",
+  "Kale (Sukuma Wiki)": "🥬",
+  "Onion": "🧅",
+  "Spinach": "🥬",
+  "Carrot": "🥕",
+  "Capsicum": "🫑",
+  "Chilies": "🌶️",
+  "Dhania": "🌿",
+  "Garlic": "🧄",
+  "Snow Peas": "🫛",
+  "Potato": "🥔",
+  "Sweet Potato": "🍠",
+  "Cassava": "🍠",
+  "Arrow Root": "🥔",
+  "Avocado": "🥑",
+  "Mango": "🥭",
+  "Banana": "🍌",
+  "Watermelon": "🍉",
+  "Passion Fruit": "🍇",
+  "Pixie Oranges": "🍊",
+  "Pawpaw": "🥭",
+  "Wambugu Apples": "🍎",
+  "Napier Grass": "🌱",
+  "Lucerne": "🌱",
+  "Sunflower": "🌻",
+  "Sugarcane": "🎋",
+  "Cashew Nuts": "🥜",
+  "Coconuts": "🥥"
+};
+
 // ─── Component ─────────────────────────────────────────────────
 export default function RecommendTool({ counties, wards, crops, countyCoords }: Props) {
   const [lang, setLang] = useState<Lang>("en");
@@ -225,6 +269,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [subcounty, setSubcounty] = useState("");
   const [ward, setWard] = useState("");
   const [crop, setCrop] = useState("");
+  const [companionCrop, setCompanionCrop] = useState("");
   const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>([FERTILIZER_OPTIONS[0]]);
   const fertilizer = useMemo(() => selectedFertilizers.join(" + "), [selectedFertilizers]);
   const [acres, setAcres] = useState(1);
@@ -424,6 +469,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         overrides,
         price_mode: priceMode,
         yield_target: yieldTarget,
+        companion_crop: companionCrop || undefined,
       });
       setResult(res);
       saveSoilReport(res);
@@ -475,7 +521,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
       }
       setLoading(false);
     }
-  }, [county, crop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
+  }, [county, crop, companionCrop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
 
   // WhatsApp share
   const whatsappUrl = useMemo(() => {
@@ -681,26 +727,78 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
           )}
 
-          {/* Crop Selection */}
+          {/* Crop Selection (Premium Scroll Ribbon) */}
           <div>
-            <label htmlFor="crop-select" className="block text-sm font-medium text-forest-600 mb-1">
+            <label className="block text-sm font-medium text-forest-600 mb-1">
               🌾 {t("form_crop", lang)}
             </label>
-            <select
-              id="crop-select"
-              value={crop}
-              onChange={(e) => {
-                setCrop(e.target.value);
-                const u = CROP_UNITS[e.target.value];
-                setYieldVal(u ? u.def : null);
-              }}
-              className="w-full rounded-xl border border-cream-300 bg-cream-50 px-3 py-2.5 text-sm text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 shadow-sm outline-none transition-colors"
-            >
-              <option value="">—</option>
-              {crops.map((c) => (
-                <option key={c.slug} value={c.crop}>{c.crop}</option>
-              ))}
-            </select>
+            <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar scroll-smooth snap-x snap-mandatory">
+              {crops.map((c) => {
+                const isSelected = crop === c.crop;
+                const emoji = CROP_EMOJIS[c.crop] || "🌾";
+                return (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    onClick={() => {
+                      setCrop(c.crop);
+                      const u = CROP_UNITS[c.crop];
+                      setYieldVal(u ? u.def : null);
+                      // Clear companion if same
+                      if (companionCrop === c.crop) setCompanionCrop("");
+                    }}
+                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-xs font-semibold whitespace-nowrap snap-start transition-all cursor-pointer ${
+                      isSelected
+                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-md scale-[1.02]"
+                        : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
+                    }`}
+                  >
+                    <span className="text-sm">{emoji}</span>
+                    <span>{c.crop}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Companion Crop / Intercropping (Premium Scroll Ribbon) */}
+          <div>
+            <label className="block text-sm font-medium text-forest-600 mb-1">
+              🤝 {lang === "en" ? "Companion Crop (Optional)" : "Zao la Pili (Kwa Hiari)"}
+            </label>
+            <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar scroll-smooth snap-x snap-mandatory">
+              <button
+                type="button"
+                onClick={() => setCompanionCrop("")}
+                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-xs font-semibold whitespace-nowrap snap-start transition-all cursor-pointer ${
+                  companionCrop === ""
+                    ? "bg-forest-700 border-forest-700 text-cream-100 shadow-md scale-[1.02]"
+                    : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
+                }`}
+              >
+                <span>🚫</span>
+                <span>{lang === "en" ? "None / Pure Stand" : "Hakuna"}</span>
+              </button>
+              {crops.filter(c => c.crop !== crop).map((c) => {
+                const isSelected = companionCrop === c.crop;
+                const emoji = CROP_EMOJIS[c.crop] || "🌾";
+                return (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    onClick={() => setCompanionCrop(c.crop)}
+                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-xs font-semibold whitespace-nowrap snap-start transition-all cursor-pointer ${
+                      isSelected
+                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-md scale-[1.02]"
+                        : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
+                    }`}
+                  >
+                    <span className="text-sm">{emoji}</span>
+                    <span>{c.crop}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Fertilizer Selection (Premium Multi-Select Chips) */}
@@ -964,6 +1062,42 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 {clean(result.confidence)} | {t("result_mapping", lang)} {result.county}
               </span>
             </div>
+
+            {/* Rhizosphere Compatibility Audit (SPAA) */}
+            {result.intercrop_audit && (
+              <div className="rounded-2xl border p-5 bg-white shadow-sm border-cream-300">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bold text-base flex items-center gap-2 text-forest-700">
+                    🤝 {lang === "en" ? "SPAA Rhizosphere Synergy" : "Ushirikiano wa Mizizi (SPAA)"}
+                  </h3>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold text-white ${
+                    result.intercrop_audit.compatible 
+                      ? (result.intercrop_audit.status === "WARNING" || result.intercrop_audit.status === "ILANI" ? "bg-amber-500" : "bg-green-600") 
+                      : "bg-red-600"
+                  }`}>
+                    {result.intercrop_audit.status}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {result.intercrop_audit.notes.map((note: string, idx: number) => {
+                    const isReject = note.includes("Conflict") || note.includes("Inhibition") || note.includes("Toxicity") || note.includes("Veto") || note.includes("Mzozo") || note.includes("Uzuiaji") || note.includes("Sumu");
+                    const isWarning = note.includes("Warning") || note.includes("Ilani");
+                    return (
+                      <div key={idx} className={`rounded-xl px-3 py-2.5 text-xs flex items-start gap-2 ${
+                        isReject ? "bg-red-50 text-red-800 border border-red-100" : 
+                        isWarning ? "bg-amber-50 text-amber-800 border border-amber-100" : 
+                        "bg-green-50 text-green-800 border border-green-100"
+                      }`}>
+                        <span className="text-sm shrink-0">
+                          {isReject ? "❌" : isWarning ? "⚠️" : "✅"}
+                        </span>
+                        <span className="leading-relaxed">{note}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Nutrient Sufficiency */}
             <div className={`rounded-2xl border p-5 ${scoreBg(result.health_score)}`}>

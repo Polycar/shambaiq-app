@@ -598,4 +598,6 @@ export const CROP_UNITS: Record<string, { unit: string; min: number; max: number
   Tea: { unit: "Kg/Acre", min: 500, max: 3000, def: 1500 },
   Coffee: { unit: "Kg/Acre", min: 200, max: 1500, def: 500 },
   Sugarcane: { unit: "Tons/Acre", min: 20, max: 80, def: 50 },
+  "Coffee (Robusta)": { unit: "Kg/Acre", min: 200, max: 1500, def: 600 },
+  "Rice (Lowland/Paddy)": { unit: "Bags/Acre", min: 15, max: 50, def: 30 },
 };

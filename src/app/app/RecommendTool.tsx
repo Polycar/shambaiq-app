@@ -98,8 +98,7 @@ function clean(s: string | undefined | null): string {
   if (!s) return "";
   return s
     .replace(/\*\*/g, "")
-    .replace(/^[\u2728\u26A0\uFE0F\u2705\u274C\u2757\u2615\u26C5\u2600\uFE0F\u2614\u2B50\uD83C-\uDBFF][\uDC00-\uDFFF]?\s*/g, "")
-    .replace(/^[🚨⚠️✅❌🚀💡🌧️☀️🍃🏔️📅📡🧬📊🛒🏷️💧🌦️⛅🎯🔄📤🌍💰🌾⛈️☁️🌫️🎉]+\s*/g, "")
+    .replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, "")
     .trim();
 }
 
@@ -559,7 +558,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               onClick={() => setLang(lang === "en" ? "sw" : "en")}
               className="text-xs font-semibold px-3 py-1.5 rounded-full border border-cream-200/20 text-cream-300 hover:bg-cream-200/10 transition-colors"
             >
-              {lang === "en" ? "🇰🇪 Kiswahili" : "🇬🇧 English"}
+              {lang === "en" ? "Kiswahili" : "English"}
             </button>
           </div>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-xs font-medium mb-5">
@@ -595,7 +594,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
             >
-              📍 {lang === "en" ? "Select Region" : "Chagua Eneo"}
+              {lang === "en" ? "Select Region" : "Chagua Eneo"}
             </button>
             <button
               onClick={() => { setLocMode("gps"); if (!gpsLat) captureGPS(); }}
@@ -605,7 +604,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
             >
-              📡 {lang === "en" ? "Check My Farm" : "Kagua Shamba Langu"}
+              {lang === "en" ? "Check My Farm" : "Kagua Shamba Langu"}
             </button>
           </div>
 
@@ -614,24 +613,24 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             <div>
               {gpsLoading && (
                 <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700 flex items-center gap-2">
-                  <span className="animate-spin">📡</span>
+                  <span className="animate-spin">|</span>
                   {lang === "en" ? "Acquiring GPS signal..." : "Inapata ishara ya GPS..."}
                 </div>
               )}
               {gpsLat !== null && gpsLon !== null && !gpsLoading && (
                 <div className="rounded-xl border border-green-200 bg-green-50 p-3 text-sm text-green-700 font-semibold flex items-center justify-between">
-                  <span>✅ GPS Locked: {gpsLat.toFixed(4)}, {gpsLon.toFixed(4)}</span>
+                  <span>GPS Locked: {gpsLat.toFixed(4)}, {gpsLon.toFixed(4)}</span>
                   <button
                     onClick={captureGPS}
                     className="text-xs bg-green-600 text-white px-2.5 py-1 rounded-lg hover:bg-green-700 transition-colors"
                   >
-                    🔄 {lang === "en" ? "Refresh" : "Sasisha"}
+                    {lang === "en" ? "Refresh" : "Sasisha"}
                   </button>
                 </div>
               )}
               {gpsError && (
                 <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                  ⚠️ {gpsError}
+                  {gpsError}
                 </div>
               )}
             </div>
@@ -643,7 +642,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               {/* County */}
               <div>
                 <label htmlFor="county-select" className="block text-sm font-medium text-gray-700 mb-1">
-                  📍 {t("form_county", lang)}
+                  {t("form_county", lang)}
                 </label>
                 <select
                   id="county-select"
@@ -669,7 +668,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               {subcounties.length > 0 && (
                 <div>
                   <label htmlFor="subcounty-select" className="block text-sm font-medium text-gray-700 mb-1">
-                    🏘️ {t("form_subcounty", lang)}
+                    {t("form_subcounty", lang)}
                   </label>
                   <select
                     id="subcounty-select"
@@ -692,7 +691,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               {wardList.length > 0 && (
                 <div>
                   <label htmlFor="ward-select" className="block text-sm font-medium text-gray-700 mb-1">
-                    🎯 {t("form_ward", lang)}
+                    {t("form_ward", lang)}
                   </label>
                   <select
                     id="ward-select"
@@ -707,7 +706,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   </select>
                   {ward && selectedWard && (
                     <p className="mt-1 text-xs text-green-700 font-semibold">
-                      🎯 Ward Locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
+                      Ward Locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
                     </p>
                   )}
                 </div>
@@ -718,7 +717,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Coordinate Resolution Badge */}
           {resolvedCoords && (
             <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700 flex items-center gap-2">
-              <span>🛰️</span>
               <span className="font-semibold">
                 {lang === "en" ? "iSDA Precision Active" : "Usahihi wa iSDA Umeamilishwa"}
               </span>
@@ -727,12 +725,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
           )}
 
-          {/* Crop Selection (Premium Scroll Ribbon) */}
+          {/* Crop Selection (Premium Vertical Scroll Ribbon) */}
           <div>
             <label className="block text-sm font-medium text-forest-600 mb-1">
               {t("form_crop", lang)}
             </label>
-            <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar scroll-smooth snap-x snap-mandatory">
+            <div className="flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border border-cream-300 rounded-xl bg-cream-50/50">
               {crops.map((c) => {
                 const isSelected = crop === c.crop;
                 return (
@@ -743,38 +741,37 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                       setCrop(c.crop);
                       const u = CROP_UNITS[c.crop];
                       setYieldVal(u ? u.def : null);
-                      // Clear companion if same
                       if (companionCrop === c.crop) setCompanionCrop("");
                     }}
-                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-xs font-semibold whitespace-nowrap snap-start transition-all cursor-pointer ${
+                    className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-md scale-[1.02]"
-                        : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
+                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
+                        : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
                     }`}
                   >
-                    <span>{c.crop}</span>
+                    {c.crop}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Companion Crop / Intercropping (Premium Scroll Ribbon) */}
+          {/* Companion Crop / Intercropping (Premium Vertical Scroll Ribbon) */}
           <div>
             <label className="block text-sm font-medium text-forest-600 mb-1">
               {lang === "en" ? "Companion Crop (Optional)" : "Zao la Pili (Kwa Hiari)"}
             </label>
-            <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar scroll-smooth snap-x snap-mandatory">
+            <div className="flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border border-cream-300 rounded-xl bg-cream-50/50">
               <button
                 type="button"
                 onClick={() => setCompanionCrop("")}
-                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-xs font-semibold whitespace-nowrap snap-start transition-all cursor-pointer ${
+                className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                   companionCrop === ""
-                    ? "bg-forest-700 border-forest-700 text-cream-100 shadow-md scale-[1.02]"
-                    : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
+                    ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
+                    : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
                 }`}
               >
-                <span>{lang === "en" ? "None / Pure Stand" : "Hakuna"}</span>
+                {lang === "en" ? "None / Pure Stand" : "Hakuna"}
               </button>
               {crops.filter(c => c.crop !== crop).map((c) => {
                 const isSelected = companionCrop === c.crop;
@@ -783,13 +780,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     key={c.slug}
                     type="button"
                     onClick={() => setCompanionCrop(c.crop)}
-                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-xs font-semibold whitespace-nowrap snap-start transition-all cursor-pointer ${
+                    className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-md scale-[1.02]"
-                        : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
+                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
+                        : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
                     }`}
                   >
-                    <span>{c.crop}</span>
+                    {c.crop}
                   </button>
                 );
               })}
@@ -799,7 +796,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Fertilizer Selection (Premium Multi-Select Chips) */}
           <div>
             <label className="block text-sm font-medium text-forest-600 mb-2">
-              🧪 {t("form_fert", lang)}
+              {t("form_fert", lang)}
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {FERTILIZER_OPTIONS.map((f) => {
@@ -844,7 +841,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label htmlFor="acres-input" className="block text-sm font-medium text-forest-600 mb-1">
-                📐 {t("form_acres", lang)}
+                {t("form_acres", lang)}
               </label>
               <input
                 id="acres-input"
@@ -859,7 +856,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             </div>
             <div>
               <label htmlFor="price-mode-select" className="block text-sm font-medium text-forest-600 mb-1">
-                💰 {lang === "en" ? "Price Basis" : "Msingi wa Bei"}
+                {lang === "en" ? "Price Basis" : "Msingi wa Bei"}
               </label>
               <select
                 id="price-mode-select"
@@ -884,7 +881,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 onChange={(e) => setLabMode(e.target.checked)}
                 className="rounded accent-green-600"
               />
-              🧪 {t("form_lab_mode", lang)}
+              {t("form_lab_mode", lang)}
             </label>
             {labMode && (
               <div className="grid grid-cols-2 gap-3 mt-3">
@@ -931,7 +928,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
           {error && (
             <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800 flex items-start gap-2">
-              <span className="shrink-0 mt-0.5">⚠️</span><span>{error}</span>
+              <span className="shrink-0 mt-0.5">Warning: </span><span>{error}</span>
             </div>
           )}
         </div>
@@ -971,12 +968,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
         {geminiAdvice && (
           <div className="space-y-4 pb-6">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 flex items-center gap-2">
-              <span>⚡</span>
               <span><strong>AI-Powered Advice</strong> — Precision server unavailable. Showing Gemini AI analysis using local soil data.</span>
             </div>
 
             <div className="rounded-2xl border bg-white p-5">
-              <h3 className="font-bold text-base mb-2" style={{ color: "#1a3a1a" }}>📋 Summary</h3>
+              <h3 className="font-bold text-base mb-2" style={{ color: "#1a3a1a" }}>Summary</h3>
               <p className="text-sm text-gray-700 leading-relaxed">{geminiAdvice.summary}</p>
             </div>
 
@@ -999,7 +995,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
             {geminiAdvice.key_advice?.length > 0 && (
               <div className="rounded-2xl border bg-white p-5">
-                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>💡 Key Advice</h3>
+                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>Key Advice</h3>
                 <ul className="space-y-2">
                   {geminiAdvice.key_advice.map((tip, i) => (
                     <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
@@ -1013,7 +1009,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
 
             {geminiAdvice.warning && (
               <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
-                <h3 className="font-bold text-sm mb-1 text-red-700">⚠️ Warning</h3>
+                <h3 className="font-bold text-sm mb-1 text-red-700">Warning</h3>
                 <p className="text-sm text-red-700">{geminiAdvice.warning}</p>
               </div>
             )}
@@ -1063,7 +1059,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               <div className="rounded-2xl border p-5 bg-white shadow-sm border-cream-300">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-bold text-base flex items-center gap-2 text-forest-700">
-                    🤝 {lang === "en" ? "SPAA Rhizosphere Synergy" : "Ushirikiano wa Mizizi (SPAA)"}
+                    {lang === "en" ? "SPAA Rhizosphere Synergy" : "Ushirikiano wa Mizizi (SPAA)"}
                   </h3>
                   <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold text-white ${
                     result.intercrop_audit.compatible 
@@ -1083,9 +1079,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                         isWarning ? "bg-amber-50 text-amber-800 border border-amber-100" : 
                         "bg-green-50 text-green-800 border border-green-100"
                       }`}>
-                        <span className="text-sm shrink-0">
-                          {isReject ? "❌" : isWarning ? "⚠️" : "✅"}
-                        </span>
                         <span className="leading-relaxed">{note}</span>
                       </div>
                     );
@@ -1097,7 +1090,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {/* Nutrient Sufficiency */}
             <div className={`rounded-2xl border p-5 ${scoreBg(result.health_score)}`}>
               <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                📊 {t("chart_title", lang)}
+                {t("chart_title", lang)}
               </h3>
               {result.reqs && result.county_data && (
                 <div className="space-y-3">
@@ -1193,7 +1186,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {result.timeline && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  📅 {t("timeline_title", lang)}
+                  {t("timeline_title", lang)}
                 </h3>
                 <p className="text-xs text-gray-500 mb-3">{result.timeline.season} — {result.crop}</p>
                 {[
@@ -1209,18 +1202,17 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               </div>
             )}
 
-            {/* Seeds */}
             {result.seeds && result.seeds.length > 0 && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  🧬 {t("seeds_title", lang)}
+                  {t("seeds_title", lang)}
                 </h3>
                 <p className="text-xs text-gray-500 mb-3">KALRO & Kenya Seed Company certified varieties</p>
                 <div className="space-y-2">
                   {result.seeds.map((s) => (
                     <details key={s.Variety} className="rounded-lg border overflow-hidden">
                       <summary className="px-3 py-2.5 text-sm font-semibold cursor-pointer hover:bg-gray-50">
-                        🏷️ {s.Variety} <span className="text-gray-400 font-normal">({s.Breeder})</span>
+                        {s.Variety} <span className="text-gray-400 font-normal">({s.Breeder})</span>
                       </summary>
                       <div className="px-3 py-2 text-xs text-gray-600 border-t bg-gray-50 space-y-1">
                         <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} · <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} · <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} bags/acre</p>
@@ -1232,10 +1224,9 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
               </div>
             )}
 
-            {/* Budget / Shopping List */}
             <div className="rounded-2xl border border-cream-300 bg-white p-5">
               <h3 className="font-display font-bold text-base mb-1 text-forest-700">
-                🛒 {t("shopping_title", lang)}
+                {t("shopping_title", lang)}
               </h3>
               <p className="text-xs text-soil-400 mb-3">
                 {t("shopping_for", lang)} <strong>{acres} {t("shopping_acres", lang)}</strong>
@@ -1244,9 +1235,9 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 <p className="text-sm text-cream-400 uppercase tracking-wider">{t("result_total_cost", lang)}</p>
                 <p className="text-3xl font-extrabold text-gold-400">KES {result.budget.total_budget.toLocaleString()}</p>
               </div>
-              <ul className="space-y-1.5">
+              <ul className="space-y-1.5 list-disc pl-5">
                 {result.budget.breakdown.map((line, i) => (
-                  <li key={i} className="text-sm text-gray-700 pl-4 relative before:content-['🛒'] before:absolute before:left-0">
+                  <li key={i} className="text-sm text-gray-700">
                     {line}
                   </li>
                 ))}
@@ -1257,7 +1248,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {weather && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  ⛅ {lang === "en" ? "7-Day Weather Forecast" : "Utabiri wa Hali ya Hewa (Siku 7)"}
+                  {lang === "en" ? "7-Day Weather Forecast" : "Utabiri wa Hali ya Hewa (Siku 7)"}
                 </h3>
 
                 {/* Agronomic Advice Banner */}
@@ -1282,16 +1273,16 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                         : d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { weekday: "short" });
                       const dateStr = d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { day: "numeric", month: "short" });
 
-                      // Weather icon from description
+                      // Weather condition text
                       const desc = (day.description || "").toLowerCase();
-                      let icon = "☀️";
-                      if (desc.includes("thunder")) icon = "⛈️";
-                      else if (desc.includes("heavy rain") || desc.includes("violent")) icon = "🌧️";
-                      else if (desc.includes("rain") || desc.includes("shower")) icon = "🌦️";
-                      else if (desc.includes("drizzle")) icon = "🌦️";
-                      else if (desc.includes("overcast")) icon = "☁️";
-                      else if (desc.includes("cloud") || desc.includes("partly")) icon = "⛅";
-                      else if (desc.includes("fog")) icon = "🌫️";
+                      let statusText = "Sunny";
+                      if (desc.includes("thunder")) statusText = "Storm";
+                      else if (desc.includes("heavy rain") || desc.includes("violent")) statusText = "Heavy Rain";
+                      else if (desc.includes("rain") || desc.includes("shower")) statusText = "Rainy";
+                      else if (desc.includes("drizzle")) statusText = "Drizzle";
+                      else if (desc.includes("overcast")) statusText = "Overcast";
+                      else if (desc.includes("cloud") || desc.includes("partly")) statusText = "Cloudy";
+                      else if (desc.includes("fog")) statusText = "Foggy";
 
                       const isWet = day.rain_mm > 5;
                       const isDry = day.rain_mm < 1;
@@ -1305,7 +1296,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                         >
                           <div className="font-bold text-gray-800">{dayName}</div>
                           <div className="text-gray-400 text-[10px]">{dateStr}</div>
-                          <div className="text-2xl my-1">{icon}</div>
+                          <div className="text-[10px] font-semibold my-2 text-forest-700 uppercase tracking-tight">{statusText}</div>
                           <div className="font-semibold text-gray-700">
                             {day.temp_max !== null ? `${Math.round(day.temp_max)}°` : "—"}
                           </div>
@@ -1313,7 +1304,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                             {day.temp_min !== null ? `${Math.round(day.temp_min)}°` : "—"}
                           </div>
                           <div className={`mt-1 font-semibold ${isWet ? "text-blue-600" : "text-gray-400"}`}>
-                            💧 {day.rain_mm !== null ? `${day.rain_mm.toFixed(1)}` : "0"}mm
+                            {day.rain_mm !== null ? `${day.rain_mm.toFixed(1)}` : "0"}mm
                           </div>
                         </div>
                       );
@@ -1327,7 +1318,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {result.advice && result.advice.length > 0 && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  💡 {t("result_advice_title", lang)}
+                  {t("result_advice_title", lang)}
                 </h3>
                 <div className="space-y-2">
                   {result.advice.map((item, i) => {
@@ -1419,7 +1410,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {agrShown && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-1" style={{ color: "#1a3a1a" }}>
-                  🏪 {lang === "en" ? "Agrovets Near You" : "Agroveti Karibu Nawe"}
+                  {lang === "en" ? "Agrovets Near You" : "Agroveti Karibu Nawe"}
                 </h3>
                 <p className="text-xs text-gray-500 mb-3">
                   {lang === "en"
@@ -1455,7 +1446,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {cropMatches && cropMatches.length > 0 && (
               <div className="mt-8 mb-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                  🌱 {lang === "en" ? "Alternative Crops for Your Soil" : "Mazao Mbadala kwa Udongo Wako"}
+                  {lang === "en" ? "Alternative Crops for Your Soil" : "Mazao Mbadala kwa Udongo Wako"}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {cropMatches.map((cm, idx) => (

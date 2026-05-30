@@ -14,13 +14,15 @@ const API =
   "https://api.shambaiq.com";
 
 const CROPS = [
-  "Maize","Beans","Potatoes","Wheat","Rice","Sorghum","Millet","Tea",
-  "Coffee","Sugarcane","Bananas","Cassava","Sweet Potatoes","Groundnuts",
-  "Soybeans","Sunflower","Sesame","Onions","Tomatoes","Cabbage","Kale",
-  "Carrots","Peas","Macadamia","Avocado",
+  "Maize","Beans","Potato","Wheat","Sorghum","Millet","Tea",
+  "Coffee (Arabica)","Coffee (Robusta)","Sugarcane","Banana","Cassava","Sweet Potato","Groundnuts",
+  "Soybeans","Sunflower","Onion","Tomato","Cabbage","Kale (Sukuma Wiki)",
+  "Carrot","Macadamia","Avocado",
   "Watermelon","Green Grams","Capsicum","Chilies","Dhania","Garlic",
-  "Cashew Nuts","Coconuts","Lucerne","Snow Peas","Arrowroots","Passion Fruit",
-  "Pixie Oranges","Pawpaw","Wambugu Apples","Rice (Lowland/Paddy)"
+  "Cashew Nuts","Coconuts","Lucerne","Snow Peas","Arrow Root","Passion Fruit",
+  "Pixie Oranges","Pawpaw","Wambugu Apples","Rice (Lowland/Paddy)",
+  "Rice (Upland)","Finger Millet","Spinach","Napier Grass","Mango",
+  "Pigeon Peas","Cowpeas","Sisal","Pyrethrum","Cotton"
 ];
 
 const currentYear = new Date().getFullYear();

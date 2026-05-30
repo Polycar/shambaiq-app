@@ -14,12 +14,14 @@ const COUNTIES = [
 ];
 
 const CROPS = [
-  "Maize","Beans","Potatoes","Wheat","Rice","Sorghum","Millet","Tea",
-  "Coffee","Bananas","Cassava","Sweet Potatoes","Groundnuts","Soybeans",
-  "Sunflower","Onions","Tomatoes","Cabbage","Kale","Carrots","Avocado",
+  "Maize","Beans","Potato","Wheat","Sorghum","Millet","Tea",
+  "Coffee (Arabica)","Coffee (Robusta)","Banana","Cassava","Sweet Potato","Groundnuts","Soybeans",
+  "Sunflower","Onion","Tomato","Cabbage","Kale (Sukuma Wiki)","Carrot","Avocado",
   "Watermelon","Green Grams","Sugarcane","Capsicum","Chilies","Dhania",
-  "Garlic","Cashew Nuts","Coconuts","Lucerne","Snow Peas","Arrowroots",
-  "Passion Fruit","Pixie Oranges","Pawpaw","Wambugu Apples","Rice (Lowland/Paddy)"
+  "Garlic","Cashew Nuts","Coconuts","Lucerne","Snow Peas","Arrow Root",
+  "Passion Fruit","Pixie Oranges","Pawpaw","Wambugu Apples","Rice (Lowland/Paddy)",
+  "Rice (Upland)","Finger Millet","Spinach","Carrot","Napier Grass","Mango",
+  "Macadamia","Pigeon Peas","Cowpeas","Sisal","Pyrethrum","Cotton"
 ];
 
 const CHALLENGES = [

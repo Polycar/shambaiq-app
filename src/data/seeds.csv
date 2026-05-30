@@ -7,14 +7,14 @@ Maize,DH04,KALRO,Dryland,90-110,18-22,Extremely fast maturing; escapes late-seas
 Beans,KAT B1,KALRO,Dryland/Medium,60-65,8-10,Yellow bean; highly tolerant to drought and heat.
 Beans,KAT X56,KALRO,Dryland,65-70,10-12,Red mottled; resistant to bean common mosaic virus.
 Beans,Chelalang,KALRO,Medium/Highland,75-80,12-15,High yield; resistant to root rot and angular leaf spot.
-Potatoes,Shangi,KALRO,Medium/Highland,80-90,300-350,Very fast cooking; high tuber density per plant.
-Potatoes,Unica,KALRO,Dryland/Medium,90-100,350-400,Heat tolerant; highly resistant to late blight.
+Potato,Shangi,KALRO,Medium/Highland,80-90,300-350,Very fast cooking; high tuber density per plant.
+Potato,Unica,KALRO,Dryland/Medium,90-100,350-400,Heat tolerant; highly resistant to late blight.
 Sorghum,Gadam,KALRO,Dryland,100-110,12-15,Ideal for commercial brewing; highly drought resilient.
 Sorghum,Seredo,KALRO,Medium/Dryland,110-120,15-18,Brown grain; excellent bird resistance.
-Tomatoes,Rambo F1,Royal Seeds,Medium/Highland,75-80,150-180,Determinate hybrid; excellent disease tolerance.
-Tomatoes,Money Maker,Simlaw Seeds,Medium/Highland,80-90,100-120,Reliable open-pollinated variety.
-Kale (Sukuma),Thousand Headed,Simlaw Seeds,Medium/Highland,60-70,100-120,Continuous harvesting up to 9 months.
-Kale (Sukuma),Collard Mfalme F1,Royal Seeds,Medium/Highland,45-60,140-160,High yielding hybrid; soft large leaves.
+Tomato,Rambo F1,Royal Seeds,Medium/Highland,75-80,150-180,Determinate hybrid; excellent disease tolerance.
+Tomato,Money Maker,Simlaw Seeds,Medium/Highland,80-90,100-120,Reliable open-pollinated variety.
+Kale (Sukuma Wiki),Thousand Headed,Simlaw Seeds,Medium/Highland,60-70,100-120,Continuous harvesting up to 9 months.
+Kale (Sukuma Wiki),Collard Mfalme F1,Royal Seeds,Medium/Highland,45-60,140-160,High yielding hybrid; soft large leaves.
 Wheat,KS Mwamba,Kenya Seed Company,Highland,130-150,30-35,Stem rust resistant; strong lodging resistance.
 Wheat,Robin,KALRO,Highland,120-140,28-32,Consistent performance across environments.
 Avocado,Hass,KALRO/HCDA,Medium/Highland,1000-1200,50-70,High export demand; rich oil content.
@@ -37,10 +37,10 @@ Coffee (Arabica),Ruiru 11,Coffee Research Institute,Medium/Highland,730-1000,15-
 Coffee (Arabica),Batian,Coffee Research Institute,Medium/Highland,730-1000,20-30,Tall variety; excellent cup quality; disease resistant.
 Macadamia,KRG 15,KALRO,Medium/Highland,1000-1500,30-50,High nut recovery; suited to central highlands.
 Macadamia,Embu 1,KALRO,Medium/Highland,1000-1500,25-45,Good kernel quality; moderate yield.
-Mangoes,Apple Mango,KALRO/HCDA,Coastal/Dryland,1000-1200,40-60,Most popular domestic variety; sweet and juicy.
-Mangoes,Tommy Atkins,KALRO/HCDA,Coastal/Dryland,1000-1200,50-80,Export quality; good shelf life; disease tolerant.
-Onions,Red Creole,Simlaw Seeds,Medium/Highland,90-120,120-160,Popular red onion; good storage quality.
-Onions,Bombay Red,East Africa Seeds,Medium,100-130,100-140,Large bulb size; pungent flavor; high market value.
+Mango,Apple Mango,KALRO/HCDA,Coastal/Dryland,1000-1200,40-60,Most popular domestic variety; sweet and juicy.
+Mango,Tommy Atkins,KALRO/HCDA,Coastal/Dryland,1000-1200,50-80,Export quality; good shelf life; disease tolerant.
+Onion,Red Creole,Simlaw Seeds,Medium/Highland,90-120,120-160,Popular red onion; good storage quality.
+Onion,Bombay Red,East Africa Seeds,Medium,100-130,100-140,Large bulb size; pungent flavor; high market value.
 Cabbage,Gloria F1,East Africa Seeds,Medium/Highland,70-85,300-400,Compact heads; tolerant to black rot.
 Cabbage,Copenhagen Market,Simlaw Seeds,Medium/Highland,80-95,250-350,Round heads; reliable open-pollinated variety.
 Cotton,KSA 81M,KALRO,Dryland/Medium,150-180,10-15,Medium staple; adapted to western Kenya conditions.
@@ -52,3 +52,48 @@ Rice (Upland),NERICA 10,WARDA/KALRO,Medium/Dryland,100-110,12-18,Resistant to bl
 Sisal,Hybrid 11648,KALRO,Dryland/Coastal,730-1000,8-12,High fibre yield; resistant to zebra disease.
 Pyrethrum,P4,Pyrethrum Board of Kenya,Highland,180-240,3-5,High pyrethrin content; suited to highland conditions.
 Pyrethrum,Clone 22,Pyrethrum Board of Kenya,Highland,180-240,4-6,High yielding clone; good flower production.
+Coffee (Robusta),R7,CABI/KALRO,Medium/Highland,730-1000,12-18,High yielding; suited to western Kenya conditions; disease tolerant.
+Coffee (Robusta),R2,CABI/KALRO,Medium,730-1000,10-15,Early bearing; good cup quality for local and export markets.
+Rice (Lowland/Paddy),Komboka,KALRO,Medium/Lowland,100-115,20-28,High yielding paddy; resistant to blast; developed for Mwea and lowland Kenya.
+Rice (Lowland/Paddy),Basmati 370,KALRO,Medium/Lowland,130-150,18-24,Aromatic long-grain; premium export market; suited to Mwea Irrigation Scheme.
+Millet,Katumani Millet,KALRO,Dryland,75-90,6-8,Early maturing; highly drought tolerant; good grain quality.
+Millet,EMBU Composite,KALRO,Medium,85-100,8-10,Higher yielding; suited to medium altitude rainfall areas.
+Green Grams,N26,KALRO,Dryland/Medium,60-65,3-5,Early maturing; tolerant to drought; popular in eastern Kenya.
+Green Grams,KS 20,KALRO,Medium,65-75,4-6,High yielding; good seed quality; resistant to yellow mosaic virus.
+Soybeans,SB 19,KALRO,Medium/Highland,90-100,8-12,High protein content; disease resistant; good for oil and flour.
+Soybeans,Gazelle,Pannar Seeds,Medium,95-110,10-14,High yielding hybrid; excellent grain quality; broad adaptation.
+Spinach,Viroflay,Simlaw Seeds,Medium/Highland,40-50,60-80,Large dark leaves; continuous harvest; heat tolerant.
+Spinach,Giant Nobel,East Africa Seeds,Medium/Highland,45-55,70-90,Vigorous growth; smooth leaves; good market demand.
+Carrot,Nantes,Simlaw Seeds,Medium/Highland,70-80,80-100,Cylindrical roots; sweet flavor; excellent fresh market variety.
+Carrot,Chantenay,Simlaw Seeds,Medium,75-90,70-90,Broad shoulders; good for heavy soils; reliable yield.
+Capsicum,California Wonder,Simlaw Seeds,Medium/Highland,75-85,60-80,Large blocky fruits; excellent fresh market demand.
+Capsicum,Yolo Wonder,East Africa Seeds,Medium,70-80,50-70,Open-pollinated; reliable yield; tolerant to tobacco mosaic virus.
+Chilies,Pilipili Kichaa,Local/KALRO,Dryland/Medium,90-120,20-30,Very pungent; high market demand; drought tolerant.
+Chilies,Cayenne Long,Simlaw Seeds,Medium,80-100,25-35,High yield; good for drying and fresh market.
+Dhania,Desi Coriander,Local/KALRO,Medium/Highland,45-60,10-15,Fast maturing; aromatic; popular in fresh and dried form.
+Garlic,Early Pink,Local/KALRO,Medium/Highland,120-150,20-30,Good bulb size; pungent flavor; stores well.
+Garlic,Purple Stripe,Local,Highland,130-160,18-26,High allicin content; excellent storage; suited to cold highlands.
+Snow Peas,Oregon Sugar Pod,East Africa Seeds,Medium/Highland,60-70,15-20,Flat edible pods; excellent export quality; disease tolerant.
+Snow Peas,Mammoth Melting,Simlaw Seeds,Highland,65-75,16-22,Large pods; sweet flavor; suited to highland export production.
+Arrow Root,Nduma Local,KALRO,Medium/Highland,270-365,50-80,Traditional variety; good corm size; suited to wet highland areas.
+Banana,Williams,KALRO/HCDA,Medium/Highland,270-330,120-160,High yielding Cavendish type; good bunch weight; export quality.
+Banana,Cavendish,KALRO,Coastal/Medium,240-300,100-140,Most popular commercial variety; excellent local and export demand.
+Watermelon,Sugar Baby,Simlaw Seeds,Dryland/Medium,75-90,100-150,Small round fruits; sweet red flesh; popular local market.
+Watermelon,Charleston Grey,Simlaw Seeds,Medium,80-95,120-180,Large oblong fruits; excellent taste; high yield.
+Passion Fruit,Purple Passion,KALRO,Medium/Highland,365-548,50-80,Purple fruited; high juice content; good local and export market.
+Passion Fruit,Yellow Passion,KALRO,Coastal/Medium,270-365,60-90,Yellow fruited; more vigorous; tolerant to fusarium wilt.
+Pixie Oranges,Pixie,KALRO/HCDA,Medium/Highland,1000-1500,80-120,Seedless; thin skin; excellent sweetness; high export demand.
+Pixie Oranges,Washington Navel,KALRO,Medium,1000-1500,70-100,Large navel orange; seedless; good fresh market variety.
+Pawpaw,Sunrise Solo,KALRO,Coastal/Medium,270-365,150-200,Small fruits; sweet orange flesh; high market demand.
+Pawpaw,Wambugu F1,Local,Medium/Highland,300-365,130-180,Adapted to highland conditions; good disease tolerance.
+Wambugu Apples,Wambugu,KALRO,Medium/Highland,730-1000,30-50,Kenya-adapted apple; does not require chilling; good local market.
+Napier Grass,Clone 13,ICIPE/KALRO,Medium/Highland,90-120,200-300,Push-pull trap crop; high biomass; excellent fodder quality.
+Napier Grass,Kakamega 1,KALRO,Medium,perennial,180-250,High dry matter yield; tolerant to head smut disease.
+Lucerne,CUF 101,Local,Highland,60-90,80-120,High protein fodder; perennial; suited to irrigated highland production.
+Lucerne,SA Karoo,Local,Medium/Highland,60-90,70-100,Drought tolerant; persistent stand; good protein content.
+Sugarcane,CO 421,KESREF,Dryland/Medium,365-540,400-600,Medium staple; high sucrose content; adapted to western Kenya.
+Sugarcane,N14,KESREF,Medium,365-540,450-650,High yielding; good ratoon ability; widely grown in Nyanza and Western.
+Cashew Nuts,Giriama Red,KALRO,Coastal,1000-1500,10-15,High nut recovery; suited to coast conditions; good kernel quality.
+Cashew Nuts,Muruku,KALRO,Coastal/Dryland,1000-1500,8-12,Early bearing; good shell weight; tolerant to powdery mildew.
+Coconuts,East African Tall,KALRO,Coastal,1500-2000,80-120,Traditional variety; high nut yield; excellent adaptation to Kenya coast.
+Coconuts,Malayan Dwarf,KALRO,Coastal,1200-1800,90-130,Early bearing dwarf; good for small farms; high copra content.

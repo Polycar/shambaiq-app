@@ -181,9 +181,9 @@ export const FERTILIZER_OPTIONS = [
 export const CROP_UNITS: Record<string, { unit: string; min: number; max: number; def: number }> = {
   Maize: { unit: "Bags/Acre", min: 15, max: 50, def: 30 },
   Beans: { unit: "Bags/Acre", min: 8, max: 20, def: 12 },
-  Potatoes: { unit: "Bags/Acre", min: 200, max: 400, def: 300 },
-  Tomatoes: { unit: "Tons/Acre", min: 10, max: 30, def: 15 },
-  "Kale (Sukuma)": { unit: "Tons/Acre", min: 5, max: 20, def: 10 },
+  Potato: { unit: "Bags/Acre", min: 200, max: 400, def: 300 },
+  Tomato: { unit: "Tons/Acre", min: 10, max: 30, def: 15 },
+  "Kale (Sukuma Wiki)": { unit: "Tons/Acre", min: 5, max: 20, def: 10 },
   Wheat: { unit: "Bags/Acre", min: 10, max: 30, def: 20 },
   Sorghum: { unit: "Bags/Acre", min: 10, max: 25, def: 15 },
   Avocado: { unit: "Tons/Acre", min: 5, max: 15, def: 10 },

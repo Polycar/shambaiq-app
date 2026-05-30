@@ -53,8 +53,8 @@ const CATEGORY_META: Record<string, { emoji: string; color: string }> = {
 function categorize(crop: string): string {
   if (["Maize", "Wheat", "Sorghum", "Finger Millet", "Rice (Upland)"].includes(crop)) return "Cereals";
   if (["Beans", "Cowpeas", "Groundnuts", "Pigeon Peas"].includes(crop)) return "Legumes";
-  if (["Potatoes", "Cassava", "Sweet Potato", "Onions"].includes(crop)) return "Root & Tuber Crops";
-  if (["Tomatoes", "Kale (Sukuma)", "Cabbage"].includes(crop)) return "Vegetables";
+  if (["Potato", "Cassava", "Sweet Potato", "Onion", "Arrow Root"].includes(crop)) return "Root & Tuber Crops";
+  if (["Tomato", "Kale (Sukuma Wiki)", "Cabbage", "Spinach", "Carrot", "Capsicum", "Chilies", "Dhania", "Garlic", "Snow Peas"].includes(crop)) return "Vegetables";
   if (["Tea", "Coffee (Arabica)", "Cotton", "Pyrethrum", "Sisal", "Sunflower"].includes(crop)) return "Cash Crops";
   return "Fruits & Trees";
 }

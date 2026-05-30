@@ -1,9 +1,9 @@
 Crop,ph_min,ph_max,n_need,p_need,k_need,price_per_kg,yield_per_acre,pref_texture
 Maize,5.5,7.0,high,high,medium,65,1500,Loam
 Beans,6.0,7.0,low,medium,low,110,800,Loam
-Potatoes,5.0,6.5,high,high,high,40,6000,Sandy Loam
-Tomatoes,6.0,7.0,high,high,high,100,8000,Loam
-Kale (Sukuma),5.5,7.0,high,medium,medium,36,6000,Clay Loam
+Potato,5.0,6.5,high,high,high,40,6000,Sandy Loam
+Tomato,6.0,7.0,high,high,high,100,8000,Loam
+Kale (Sukuma Wiki),5.5,7.0,high,medium,medium,36,6000,Clay Loam
 Wheat,6.0,7.5,high,high,medium,115,1200,Clay
 Sorghum,5.0,7.5,low,low,low,80,1200,Clay
 Avocado,5.0,6.5,medium,medium,high,50,3000,Sandy Loam
@@ -16,30 +16,35 @@ Cowpeas,5.0,7.5,low,low,low,80,400,Sandy
 Sunflower,6.0,7.5,medium,medium,medium,55,800,Sandy
 Coffee (Arabica),5.0,6.0,high,medium,high,400,1000,Loam
 Macadamia,5.0,6.5,medium,medium,medium,150,2000,Loam
-Mangoes,5.5,7.5,low,low,medium,40,5000,Sandy
-Onions,6.0,7.0,high,high,medium,80,4000,Sandy Loam
+Mango,5.5,7.5,low,low,medium,40,5000,Sandy
+Onion,6.0,7.0,high,high,medium,80,4000,Sandy Loam
 Cabbage,6.0,7.5,high,high,high,20,15000,Clay Loam
 Cotton,5.8,8.0,medium,medium,medium,60,1000,Clay
 Pigeon Peas,5.0,7.0,low,low,low,90,600,Sandy
 Rice (Upland),5.0,7.0,high,medium,medium,120,2000,Clay
 Sisal,5.5,8.5,low,low,low,100,1000,Sandy
 Pyrethrum,5.5,6.5,medium,high,medium,250,500,Loam
-Watermelon,6.0,7.5,medium,high,high,30,8000,Sandy Loam
-Green Grams,5.5,7.0,low,medium,low,100,500,Sandy
-Sugarcane,5.5,7.5,high,high,high,5,30000,Clay Loam
-Capsicum,6.0,7.0,high,high,high,120,6000,Loam
-Chilies,5.5,6.8,medium,medium,high,150,4000,Loam
-Dhania,6.0,7.0,high,low,medium,40,3000,Sandy Loam
-Garlic,6.0,7.0,high,high,high,250,4000,Sandy Loam
-Bananas,5.5,7.0,high,medium,high,15,8000,Loam
-Cashew Nuts,5.0,7.0,low,medium,medium,100,1000,Sandy
-Coconuts,5.5,8.0,medium,medium,high,30,4000,Sandy
-Lucerne,6.2,7.5,low,high,medium,20,8000,Loam
-Snow Peas,6.0,7.0,low,high,medium,150,3000,Sandy Loam
-Arrowroots,5.5,7.0,high,high,high,60,6000,Clay
-Passion Fruit,6.0,7.0,high,high,high,100,5000,Loam
-Pixie Oranges,5.5,7.0,medium,medium,high,150,4000,Sandy Loam
-Pawpaw,6.0,7.0,high,high,high,50,8000,Sandy Loam
-Wambugu Apples,5.8,7.0,medium,high,medium,200,3000,Loam
 Coffee (Robusta),5.0,6.5,high,medium,high,350,1200,Loam
 Rice (Lowland/Paddy),5.5,7.0,high,high,medium,100,2500,Clay
+Millet,5.0,8.0,low,low,low,60,600,Sandy
+Green Grams,6.0,7.5,low,low,low,120,300,Sandy Loam
+Soybeans,6.0,7.0,low,medium,medium,80,600,Loam
+Spinach,6.0,7.5,high,medium,medium,40,4000,Loam
+Carrot,6.0,7.0,low,medium,high,50,6000,Sandy Loam
+Capsicum,6.0,7.0,high,high,high,120,5000,Loam
+Chilies,6.0,7.5,medium,medium,medium,200,2000,Sandy Loam
+Dhania,6.0,7.5,low,low,low,80,1000,Loam
+Garlic,6.0,7.5,high,medium,high,300,2000,Sandy Loam
+Snow Peas,6.0,7.5,low,medium,medium,200,1500,Loam
+Arrow Root,5.5,7.0,medium,medium,high,60,5000,Clay Loam
+Banana,5.5,7.0,high,medium,high,20,10000,Loam
+Watermelon,6.0,7.5,medium,medium,medium,20,10000,Sandy
+Passion Fruit,6.0,7.5,high,medium,high,100,5000,Loam
+Pixie Oranges,6.0,7.5,medium,medium,high,30,8000,Sandy Loam
+Pawpaw,6.0,7.5,high,medium,high,30,15000,Sandy Loam
+Wambugu Apples,5.5,7.0,medium,medium,high,80,3000,Loam
+Napier Grass,5.0,8.0,medium,low,medium,5,20000,Loam
+Lucerne,6.5,8.0,low,medium,high,30,8000,Clay Loam
+Sugarcane,5.5,8.0,high,medium,high,3,40000,Loam
+Cashew Nuts,5.0,7.5,low,low,medium,200,1000,Sandy
+Coconuts,5.5,8.0,low,low,high,25,3000,Sandy

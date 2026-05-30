@@ -592,7 +592,7 @@ export const FERTILIZER_OPTIONS = [
 export const CROP_UNITS: Record<string, { unit: string; min: number; max: number; def: number }> = {
   Maize: { unit: "Bags/Acre", min: 15, max: 50, def: 30 },
   Beans: { unit: "Bags/Acre", min: 8, max: 20, def: 12 },
-  Potatoes: { unit: "Bags/Acre", min: 200, max: 400, def: 300 },
+  Potato: { unit: "Bags/Acre", min: 200, max: 400, def: 300 },
   Wheat: { unit: "Bags/Acre", min: 10, max: 40, def: 20 },
   Rice: { unit: "Bags/Acre", min: 15, max: 50, def: 30 },
   Sorghum: { unit: "Bags/Acre", min: 10, max: 30, def: 15 },

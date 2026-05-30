@@ -1417,7 +1417,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   try {
                     let res = await getDealersNearby(lat, lon);
                     if (!res || res.length === 0) {
-                      const resolvedCounty = county || "Nairobi";
+                      const resolvedCounty = result?.county || county || "Nairobi";
                       res = await getDealersByCounty(resolvedCounty);
                     }
                     setAgrovets(res || []);

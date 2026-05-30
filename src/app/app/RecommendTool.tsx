@@ -727,7 +727,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {crop && (
             <div>
               <label htmlFor="companion-crop-select" className="block text-sm font-medium text-forest-600 mb-1">
-                🌿 {lang === "en" ? "Intercrop Companion" : "Zao la Kuchanganya"}{" "}
+                {lang === "en" ? "Intercrop Companion" : "Zao la Kuchanganya"}{" "}
                 <span className="text-xs font-normal text-gray-400">({lang === "en" ? "optional" : "hiari"})</span>
               </label>
               <select
@@ -1061,7 +1061,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
             {result.intercrop_audit && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  🌿 {lang === "en" ? "Intercrop Analysis" : "Uchambuzi wa Kilimo cha Pamoja"}
+                  {lang === "en" ? "Intercrop Analysis" : "Uchambuzi wa Kilimo cha Pamoja"}
                 </h3>
 
                 {/* Status badge */}
@@ -1072,9 +1072,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                       : "bg-green-100 text-green-700 border border-green-200"
                     : "bg-red-100 text-red-700 border border-red-200"
                 }`}>
-                  {result.intercrop_audit.compatible
-                    ? result.intercrop_audit.status === "WARNING" ? "⚠️" : "✅"
-                    : "❌"}
                   {result.intercrop_audit.status}
                 </div>
 
@@ -1087,7 +1084,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                       const bg = isCaution ? "bg-amber-50 border-amber-200 text-amber-800" : isGood ? "bg-green-50 border-green-200 text-green-800" : "bg-gray-50 border-gray-200 text-gray-700";
                       return (
                         <div key={i} className={`rounded-lg border px-3 py-2 text-xs leading-relaxed ${bg}`}>
-                          {note}
+                          {clean(note)}
                         </div>
                       );
                     })}
@@ -1131,7 +1128,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 {result.intercrop_audit.n_fixation && (
                   <div className="rounded-xl bg-green-50 border border-green-200 p-3 mb-4">
                     <p className="text-xs font-bold text-green-700 mb-1.5">
-                      🌱 {lang === "en" ? "Biological N-Fixation Benefit" : "Faida ya Nitrojeni ya Kiasili"}
+                      {lang === "en" ? "Biological N-Fixation Benefit" : "Faida ya Nitrojeni ya Kiasili"}
                     </p>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
                       <span className="text-gray-600">{lang === "en" ? "N fixed per acre" : "N inayonaswa/ekari"}</span>

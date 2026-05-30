@@ -18,6 +18,51 @@ export interface RecommendRequest {
   overrides?: Record<string, number>;
   price_mode?: "Subsidized" | "Commercial";
   yield_target?: number;
+  companion_crop?: string;
+}
+
+export interface IntercropSoilFit {
+  score: number;
+  verdict: string;
+  issues: string[];
+  ph_ok: boolean;
+  n_ok: boolean;
+  p_ok: boolean;
+  k_ok: boolean;
+}
+
+export interface IntercropNFixation {
+  legume: string;
+  fixed_kg_per_ha: number;
+  fixed_kg_per_acre: number;
+  can_bags_saved_per_acre: number;
+  kes_saved_per_acre: number;
+  kes_saved_total: number;
+}
+
+export interface IntercropLayout {
+  arrangement: string;
+  timing: string;
+  spacing: string;
+}
+
+export interface IntercropEconomics {
+  monocrop_income: Record<string, number>;
+  intercrop_income_estimate: number;
+  ler_estimate: number;
+  advantage_pct: number;
+  summary: string;
+  note: string;
+}
+
+export interface IntercropAudit {
+  compatible: boolean;
+  status: string;
+  notes: string[];
+  soil_fit?: Record<string, IntercropSoilFit> | null;
+  n_fixation?: IntercropNFixation | null;
+  layout?: IntercropLayout | null;
+  economics?: IntercropEconomics | null;
 }
 
 export interface RecommendResult {
@@ -65,6 +110,7 @@ export interface RecommendResult {
   is_n_low?: boolean;
   is_p_low?: boolean;
   is_k_low?: boolean;
+  intercrop_audit?: IntercropAudit | null;
 }
 
 export interface CropMatch {

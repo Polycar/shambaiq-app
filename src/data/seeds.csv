@@ -1,6 +1,6 @@
 Crop,Variety,Breeder,Altitude_Zone,Maturity_Days,Yield_Bags_Per_Acre,Special_Attributes
 Maize,H614,Kenya Seed Company,Highland,180-240,35-40,Excellent grain quality; tolerant to common blights.
-Maize,H6213,Kenya Seed Company,Highland,170-210,38-42,High yielding; strong stalk preventing lodging.
+Maize,H6218,Kenya Seed Company,Highland,170-210,38-42,High yielding; strong stalk preventing lodging.
 Maize,H513,Kenya Seed Company,Medium Altitude,120-150,25-30,Fast maturing; good performance in transitional climates.
 Maize,Katumani Composite B,KALRO,Dryland,90-120,15-18,Highly drought-tolerant; ensures harvest in low rainfall.
 Maize,DH04,KALRO,Dryland,90-110,18-22,Extremely fast maturing; escapes late-season heat stress.
@@ -52,8 +52,8 @@ Rice (Upland),NERICA 10,WARDA/KALRO,Medium/Dryland,100-110,12-18,Resistant to bl
 Sisal,Hybrid 11648,KALRO,Dryland/Coastal,730-1000,8-12,High fibre yield; resistant to zebra disease.
 Pyrethrum,P4,Pyrethrum Board of Kenya,Highland,180-240,3-5,High pyrethrin content; suited to highland conditions.
 Pyrethrum,Clone 22,Pyrethrum Board of Kenya,Highland,180-240,4-6,High yielding clone; good flower production.
-Coffee (Robusta),R7,CABI/KALRO,Medium/Highland,730-1000,12-18,High yielding; suited to western Kenya conditions; disease tolerant.
-Coffee (Robusta),R2,CABI/KALRO,Medium,730-1000,10-15,Early bearing; good cup quality for local and export markets.
+Coffee (Robusta),R7,Coffee Research Institute/KALRO,Medium/Highland,730-1000,12-18,High yielding; suited to western Kenya conditions; disease tolerant.
+Coffee (Robusta),R2,Coffee Research Institute/KALRO,Medium,730-1000,10-15,Early bearing; good cup quality for local and export markets.
 Rice (Lowland/Paddy),Komboka,KALRO,Medium/Lowland,100-115,20-28,High yielding paddy; resistant to blast; developed for Mwea and lowland Kenya.
 Rice (Lowland/Paddy),Basmati 370,KALRO,Medium/Lowland,130-150,18-24,Aromatic long-grain; premium export market; suited to Mwea Irrigation Scheme.
 Millet,Katumani Millet,KALRO,Dryland,75-90,6-8,Early maturing; highly drought tolerant; good grain quality.
@@ -81,7 +81,7 @@ Banana,Cavendish,KALRO,Coastal/Medium,240-300,100-140,Most popular commercial va
 Watermelon,Sugar Baby,Simlaw Seeds,Dryland/Medium,75-90,100-150,Small round fruits; sweet red flesh; popular local market.
 Watermelon,Charleston Grey,Simlaw Seeds,Medium,80-95,120-180,Large oblong fruits; excellent taste; high yield.
 Passion Fruit,Purple Passion,KALRO,Medium/Highland,365-548,50-80,Purple fruited; high juice content; good local and export market.
-Passion Fruit,Yellow Passion,KALRO,Coastal/Medium,270-365,60-90,Yellow fruited; more vigorous; tolerant to fusarium wilt.
+Passion Fruit,Yellow Passion,KALRO,Medium/Highland,270-365,60-90,Yellow fruited; more vigorous; tolerant to fusarium wilt.
 Pixie Oranges,Pixie,KALRO/HCDA,Medium/Highland,1000-1500,80-120,Seedless; thin skin; excellent sweetness; high export demand.
 Pixie Oranges,Washington Navel,KALRO,Medium,1000-1500,70-100,Large navel orange; seedless; good fresh market variety.
 Pawpaw,Sunrise Solo,KALRO,Coastal/Medium,270-365,150-200,Small fruits; sweet orange flesh; high market demand.

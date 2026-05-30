@@ -78,7 +78,7 @@ const TOOL_DECLARATIONS = [
   },
   {
     name: 'get_fertilizer_plan',
-    description: 'Generate a specific fertilizer recommendation plan for a crop in a county. Use this when the farmer wants a detailed fertilizer schedule or application rates.',
+    description: 'Generate a specific fertilizer recommendation plan for a crop in a county. Use this when the farmer wants a detailed fertilizer schedule or application rates, including companion crop audits for intercropping.',
     parameters: {
       type: 'OBJECT',
       properties: {
@@ -86,6 +86,7 @@ const TOOL_DECLARATIONS = [
         crop: { type: 'STRING', description: 'Crop name e.g. "Maize", "Beans", "Tomato"' },
         farm_size_acres: { type: 'NUMBER', description: 'Farm size in acres (default 1.0)' },
         budget_kes: { type: 'NUMBER', description: 'Farmer budget in KES (optional, default 5000)' },
+        companion_crop: { type: 'STRING', description: 'Optional companion crop for intercropping e.g. "Beans", "Pigeon Peas"' },
       },
       required: ['county', 'crop'],
     },
@@ -139,6 +140,7 @@ async function executeTool(name: string, args: Record<string, unknown>): Promise
           current_fertilizer: 'DAP (Diammonium Phosphate)',
           lang: 'English',
           price_mode: 'Subsidized',
+          companion_crop: args.companion_crop,
         }),
         signal: AbortSignal.timeout(8000),
       });

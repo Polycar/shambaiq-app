@@ -18,6 +18,7 @@ export interface RecommendRequest {
   overrides?: Record<string, number>;
   price_mode?: "Subsidized" | "Commercial";
   yield_target?: number;
+  companion_crop?: string;
 }
 
 export interface RecommendResult {
@@ -65,6 +66,12 @@ export interface RecommendResult {
   is_n_low?: boolean;
   is_p_low?: boolean;
   is_k_low?: boolean;
+  companion_crop?: string;
+  intercrop_audit?: {
+    compatible: boolean;
+    status: string;
+    notes: string[];
+  };
 }
 
 export interface CropMatch {

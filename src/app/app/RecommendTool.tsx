@@ -295,14 +295,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   // Crop Matches state
   const [cropMatches, setCropMatches] = useState<CropMatch[] | null>(null);
 
-  // Pre-fill from onboarding prefs (localStorage)
   useEffect(() => {
     try {
       const raw = localStorage.getItem("shambaiq_prefs");
       if (!raw) return;
       const prefs = JSON.parse(raw);
       if (prefs.county && !county) setCounty(prefs.county);
-      if (prefs.crop && !crop) {
+      if (prefs.crop && prefs.crop !== "Maize" && !crop) {
         setCrop(prefs.crop);
         const u = CROP_UNITS[prefs.crop];
         if (u) setYieldVal(u.def);

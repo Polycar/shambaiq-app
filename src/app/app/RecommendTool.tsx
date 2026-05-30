@@ -269,7 +269,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
   const [ward, setWard] = useState("");
   const [crop, setCrop] = useState("");
   const [companionCrop, setCompanionCrop] = useState("");
-  const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>([FERTILIZER_OPTIONS[0]]);
+  const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>(["None"]);
   const fertilizer = useMemo(() => selectedFertilizers.join(" + "), [selectedFertilizers]);
   const [acres, setAcres] = useState(1);
   const [priceMode, setPriceMode] = useState<"Subsidized" | "Commercial">("Subsidized");

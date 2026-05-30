@@ -730,12 +730,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Crop Selection (Premium Scroll Ribbon) */}
           <div>
             <label className="block text-sm font-medium text-forest-600 mb-1">
-              🌾 {t("form_crop", lang)}
+              {t("form_crop", lang)}
             </label>
             <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar scroll-smooth snap-x snap-mandatory">
               {crops.map((c) => {
                 const isSelected = crop === c.crop;
-                const emoji = CROP_EMOJIS[c.crop] || "🌾";
                 return (
                   <button
                     key={c.slug}
@@ -753,7 +752,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                         : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
                     }`}
                   >
-                    <span className="text-sm">{emoji}</span>
                     <span>{c.crop}</span>
                   </button>
                 );
@@ -764,7 +762,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
           {/* Companion Crop / Intercropping (Premium Scroll Ribbon) */}
           <div>
             <label className="block text-sm font-medium text-forest-600 mb-1">
-              🤝 {lang === "en" ? "Companion Crop (Optional)" : "Zao la Pili (Kwa Hiari)"}
+              {lang === "en" ? "Companion Crop (Optional)" : "Zao la Pili (Kwa Hiari)"}
             </label>
             <div className="flex gap-2 overflow-x-auto py-2 px-1 no-scrollbar scroll-smooth snap-x snap-mandatory">
               <button
@@ -776,12 +774,10 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                     : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
                 }`}
               >
-                <span>🚫</span>
                 <span>{lang === "en" ? "None / Pure Stand" : "Hakuna"}</span>
               </button>
               {crops.filter(c => c.crop !== crop).map((c) => {
                 const isSelected = companionCrop === c.crop;
-                const emoji = CROP_EMOJIS[c.crop] || "🌾";
                 return (
                   <button
                     key={c.slug}
@@ -793,7 +789,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                         : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
                     }`}
                   >
-                    <span className="text-sm">{emoji}</span>
                     <span>{c.crop}</span>
                   </button>
                 );

@@ -5,12 +5,48 @@ Maize,Dry Season,Land Preparation & Manure,Soil Testing & Resting,Seed Selection
 Wheat,Long Rains,Drilling Sowing & Basal Fertilizer,Top Dressing & Weed Control,Pest Monitoring & Protection
 Wheat,Short Rains,Sowing & Basal Fertilizer,Top Dressing & Weed Control,Pest Monitoring
 Wheat,Dry Season,Post-Harvest Processing,Land Resting,Dry Planting Preparation
-Potatoes,Long Rains,Planting Tubers & Basal Fertilizer (NPK),Earthing Up & Top Dressing (CAN),Pest Control (Blight) & Weeding
-Potatoes,Short Rains,Planting & Basal Fertilizer,Earthing Up & Top Dressing,Blight Control
-Potatoes,Dry Season,Harvesting & Storage,Land Resting,Seed Tuber Sprouting
-Beans,Long Rains,Sowing & Basal Fertilizer (DAP),1st Weeding & Thining,Flowering Stage & Pest Control
-Beans,Short Rains,Sowing & Basal Fertilizer,1st Weeding & Thining,Flowering Stage
+Potato,Long Rains,Planting Tubers & Basal Fertilizer (NPK),Earthing Up & Top Dressing (CAN),Pest Control (Blight) & Weeding
+Potato,Short Rains,Planting & Basal Fertilizer,Earthing Up & Top Dressing,Blight Control
+Potato,Dry Season,Harvesting & Storage,Land Resting,Seed Tuber Sprouting
+Beans,Long Rains,Sowing & Basal Fertilizer (DAP),1st Weeding & Thinning,Flowering Stage & Pest Control
+Beans,Short Rains,Sowing & Basal Fertilizer,1st Weeding & Thinning,Flowering Stage
 Beans,Dry Season,Post-Harvest Storage,Land Resting,Seed Selection
 Sorghum,Long Rains,Sowing & Basal Fertilizer,Top Dressing & 1st Weeding,Bird Control & Scouting
 Sorghum,Short Rains,Sowing & Basal Fertilizer,Top Dressing & 1st Weeding,Bird Control
 Sorghum,Dry Season,Harvesting & Drying,Land Resting,Seed Selection
+Coffee (Arabica),Long Rains,Fertilizer Application & Weed Control,Fruit Development Monitoring,Light Pruning & Pest Management
+Coffee (Arabica),Short Rains,Cherry Ripening & Selective Harvesting,Post-Harvest Fertilizer Application,Pruning & Stumping if needed
+Coffee (Arabica),Dry Season,Main Pruning & Soil Conservation,Rest & Recovery,Pre-Season Fertilizer & Soil pH Check
+Coffee (Robusta),Long Rains,Fertilizer Application & Weed Control,Fruit Development Monitoring,Light Pruning & Pest Management
+Coffee (Robusta),Short Rains,Cherry Ripening & Selective Harvesting,Post-Harvest Fertilizer Application,Pruning & Stumping if needed
+Coffee (Robusta),Dry Season,Main Pruning & Soil Conservation,Rest & Recovery,Pre-Season Fertilizer & Soil pH Check
+Tea,Long Rains,Plucking & NPK Fertilizer Application,Plucking & Weed Control,Pest Monitoring & Top Dressing
+Tea,Short Rains,Plucking & Top Dressing,Plucking & Pest Control,Fertilizer Application
+Tea,Dry Season,Pruning & Canopy Management,Land Conservation & Mulching,Recovery Plucking
+Tomato,Long Rains,Nursery Preparation & Transplanting,Top Dressing & Staking & Pest Control,Harvesting & Disease Management
+Tomato,Short Rains,Nursery & Transplanting & Basal Fertilizer,Staking & Top Dressing & Pest Control,Harvesting
+Tomato,Dry Season,Land Preparation & Irrigation Setup,Nursery (irrigated),Transplanting & Basal Fertilizer
+Kale (Sukuma Wiki),Long Rains,Transplanting & Basal Fertilizer,First Harvest & Top Dressing,Continuous Harvesting & Top Dressing
+Kale (Sukuma Wiki),Short Rains,Transplanting & Basal Fertilizer,Top Dressing & Pest Control,Continuous Harvesting
+Kale (Sukuma Wiki),Dry Season,Irrigation & Continuous Harvesting,Top Dressing Every 3 Weeks,Replanting if stand is old
+Sweet Potato,Long Rains,Vine Cutting Planting & Basal Fertilizer,Weeding & Vine Management,Harvesting & Storage
+Sweet Potato,Short Rains,Vine Planting & Basal Fertilizer,Vine Trailing & Weeding,Harvesting
+Sweet Potato,Dry Season,Irrigation & Vine Planting,Weeding,Harvesting & Vine Multiplication
+Cassava,Long Rains,Stem Cutting Planting,Weeding & Pest Monitoring,Growth Monitoring
+Cassava,Short Rains,Weeding & Mound Formation,Pest & Disease Scouting,Growth Monitoring
+Cassava,Dry Season,Harvesting (12+ months from planting),Processing & Storage,Land Preparation for next crop
+Banana,Long Rains,Sucker Planting & Basal Fertilizer,De-suckering & Top Dressing,Bunch Emergence Monitoring
+Banana,Short Rains,Top Dressing & Pest Control,De-suckering & Propping,Bunch Harvesting
+Banana,Dry Season,Irrigation & Top Dressing,Mat Management & Weeding,Harvesting & Replanting
+Avocado,Long Rains,Fertilizer Application & Weed Control,Fruit Set Monitoring & Pest Management,Fruit Development
+Avocado,Short Rains,Flowering & Pollination Support,Fruit Development & Fertilizer,Harvesting (season dependent on variety)
+Avocado,Dry Season,Pruning & Canopy Thinning,Irrigation & Soil Moisture Management,Pre-Season Fertilizer Application
+Onion,Long Rains,Nursery Preparation & Transplanting,Top Dressing (CAN) & Weed Control,Bulbing Stage & NPK 17:17:17 Application
+Onion,Short Rains,Nursery & Transplanting & Basal Fertilizer,Top Dressing & Bulb Formation,Harvesting & Curing
+Onion,Dry Season,Harvesting & Curing & Storage,Land Preparation,Nursery for next season
+Cabbage,Long Rains,Nursery & Transplanting & Basal Fertilizer,Top Dressing & Caterpillar Control,Head Formation & Pest Scouting
+Cabbage,Short Rains,Nursery & Transplanting,Top Dressing & Pest Control,Harvesting
+Cabbage,Dry Season,Irrigation-based Transplanting,Top Dressing & Pest Management,Harvesting & Land Preparation
+Sunflower,Long Rains,Sowing & Basal Fertilizer,Top Dressing & Weed Control,Head Development & Bird Protection
+Sunflower,Short Rains,Sowing & Basal Fertilizer,Top Dressing & 1st Weeding,Harvesting & Drying
+Sunflower,Dry Season,Harvesting & Threshing,Land Resting,Seed Selection & Storage

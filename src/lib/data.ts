@@ -154,6 +154,11 @@ export function getCrops(): CropEconomics[] {
   return _crops;
 }
 
+/** Call this after writing crop_economics.csv so the next request re-reads the file. */
+export function invalidateCropsCache(): void {
+  _crops = null;
+}
+
 export function getCropBySlug(slug: string): CropEconomics | undefined {
   return getCrops().find(c => c.slug === slug);
 }
@@ -568,7 +573,6 @@ export const UI_STRINGS: Record<Lang, Record<string, string>> = {
   },
 };
 
-// ─── Fertilizer options (from Streamlit app) ───────
 export const FERTILIZER_OPTIONS = [
   "DAP (Diammonium Phosphate)",
   "CAN",
@@ -577,6 +581,7 @@ export const FERTILIZER_OPTIONS = [
   "Mavuno (Planting)",
   "YaraMila Cereal",
   "SSP / TSP",
+  "Potassium Sulphate / MOP",
   "Manure",
   "None",
 ];
@@ -593,4 +598,6 @@ export const CROP_UNITS: Record<string, { unit: string; min: number; max: number
   Tea: { unit: "Kg/Acre", min: 500, max: 3000, def: 1500 },
   Coffee: { unit: "Kg/Acre", min: 200, max: 1500, def: 500 },
   Sugarcane: { unit: "Tons/Acre", min: 20, max: 80, def: 50 },
+  "Coffee (Robusta)": { unit: "Kg/Acre", min: 200, max: 1500, def: 600 },
+  "Rice (Lowland/Paddy)": { unit: "Bags/Acre", min: 15, max: 50, def: 30 },
 };

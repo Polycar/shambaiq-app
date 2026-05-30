@@ -1,26 +1,43 @@
 Crop,Product,Timing,Instruction,Bags_Per_Acre
-Maize,CAN,Week 4–6 after germination,When plant is knee-high broadcast between rows,1.0
-Beans,None,None required,Beans fix their own Nitrogen. Do NOT apply CAN — it will reduce yield.,0.0
-Potatoes,CAN,Week 3–4 after emergence,"Apply when plants are 15–20cm tall, before earthing up",1.0
+Maize,CAN,Week 4â€“6 after germination,When plant is knee-high broadcast between rows,1.0
+Beans,None,None required,Beans fix their own Nitrogen. Do NOT apply CAN â€” it will reduce yield.,0.0
+Potatoes,CAN,Week 3â€“4 after emergence,"Apply when plants are 15â€“20cm tall, before earthing up",1.0
 Tomatoes,CAN,"Week 3, 6, and 9",Split into 3 applications. Add foliar potassium at fruiting stage.,0.5
 Kale (Sukuma),CAN,Every 3 weeks after first harvest,Kale is a heavy feeder. Regular top dressing is critical for continuous harvest.,0.5
-Wheat,CAN,Tillering stage (Week 3–4),Apply at tillering for maximum tiller development,1.0
+Wheat,CAN,Tillering stage (Week 3â€“4),Apply at tillering for maximum tiller development,1.0
 Sorghum,CAN,Week 4 after germination,One application at vegetative stage is sufficient,0.5
 Avocado,CAN,Start of rains (biannual),Apply in ring around drip line. Split into 2 annual applications.,0.5
-Tea,NPK 26:5:5,Continuous (every 3 months),Apply evenly around root zone. Avoid lime — tea prefers acidic soil.,1.0
-Finger Millet,CAN,Week 3–4 after germination,One light application at vegetative stage. Do not over-apply.,0.3
+Tea,NPK 26:5:5,Continuous (every 3 months),Apply evenly around root zone. Avoid lime â€” tea prefers acidic soil.,1.0
+Finger Millet,CAN,Week 3â€“4 after germination,One light application at vegetative stage. Do not over-apply.,0.3
 Cassava,None,None required,Cassava is low-input. Excessive N causes leafy growth at expense of tubers.,0.0
 Sweet Potato,None,None required,Sweet potatoes rarely need top dressing. Excess N promotes vines over tubers.,0.0
 Groundnuts,None,None required,Groundnuts fix their own Nitrogen. Apply gypsum at pegging for calcium.,0.0
 Cowpeas,None,None required,Cowpeas fix atmospheric Nitrogen. No top dressing needed.,0.0
-Sunflower,CAN,Week 4–5 after emergence,Apply at vegetative stage before flower bud initiation.,0.5
+Sunflower,CAN,Week 4â€“5 after emergence,Apply at vegetative stage before flower bud initiation.,0.5
 Coffee (Arabica),CAN,Split 3 times per year,"Apply after harvest, at flowering, and during berry expansion.",1.0
 Macadamia,CAN,Start of rains (biannual),Apply in ring around drip line. Young trees need less.,0.5
-Mangoes,CAN,Before flowering (once annually),Apply 2–3 months before expected flowering. Excess N delays fruiting.,0.3
-Onions,CAN,Week 3–4 after transplanting,Apply when bulb formation begins. Do not apply after bulbing starts.,0.5
+Mangoes,CAN,Before flowering (once annually),Apply 2â€“3 months before expected flowering. Excess N delays fruiting.,0.3
+Onions,CAN,Week 3â€“4 after transplanting,Apply when bulb formation begins. Do not apply after bulbing starts.,0.5
 Cabbage,CAN,Week 3 and Week 6 after transplanting,Split into 2 applications. Cabbage is a heavy N feeder.,1.0
-Cotton,CAN,Week 4–6 after emergence,Apply at squaring stage for boll development.,0.5
+Cotton,CAN,Week 4â€“6 after emergence,Apply at squaring stage for boll development.,0.5
 Pigeon Peas,None,None required,Pigeon peas fix atmospheric Nitrogen. No top dressing needed.,0.0
 Rice (Upland),Urea,Tillering and panicle initiation,Split into 2 applications. Flooding helps N uptake.,1.0
 Sisal,None,None required,Sisal is extremely low-input. No fertilizer top dressing needed.,0.0
-Pyrethrum,CAN,Week 4–6 after planting,One application at vegetative stage to support flower production.,0.5
+Pyrethrum,CAN,Week 4â€“6 after planting,One application at vegetative stage to support flower production.,0.5
+Watermelon,CAN,Week 3-4 after transplanting,Apply when runners start expanding. Supplement with foliar potassium.,0.5
+Green Grams,None,None required,Green grams fix their own nitrogen. No top dressing is needed.,0.0
+Sugarcane,CAN,Week 6-8 and Month 4,Heavy nitrogen feeder. Apply in two split portions during early tillering.,1.5
+Capsicum,CAN,Week 3 and Week 6,Split nitrogen application. Add calcium nitrate to prevent blossom end rot.,0.5
+Chilies,CAN,Every 4 weeks during harvest,Apply nitrogen to support continuous leaf and pepper setting.,0.5
+Dhania,CAN,Week 2 after thinning,One light application to boost rapid foliage growth.,0.3
+Garlic,CAN,Week 3 and Week 6 after emergence,Heavy feeding required before bulbs form. Supplement with sulfur.,0.5
+Bananas,CAN,Every 3 months,Apply in a ring around the stem. Supplement heavily with MOP.,0.5
+Cashew Nuts,CAN,Biannual start of rains,Apply in ring around drip line of established trees.,0.5
+Coconuts,CAN,Biannual start of rains,Heavy potassium requirements. Broadcast MOP in root zone.,0.5
+Lucerne,None,None required,Lucerne fixes atmospheric nitrogen. Apply gypsum and foliar boron after cuts.,0.0
+Snow Peas,None,None required,Snow peas fix nitrogen. Apply calcium foliar to support flowering.,0.0
+Arrowroots,CAN,Month 2 and Month 4,Requires rich nitrogen and potassium. Supplement with manure and ash.,0.5
+Passion Fruit,CAN,Every 2 months during rains,Apply to support continuous vine extension and fruiting. Add MOP.,0.5
+Pixie Oranges,CAN,Biannual start of rains,Apply under tree canopy ring. Add zinc foliar to prevent fruit drop.,0.5
+Pawpaw,CAN,Every 2 months,Continuous vegetative grower. Feed nitrogen and MOP regularly.,0.5
+Wambugu Apples,CAN,Split biannually at rains,Apply compost and CAN at pruning. Add soluble P at leaf flush.,0.5

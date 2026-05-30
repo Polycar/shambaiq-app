@@ -172,6 +172,7 @@ export const FERTILIZER_OPTIONS = [
   "Mavuno (Planting)",
   "YaraMila Cereal",
   "SSP / TSP",
+  "Potassium Sulphate / MOP",
   "Manure",
   "None",
 ];
@@ -187,6 +188,8 @@ export const CROP_UNITS: Record<string, { unit: string; min: number; max: number
   Sorghum: { unit: "Bags/Acre", min: 10, max: 25, def: 15 },
   Avocado: { unit: "Tons/Acre", min: 5, max: 15, def: 10 },
   Tea: { unit: "kg/Acre", min: 1000, max: 3000, def: 2000 },
+  "Coffee (Robusta)": { unit: "Kg/Acre", min: 200, max: 1500, def: 600 },
+  "Rice (Lowland/Paddy)": { unit: "Bags/Acre", min: 15, max: 50, def: 30 },
 };
 
 // Comparison reasons — bilingual

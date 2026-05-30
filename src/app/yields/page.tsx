@@ -18,6 +18,9 @@ const CROPS = [
   "Coffee","Sugarcane","Bananas","Cassava","Sweet Potatoes","Groundnuts",
   "Soybeans","Sunflower","Sesame","Onions","Tomatoes","Cabbage","Kale",
   "Carrots","Peas","Macadamia","Avocado",
+  "Watermelon","Green Grams","Capsicum","Chilies","Dhania","Garlic",
+  "Cashew Nuts","Coconuts","Lucerne","Snow Peas","Arrowroots","Passion Fruit",
+  "Pixie Oranges","Pawpaw","Wambugu Apples","Rice (Lowland/Paddy)"
 ];
 
 const currentYear = new Date().getFullYear();

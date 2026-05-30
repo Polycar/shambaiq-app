@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { invalidateCropsCache } from '@/lib/data';
 
 export const runtime = 'nodejs';
 
@@ -9,12 +10,15 @@ const dataDir = path.join(process.cwd(), 'src', 'data');
 const csvPath = path.join(dataDir, 'crop_economics.csv');
 
 async function validateAccess(request: Request): Promise<boolean> {
-  const { searchParams } = new URL(request.url);
-  const code = searchParams.get('access_code') || '';
-  if (!code) return false;
+  const authHeader = request.headers.get('Authorization') || '';
+  if (!authHeader) return false;
   
   try {
-    const res = await fetch(`${API}/api/v1/analytics/stats?access_code=${code}`);
+    const res = await fetch(`${API}/api/v1/analytics/stats`, {
+      headers: {
+        'Authorization': authHeader,
+      },
+    });
     return res.ok;
   } catch (err) {
     console.error('[AdminCropsAPI] Auth verification failed:', err);

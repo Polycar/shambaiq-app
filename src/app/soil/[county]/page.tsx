@@ -16,6 +16,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ScoreRing from "@/components/ScoreRing";
 import NutrientBar from "@/components/NutrientBar";
 import CollapsibleWards from "@/components/CollapsibleWards";
+import SoilEmbedCard from "@/components/SoilEmbedCard";
 
 interface PageProps {
   params: Promise<{ county: string }>;
@@ -301,6 +302,9 @@ export default async function CountySoilPage({ params }: PageProps) {
             )}
           </section>
         </div>
+
+        {/* Dynamic Embed Widget Generator for Dofollow Backlink growth */}
+        <SoilEmbedCard countyName={county.county} countySlug={slug} />
 
         {/* CTA */}
         <section className="bg-forest-700 rounded-2xl p-8 text-center">

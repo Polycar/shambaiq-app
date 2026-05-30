@@ -110,6 +110,7 @@ export interface RecommendResult {
   is_n_low?: boolean;
   is_p_low?: boolean;
   is_k_low?: boolean;
+  companion_crop?: string;
   intercrop_audit?: IntercropAudit | null;
 }
 

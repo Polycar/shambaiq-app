@@ -99,7 +99,7 @@ function clean(s: string | undefined | null): string {
   if (!s) return "";
   return s
     .replace(/\*\*/g, "")
-    .replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, "")
+    .replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u25A0-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, "")
     .trim();
 }
 
@@ -497,9 +497,15 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
       saveSoilReport(res);
 
       if (res.county_data) {
-        matchCrops(resolvedCounty, acres, lang === "en" ? "English" : "Kiswahili", lat, lon)
-          .then((data) => setCropMatches(data.matches))
-          .catch((e) => console.error("Failed to match crops:", e));
+        if (res.matches && res.matches.length > 0) {
+          // Use matches already computed by the backend using the same precision soil data
+          setCropMatches(res.matches);
+        } else {
+          // Fallback: separate call (uses county average — less precise)
+          matchCrops(resolvedCounty, acres, lang === "en" ? "English" : "Kiswahili", lat, lon)
+            .then((data) => setCropMatches(data.matches))
+            .catch((e) => console.error("Failed to match crops:", e));
+        }
       }
 
       // Fire weather in background — prefer coordinate-based weather

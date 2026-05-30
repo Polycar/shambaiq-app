@@ -112,6 +112,7 @@ export interface RecommendResult {
   is_k_low?: boolean;
   companion_crop?: string;
   intercrop_audit?: IntercropAudit | null;
+  matches?: CropMatch[];
 }
 
 export interface CropMatch {

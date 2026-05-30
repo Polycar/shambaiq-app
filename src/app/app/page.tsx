@@ -1,4 +1,4 @@
-import { getCountySoils, getWards, getCrops, getCountyCoords, slugify } from "@/lib/data";
+import { getCountySoils, getWards, getCrops, getCountyCoords, slugify, getDealers } from "@/lib/data";
 import RecommendTool from "./RecommendTool";
 
 
@@ -33,5 +33,7 @@ export default function AppPage() {
     longitude: c.longitude,
   }));
 
-  return <RecommendTool counties={counties} wards={wards} crops={crops} countyCoords={countyCoords} />;
+  const dealers = getDealers();
+
+  return <RecommendTool counties={counties} wards={wards} crops={crops} countyCoords={countyCoords} dealers={dealers} />;
 }

@@ -49,6 +49,7 @@ interface Props {
   wards: WardData[];
   crops: CropData[];
   countyCoords: CountyCoordData[];
+  dealers: Dealer[];
 }
 
 // ─── Score color ────────────────────────────────────────────────
@@ -100,6 +101,20 @@ function clean(s: string | undefined | null): string {
     .replace(/\*\*/g, "")
     .replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, "")
     .trim();
+}
+
+function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
 }
 
 // ─── Agrovet card ──────────────────────────────────────────────
@@ -253,7 +268,7 @@ const CROP_EMOJIS: Record<string, string> = {
 };
 
 // ─── Component ─────────────────────────────────────────────────
-export default function RecommendTool({ counties, wards, crops, countyCoords }: Props) {
+export default function RecommendTool({ counties, wards, crops, countyCoords, dealers }: Props) {
   const [lang, setLang] = useState<Lang>("en");
 
   // Location mode: "region" = County/SubCounty/Ward, "gps" = GPS coordinates
@@ -1415,12 +1430,38 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   if (!lat || !lon) return;
                   setAgrLoading(true);
                   try {
-                    let res = await getDealersNearby(lat, lon);
-                    if (!res || res.length === 0) {
+                    let nearby = dealers
+                      .filter(d => d.lat !== undefined && d.lon !== undefined)
+                      .map(d => {
+                        const dist = haversineDistance(lat, lon, d.lat!, d.lon!);
+                        return { ...d, distance: Math.round(dist * 10) / 10 };
+                      })
+                      .filter(d => d.distance <= 50)
+                      .sort((a, b) => a.distance - b.distance);
+
+                    if (nearby.length === 0) {
                       const resolvedCounty = result?.county || county || "Nairobi";
-                      res = await getDealersByCounty(resolvedCounty);
+                      nearby = dealers
+                        .filter(d => d.county !== undefined && d.county.toLowerCase() === resolvedCounty.toLowerCase())
+                        .map(d => ({ ...d, distance: 55 }));
                     }
-                    setAgrovets(res || []);
+
+                    try {
+                      const backendDealers = await getDealersNearby(lat, lon).catch(() => []);
+                      if (backendDealers && backendDealers.length > 0) {
+                        nearby = nearby.map(d => {
+                          const match = backendDealers.find(bd => bd.name.toLowerCase() === d.name.toLowerCase());
+                          if (match && match.dealer_id) {
+                            return { ...d, dealer_id: match.dealer_id };
+                          }
+                          return d;
+                        });
+                      }
+                    } catch {
+                      // Non-blocking matching fallback
+                    }
+
+                    setAgrovets(nearby);
                     setAgrShown(true);
                   } catch { setAgrovets([]); setAgrShown(true); }
                   finally { setAgrLoading(false); }

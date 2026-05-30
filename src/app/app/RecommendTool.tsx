@@ -1458,8 +1458,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                 </h3>
                 <p className="text-xs text-gray-500 mb-3">
                   {lang === "en"
-                    ? `${agrovets.length} verified agrovets found within 50 km`
-                    : `Agroveti ${agrovets.length} zilizopatikana ndani ya km 50`}
+                    ? (agrovets.length === 0
+                        ? "No verified agrovets found within 50 km"
+                        : `${agrovets.length} verified agrovets found within 50 km`)
+                    : (agrovets.length === 0
+                        ? "Hakuna agroveti zilizopatikana karibu"
+                        : `Agroveti ${agrovets.length} zilizopatikana ndani ya km 50`)}
                 </p>
                 {agrovets.length > 0 ? (
                   <div className="space-y-2.5">

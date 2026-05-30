@@ -23,7 +23,7 @@ import { getPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 // FOCUS KW: "sweet potato farming Homa Bay"
 // ─────────────────────────────────────────────────────────────────────────────
 
-const POST = getPostBySlug("sweet-potato-farming-homa-bay-guide")!;
+const POST = getPostBySlug("sweet-potato-farming-homa-bay")!;
 
 // ── 1. Next.js Metadata (title, meta description, OG, Twitter, canonical, hreflang) ──
 

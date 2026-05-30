@@ -50,3 +50,7 @@ seo_content_calendar.*
 
 # Helper scripts
 create_excel_calendar.py
+
+# Reference blog content (not part of build)
+shambaiq-blog/
+shambaiq-blog-seo-v2/

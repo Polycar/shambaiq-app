@@ -204,7 +204,7 @@ export const ALL_POSTS: BlogPost[] = [
     dateModified: "2026-06-09",
     readingTimeMin: 8,
     wordCount: 1500,
-    image: "/images/blog/wheat-farming-uasin-gishu-eldoret.jpg",
+    image: "/images/blog/wheat-farming-uasin-gishu-eldoret.png",
     imageAlt: "Golden wheat crop ready for harvest on Uasin Gishu plateau near Eldoret Kenya",
     category: "County Farming Guides",
     county: "uasin-gishu",
@@ -266,7 +266,7 @@ export const ALL_POSTS: BlogPost[] = [
   },
 
   {
-    slug: "sweet-potato-farming-homa-bay-guide",
+    slug: "sweet-potato-farming-homa-bay",
     title: "Sweet Potato Farming in Homa Bay: The Complete Lake Victoria Shore Guide",
     metaTitle: "Sweet Potato Farming Homa Bay — Soil, Fertilizer, Yields | ShambaIQ",
     metaDescription:
@@ -431,7 +431,7 @@ export const ALL_POSTS: BlogPost[] = [
     dateModified: "2026-07-10",
     readingTimeMin: 10,
     wordCount: 1900,
-    image: "/images/blog/semi-arid-farming-machakos-makueni.jpg",
+    image: "/images/blog/semi-arid-farming-machakos-makueni.png",
     imageAlt: "Drought-tolerant sorghum crop growing in semi-arid Machakos County Kenya",
     category: "County Farming Guides",
     ctaText: "Get a drought-resilient crop plan built from your county's actual soil data.",
@@ -524,7 +524,7 @@ export const ALL_POSTS: BlogPost[] = [
     dateModified: "2026-07-28",
     readingTimeMin: 7,
     wordCount: 1300,
-    image: "/images/blog/yellow-maize-leaves-nitrogen-deficiency.jpg",
+    image: "/images/blog/yellow-maize-leaves-nitrogen-deficiency.png",
     imageAlt: "Maize plant with yellow leaves showing nitrogen deficiency in Kenyan farm",
     category: "Crop Health",
     crop: "maize",

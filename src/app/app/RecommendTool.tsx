@@ -1258,7 +1258,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                         <div className="flex justify-between text-xs font-medium mb-1">
                           <span>{n.label}</span>
                           <span className={isOk ? "text-green-700" : "text-red-600"}>
-                            {n.current.toFixed(1)} / {n.target.toFixed(1)} {isOk ? "✓" : "⚠"}
+                            {n.current.toFixed(1)} / {n.target.toFixed(1)} {isOk ? "OK" : "Low"}
                           </span>
                         </div>
                         <div className="h-2.5 rounded-full bg-gray-200 overflow-hidden">

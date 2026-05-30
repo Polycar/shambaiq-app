@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
-import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, Dealer, DealerProduct, matchCrops, CropMatch } from "@/lib/api";
+import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch } from "@/lib/api";
 
 const STOCK_LABEL: Record<string, string> = {
   in_stock: "In Stock",
@@ -1415,8 +1415,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords }: 
                   if (!lat || !lon) return;
                   setAgrLoading(true);
                   try {
-                    const res = await getDealersNearby(lat, lon);
-                    setAgrovets(res);
+                    let res = await getDealersNearby(lat, lon);
+                    if (!res || res.length === 0) {
+                      const resolvedCounty = county || "Nairobi";
+                      res = await getDealersByCounty(resolvedCounty);
+                    }
+                    setAgrovets(res || []);
                     setAgrShown(true);
                   } catch { setAgrovets([]); setAgrShown(true); }
                   finally { setAgrLoading(false); }

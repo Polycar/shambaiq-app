@@ -52,7 +52,7 @@ export interface IntercropEconomics {
   ler_estimate: number;
   advantage_pct: number;
   summary: string;
-  note: string;
+  best_alternative?: { crops: string; income_estimate: number } | null;
 }
 
 export interface IntercropAudit {
@@ -77,7 +77,10 @@ export interface RecommendResult {
     "Extractable Phosphorus (mg/kg)": number;
     "Extractable Potassium (mg/kg)": number;
     "Organic Carbon (g/kg)": number;
+    Texture?: string;
   };
+  latitude?: number | null;
+  longitude?: number | null;
   reqs: { n_min: number; p_min: number; k_min: number };
   comparison: {
     current_flaw: string;

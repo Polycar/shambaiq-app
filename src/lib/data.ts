@@ -44,6 +44,7 @@ export interface CountySoil {
   phosphorus: number;
   potassium: number;
   organicCarbon: number;
+  texture: string;
 }
 
 export interface CropEconomics {
@@ -127,6 +128,7 @@ export function getCountySoils(): CountySoil[] {
     phosphorus: parseFloat(r['Extractable Phosphorus (mg/kg)']),
     potassium: parseFloat(r['Extractable Potassium (mg/kg)']),
     organicCarbon: parseFloat(r['Organic Carbon (g/kg)']),
+    texture: r['Texture'] || 'Loam',
   }));
   return _counties;
 }

@@ -316,7 +316,7 @@ export default async function CountySoilPage({ params }: PageProps) {
             data against 25 crops for a full fertilizer plan.
           </p>
           <Link
-            href="/app"
+            href={`/app?county=${encodeURIComponent(county.county)}`}
             className="inline-block px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors"
           >
             Get Free Advice →

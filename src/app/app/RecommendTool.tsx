@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
 import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch } from "@/lib/api";
@@ -286,6 +287,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
   const [cropSearch, setCropSearch] = useState("");
   const [valErrors, setValErrors] = useState<{ county?: boolean; crop?: boolean }>({});
   const [companionCrop, setCompanionCrop] = useState("");
+  const [showCompanion, setShowCompanion] = useState(false);
   const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>(["None"]);
   const fertilizer = useMemo(() => selectedFertilizers.join(" + "), [selectedFertilizers]);
   const [acres, setAcres] = useState(1);
@@ -318,13 +320,29 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
   // Crop Matches state
   const [cropMatches, setCropMatches] = useState<CropMatch[] | null>(null);
 
+  // Item 3: Read URL params to pre-fill form
+  const searchParams = useSearchParams();
   useEffect(() => {
+    const urlCounty = searchParams.get("county");
+    const urlCrop = searchParams.get("crop");
+    if (urlCounty && !county) {
+      const match = counties.find(c => c.county.toLowerCase() === urlCounty.toLowerCase());
+      if (match) setCounty(match.county);
+    }
+    if (urlCrop && !crop) {
+      const match = crops.find(c => c.crop.toLowerCase() === urlCrop.toLowerCase() || c.slug === urlCrop.toLowerCase());
+      if (match) {
+        setCrop(match.crop);
+        const u = CROP_UNITS[match.crop];
+        if (u) setYieldVal(u.def);
+      }
+    }
     try {
       const raw = localStorage.getItem("shambaiq_prefs");
       if (!raw) return;
       const prefs = JSON.parse(raw);
-      if (prefs.county && !county) setCounty(prefs.county);
-      if (prefs.crop && prefs.crop !== "Maize" && !crop) {
+      if (prefs.county && !county && !urlCounty) setCounty(prefs.county);
+      if (prefs.crop && prefs.crop !== "Maize" && !crop && !urlCrop) {
         setCrop(prefs.crop);
         const u = CROP_UNITS[prefs.crop];
         if (u) setYieldVal(u.def);
@@ -548,6 +566,10 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         await new Promise(resolve => setTimeout(resolve, 1200 - elapsed));
       }
       setLoading(false);
+      // Item 5: Smooth scroll to results after loading
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     }
   }, [county, crop, companionCrop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
 
@@ -582,12 +604,27 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           </svg>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 py-10 text-center">
-          <div className="absolute top-4 right-4">
+          {/* Item 5: Language toggle — prominent with highlighted active state */}
+          <div className="absolute top-4 right-4 flex rounded-full overflow-hidden border border-cream-200/30 bg-cream-200/5">
             <button
-              onClick={() => setLang(lang === "en" ? "sw" : "en")}
-              className="text-xs font-semibold px-3 py-1.5 rounded-full border border-cream-200/20 text-cream-300 hover:bg-cream-200/10 transition-colors"
+              onClick={() => setLang("en")}
+              className={`px-3.5 py-1.5 text-xs font-bold transition-all ${
+                lang === "en"
+                  ? "bg-gold-500 text-white"
+                  : "text-cream-300 hover:bg-cream-200/10"
+              }`}
             >
-              {lang === "en" ? "Kiswahili" : "English"}
+              EN
+            </button>
+            <button
+              onClick={() => setLang("sw")}
+              className={`px-3.5 py-1.5 text-xs font-bold transition-all ${
+                lang === "sw"
+                  ? "bg-gold-500 text-white"
+                  : "text-cream-300 hover:bg-cream-200/10"
+              }`}
+            >
+              SW
             </button>
           </div>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-xs font-medium mb-5">
@@ -642,7 +679,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             <div>
               {gpsLoading && (
                 <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700 flex items-center gap-2">
-                  <span className="animate-spin">|</span>
+                  {/* Item 8: Proper SVG spinner instead of pipe character */}
+                  <svg className="animate-spin h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                  </svg>
                   {lang === "en" ? "Acquiring GPS signal..." : "Inapata ishara ya GPS..."}
                 </div>
               )}
@@ -807,53 +848,61 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             </div>
           </div>
 
-          {/* Companion Crop / Intercropping (Premium Vertical Scroll Ribbon) */}
+          {/* Item 2: Companion Crop collapsed by default */}
           <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="block text-sm font-medium text-forest-600">
-                {lang === "en" ? "Companion Crop (Optional)" : "Zao la Pili (Kwa Hiari)"} {companionCrop && <span className="text-xs bg-forest-100 text-forest-700 px-2 py-0.5 rounded-full font-bold ml-1">{companionCrop}</span>}
-              </label>
-            </div>
-            <div className="flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border border-cream-300 rounded-xl bg-cream-50/50">
-              {!crop ? (
-                <div className="text-xs text-soil-400 p-4 text-center">
-                  {lang === "en" ? "Please select a primary crop first" : "Tafadhali chagua zao kuu kwanza"}
-                </div>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setCompanionCrop("")}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center ${
-                      companionCrop === ""
-                        ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
-                        : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
-                    }`}
-                  >
-                    <span>{lang === "en" ? "None / Pure Stand" : "Hakuna"}</span>
-                    {companionCrop === "" && <span className="text-xs font-bold">✓</span>}
-                  </button>
-                  {crops.filter(c => c.crop !== crop).map((c) => {
-                    const isSelected = companionCrop === c.crop;
-                    return (
-                      <button
-                        key={c.slug}
-                        type="button"
-                        onClick={() => setCompanionCrop(c.crop)}
-                        className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center ${
-                          isSelected
-                            ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
-                            : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
-                        }`}
-                      >
-                        <span>{c.crop}</span>
-                        {isSelected && <span className="text-xs font-bold">✓</span>}
-                      </button>
-                    );
-                  })}
-                </>
-              )}
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowCompanion(!showCompanion)}
+              className="flex items-center justify-between w-full text-sm font-medium text-forest-600 py-2 cursor-pointer hover:text-forest-800 transition-colors"
+            >
+              <span>
+                {lang === "en" ? "Add Companion Crop" : "Ongeza Zao la Pili"}
+                {companionCrop && <span className="text-xs bg-forest-100 text-forest-700 px-2 py-0.5 rounded-full font-bold ml-2">{companionCrop}</span>}
+              </span>
+              <svg className={`w-4 h-4 transition-transform ${showCompanion ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            {showCompanion && (
+              <div className="flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border border-cream-300 rounded-xl bg-cream-50/50 slide-down">
+                {!crop ? (
+                  <div className="text-xs text-soil-400 p-4 text-center">
+                    {lang === "en" ? "Please select a primary crop first" : "Tafadhali chagua zao kuu kwanza"}
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setCompanionCrop("")}
+                      className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center ${
+                        companionCrop === ""
+                          ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
+                          : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
+                      }`}
+                    >
+                      <span>{lang === "en" ? "None / Pure Stand" : "Hakuna"}</span>
+                      {companionCrop === "" && <span className="text-xs font-bold">✓</span>}
+                    </button>
+                    {crops.filter(c => c.crop !== crop).map((c) => {
+                      const isSelected = companionCrop === c.crop;
+                      return (
+                        <button
+                          key={c.slug}
+                          type="button"
+                          onClick={() => setCompanionCrop(c.crop)}
+                          className={`w-full text-left px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center ${
+                            isSelected
+                              ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm"
+                              : "bg-white border-cream-200 text-forest-800 hover:bg-cream-100 hover:border-cream-300"
+                          }`}
+                        >
+                          <span>{c.crop}</span>
+                          {isSelected && <span className="text-xs font-bold">✓</span>}
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Fertilizer Selection (Premium Multi-Select Chips) */}
@@ -884,14 +933,17 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                         setSelectedFertilizers(next);
                       }
                     }}
-                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-semibold text-left transition-all ${
+                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-semibold text-left transition-all cursor-pointer ${
                       isSelected
                         ? "bg-forest-700 border-forest-700 text-cream-100 shadow-sm scale-[1.02]"
                         : "bg-cream-50 border-cream-300 text-forest-800 hover:bg-cream-100 hover:border-cream-400"
                     }`}
                   >
-                    <span className="shrink-0 flex items-center justify-center w-4 h-4 rounded-full border border-current">
-                      {isSelected ? "✓" : ""}
+                    {/* Item 11: Whole chip is tap target — checkbox is visual only */}
+                    <span className={`shrink-0 flex items-center justify-center w-5 h-5 rounded-md border-2 transition-colors ${
+                      isSelected ? "bg-cream-100 border-cream-200" : "border-cream-400 bg-white"
+                    }`}>
+                      {isSelected && <svg className="w-3 h-3 text-forest-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg>}
                     </span>
                     <span className="truncate">{f}</span>
                   </button>
@@ -935,43 +987,49 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
 
 
 
-          {/* Lab Override */}
-          <div className="border-t pt-3">
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={labMode}
-                onChange={(e) => setLabMode(e.target.checked)}
-                className="rounded accent-green-600"
-              />
-              {t("form_lab_mode", lang)}
-            </label>
-            {labMode && (
-              <div className="grid grid-cols-2 gap-3 mt-3">
-                <div>
-                  <label htmlFor="lab-ph" className="text-xs text-gray-500">{t("form_lab_ph", lang)}</label>
-                  <input id="lab-ph" type="number" step={0.1} value={labPH} onChange={(e) => setLabPH(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+          {/* Item 2: Lab Override — collapsed behind Advanced Settings disclosure */}
+          <details className="border-t pt-3 group">
+            <summary className="flex items-center justify-between text-sm font-medium text-gray-700 cursor-pointer list-none">
+              <span>{lang === "en" ? "Advanced: Lab Soil Override" : "Kiwango cha Juu: Makadirio ya Maabara"}</span>
+              <svg className="w-4 h-4 transition-transform group-open:rotate-180 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div className="mt-3 space-y-3">
+              <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={labMode}
+                  onChange={(e) => setLabMode(e.target.checked)}
+                  className="rounded accent-green-600"
+                />
+                {t("form_lab_mode", lang)}
+              </label>
+              {labMode && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label htmlFor="lab-ph" className="text-xs text-gray-500">{t("form_lab_ph", lang)}</label>
+                    <input id="lab-ph" type="number" step={0.1} value={labPH} onChange={(e) => setLabPH(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="lab-n" className="text-xs text-gray-500">{t("form_lab_n", lang)}</label>
+                    <input id="lab-n" type="number" step={0.1} value={labN} onChange={(e) => setLabN(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="lab-p" className="text-xs text-gray-500">{t("form_lab_p", lang)}</label>
+                    <input id="lab-p" type="number" step={1} value={labP} onChange={(e) => setLabP(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="lab-k" className="text-xs text-gray-500">{t("form_lab_k", lang)}</label>
+                    <input id="lab-k" type="number" step={10} value={labK} onChange={(e) => setLabK(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
+                  </div>
                 </div>
-                <div>
-                  <label htmlFor="lab-n" className="text-xs text-gray-500">{t("form_lab_n", lang)}</label>
-                  <input id="lab-n" type="number" step={0.1} value={labN} onChange={(e) => setLabN(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
-                </div>
-                <div>
-                  <label htmlFor="lab-p" className="text-xs text-gray-500">{t("form_lab_p", lang)}</label>
-                  <input id="lab-p" type="number" step={1} value={labP} onChange={(e) => setLabP(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
-                </div>
-                <div>
-                  <label htmlFor="lab-k" className="text-xs text-gray-500">{t("form_lab_k", lang)}</label>
-                  <input id="lab-k" type="number" step={10} value={labK} onChange={(e) => setLabK(parseFloat(e.target.value))} className="w-full rounded-lg border px-2 py-1.5 text-sm" />
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          </details>
 
           {/* Submit */}
           <button
             onClick={handleSubmit}
-            disabled={loading || !county || !crop}
+            disabled={loading || (locMode === "region" && !county) || !crop}
             className={`w-full py-3.5 rounded-xl font-bold text-white text-base transition-all flex items-center justify-center gap-2 shadow-md ${
               loading
                 ? "bg-soil-400 cursor-not-allowed"
@@ -1082,7 +1140,18 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         {/* ── RESULTS ───────────────────────────────────────── */}
         {result && !result.error && (
           <div ref={resultRef} id="shambaiq-results" className="space-y-4 pb-28 fade-up">
-            {/* Score */}
+
+            {/* Item 7: Back to form button on mobile */}
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="lg:hidden w-full py-2 rounded-xl border border-cream-300 bg-white text-sm font-semibold text-forest-600 hover:bg-cream-50 transition-colors flex items-center justify-center gap-1.5"
+              data-noprint
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M5 15l7-7 7 7"/></svg>
+              {lang === "en" ? "Change inputs" : "Badilisha maingizo"}
+            </button>
+
+            {/* Item 9: Score with plain-language explanation */}
             <div className="rounded-2xl border border-cream-300 bg-white p-6 text-center shadow-sm">
               <div
                 className="w-24 h-24 rounded-full flex flex-col items-center justify-center mx-auto mb-3 shadow-lg"
@@ -1098,7 +1167,17 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   ? (lang === "en" ? "Moderate — Needs Attention" : "Ya Wastani — Inahitaji Uangalifu")
                   : (lang === "en" ? "Poor — Action Required" : "Mbaya — Hatua Inahitajika")}
               </p>
-              <p className="text-sm text-soil-400 mt-1">{t("result_score", lang)} · {result.county}</p>
+              {/* Item 9: Plain-language score explanation */}
+              <p className="text-xs text-soil-400 mt-2 max-w-xs mx-auto leading-relaxed">
+                {result.health_score >= 80
+                  ? (lang === "en" ? "Your soil is well-suited for this crop. Minimal amendments needed." : "Udongo wako unafaa kwa zao hili. Marekebisho madogo yanahitajika.")
+                  : result.health_score >= 60
+                  ? (lang === "en" ? "Good match, but 1\u20132 nutrients need boosting with the right fertilizer." : "Ulinganifu mzuri, lakini virutubisho 1-2 vinahitaji kuongezwa.")
+                  : result.health_score >= 40
+                  ? (lang === "en" ? "Several nutrient gaps detected. Follow the fertilizer plan below carefully." : "Mapungufu ya virutubisho yamegunduliwa. Fuata mpango wa mbolea.")
+                  : (lang === "en" ? "Major soil deficiencies. Consider soil amendments and the alternative crops listed below." : "Upungufu mkubwa wa udongo. Fikiria marekebisho ya udongo.")}
+              </p>
+              <p className="text-xs text-soil-400 mt-1">{t("result_score", lang)} · {result.county}</p>
             </div>
 
             {/* Data source badge */}
@@ -1117,116 +1196,72 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </span>
             </div>
 
-            {/* Rhizosphere Compatibility Audit (SPAA) */}
-            {result.intercrop_audit && (
-              <div className="rounded-2xl border p-5 bg-white shadow-sm border-cream-300">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-base flex items-center gap-2 text-forest-700">
-                    {lang === "en" ? "SPAA Rhizosphere Synergy" : "Ushirikiano wa Mizizi (SPAA)"}
-                  </h3>
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold text-white ${
-                    result.intercrop_audit.compatible 
-                      ? (result.intercrop_audit.status === "WARNING" || result.intercrop_audit.status === "ILANI" ? "bg-amber-500" : "bg-green-600") 
-                      : "bg-red-600"
-                  }`}>
-                    {result.intercrop_audit.status}
-                  </span>
+            {/* ─── Item 1: REORDERED — Budget + Fertilizer FIRST ─── */}
+
+            {/* Shopping List / Budget — the farmer's #1 question */}
+            <div className="rounded-2xl border border-cream-300 bg-white p-5">
+              <h3 className="font-display font-bold text-base mb-1 text-forest-700">
+                {t("shopping_title", lang)}
+              </h3>
+              <p className="text-xs text-soil-400 mb-3">
+                {t("shopping_for", lang)} <strong>{acres} {t("shopping_acres", lang)}</strong>
+              </p>
+              <div className="rounded-xl p-4 mb-3 text-center bg-forest-700">
+                <p className="text-sm text-cream-400 uppercase tracking-wider">{t("result_total_cost", lang)}</p>
+                <p className="text-3xl font-extrabold text-gold-400">KES {result.budget.total_budget.toLocaleString()}</p>
+              </div>
+              {/* Item 7 (budget styling): Individual line items */}
+              <div className="space-y-1.5">
+                {result.budget.breakdown.map((line, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm text-gray-700 py-1 border-b border-cream-200 last:border-b-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-forest-500 shrink-0" />
+                    <span>{line}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* The Switch — Fertilizer Comparison */}
+            {result.comparison && (
+              <div className="rounded-2xl border bg-white p-5">
+                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
+                  {t("switch_title", lang)}
+                </h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-left py-2 pr-2">{t("table_feature", lang)}</th>
+                        <th className="text-left py-2 pr-2">{t("table_habit", lang)}</th>
+                        <th className="text-left py-2 text-green-700">{t("table_rec", lang)}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-100">
+                        <td className="py-2 pr-2 font-medium">{t("table_strategy", lang)}</td>
+                        <td className="py-2 pr-2 text-red-600 text-xs">{clean(result.comparison.current_flaw) || "\u2014"}</td>
+                        <td className="py-2 text-green-700 font-bold">
+                          {(() => {
+                            const rec = clean(result.comparison.recommended);
+                            if (rec && (rec.includes("None") || rec.includes("Optimal")) && result.is_k_low) {
+                              return lang === "en" ? "NPK 17:17:17 + CAN (K is deficient)" : "NPK 17:17:17 + CAN (K iko chini)";
+                            }
+                            return rec || "\u2014";
+                          })()}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-2 font-medium">{t("table_outcome", lang)}</td>
+                        <td className="py-2 pr-2">{clean(result.comparison.current_outcome) || "Variable"}</td>
+                        <td className="py-2 text-green-700 font-bold">{clean(result.comparison.impact) || "\u2014"}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div className="space-y-2">
-                  {result.intercrop_audit.notes.map((note: string, idx: number) => {
-                    const isReject = note.includes("Conflict") || note.includes("Inhibition") || note.includes("Toxicity") || note.includes("Veto") || note.includes("block") || note.includes("competition block") || note.includes("Mzozo") || note.includes("Uzuiaji") || note.includes("Sumu") || note.includes("kizuizi") || note.includes("Kizuizi");
-                    const isWarning = note.includes("Warning") || note.includes("Ilani") || note.includes("alert") || note.includes("caution") || note.includes("management needed") || note.includes("unahitajika");
-                    const isAlternative = note.includes("instead") || note.includes("Alternatives") || note.includes("badala yake") || note.includes("Mbadala");
-                    return (
-                      <div key={idx} className={`rounded-xl px-3 py-2.5 text-xs flex items-start gap-2 border ${
-                        isAlternative ? "bg-blue-50 text-blue-800 border-blue-200 font-medium" :
-                        isReject ? "bg-red-50 text-red-800 border-red-100" :
-                        isWarning ? "bg-amber-50 text-amber-800 border-amber-100" :
-                        "bg-green-50 text-green-800 border-green-100"
-                      }`}>
-                        <span className="leading-relaxed">{note}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Soil suitability per crop */}
-                {result.intercrop_audit.soil_fit && Object.keys(result.intercrop_audit.soil_fit).length > 0 && (
-                  <div className="mt-4 space-y-3">
-                    <p className="text-xs font-semibold text-forest-700">{lang === "en" ? "Soil Fit by Crop" : "Ubora wa Udongo kwa Kila Zao"}</p>
-                    {Object.entries(result.intercrop_audit.soil_fit).map(([cropName, fit]: [string, {score: number; verdict: string; issues: string[]; ph_ok: boolean; n_ok: boolean; p_ok: boolean; k_ok: boolean}]) => (
-                      <div key={cropName} className="rounded-xl border border-cream-200 bg-cream-50 px-3 py-2.5">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xs font-bold text-forest-800">{cropName}</span>
-                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${fit.score >= 75 ? "bg-green-100 text-green-800" : fit.score >= 50 ? "bg-amber-100 text-amber-800" : "bg-red-100 text-red-800"}`}>{fit.score}/100</span>
-                        </div>
-                        <p className="text-xs text-gray-600 mb-1.5">{fit.verdict}</p>
-                        <div className="flex gap-2 flex-wrap">
-                          {(["ph_ok", "n_ok", "p_ok", "k_ok"] as const).map((key) => (
-                            <span key={key} className={`text-xs px-1.5 py-0.5 rounded font-medium ${fit[key] ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                              {key.replace("_ok", "").toUpperCase()} {fit[key] ? "OK" : "Low"}
-                            </span>
-                          ))}
-                        </div>
-                        {fit.issues.length > 0 && (
-                          <ul className="mt-1.5 space-y-0.5">
-                            {fit.issues.map((iss: string, i: number) => (
-                              <li key={i} className="text-xs text-red-700">- {iss}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* N-fixation savings */}
-                {result.intercrop_audit.n_fixation && (
-                  <div className="mt-4 rounded-xl border border-green-200 bg-green-50 px-3 py-2.5">
-                    <p className="text-xs font-semibold text-green-800 mb-1">{lang === "en" ? "Nitrogen Fixation Saving" : "Akiba ya Nitrojeni"}</p>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-green-800">
-                      <span>{lang === "en" ? "Fixed N" : "Nitrojeni iliyonaswa"}</span>
-                      <span className="font-bold">{result.intercrop_audit.n_fixation.fixed_kg_per_ha} kg/ha ({result.intercrop_audit.n_fixation.fixed_kg_per_acre} kg/acre)</span>
-                      <span>{lang === "en" ? "CAN bags saved" : "Mifuko ya CAN iliyookolewa"}</span>
-                      <span className="font-bold">{result.intercrop_audit.n_fixation.can_bags_saved_per_acre} /acre</span>
-                      <span>{lang === "en" ? "Saving per acre" : "Akiba kwa ekari"}</span>
-                      <span className="font-bold">KES {result.intercrop_audit.n_fixation.kes_saved_per_acre.toLocaleString()}</span>
-                      <span>{lang === "en" ? "Total saving" : "Jumla ya akiba"}</span>
-                      <span className="font-bold">KES {result.intercrop_audit.n_fixation.kes_saved_total.toLocaleString()}</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Layout */}
-                {result.intercrop_audit.layout && (
-                  <div className="mt-4 rounded-xl border border-cream-200 bg-cream-50 px-3 py-2.5">
-                    <p className="text-xs font-semibold text-forest-700 mb-1.5">{lang === "en" ? "Planting Layout" : "Mpango wa Upandaji"}</p>
-                    <div className="space-y-1 text-xs text-forest-800">
-                      <p><span className="font-semibold">{lang === "en" ? "Arrangement: " : "Mpangilio: "}</span>{result.intercrop_audit.layout.arrangement}</p>
-                      <p><span className="font-semibold">{lang === "en" ? "Timing: " : "Wakati: "}</span>{result.intercrop_audit.layout.timing}</p>
-                      <p><span className="font-semibold">{lang === "en" ? "Spacing: " : "Nafasi: "}</span>{result.intercrop_audit.layout.spacing}</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Economics */}
-                {result.intercrop_audit.economics && (
-                  <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2.5">
-                    <p className="text-xs font-semibold text-blue-800 mb-1">{lang === "en" ? "Income Comparison" : "Ulinganisho wa Mapato"}</p>
-                    <p className="text-xs text-blue-900 mb-1.5 leading-relaxed">{result.intercrop_audit.economics.summary}</p>
-                    <div className="flex gap-3 flex-wrap text-xs">
-                      <span className="bg-white border border-blue-200 rounded px-2 py-0.5 font-medium text-blue-800">LER {result.intercrop_audit.economics.ler_estimate}</span>
-                      {result.intercrop_audit.economics.advantage_pct > 0 && (
-                        <span className="bg-green-100 border border-green-200 rounded px-2 py-0.5 font-bold text-green-800">+{result.intercrop_audit.economics.advantage_pct}%</span>
-                      )}
-                    </div>
-                    <p className="text-xs text-blue-600 mt-1.5 italic">{result.intercrop_audit.economics.note}</p>
-                  </div>
-                )}
               </div>
             )}
 
-            {/* Nutrient Sufficiency */}
+            {/* Item 6: Nutrient Sufficiency — merged (removed duplicate from SPAA) */}
             <div className={`rounded-2xl border p-5 ${scoreBg(result.health_score)}`}>
               <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
                 {t("chart_title", lang)}
@@ -1280,54 +1315,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               )}
             </div>
 
-            {/* The Switch — Fertilizer Comparison */}
-            {result.comparison && (
-              <div className="rounded-2xl border bg-white p-5">
-                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  {t("switch_title", lang)}
-                </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm border-collapse">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-2 pr-2">{t("table_feature", lang)}</th>
-                        <th className="text-left py-2 pr-2">{t("table_habit", lang)}</th>
-                        <th className="text-left py-2 text-green-700">{t("table_rec", lang)}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-gray-100">
-                        <td className="py-2 pr-2 font-medium">{t("table_strategy", lang)}</td>
-                        <td className="py-2 pr-2 text-red-600 text-xs">{clean(result.comparison.current_flaw) || "—"}</td>
-                        <td className="py-2 text-green-700 font-bold">
-                          {(() => {
-                            const rec = clean(result.comparison.recommended);
-                            // Fix contradiction: if K is low, don't say "None required"
-                            if (rec && (rec.includes("None") || rec.includes("Optimal")) && result.is_k_low) {
-                              return lang === "en" ? "NPK 17:17:17 + CAN (K is deficient)" : "NPK 17:17:17 + CAN (K iko chini)";
-                            }
-                            return rec || "—";
-                          })()}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-2 pr-2 font-medium">{t("table_outcome", lang)}</td>
-                        <td className="py-2 pr-2">{clean(result.comparison.current_outcome) || "Variable"}</td>
-                        <td className="py-2 text-green-700 font-bold">{clean(result.comparison.impact) || "—"}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
             {/* Timeline */}
             {result.timeline && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
                   {t("timeline_title", lang)}
                 </h3>
-                <p className="text-xs text-gray-500 mb-3">{result.timeline.season} — {result.crop}</p>
+                <p className="text-xs text-gray-500 mb-3">{result.timeline.season} \u2014 {result.crop}</p>
                 {[
                   { label: t("timeline_month1", lang), text: result.timeline.month_1, color: "#3b82f6" },
                   { label: t("timeline_month2", lang), text: result.timeline.month_2, color: "#10b981" },
@@ -1341,116 +1335,177 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </div>
             )}
 
-            {result.seeds && result.seeds.length > 0 && (
-              <div className="rounded-2xl border bg-white p-5">
-                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  {t("seeds_title", lang)}
-                </h3>
-                <p className="text-xs text-gray-500 mb-3">KALRO & Kenya Seed Company certified varieties</p>
-                <div className="space-y-2">
-                  {result.seeds.map((s) => (
-                    <details key={s.Variety} className="rounded-lg border overflow-hidden">
-                      <summary className="px-3 py-2.5 text-sm font-semibold cursor-pointer hover:bg-gray-50">
-                        {s.Variety} <span className="text-gray-400 font-normal">({s.Breeder})</span>
-                      </summary>
-                      <div className="px-3 py-2 text-xs text-gray-600 border-t bg-gray-50 space-y-1">
-                        <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} · <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} · <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} bags/acre</p>
-                        <p className="text-green-700">{s.Special_Attributes}</p>
-                      </div>
-                    </details>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="rounded-2xl border border-cream-300 bg-white p-5">
-              <h3 className="font-display font-bold text-base mb-1 text-forest-700">
-                {t("shopping_title", lang)}
+            {/* Item 13: Seeds — show empty state message when none */}
+            <div className="rounded-2xl border bg-white p-5">
+              <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
+                {t("seeds_title", lang)}
               </h3>
-              <p className="text-xs text-soil-400 mb-3">
-                {t("shopping_for", lang)} <strong>{acres} {t("shopping_acres", lang)}</strong>
-              </p>
-              <div className="rounded-xl p-4 mb-3 text-center bg-forest-700">
-                <p className="text-sm text-cream-400 uppercase tracking-wider">{t("result_total_cost", lang)}</p>
-                <p className="text-3xl font-extrabold text-gold-400">KES {result.budget.total_budget.toLocaleString()}</p>
-              </div>
-              <ul className="space-y-1.5 list-disc pl-5">
-                {result.budget.breakdown.map((line, i) => (
-                  <li key={i} className="text-sm text-gray-700">
-                    {line}
-                  </li>
-                ))}
-              </ul>
+              {result.seeds && result.seeds.length > 0 ? (
+                <>
+                  <p className="text-xs text-gray-500 mb-3">KALRO & Kenya Seed Company certified varieties</p>
+                  <div className="space-y-2">
+                    {result.seeds.map((s) => (
+                      <details key={s.Variety} className="rounded-lg border overflow-hidden">
+                        <summary className="px-3 py-2.5 text-sm font-semibold cursor-pointer hover:bg-gray-50">
+                          {s.Variety} <span className="text-gray-400 font-normal">({s.Breeder})</span>
+                        </summary>
+                        <div className="px-3 py-2 text-xs text-gray-600 border-t bg-gray-50 space-y-1">
+                          <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} \u00b7 <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} \u00b7 <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} bags/acre</p>
+                          <p className="text-green-700">{s.Special_Attributes}</p>
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-soil-400 py-2">
+                  {lang === "en"
+                    ? `No certified seed varieties found for ${result.crop} in this region. Check with your local KALRO office.`
+                    : `Hakuna aina za mbegu zilizoidhinishwa kwa ${result.crop} katika eneo hili. Wasiliana na ofisi yako ya KALRO.`}
+                </p>
+              )}
             </div>
 
-            {/* 7-Day Weather Forecast */}
+            {/* Item 4: SPAA Intercrop Audit — collapsed by default */}
+            {result.intercrop_audit && (
+              <details className="rounded-2xl border p-5 bg-white shadow-sm border-cream-300">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="font-bold text-base flex items-center gap-2 text-forest-700">
+                    {lang === "en" ? "Intercrop Analysis" : "Uchambuzi wa Mazao Mchanganyiko"}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold text-white ${
+                      result.intercrop_audit.compatible
+                        ? (result.intercrop_audit.status === "WARNING" || result.intercrop_audit.status === "ILANI" ? "bg-amber-500" : "bg-green-600")
+                        : "bg-red-600"
+                    }`}>
+                      {result.intercrop_audit.compatible
+                        ? (lang === "en" ? "Compatible" : "Inaoana")
+                        : (lang === "en" ? "Not Compatible" : "Haiendani")}
+                    </span>
+                    <svg className="w-4 h-4 text-gray-400 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
+                  </div>
+                </summary>
+                <div className="mt-4 space-y-2">
+                  {result.intercrop_audit.notes.map((note: string, idx: number) => {
+                    const isReject = note.includes("Conflict") || note.includes("Inhibition") || note.includes("Toxicity") || note.includes("Veto") || note.includes("block") || note.includes("Mzozo") || note.includes("Uzuiaji") || note.includes("Sumu") || note.includes("kizuizi") || note.includes("Kizuizi");
+                    const isWarning = note.includes("Warning") || note.includes("Ilani") || note.includes("alert") || note.includes("caution") || note.includes("management needed") || note.includes("unahitajika");
+                    const isAlternative = note.includes("instead") || note.includes("Alternatives") || note.includes("badala yake") || note.includes("Mbadala");
+                    return (
+                      <div key={idx} className={`rounded-xl px-3 py-2.5 text-xs flex items-start gap-2 border ${
+                        isAlternative ? "bg-blue-50 text-blue-800 border-blue-200 font-medium" :
+                        isReject ? "bg-red-50 text-red-800 border-red-100" :
+                        isWarning ? "bg-amber-50 text-amber-800 border-amber-100" :
+                        "bg-green-50 text-green-800 border-green-100"
+                      }`}>
+                        <span className="leading-relaxed">{note}</span>
+                      </div>
+                    );
+                  })}
+
+                  {/* N-fixation savings */}
+                  {result.intercrop_audit.n_fixation && (
+                    <div className="mt-4 rounded-xl border border-green-200 bg-green-50 px-3 py-2.5">
+                      <p className="text-xs font-semibold text-green-800 mb-1">{lang === "en" ? "Nitrogen Fixation Saving" : "Akiba ya Nitrojeni"}</p>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-green-800">
+                        <span>{lang === "en" ? "Fixed N" : "Nitrojeni iliyonaswa"}</span>
+                        <span className="font-bold">{result.intercrop_audit.n_fixation.fixed_kg_per_ha} kg/ha ({result.intercrop_audit.n_fixation.fixed_kg_per_acre} kg/acre)</span>
+                        <span>{lang === "en" ? "CAN bags saved" : "Mifuko ya CAN iliyookolewa"}</span>
+                        <span className="font-bold">{result.intercrop_audit.n_fixation.can_bags_saved_per_acre} /acre</span>
+                        <span>{lang === "en" ? "Saving per acre" : "Akiba kwa ekari"}</span>
+                        <span className="font-bold">KES {result.intercrop_audit.n_fixation.kes_saved_per_acre.toLocaleString()}</span>
+                        <span>{lang === "en" ? "Total saving" : "Jumla ya akiba"}</span>
+                        <span className="font-bold">KES {result.intercrop_audit.n_fixation.kes_saved_total.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Layout */}
+                  {result.intercrop_audit.layout && (
+                    <div className="mt-4 rounded-xl border border-cream-200 bg-cream-50 px-3 py-2.5">
+                      <p className="text-xs font-semibold text-forest-700 mb-1.5">{lang === "en" ? "Planting Layout" : "Mpango wa Upandaji"}</p>
+                      <div className="space-y-1 text-xs text-forest-800">
+                        <p><span className="font-semibold">{lang === "en" ? "Arrangement: " : "Mpangilio: "}</span>{result.intercrop_audit.layout.arrangement}</p>
+                        <p><span className="font-semibold">{lang === "en" ? "Timing: " : "Wakati: "}</span>{result.intercrop_audit.layout.timing}</p>
+                        <p><span className="font-semibold">{lang === "en" ? "Spacing: " : "Nafasi: "}</span>{result.intercrop_audit.layout.spacing}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Economics */}
+                  {result.intercrop_audit.economics && (
+                    <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2.5">
+                      <p className="text-xs font-semibold text-blue-800 mb-1">{lang === "en" ? "Income Comparison" : "Ulinganisho wa Mapato"}</p>
+                      <p className="text-xs text-blue-900 mb-1.5 leading-relaxed">{result.intercrop_audit.economics.summary}</p>
+                      <div className="flex gap-3 flex-wrap text-xs">
+                        <span className="bg-white border border-blue-200 rounded px-2 py-0.5 font-medium text-blue-800">LER {result.intercrop_audit.economics.ler_estimate}</span>
+                        {result.intercrop_audit.economics.advantage_pct > 0 && (
+                          <span className="bg-green-100 border border-green-200 rounded px-2 py-0.5 font-bold text-green-800">+{result.intercrop_audit.economics.advantage_pct}%</span>
+                        )}
+                      </div>
+                      <p className="text-xs text-blue-600 mt-1.5 italic">{result.intercrop_audit.economics.note}</p>
+                    </div>
+                  )}
+                </div>
+              </details>
+            )}
+
+            {/* Item 10: Weather — collapsible, moved below technical sections */}
             {weather && (
-              <div className="rounded-2xl border bg-white p-5">
-                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  {lang === "en" ? "7-Day Weather Forecast" : "Utabiri wa Hali ya Hewa (Siku 7)"}
-                </h3>
-
-                {/* Agronomic Advice Banner */}
-                {weather.summary && (
-                  <div className={`rounded-xl px-3 py-2.5 text-sm mb-3 border ${
-                    weather.summary.includes("Heavy") || weather.summary.includes("dry") || weather.summary.includes("Dry")
-                      ? "bg-amber-50 border-amber-200 text-amber-800"
-                      : "bg-green-50 border-green-200 text-green-800"
-                  }`}>
-                    <span className="font-semibold">{weather.summary}</span>
-                    {weather.advice && <span className="opacity-80"> — {weather.advice}</span>}
-                  </div>
-                )}
-
-                {/* Daily Forecast Cards */}
-                {weather.forecast && weather.forecast.length > 0 && (
-                  <div className="grid grid-cols-7 gap-1.5">
-                    {weather.forecast.map((day: { date: string; temp_max: number; temp_min: number; rain_mm: number; description: string; wind_kmh?: number }, i: number) => {
-                      const d = new Date(day.date + "T00:00:00");
-                      const dayName = i === 0
-                        ? (lang === "en" ? "Today" : "Leo")
-                        : d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { weekday: "short" });
-                      const dateStr = d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { day: "numeric", month: "short" });
-
-                      // Weather condition text
-                      const desc = (day.description || "").toLowerCase();
-                      let statusText = "Sunny";
-                      if (desc.includes("thunder")) statusText = "Storm";
-                      else if (desc.includes("heavy rain") || desc.includes("violent")) statusText = "Heavy Rain";
-                      else if (desc.includes("rain") || desc.includes("shower")) statusText = "Rainy";
-                      else if (desc.includes("drizzle")) statusText = "Drizzle";
-                      else if (desc.includes("overcast")) statusText = "Overcast";
-                      else if (desc.includes("cloud") || desc.includes("partly")) statusText = "Cloudy";
-                      else if (desc.includes("fog")) statusText = "Foggy";
-
-                      const isWet = day.rain_mm > 5;
-                      const isDry = day.rain_mm < 1;
-
-                      return (
-                        <div
-                          key={day.date}
-                          className={`rounded-xl border p-2 text-center text-xs transition-all ${
+              <details className="rounded-2xl border bg-white p-5">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="font-bold text-base" style={{ color: "#1a3a1a" }}>
+                    {lang === "en" ? "7-Day Weather Forecast" : "Utabiri wa Hali ya Hewa (Siku 7)"}
+                  </h3>
+                  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div className="mt-3">
+                  {weather.summary && (
+                    <div className={`rounded-xl px-3 py-2.5 text-sm mb-3 border ${
+                      weather.summary.includes("Heavy") || weather.summary.includes("dry") || weather.summary.includes("Dry")
+                        ? "bg-amber-50 border-amber-200 text-amber-800"
+                        : "bg-green-50 border-green-200 text-green-800"
+                    }`}>
+                      <span className="font-semibold">{weather.summary}</span>
+                      {weather.advice && <span className="opacity-80"> \u2014 {weather.advice}</span>}
+                    </div>
+                  )}
+                  {weather.forecast && weather.forecast.length > 0 && (
+                    <div className="grid grid-cols-7 gap-1.5">
+                      {weather.forecast.map((day: { date: string; temp_max: number; temp_min: number; rain_mm: number; description: string; wind_kmh?: number }, i: number) => {
+                        const d = new Date(day.date + "T00:00:00");
+                        const dayName = i === 0
+                          ? (lang === "en" ? "Today" : "Leo")
+                          : d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { weekday: "short" });
+                        const dateStr = d.toLocaleDateString(lang === "en" ? "en-US" : "sw-KE", { day: "numeric", month: "short" });
+                        const desc = (day.description || "").toLowerCase();
+                        let statusText = "Sunny";
+                        if (desc.includes("thunder")) statusText = "Storm";
+                        else if (desc.includes("heavy rain") || desc.includes("violent")) statusText = "Heavy Rain";
+                        else if (desc.includes("rain") || desc.includes("shower")) statusText = "Rainy";
+                        else if (desc.includes("drizzle")) statusText = "Drizzle";
+                        else if (desc.includes("overcast")) statusText = "Overcast";
+                        else if (desc.includes("cloud") || desc.includes("partly")) statusText = "Cloudy";
+                        else if (desc.includes("fog")) statusText = "Foggy";
+                        const isWet = day.rain_mm > 5;
+                        const isDry = day.rain_mm < 1;
+                        return (
+                          <div key={day.date} className={`rounded-xl border p-2 text-center text-xs transition-all ${
                             isWet ? "bg-blue-50 border-blue-200" : isDry ? "bg-amber-50 border-amber-100" : "bg-green-50 border-green-100"
-                          }`}
-                        >
-                          <div className="font-bold text-gray-800">{dayName}</div>
-                          <div className="text-gray-400 text-[10px]">{dateStr}</div>
-                          <div className="text-[10px] font-semibold my-2 text-forest-700 uppercase tracking-tight">{statusText}</div>
-                          <div className="font-semibold text-gray-700">
-                            {day.temp_max !== null ? `${Math.round(day.temp_max)}°` : "—"}
+                          }`}>
+                            <div className="font-bold text-gray-800">{dayName}</div>
+                            <div className="text-gray-400 text-[10px]">{dateStr}</div>
+                            <div className="text-[10px] font-semibold my-2 text-forest-700 uppercase tracking-tight">{statusText}</div>
+                            <div className="font-semibold text-gray-700">{day.temp_max !== null ? `${Math.round(day.temp_max)}\u00b0` : "\u2014"}</div>
+                            <div className="text-gray-400">{day.temp_min !== null ? `${Math.round(day.temp_min)}\u00b0` : "\u2014"}</div>
+                            <div className={`mt-1 font-semibold ${isWet ? "text-blue-600" : "text-gray-400"}`}>{day.rain_mm !== null ? `${day.rain_mm.toFixed(1)}` : "0"}mm</div>
                           </div>
-                          <div className="text-gray-400">
-                            {day.temp_min !== null ? `${Math.round(day.temp_min)}°` : "—"}
-                          </div>
-                          <div className={`mt-1 font-semibold ${isWet ? "text-blue-600" : "text-gray-400"}`}>
-                            {day.rain_mm !== null ? `${day.rain_mm.toFixed(1)}` : "0"}mm
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </details>
             )}
 
             {/* Advice */}
@@ -1461,8 +1516,8 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 </h3>
                 <div className="space-y-2">
                   {result.advice.map((item, i) => {
-                    const isError = item.includes("❌") || item.includes("🚨") || item.includes("Critical") || item.includes("Toxicity");
-                    const isWarn = item.includes("⚠️") || item.includes("Deficiency") || item.includes("Low");
+                    const isError = item.includes("\u274c") || item.includes("\ud83d\udea8") || item.includes("Critical") || item.includes("Toxicity");
+                    const isWarn = item.includes("\u26a0\ufe0f") || item.includes("Deficiency") || item.includes("Low");
                     const bg = isError ? "bg-red-50 border-red-200" : isWarn ? "bg-amber-50 border-amber-200" : "bg-green-50 border-green-200";
                     return (
                       <div key={i} className={`rounded-lg border px-3 py-2 text-sm ${bg}`}>
@@ -1518,29 +1573,22 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                       })
                       .filter(d => d.distance <= 50)
                       .sort((a, b) => a.distance - b.distance);
-
                     if (nearby.length === 0) {
                       const resolvedCounty = result?.county || county || "Nairobi";
                       nearby = dealers
                         .filter(d => d.county !== undefined && d.county.toLowerCase() === resolvedCounty.toLowerCase())
                         .map(d => ({ ...d, distance: 55 }));
                     }
-
                     try {
                       const backendDealers = await getDealersNearby(lat, lon).catch(() => []);
                       if (backendDealers && backendDealers.length > 0) {
                         nearby = nearby.map(d => {
                           const match = backendDealers.find(bd => bd.name.toLowerCase() === d.name.toLowerCase());
-                          if (match && match.dealer_id) {
-                            return { ...d, dealer_id: match.dealer_id };
-                          }
+                          if (match && match.dealer_id) return { ...d, dealer_id: match.dealer_id };
                           return d;
                         });
                       }
-                    } catch {
-                      // Non-blocking matching fallback
-                    }
-
+                    } catch { /* Non-blocking */ }
                     setAgrovets(nearby);
                     setAgrShown(true);
                   } catch { setAgrovets([]); setAgrShown(true); }
@@ -1559,7 +1607,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </button>
             </div>
 
-            {/* Sticky WhatsApp FAB */}
+            {/* Sticky WhatsApp FAB + Back to form on mobile */}
             <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-full max-w-xs px-4" data-noprint>
               <a
                 href={whatsappUrl}
@@ -1575,23 +1623,19 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </a>
             </div>
 
-            {/* Agrovet Results */}
+            {/* Item 12: Agrovet Results — single message, no duplicate */}
             {agrShown && (
               <div className="rounded-2xl border bg-white p-5">
-                <h3 className="font-bold text-base mb-1" style={{ color: "#1a3a1a" }}>
+                <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
                   {lang === "en" ? "Agrovets Near You" : "Agroveti Karibu Nawe"}
                 </h3>
-                <p className="text-xs text-gray-500 mb-3">
-                  {lang === "en"
-                    ? (agrovets.length === 0
-                        ? "No verified agrovets found within 50 km"
-                        : `${agrovets.length} verified agrovets found within 50 km`)
-                    : (agrovets.length === 0
-                        ? "Hakuna agroveti zilizopatikana karibu"
-                        : `Agroveti ${agrovets.length} zilizopatikana ndani ya km 50`)}
-                </p>
                 {agrovets.length > 0 ? (
                   <div className="space-y-2.5">
+                    <p className="text-xs text-gray-500">
+                      {lang === "en"
+                        ? `${agrovets.length} verified agrovets found within 50 km`
+                        : `Agroveti ${agrovets.length} zilizopatikana ndani ya km 50`}
+                    </p>
                     {agrovets.slice(0, 10).map((d, i) => (
                       <AgrovetCard key={i} dealer={d} isFirst={i === 0} lang={lang} />
                     ))}
@@ -1604,13 +1648,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     )}
                   </div>
                 ) : (
-                  <div className="text-center py-4">
-                    <p className="text-sm text-gray-500">
-                      {lang === "en"
-                        ? "No agrovets found within 50 km. Try a wider search on the Dealers page."
-                        : "Hakuna agroveti zilizopatikana ndani ya km 50."}
-                    </p>
-                  </div>
+                  <p className="text-sm text-gray-500 py-2">
+                    {lang === "en"
+                      ? "No agrovets found within 50 km. Try a wider search on the Dealers page."
+                      : "Hakuna agroveti zilizopatikana ndani ya km 50."}
+                  </p>
                 )}
               </div>
             )}
@@ -1656,16 +1698,16 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           </div>
         )}
 
-        {/* empty state — show when no results yet */}
+        {/* Item 14 (mobile): Empty state visible on all devices */}
         {!loading && !result && !geminiAdvice && (
-          <div className="hidden lg:flex flex-col items-center justify-center h-full min-h-[400px] text-center px-8 rounded-2xl border-2 border-dashed border-cream-300 bg-cream-50">
+          <div className="flex flex-col items-center justify-center min-h-[200px] lg:min-h-[400px] text-center px-8 rounded-2xl border-2 border-dashed border-cream-300 bg-cream-50">
             <div className="w-16 h-16 rounded-2xl bg-forest-700/8 flex items-center justify-center mb-4">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2d5a27" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
               </svg>
             </div>
-            <p className="font-display text-lg font-bold text-forest-700 mb-2">Your results will appear here</p>
-            <p className="text-sm text-soil-400 max-w-xs">Select your county, crop, and farm size on the left — then get your free soil analysis and fertilizer plan.</p>
+            <p className="font-display text-lg font-bold text-forest-700 mb-2">{lang === "en" ? "Your results will appear here" : "Matokeo yako yataonekana hapa"}</p>
+            <p className="text-sm text-soil-400 max-w-xs">{lang === "en" ? "Select your county, crop, and farm size \u2014 then get your free soil analysis and fertilizer plan." : "Chagua kaunti yako, zao, na ukubwa wa shamba \u2014 kisha pata uchambuzi wako wa udongo bila malipo."}</p>
           </div>
         )}
 

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getCountySoils, getWards, getCrops, getCountyCoords, slugify, getDealers } from "@/lib/data";
 import RecommendTool from "./RecommendTool";
 
@@ -35,5 +36,9 @@ export default function AppPage() {
 
   const dealers = getDealers();
 
-  return <RecommendTool counties={counties} wards={wards} crops={crops} countyCoords={countyCoords} dealers={dealers} />;
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="skeleton w-64 h-8" /></div>}>
+      <RecommendTool counties={counties} wards={wards} crops={crops} countyCoords={countyCoords} dealers={dealers} />
+    </Suspense>
+  );
 }

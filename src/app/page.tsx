@@ -236,7 +236,7 @@ export default function HomePage() {
           </div>
           <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible no-scrollbar">
             {topCounties.map((c) => (
-              <Link key={c.slug} href={`/app`} className="w-[85vw] shrink-0 sm:w-[350px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group relative overflow-hidden">
+              <Link key={c.slug} href={`/app?county=${encodeURIComponent(c.county)}`} className="w-[85vw] shrink-0 sm:w-[350px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group relative overflow-hidden">
                 <div className="flex items-start justify-between mb-5">
                   <div>
                     <h3 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{c.county}</h3>
@@ -271,6 +271,12 @@ export default function HomePage() {
                 </div>
               </Link>
             ))}
+          </div>
+          {/* Item 15: County score color legend */}
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs text-soil-400">
+            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#16a34a' }} /> Good (70+)</span>
+            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#f59e0b' }} /> Moderate (50–69)</span>
+            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#dc2626' }} /> Low (&lt;50)</span>
           </div>
           <div className="mt-6 text-center sm:hidden">
             <Link href="/soil" className="text-gold-600 hover:text-gold-700 font-semibold text-sm">

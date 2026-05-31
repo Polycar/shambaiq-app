@@ -390,7 +390,7 @@ export default async function CountyCropPage({ params }: PageProps) {
                 Agrovets in {county.county} →
               </Link>
               <Link
-                href="/app"
+                href={`/app?county=${encodeURIComponent(county.county)}&crop=${encodeURIComponent(crop.crop)}`}
                 className="block mt-4 text-center px-4 py-2.5 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-lg text-sm transition-colors"
               >
                 Get Full Advice →

@@ -70,6 +70,12 @@ export default async function CropPage({ params }: PageProps) {
   const displayPrice = livePrice ?? crop.price_per_kg;
   const revenue = displayPrice * crop.yield_per_acre;
 
+  // Item 14: Previous/Next crop navigation
+  const allCrops = getCrops();
+  const currentIdx = allCrops.findIndex((c) => c.slug === slug);
+  const prevCrop = currentIdx > 0 ? allCrops[currentIdx - 1] : null;
+  const nextCrop = currentIdx < allCrops.length - 1 ? allCrops[currentIdx + 1] : null;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs
@@ -333,12 +339,37 @@ export default async function CropPage({ params }: PageProps) {
           </div>
 
           <Link
-            href="/app"
+            href={`/app?crop=${encodeURIComponent(crop.crop)}`}
             className="block text-center px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors"
           >
             Check Your County for {crop.crop} →
           </Link>
         </div>
+      </div>
+
+      {/* Item 14: Previous/Next crop navigation */}
+      <div className="flex items-center justify-between mt-10 pt-6 border-t border-cream-300">
+        {prevCrop ? (
+          <Link
+            href={`/crops/${prevCrop.slug}`}
+            className="flex items-center gap-2 text-sm font-semibold text-forest-600 hover:text-gold-600 transition-colors group"
+          >
+            <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
+            {prevCrop.crop}
+          </Link>
+        ) : <span />}
+        <Link href="/crops" className="text-xs text-soil-400 hover:text-gold-600 transition-colors">
+          All crops
+        </Link>
+        {nextCrop ? (
+          <Link
+            href={`/crops/${nextCrop.slug}`}
+            className="flex items-center gap-2 text-sm font-semibold text-forest-600 hover:text-gold-600 transition-colors group"
+          >
+            {nextCrop.crop}
+            <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M5 12h14m0 0l-7-7m7 7l-7 7"/></svg>
+          </Link>
+        ) : <span />}
       </div>
     </div>
   );

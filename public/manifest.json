@@ -1,0 +1,49 @@
+{
+  "name": "ShambaIQ",
+  "short_name": "ShambaIQ",
+  "description": "Free soil analysis and fertilizer recommendations for Kenyan farmers",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#15803d",
+  "orientation": "portrait",
+  "lang": "en",
+  "categories": ["agriculture", "productivity"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-app.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Soil analysis and fertilizer recommendation"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Get Recommendation",
+      "short_name": "Recommend",
+      "url": "/app",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Soil Reports",
+      "short_name": "Soil",
+      "url": "/soil",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

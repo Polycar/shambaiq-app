@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import PWAInstaller from "@/components/PWAInstaller";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { cookies } from "next/headers";
 import "./globals.css";
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.shambaiq.com"),
   title: { default: "ShambaIQ — Precision Agriculture for Every Kenyan Farmer", template: "%s | ShambaIQ" },
   description: "Free soil analysis and fertilizer recommendations for all 47 Kenyan counties, 25 crops. Powered by 30m precision satellite data.",
-  icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
+  icons: { icon: "/favicon.svg", apple: "/icon-192.png" },
+  manifest: "/manifest.json",
   openGraph: { type: "website", locale: "en_KE", siteName: "ShambaIQ", images: ["/api/og"] },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
@@ -41,12 +43,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
+      <head>
+        <meta name="theme-color" content="#15803d" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="ShambaIQ" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+      </head>
       <body className="min-h-screen flex flex-col antialiased">
         <Header isLoggedIn={isLoggedIn} userName={userName} />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />
         <MobileNav />
         <WhatsAppWidget />
+        <PWAInstaller />
       </body>
       <GoogleAnalytics gaId="G-7X2WCN7KJ7" />
     </html>

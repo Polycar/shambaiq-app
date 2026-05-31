@@ -1212,15 +1212,37 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 {/* Economics */}
                 {result.intercrop_audit.economics && (
                   <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2.5">
-                    <p className="text-xs font-semibold text-blue-800 mb-1">{lang === "en" ? "Income Comparison" : "Ulinganisho wa Mapato"}</p>
-                    <p className="text-xs text-blue-900 mb-1.5 leading-relaxed">{result.intercrop_audit.economics.summary}</p>
-                    <div className="flex gap-3 flex-wrap text-xs">
-                      <span className="bg-white border border-blue-200 rounded px-2 py-0.5 font-medium text-blue-800">LER {result.intercrop_audit.economics.ler_estimate}</span>
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs font-semibold text-blue-800">{lang === "en" ? "Income Comparison" : "Ulinganisho wa Mapato"}</p>
                       {result.intercrop_audit.economics.advantage_pct > 0 && (
-                        <span className="bg-green-100 border border-green-200 rounded px-2 py-0.5 font-bold text-green-800">+{result.intercrop_audit.economics.advantage_pct}%</span>
+                        <span className="bg-green-100 border border-green-200 rounded px-2 py-0.5 text-xs font-bold text-green-800">+{result.intercrop_audit.economics.advantage_pct}%</span>
                       )}
                     </div>
-                    <p className="text-xs text-blue-600 mt-1.5 italic">{result.intercrop_audit.economics.note}</p>
+                    <div className="space-y-1 mb-2">
+                      {Object.entries(result.intercrop_audit.economics.monocrop_income as Record<string, number>).map(([crop, income]) => (
+                        <div key={crop} className="flex justify-between text-xs">
+                          <span className="text-blue-700">{crop} {lang === "en" ? "(monocrop)" : "(kilimo kimoja)"}</span>
+                          <span className="font-medium text-blue-900">KES {income.toLocaleString()}/acre</span>
+                        </div>
+                      ))}
+                      <div className="flex justify-between text-xs border-t border-blue-200 pt-1 mt-1">
+                        <span className={result.intercrop_audit.economics.advantage_pct > 0 ? "font-semibold text-green-700" : "text-blue-700"}>
+                          {lang === "en" ? "This intercrop" : "Mchanganyiko huu"}
+                        </span>
+                        <span className={`font-bold ${result.intercrop_audit.economics.advantage_pct > 0 ? "text-green-700" : "text-blue-900"}`}>
+                          KES {result.intercrop_audit.economics.intercrop_income_estimate.toLocaleString()}/acre
+                        </span>
+                      </div>
+                    </div>
+                    {result.intercrop_audit.economics.best_alternative && (
+                      <div className="rounded-lg bg-amber-50 border border-amber-200 px-2 py-1.5 mt-1">
+                        <p className="text-xs font-semibold text-amber-800 mb-0.5">{lang === "en" ? "Better option for this region" : "Chaguo bora kwa eneo hili"}</p>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-amber-700">{result.intercrop_audit.economics.best_alternative.crops}</span>
+                          <span className="font-bold text-amber-900">~KES {result.intercrop_audit.economics.best_alternative.income_estimate.toLocaleString()}/acre</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

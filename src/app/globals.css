@@ -176,3 +176,46 @@ body {
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ═══════════════════════════════════════════════════
+   PRINT / PDF STYLE INTEGRITY
+   ═══════════════════════════════════════════════════ */
+@media print {
+  /* Force all details elements to render as fully open, non-interactive boxes */
+  details {
+    display: block !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.75rem !important;
+    padding: 1.25rem !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  details > summary {
+    display: block !important;
+    pointer-events: none !important;
+    cursor: default !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    padding-bottom: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  /* Hide the toggle indicators in print mode */
+  details > summary svg,
+  details > summary::after,
+  details > summary::-webkit-details-marker {
+    display: none !important;
+  }
+
+  /* Force display of the inner content of closed details elements */
+  details:not([open]) > *:not(summary) {
+    display: block !important;
+  }
+
+  /* Optimize spacing and hide interactive/start-over elements in printing */
+  .no-print {
+    display: none !important;
+  }
+}

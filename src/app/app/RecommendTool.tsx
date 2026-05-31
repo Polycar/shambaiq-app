@@ -1273,6 +1273,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                       </div>
                     );
                   })}
+                  {result.county_data["Texture"] && result.latitude && (
+                    <div className="flex justify-between text-xs pt-1 border-t border-gray-200 mt-1">
+                      <span className="text-gray-500">{lang === "en" ? "Soil texture (iSDA)" : "Umbile la Udongo (iSDA)"}</span>
+                      <span className="font-semibold text-forest-700">{result.county_data["Texture"]}</span>
+                    </div>
+                  )}
                   <p className="text-xs text-gray-500 mt-1">
                     1.0 = {lang === "en" ? `optimal ${result.crop} requirement` : `mahitaji bora ya ${result.crop}`}
                   </p>

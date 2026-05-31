@@ -15,7 +15,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.shambaiq.com"),
   title: { default: "ShambaIQ — Precision Agriculture for Every Kenyan Farmer", template: "%s | ShambaIQ" },
   description: "Free soil analysis and fertilizer recommendations for all 47 Kenyan counties, 25 crops. Powered by 30m precision satellite data.",
-  icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
+  icons: { 
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", type: "image/x-icon" }
+    ],
+    apple: "/favicon.png" 
+  },
   openGraph: { type: "website", locale: "en_KE", siteName: "ShambaIQ", images: ["/api/og"] },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },

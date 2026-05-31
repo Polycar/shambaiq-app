@@ -22,14 +22,24 @@ export default function PWAInstaller() {
     if (localStorage.getItem(DISMISS_KEY)) return;
     if (window.matchMedia("(display-mode: standalone)").matches) return;
 
-    const handler = (e: Event) => {
+    let capturedPrompt: BeforeInstallPromptEvent | null = null;
+
+    const onBeforeInstall = (e: Event) => {
       e.preventDefault();
-      setPrompt(e as BeforeInstallPromptEvent);
-      setTimeout(() => setVisible(true), 3000);
+      capturedPrompt = e as BeforeInstallPromptEvent;
+      setPrompt(capturedPrompt);
     };
 
-    window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+    const onRecommendationDone = () => {
+      if (capturedPrompt) setVisible(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", onBeforeInstall);
+    window.addEventListener("shambaiq-recommendation-complete", onRecommendationDone);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+      window.removeEventListener("shambaiq-recommendation-complete", onRecommendationDone);
+    };
   }, []);
 
   const install = async () => {

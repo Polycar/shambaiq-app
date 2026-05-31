@@ -4,9 +4,10 @@ import Link from "next/link";
 
 export default function OfflinePage() {
   const [cachedPages, setCachedPages] = useState<string[]>([]);
+  const [cacheLoaded, setCacheLoaded] = useState(false);
 
   useEffect(() => {
-    if (!("caches" in window)) return;
+    if (!("caches" in window)) { setCacheLoaded(true); return; }
     caches.open("shambaiq-v1-pages").then((cache) =>
       cache.keys().then((keys) => {
         const paths = keys
@@ -14,6 +15,7 @@ export default function OfflinePage() {
           .filter((p) => p.startsWith("/soil/") || p.startsWith("/crops/"))
           .slice(0, 8);
         setCachedPages(paths);
+        setCacheLoaded(true);
       })
     );
   }, []);
@@ -35,6 +37,11 @@ export default function OfflinePage() {
       >
         Try Again
       </button>
+      {cacheLoaded && cachedPages.length === 0 && (
+        <p className="text-xs text-soil-400 max-w-xs">
+          Visit soil reports and crop pages while online to save them for offline use.
+        </p>
+      )}
       {cachedPages.length > 0 && (
         <div className="w-full max-w-xs text-left">
           <p className="text-xs font-semibold text-soil-400 uppercase tracking-wide mb-3">Available offline</p>

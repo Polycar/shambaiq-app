@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
-import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch } from "@/lib/api";
+import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch, fetchSeeds } from "@/lib/api";
 
 const STOCK_LABEL: Record<string, string> = {
   in_stock: "In Stock",
@@ -319,6 +319,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
 
   // Crop Matches state
   const [cropMatches, setCropMatches] = useState<CropMatch[] | null>(null);
+  const [companionSeeds, setCompanionSeeds] = useState<any[] | null>(null);
 
   // Item 3: Read URL params to pre-fill form
   const searchParams = useSearchParams();
@@ -480,6 +481,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     setWeather(null);
     setGeminiAdvice(null);
     setCropMatches(null);
+    setCompanionSeeds(null);
 
     const lat = resolvedCoords?.lat;
     const lon = resolvedCoords?.lon;
@@ -514,16 +516,44 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
       setResult(res);
       saveSoilReport(res);
 
+      // Fetch companion seeds if selected
+      if (companionCrop) {
+        fetchSeeds(companionCrop)
+          .then((seedsData) => setCompanionSeeds(seedsData || []))
+          .catch((e) => console.error("Failed to fetch companion seeds:", e));
+      } else {
+        setCompanionSeeds(null);
+      }
+
+      // Query AI crop matcher with precise soil properties
       if (res.county_data) {
-        if (res.matches && res.matches.length > 0) {
-          // Use matches already computed by the backend using the same precision soil data
-          setCropMatches(res.matches);
-        } else {
-          // Fallback: separate call (uses county average — less precise)
-          matchCrops(resolvedCounty, acres, lang === "en" ? "English" : "Kiswahili", lat, lon)
-            .then((data) => setCropMatches(data.matches))
-            .catch((e) => console.error("Failed to match crops:", e));
-        }
+        const soilPayload = {
+          pH: res.county_data.pH,
+          nitrogen: res.county_data["Total Nitrogen (g/kg)"] !== undefined ? res.county_data["Total Nitrogen (g/kg)"] : (res.county_data as any).nitrogen,
+          phosphorus: res.county_data["Extractable Phosphorus (mg/kg)"] !== undefined ? res.county_data["Extractable Phosphorus (mg/kg)"] : (res.county_data as any).phosphorus,
+          potassium: res.county_data["Extractable Potassium (mg/kg)"] !== undefined ? res.county_data["Extractable Potassium (mg/kg)"] : (res.county_data as any).potassium,
+          organic_carbon: res.county_data["Organic Carbon (g/kg)"] !== undefined ? res.county_data["Organic Carbon (g/kg)"] : (res.county_data as any).organic_carbon,
+          texture: res.county_data.Texture || "Loam"
+        };
+
+        fetch("/api/agronomy/match-crops", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            county: resolvedCounty,
+            acres,
+            soil: soilPayload,
+            lat,
+            lon
+          })
+        })
+        .then(r => r.json())
+        .then((data) => {
+          if (data.matches) {
+            setCropMatches(data.matches);
+          }
+        })
+        .catch((e) => console.error("Failed to fetch precise crop matches:", e));
       }
 
       // Fire weather in background — prefer coordinate-based weather
@@ -554,6 +584,35 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         if (geminiRes.ok) {
           const geminiData = await geminiRes.json();
           setGeminiAdvice(geminiData);
+
+          // Also fetch dynamic AI matches in the fallback flow
+          const soilPayload = countyData ? {
+            pH: countyData.pH,
+            nitrogen: countyData.nitrogen,
+            phosphorus: countyData.phosphorus,
+            potassium: countyData.potassium,
+            organic_carbon: 18.0, // baseline estimate
+            texture: "Loam"
+          } : null;
+
+          fetch("/api/agronomy/match-crops", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              county: resolvedCounty,
+              acres,
+              soil: soilPayload,
+              lat,
+              lon
+            })
+          })
+          .then(r => r.json())
+          .then((data) => {
+            if (data.matches) {
+              setCropMatches(data.matches);
+            }
+          })
+          .catch((e) => console.error("Failed to fetch precise matches in fallback flow:", e));
         } else {
           setError(lang === "en" ? "Unable to get advice — please try again." : "Imeshindwa kupata ushauri — jaribu tena.");
         }
@@ -1342,13 +1401,17 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             )}
 
             {/* Item 13: Seeds — show empty state message when none */}
-            <div className="rounded-2xl border bg-white p-5">
-              <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
+            <div className="rounded-2xl border bg-white p-5 space-y-4">
+              <h3 className="font-bold text-base" style={{ color: "#1a3a1a" }}>
                 {t("seeds_title", lang)}
               </h3>
-              {result.seeds && result.seeds.length > 0 ? (
-                <>
-                  <p className="text-xs text-gray-500 mb-3">KALRO & Kenya Seed Company certified varieties</p>
+
+              {/* Main Crop Seeds */}
+              <div>
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-forest-700 mb-2">
+                  {lang === "en" ? `${result.crop} Certified Seeds` : `Mbegu Zilizoidhinishwa za ${result.crop}`}
+                </h4>
+                {result.seeds && result.seeds.length > 0 ? (
                   <div className="space-y-2">
                     {result.seeds.map((s) => (
                       <details key={s.Variety} className="rounded-lg border overflow-hidden">
@@ -1357,18 +1420,48 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                         </summary>
                         <div className="px-3 py-2 text-xs text-gray-600 border-t bg-gray-50 space-y-1">
                           <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} \u00b7 <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} \u00b7 <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} bags/acre</p>
-                          <p className="text-green-700">{s.Special_Attributes}</p>
+                          <p className="text-green-700 font-medium">{s.Special_Attributes}</p>
                         </div>
                       </details>
                     ))}
                   </div>
-                </>
-              ) : (
-                <p className="text-sm text-soil-400 py-2">
-                  {lang === "en"
-                    ? `No certified seed varieties found for ${result.crop} in this region. Check with your local KALRO office.`
-                    : `Hakuna aina za mbegu zilizoidhinishwa kwa ${result.crop} katika eneo hili. Wasiliana na ofisi yako ya KALRO.`}
-                </p>
+                ) : (
+                  <p className="text-sm text-soil-400 py-1.5">
+                    {lang === "en"
+                      ? `No certified seed varieties found for ${result.crop} in this region. Check with your local KALRO office.`
+                      : `Hakuna aina za mbegu zilizoidhinishwa kwa ${result.crop} katika eneo hili. Wasiliana na ofisi ya KALRO.`}
+                  </p>
+                )}
+              </div>
+
+              {/* Companion Crop Seeds (only when companion crop is selected) */}
+              {companionCrop && (
+                <div className="border-t pt-4 mt-2">
+                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-forest-700 mb-2">
+                    {lang === "en" ? `${companionCrop} Certified Seeds (Companion)` : `Mbegu Zilizoidhinishwa za ${companionCrop} (Msaidizi)`}
+                  </h4>
+                  {companionSeeds && companionSeeds.length > 0 ? (
+                    <div className="space-y-2">
+                      {companionSeeds.map((s) => (
+                        <details key={s.Variety} className="rounded-lg border overflow-hidden">
+                          <summary className="px-3 py-2.5 text-sm font-semibold cursor-pointer hover:bg-gray-50">
+                            {s.Variety} <span className="text-gray-400 font-normal">({s.Breeder})</span>
+                          </summary>
+                          <div className="px-3 py-2 text-xs text-gray-600 border-t bg-gray-50 space-y-1">
+                            <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} \u00b7 <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} \u00b7 <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} bags/acre</p>
+                            <p className="text-green-700 font-medium">{s.Special_Attributes}</p>
+                          </div>
+                        </details>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-soil-400 py-1.5">
+                      {lang === "en"
+                        ? `No certified seed varieties found for ${companionCrop} in this region.`
+                        : `Hakuna aina za mbegu zilizoidhinishwa kwa ${companionCrop} katika eneo hili.`}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
 
@@ -1685,29 +1778,84 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </div>
             )}
 
-            {/* Alternative Crop Recommendations */}
+            {/* Best Matching Crops for Your Soil */}
             {cropMatches && cropMatches.length > 0 && (
               <div className="mt-8 mb-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                  {lang === "en" ? "Alternative Crops for Your Soil" : "Mazao Mbadala kwa Udongo Wako"}
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                  </svg>
+                  {lang === "en" ? "Best Matching Crops for Your Soil" : "Mazao Yanayofaa Zaidi kwa Udongo Wako"}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {cropMatches.map((cm, idx) => (
-                    <div key={idx} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm relative overflow-hidden">
-                      <div className="absolute top-0 right-0 h-full w-2 bg-gradient-to-b from-green-400 to-emerald-600"></div>
-                      <h4 className="font-bold text-gray-800 text-lg">{cm.crop}</h4>
-                      <div className="mt-2 flex items-center justify-between">
-                        <span className="text-sm text-gray-500">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
-                        <span className="font-bold text-emerald-600">{Math.round(cm.match_score)}%</span>
+                  {cropMatches.map((cm, idx) => {
+                    const score = Math.round(cm.match_score);
+                    const isExcellent = score >= 85;
+                    const isVeryGood = score >= 70 && score < 85;
+                    const isGood = score >= 45 && score < 70;
+                    
+                    const gradientClass = isExcellent 
+                      ? "from-green-400 to-emerald-600" 
+                      : isVeryGood 
+                        ? "from-cyan-400 to-blue-600" 
+                        : isGood 
+                          ? "from-amber-400 to-orange-600" 
+                          : "from-red-400 to-rose-600";
+                          
+                    const barColor = isExcellent 
+                      ? "bg-emerald-500" 
+                      : isVeryGood 
+                        ? "bg-blue-500" 
+                        : isGood 
+                          ? "bg-amber-500" 
+                          : "bg-red-500";
+
+                    const badgeClass = isExcellent
+                      ? "bg-green-50 text-green-700 border-green-200"
+                      : isVeryGood
+                        ? "bg-blue-50 text-blue-700 border-blue-200"
+                        : isGood
+                          ? "bg-amber-50 text-amber-700 border-amber-200"
+                          : "bg-red-50 text-red-700 border-red-200";
+
+                    const reasonText = lang === "en" 
+                      ? ((cm as any).reason || `Highly compatible with your soil's properties (Suitability: ${cm.label}).`)
+                      : ((cm as any).reason_sw || `Inafaa sana kwa mali ya udongo wako (Ubora: ${cm.label}).`);
+
+                    return (
+                      <div key={idx} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                        <div className={`absolute top-0 right-0 h-full w-1.5 bg-gradient-to-b ${gradientClass}`}></div>
+                        <div>
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <h4 className="font-bold text-gray-800 text-base capitalize">{cm.crop}</h4>
+                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>
+                              {cm.label}
+                            </span>
+                          </div>
+                          
+                          <div className="mt-1 flex items-center justify-between text-xs">
+                            <span className="text-gray-400 font-medium">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
+                            <span className={`font-bold ${isExcellent ? "text-emerald-600" : isVeryGood ? "text-blue-600" : isGood ? "text-amber-600" : "text-red-600"}`}>{score}%</span>
+                          </div>
+                          
+                          <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1 mb-3">
+                            <div className={`${barColor} h-1.5 rounded-full transition-all`} style={{ width: `${score}%` }}></div>
+                          </div>
+                          
+                          <p className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border border-gray-100/50 mb-3">
+                            {reasonText}
+                          </p>
+                        </div>
+                        
+                        {cm.gross_income > 0 && (
+                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs mt-auto">
+                            <span className="text-gray-400 font-medium">{lang === "en" ? "Est. Gross Income" : "Makadirio ya Mapato"}</span>
+                            <span className="font-extrabold text-forest-700">KES {cm.gross_income.toLocaleString()}/acre</span>
+                          </div>
+                        )}
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1">
-                        <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${Math.round(cm.match_score)}%` }}></div>
-                      </div>
-                      <p className="mt-3 text-xs text-gray-600 font-medium bg-gray-50 p-2 rounded border border-gray-100 line-clamp-2" title={cm.label}>
-                        {cm.label}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}

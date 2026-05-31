@@ -332,14 +332,8 @@ export default async function CountyCropPage({ params }: PageProps) {
               </div>
               <hr className="border-cream-200" />
               <div className="flex justify-between text-sm">
-                <span className="text-soil-400">Soil texture</span>
-                <span className="font-semibold text-forest-700">
-                  {county.texture}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
                 <span className="text-soil-400">Preferred texture</span>
-                <span className={`font-semibold ${county.texture === crop.pref_texture ? "text-green-600" : "text-amber-600"}`}>
+                <span className="font-semibold text-forest-700">
                   {crop.pref_texture}
                 </span>
               </div>

@@ -115,8 +115,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function parseInline(text: string): string {
-  return text
+function parseInline(text: string, featuredImage?: string): string {
+  let parsed = text;
+  if (featuredImage) {
+    parsed = parsed.replace(/!\[([^\]]*)\]\(featured_image_url\)/g, `![$1](${featuredImage})`);
+  }
+  return parsed
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-xl my-4 w-full object-cover max-h-80" loading="lazy">')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-gold-600 hover:underline font-medium">$1</a>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-forest-700">$1</strong>')
@@ -184,7 +188,45 @@ function extractTOCItems(content: string): TOCItem[] {
   return items;
 }
 
-function renderContent(raw: string) {
+interface HowToStep {
+  name: string;
+  text: string;
+}
+
+function extractHowToSteps(content: string): HowToStep[] {
+  const steps: HowToStep[] = [];
+  const regex = /^\d+\.\s+\*\*([^*]+)\*\*:\s*(.*)$/gm;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    steps.push({
+      name: match[1].trim(),
+      text: match[2].trim(),
+    });
+  }
+  if (steps.length === 0) {
+    // Try fallback for standard numbered list items: "1. Text"
+    const fallbackRegex = /^\d+\.\s+(.*)$/gm;
+    let fallbackMatch;
+    while ((fallbackMatch = fallbackRegex.exec(content)) !== null) {
+      const fullText = fallbackMatch[1].trim();
+      const colonIdx = fullText.indexOf(":");
+      if (colonIdx !== -1) {
+        steps.push({
+          name: fullText.substring(0, colonIdx).replace(/\*\*/g, "").trim(),
+          text: fullText.substring(colonIdx + 1).trim(),
+        });
+      } else {
+        steps.push({
+          name: `Step ${steps.length + 1}`,
+          text: fullText,
+        });
+      }
+    }
+  }
+  return steps.slice(0, 10);
+}
+
+function renderContent(raw: string, featuredImage?: string) {
   // Stop rendering content once we reach the FAQs section
   const faqHeaderIndex = raw.search(/##\s+(Frequently Asked Questions|FAQs|FAQ)/i);
   const contentToRender = faqHeaderIndex !== -1 ? raw.substring(0, faqHeaderIndex) : raw;
@@ -205,26 +247,26 @@ function renderContent(raw: string) {
     }
 
     if (line.startsWith("# ")) {
-      elements.push(<h1 key={k++} className="font-display text-3xl font-bold text-forest-700 mt-10 mb-4" dangerouslySetInnerHTML={{ __html: parseInline(line.slice(2)) }} />);
+      elements.push(<h1 key={k++} className="font-display text-3xl font-bold text-forest-700 mt-10 mb-4" dangerouslySetInnerHTML={{ __html: parseInline(line.slice(2), featuredImage) }} />);
       i++; continue;
     }
 
     if (line.startsWith("## ")) {
       const text = line.slice(3).trim();
       const id = text.toLowerCase().replace(/[^a-z0-9 -]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
-      elements.push(<h2 id={id} key={k++} className="font-display text-2xl font-bold text-forest-700 mt-10 mb-4" dangerouslySetInnerHTML={{ __html: parseInline(text) }} />);
+      elements.push(<h2 id={id} key={k++} className="font-display text-2xl font-bold text-forest-700 mt-10 mb-4" dangerouslySetInnerHTML={{ __html: parseInline(text, featuredImage) }} />);
       i++; continue;
     }
 
     if (line.startsWith("### ")) {
       const text = line.slice(4).trim();
       const id = text.toLowerCase().replace(/[^a-z0-9 -]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
-      elements.push(<h3 id={id} key={k++} className="font-display text-xl font-bold text-forest-700 mt-8 mb-3" dangerouslySetInnerHTML={{ __html: parseInline(text) }} />);
+      elements.push(<h3 id={id} key={k++} className="font-display text-xl font-bold text-forest-700 mt-8 mb-3" dangerouslySetInnerHTML={{ __html: parseInline(text, featuredImage) }} />);
       i++; continue;
     }
 
     if (line.startsWith("#### ")) {
-      elements.push(<h4 key={k++} className="font-semibold text-forest-700 mt-6 mb-2" dangerouslySetInnerHTML={{ __html: parseInline(line.slice(5)) }} />);
+      elements.push(<h4 key={k++} className="font-semibold text-forest-700 mt-6 mb-2" dangerouslySetInnerHTML={{ __html: parseInline(line.slice(5), featuredImage) }} />);
       i++; continue;
     }
 
@@ -236,7 +278,7 @@ function renderContent(raw: string) {
       }
       elements.push(
         <blockquote key={k++} className="border-l-4 border-gold-400 pl-4 py-2 my-4 bg-cream-50 rounded-r-xl">
-          <p className="text-soil-500 italic leading-relaxed" dangerouslySetInnerHTML={{ __html: parseInline(quoteLines.join(" ")) }} />
+          <p className="text-soil-500 italic leading-relaxed" dangerouslySetInnerHTML={{ __html: parseInline(quoteLines.join(" "), featuredImage) }} />
         </blockquote>
       );
       continue;
@@ -261,7 +303,7 @@ function renderContent(raw: string) {
               <thead>
                 <tr className="bg-forest-700/10">
                   {headers.map((h, j) => (
-                    <th key={j} className="px-4 py-3 text-left font-semibold text-forest-700 whitespace-nowrap" dangerouslySetInnerHTML={{ __html: parseInline(h) }} />
+                    <th key={j} className="px-4 py-3 text-left font-semibold text-forest-700 whitespace-nowrap" dangerouslySetInnerHTML={{ __html: parseInline(h, featuredImage) }} />
                   ))}
                 </tr>
               </thead>
@@ -269,7 +311,7 @@ function renderContent(raw: string) {
                 {bodyRows.map((row, ri) => (
                   <tr key={ri} className={ri % 2 === 0 ? "bg-white" : "bg-cream-50"}>
                     {row.map((cell, ci) => (
-                      <td key={ci} className="px-4 py-3 text-soil-500 border-t border-cream-200" dangerouslySetInnerHTML={{ __html: parseInline(cell) }} />
+                      <td key={ci} className="px-4 py-3 text-soil-500 border-t border-cream-200" dangerouslySetInnerHTML={{ __html: parseInline(cell, featuredImage) }} />
                     ))}
                   </tr>
                 ))}
@@ -290,7 +332,7 @@ function renderContent(raw: string) {
       elements.push(
         <ul key={k++} className="list-disc list-outside ml-5 space-y-1.5 my-4">
           {items.map((item, j) => (
-            <li key={j} className="text-soil-500 leading-relaxed" dangerouslySetInnerHTML={{ __html: parseInline(item) }} />
+            <li key={j} className="text-soil-500 leading-relaxed" dangerouslySetInnerHTML={{ __html: parseInline(item, featuredImage) }} />
           ))}
         </ul>
       );
@@ -306,7 +348,7 @@ function renderContent(raw: string) {
       elements.push(
         <ol key={k++} className="list-decimal list-outside ml-5 space-y-1.5 my-4">
           {items.map((item, j) => (
-            <li key={j} className="text-soil-500 leading-relaxed" dangerouslySetInnerHTML={{ __html: parseInline(item) }} />
+            <li key={j} className="text-soil-500 leading-relaxed" dangerouslySetInnerHTML={{ __html: parseInline(item, featuredImage) }} />
           ))}
         </ol>
       );
@@ -315,9 +357,10 @@ function renderContent(raw: string) {
 
     const imgMatch = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(line);
     if (imgMatch) {
+      const src = imgMatch[2] === "featured_image_url" && featuredImage ? featuredImage : imgMatch[2];
       elements.push(
         <figure key={k++} className="my-6">
-          <img src={imgMatch[2]} alt={imgMatch[1]} className="w-full rounded-xl object-cover max-h-80" loading="lazy" />
+          <img src={src} alt={imgMatch[1]} className="w-full rounded-xl object-cover max-h-80" loading="lazy" />
           {imgMatch[1] && <figcaption className="text-center text-xs text-soil-300 mt-2">{imgMatch[1]}</figcaption>}
         </figure>
       );
@@ -341,7 +384,7 @@ function renderContent(raw: string) {
     }
     if (paraLines.length > 0) {
       elements.push(
-        <p key={k++} className="text-soil-500 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: parseInline(paraLines.join(" ")) }} />
+        <p key={k++} className="text-soil-500 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: parseInline(paraLines.join(" "), featuredImage) }} />
       );
     }
   }
@@ -371,6 +414,7 @@ export default async function DynamicBlogPost({ params }: PageProps) {
 
   const faqItems = extractFAQs(post.content);
   const tocItems = extractTOCItems(post.content);
+  const howToSteps = extractHowToSteps(post.content);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -402,6 +446,19 @@ export default async function DynamicBlogPost({ params }: PageProps) {
     })),
   } : null;
 
+  const howToSchema = howToSteps.length >= 3 && post.category?.toLowerCase().includes("guide") ? {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: post.title,
+    description: post.excerpt,
+    step: howToSteps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  } : null;
+
   const schemas: any[] = [
     {
       "@context": "https://schema.org",
@@ -413,6 +470,7 @@ export default async function DynamicBlogPost({ params }: PageProps) {
     jsonLd,
   ];
   if (faqSchema) schemas.push(faqSchema);
+  if (howToSchema) schemas.push(howToSchema);
 
   // Load related posts from dynamic DB
   const dynamicPosts = await getPublishedPosts();
@@ -461,7 +519,7 @@ export default async function DynamicBlogPost({ params }: PageProps) {
             </header>
 
             <div className="prose prose-forest max-w-none">
-              {renderContent(post.content)}
+              {renderContent(post.content, post.featured_image)}
             </div>
 
             {/* Accordion FAQ Section */}

@@ -17,6 +17,17 @@ export const revalidate = 0;
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
+const getYieldUnit = (cropName: string) => {
+  const c = cropName.toLowerCase();
+  if (c.includes("sugarcane") || c.includes("sugar cane")) return "tons/acre";
+  if (c.includes("napier") || c.includes("lucerne") || c.includes("fodder")) return "tons/acre";
+  if (c.includes("avocado") || c.includes("mango") || c.includes("pixie") || c.includes("orange") || c.includes("apple") || c.includes("macadamia") || c.includes("coconut") || c.includes("pawpaw") || c.includes("banana")) return "tons/acre";
+  if (c.includes("cabbage") || c.includes("watermelon") || c.includes("pumpkin")) return "tons/acre";
+  if (c.includes("pyrethrum")) return "kg/acre";
+  if (c.includes("coffee") || c.includes("tea") || c.includes("sisal")) return "kg/acre";
+  return "bags/acre";
+};
+
 interface PageProps {
   params: Promise<{ crop: string }>;
 }
@@ -213,7 +224,7 @@ export default async function CropPage({ params }: PageProps) {
                     </div>
                     <div className="text-xs text-soil-500">
                       {s.breeder} · {s.maturity_days} days ·{" "}
-                      {s.yield_bags} bags/acre
+                      {s.yield_bags} {getYieldUnit(crop.crop)}
                     </div>
                     {s.special && (
                       <div className="text-xs text-soil-500 italic mt-1">

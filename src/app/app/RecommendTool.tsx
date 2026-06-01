@@ -17,6 +17,17 @@ const STOCK_COLOR: Record<string, string> = {
   out_of_stock: "text-red-600 font-semibold",
 };
 
+const getYieldUnit = (cropName: string, lang: string) => {
+  const c = cropName.toLowerCase();
+  if (c.includes("sugarcane") || c.includes("sugar cane")) return lang === "en" ? "tons/acre" : "tani/ekari";
+  if (c.includes("napier") || c.includes("lucerne") || c.includes("fodder")) return lang === "en" ? "tons/acre" : "tani/ekari";
+  if (c.includes("avocado") || c.includes("mango") || c.includes("pixie") || c.includes("orange") || c.includes("apple") || c.includes("macadamia") || c.includes("coconut") || c.includes("pawpaw") || c.includes("banana")) return lang === "en" ? "tons/acre" : "tani/ekari";
+  if (c.includes("cabbage") || c.includes("watermelon") || c.includes("pumpkin")) return lang === "en" ? "tons/acre" : "tani/ekari";
+  if (c.includes("pyrethrum")) return lang === "en" ? "kg/acre" : "kilo/ekari";
+  if (c.includes("coffee") || c.includes("tea") || c.includes("sisal")) return lang === "en" ? "kg/acre" : "kilo/ekari";
+  return lang === "en" ? "bags/acre" : "mifuko/ekari";
+};
+
 // ─── Types for serialized data passed from server ───────────────
 interface CountyData {
   county: string;
@@ -1387,7 +1398,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
                   {result.timeline.title || t("timeline_title", lang)}
                 </h3>
-                <p className="text-xs text-gray-500 mb-3">{result.timeline.season} \u2014 {result.crop}</p>
+                <p className="text-xs text-gray-500 mb-3">{result.timeline.season} — {result.crop}</p>
                 {[
                   { label: result.timeline.label_1 || t("timeline_month1", lang), text: result.timeline.month_1, color: "#3b82f6" },
                   { label: result.timeline.label_2 || t("timeline_month2", lang), text: result.timeline.month_2, color: "#10b981" },
@@ -1420,7 +1431,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                           {s.Variety} <span className="text-gray-400 font-normal">({s.Breeder})</span>
                         </summary>
                         <div className="px-3 py-2 text-xs text-gray-600 border-t bg-gray-50 space-y-1">
-                          <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} \u00b7 <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} \u00b7 <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} bags/acre</p>
+                          <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} \u00b7 <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} \u00b7 <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} {getYieldUnit(result.crop, lang)}</p>
                           <p className="text-green-700 font-medium">{s.Special_Attributes}</p>
                         </div>
                       </details>
@@ -1449,7 +1460,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                             {s.Variety} <span className="text-gray-400 font-normal">({s.Breeder})</span>
                           </summary>
                           <div className="px-3 py-2 text-xs text-gray-600 border-t bg-gray-50 space-y-1">
-                            <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} \u00b7 <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} \u00b7 <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} bags/acre</p>
+                            <p><strong>{t("seeds_zone", lang)}:</strong> {s.Altitude_Zone} \u00b7 <strong>{t("seeds_maturity", lang)}:</strong> {s.Maturity_Days} {t("seeds_days", lang)} \u00b7 <strong>{t("seeds_yield", lang)}:</strong> {s.Yield_Bags_Per_Acre} {getYieldUnit(companionCrop, lang)}</p>
                             <p className="text-green-700 font-medium">{s.Special_Attributes}</p>
                           </div>
                         </details>

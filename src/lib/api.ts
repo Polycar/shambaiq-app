@@ -94,10 +94,14 @@ export interface RecommendResult {
     breakdown: string[];
   };
   timeline?: {
+    title?: string;
     season: string;
     month_1: string;
     month_2: string;
     month_3: string;
+    label_1?: string;
+    label_2?: string;
+    label_3?: string;
   };
   seeds?: Array<{
     Variety: string;

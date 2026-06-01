@@ -14,7 +14,7 @@ export default function Footer() {
               </h3>
             </Link>
             <p className="text-sm text-cream-500 leading-relaxed mb-4">
-              Precision agriculture for every Kenyan farmer. 47 counties, 40 crops, satellite soil data.
+              Precision agriculture for every Kenyan farmer. 47 counties, over 40 crops, satellite soil data.
             </p>
             <div className="flex items-center gap-2 text-xs text-cream-500">
               <Satellite size={12} />
@@ -40,7 +40,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/crops/maize" className="hover:text-gold-400 transition-colors">Maize Guide</Link></li>
               <li><Link href="/crops/beans" className="hover:text-gold-400 transition-colors">Beans Guide</Link></li>
-              <li><Link href="/crops" className="hover:text-gold-400 transition-colors">All 40 Crops</Link></li>
+              <li><Link href="/crops" className="hover:text-gold-400 transition-colors">All 40+ Crops</Link></li>
               <li><Link href="/zones" className="hover:text-gold-400 transition-colors">Agroecological Zones</Link></li>
               <li><Link href="/dealers" className="hover:text-gold-400 transition-colors">Agrovet Directory</Link></li>
               <li><Link href="/dealers/apply" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">Become a Dealer →</Link></li>

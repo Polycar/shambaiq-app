@@ -70,8 +70,8 @@ const staticPosts = [
   },
   {
     slug: "how-much-fertilizer-per-acre-calculator",
-    title: "How Much Fertilizer Per Acre? Calculator for 40 Crops",
-    excerpt: "Exact bags per acre for planting and top dressing across all 40 crops. With costs at subsidized and commercial prices. The only table you need.",
+    title: "How Much Fertilizer Per Acre? Calculator for over 40 Crops",
+    excerpt: "Exact bags per acre for planting and top dressing across all over 40 crops. With costs at subsidized and commercial prices. The only table you need.",
     date: "May 2026",
     readTime: "9 min read",
     category: "Fertilizer",

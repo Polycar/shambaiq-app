@@ -1385,13 +1385,13 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             {result.timeline && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  {t("timeline_title", lang)}
+                  {result.timeline.title || t("timeline_title", lang)}
                 </h3>
                 <p className="text-xs text-gray-500 mb-3">{result.timeline.season} \u2014 {result.crop}</p>
                 {[
-                  { label: t("timeline_month1", lang), text: result.timeline.month_1, color: "#3b82f6" },
-                  { label: t("timeline_month2", lang), text: result.timeline.month_2, color: "#10b981" },
-                  { label: t("timeline_month3", lang), text: result.timeline.month_3, color: "#f59e0b" },
+                  { label: result.timeline.label_1 || t("timeline_month1", lang), text: result.timeline.month_1, color: "#3b82f6" },
+                  { label: result.timeline.label_2 || t("timeline_month2", lang), text: result.timeline.month_2, color: "#10b981" },
+                  { label: result.timeline.label_3 || t("timeline_month3", lang), text: result.timeline.month_3, color: "#f59e0b" },
                 ].map((m) => (
                   <div key={m.label} className="mb-3 rounded-lg p-3" style={{ background: "#f8fafc", borderTop: `4px solid ${m.color}` }}>
                     <p className="text-xs uppercase tracking-wider font-bold text-gray-400">{m.label}</p>

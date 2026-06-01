@@ -1,5 +1,4 @@
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import {
   MapPin,
   Sprout,
@@ -22,11 +21,12 @@ import {
   computeSoilHealthScore,
   getWards,
 } from "@/lib/data";
-
-const PersonalizedBanner = dynamic(() => import("@/components/PersonalizedBanner"), { ssr: false });
-const PersonalizedSection = dynamic(() => import("@/components/PersonalizedSection"), { ssr: false });
-const HeroRightColumn = dynamic(() => import("@/components/HeroRightColumn"), { ssr: false });
-const OnboardingModal = dynamic(() => import("@/components/OnboardingModal"), { ssr: false });
+import {
+  OnboardingModal,
+  PersonalizedBanner,
+  PersonalizedSection,
+  HeroRightColumn,
+} from "@/components/ClientIslands";
 
 
 export default function HomePage() {

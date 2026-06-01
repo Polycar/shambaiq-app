@@ -119,7 +119,7 @@ export default function HomePage() {
               <div className="fade-up fade-up-delay-4 mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-2xl">
                 {[
                   { n: "47", label: "Counties", icon: MapPin },
-                  { n: "25", label: "Crops", icon: Wheat },
+                  { n: "40+", label: "Crops", icon: Wheat },
                   { n: wardCount.toLocaleString(), label: "Wards", icon: Layers },
                   { n: "Free", label: "Forever", icon: Leaf },
                 ].map((s) => {

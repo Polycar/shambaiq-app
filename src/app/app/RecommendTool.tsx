@@ -515,6 +515,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
       });
       setResult(res);
       saveSoilReport(res);
+      window.dispatchEvent(new Event("shambaiq-recommendation-complete"));
 
       // Fetch companion seeds if selected
       if (companionCrop) {

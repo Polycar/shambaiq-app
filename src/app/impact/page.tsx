@@ -16,9 +16,9 @@ const SDGs = [
     description:
       "Kenyan smallholder farmers spend an average of KES 8,000–15,000 per acre on fertilizer each season. Without soil data, many buy the wrong type — DAP on acidic soil locks phosphorus, wasting up to 40% of the investment. ShambaIQ's precision recommendations match fertilizer to actual soil chemistry, saving farmers KES 2,000–5,000 per acre per season.",
     metrics: [
-      { label: "Counties with acidic soil needing Mavuno instead of DAP", value: "15" },
+      { label: "Acidic soil counties needing Mavuno instead of DAP", value: "15" },
       { label: "Potential savings per acre per season", value: "KES 3,000+" },
-      { label: "Counties with alkaline soil needing different strategy", value: "7" },
+      { label: "Alkaline soil counties needing different strategy", value: "7" },
     ],
     links: [
       { text: "See which counties need Mavuno, not DAP", href: "/blog/kakamega-soil-western-kenya-mavuno" },
@@ -117,27 +117,51 @@ export default function ImpactPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
+      {/* Decorative Radial Background */}
+      <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(circle_at_top,rgba(22,163,74,0.06),transparent_60%)] pointer-events-none -z-10" />
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Our Impact" }]} />
 
-        {/* Hero */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-forest-700/10 rounded-full text-forest-700 text-sm font-medium mb-6">
-            <Globe size={16} />
+        {/* Hero Banner Section */}
+        <div className="text-center mt-12 mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-forest-700/10 border border-forest-700/10 rounded-full text-forest-700 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
+            <Globe size={14} className="text-gold-500" />
             UN Sustainable Development Goals
           </div>
-          <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-4">
+          
+          <h1 className="font-display text-4xl md:text-6xl font-extrabold text-forest-800 tracking-tight leading-[1.1] mb-6">
             Precision agriculture for
             <br />
-            <span className="text-gold-600">sustainable impact</span>
+            <span className="bg-gradient-to-r from-forest-700 via-gold-600 to-forest-800 bg-clip-text text-transparent">
+              sustainable impact
+            </span>
           </h1>
-          <p className="text-soil-400 text-lg leading-relaxed max-w-2xl mx-auto">
+          
+          <p className="text-soil-400 text-lg leading-relaxed max-w-2xl mx-auto font-medium">
             ShambaIQ contributes to 5 UN Sustainable Development Goals by making
-            satellite soil data free and accessible to every Kenyan farmer.
+            high-resolution satellite soil data free and accessible to every Kenyan farmer.
           </p>
+
+          {/* Quick Jump Link index */}
+          <div className="flex flex-wrap justify-center gap-2.5 mt-8 max-w-3xl mx-auto">
+            {SDGs.map(sdg => {
+              const Icon = sdg.icon;
+              return (
+                <a 
+                  key={sdg.number}
+                  href={`#sdg-${sdg.number}`}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-sm border border-cream-300 hover:border-gold-400 hover:bg-white text-xs font-bold text-forest-700 rounded-full transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
+                >
+                  <Icon size={12} style={{ color: sdg.color }} />
+                  Goal {sdg.number}: {sdg.title}
+                </a>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Coverage stats */}
+        {/* Telemetry Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {[
             { icon: MapPin, value: counties.length.toString(), label: "Counties covered", color: "#16a34a" },
@@ -147,70 +171,83 @@ export default function ImpactPage() {
           ].map((s) => {
             const Icon = s.icon;
             return (
-              <div key={s.label} className="bg-white rounded-2xl p-5 border border-cream-300 text-center">
-                <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ backgroundColor: `${s.color}15` }}>
-                  <Icon size={24} style={{ color: s.color }} />
+              <div 
+                key={s.label} 
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-cream-300/80 text-center hover:border-gold-400/60 hover:-translate-y-1 hover:shadow-md hover:shadow-cream-200/50 transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: `${s.color}12` }}>
+                  <Icon size={22} style={{ color: s.color }} />
                 </div>
-                <div className="font-display text-2xl font-bold text-forest-700">{s.value}</div>
-                <div className="text-xs text-soil-400 mt-1">{s.label}</div>
+                <div className="font-display text-3xl font-extrabold text-forest-700 tracking-tight">{s.value}</div>
+                <div className="text-[11px] font-bold uppercase tracking-wider text-soil-400 mt-1.5">{s.label}</div>
               </div>
             );
           })}
         </div>
 
-        {/* SDG sections */}
-        <div className="space-y-8">
+        {/* SDG Section Cards */}
+        <div className="space-y-10">
           {SDGs.map((sdg) => {
             const Icon = sdg.icon;
             return (
               <section
+                id={`sdg-${sdg.number}`}
                 key={sdg.number}
-                className="bg-white rounded-2xl border border-cream-300 overflow-hidden"
+                className="bg-white/85 backdrop-blur-md rounded-3xl border border-cream-300/80 overflow-hidden hover:border-gold-400/60 hover:shadow-xl hover:shadow-cream-200/40 hover:-translate-y-0.5 transition-all duration-300 group scroll-mt-6"
               >
-                {/* SDG header bar */}
-                <div className="flex items-center gap-4 p-6 pb-0">
+                {/* Brand Header */}
+                <div className="flex items-center gap-4 p-6 pb-2">
                   <div
-                    className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm relative overflow-hidden group-hover:scale-105 transition-transform"
                     style={{ backgroundColor: sdg.color }}
                   >
-                    <span className="text-white font-bold text-lg">{sdg.number}</span>
+                    {/* Inner glowing element */}
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <span className="text-white font-extrabold text-2xl relative z-10">{sdg.number}</span>
                   </div>
                   <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: sdg.color }}>
-                      SDG {sdg.number}
+                    <div className="text-[10px] font-extrabold uppercase tracking-widest" style={{ color: sdg.color }}>
+                      Goal {sdg.number}
                     </div>
-                    <h2 className="font-display text-xl font-bold text-forest-700">{sdg.title}</h2>
+                    <h2 className="font-display text-2xl font-black text-forest-700 tracking-tight">{sdg.title}</h2>
                   </div>
                 </div>
 
                 <div className="p-6">
-                  {/* Headline */}
-                  <h3 className="font-display text-lg font-semibold text-forest-700 mb-3">
+                  {/* Headline Statement */}
+                  <h3 className="font-display text-lg font-bold text-forest-700 mb-3 flex items-center gap-2">
+                    <span className="w-1.5 h-6 rounded bg-gold-500" />
                     {sdg.headline}
                   </h3>
 
-                  {/* Description */}
-                  <p className="text-soil-400 leading-relaxed mb-6">{sdg.description}</p>
+                  {/* Body Text */}
+                  <p className="text-soil-400 leading-relaxed font-medium mb-6 text-sm md:text-[15px]">
+                    {sdg.description}
+                  </p>
 
-                  {/* Metrics */}
-                  <div className="grid sm:grid-cols-3 gap-3 mb-6">
+                  {/* Frosted Metrics Grid */}
+                  <div className="grid sm:grid-cols-3 gap-4 mb-6">
                     {sdg.metrics.map((m) => (
-                      <div key={m.label} className="bg-cream-50 rounded-xl p-4 border border-cream-200">
-                        <div className="font-display text-xl font-bold text-forest-700">{m.value}</div>
-                        <div className="text-xs text-soil-400 mt-1">{m.label}</div>
+                      <div 
+                        key={m.label} 
+                        className="bg-cream-50/60 backdrop-blur-sm rounded-2xl p-5 border border-cream-200/80 hover:bg-cream-100/50 hover:scale-[1.02] transition-all duration-300"
+                      >
+                        <div className="font-display text-2xl font-extrabold text-forest-700 tracking-tight">{m.value}</div>
+                        <div className="text-[11px] font-bold text-soil-400 mt-1">{m.label}</div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Related links */}
-                  <div className="flex flex-wrap gap-2">
+                  {/* Clean CTA Capsule Buttons */}
+                  <div className="flex flex-wrap gap-2.5 pt-2">
                     {sdg.links.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
-                        className="text-sm px-4 py-2 rounded-lg border border-cream-300 hover:border-gold-400 text-forest-700 hover:text-gold-600 transition-colors"
+                        className="text-xs font-bold px-4 py-2.5 rounded-xl border border-cream-300 text-forest-800 bg-white hover:bg-gold-500 hover:text-white hover:border-gold-500 hover:shadow-sm transition-all duration-300 flex items-center gap-1.5"
                       >
-                        {link.text} →
+                        {link.text} 
+                        <span className="font-light text-soil-400 group-hover:text-white">→</span>
                       </Link>
                     ))}
                   </div>
@@ -220,47 +257,56 @@ export default function ImpactPage() {
           })}
         </div>
 
-        {/* Data sources */}
-        <section className="mt-16 bg-cream-100 rounded-2xl p-8">
-          <h2 className="font-display text-2xl font-bold text-forest-700 mb-4 text-center">Our data sources</h2>
-          <p className="text-soil-400 text-center mb-8 max-w-xl mx-auto">
-            ShambaIQ is built on open, peer-reviewed geospatial datasets — not proprietary data behind paywalls.
-          </p>
+        {/* Data Sources Grid Section */}
+        <section className="mt-20 bg-cream-100/60 backdrop-blur-sm rounded-3xl p-8 md:p-10 border border-cream-200">
+          <div className="text-center mb-8">
+            <h2 className="font-display text-3xl font-extrabold text-forest-700 tracking-tight mb-3">Our data sources</h2>
+            <p className="text-soil-400 max-w-xl mx-auto font-medium text-sm leading-relaxed">
+              ShambaIQ is entirely built on open, peer-reviewed geospatial and meteorological datasets — not proprietary data locked behind high paywalls.
+            </p>
+          </div>
+          
           <div className="grid sm:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="font-display font-bold text-forest-700 mb-1">iSDAsoil</div>
-              <p className="text-xs text-soil-400">30m resolution soil maps for Africa. pH, nitrogen, phosphorus, potassium, organic carbon. Machine learning predictions trained on 100,000+ soil samples.</p>
-            </div>
-            <div className="text-center">
-              <div className="font-display font-bold text-forest-700 mb-1">ISRIC SoilGrids</div>
-              <p className="text-xs text-soil-400">250m global soil data. Provides fallback for pH, nitrogen, and organic carbon when iSDA is unavailable.</p>
-            </div>
-            <div className="text-center">
-              <div className="font-display font-bold text-forest-700 mb-1">Open-Meteo</div>
-              <p className="text-xs text-soil-400">7-day weather forecasts with agronomic interpretation. Identifies safe fertilizer application windows based on rainfall predictions.</p>
-            </div>
+            {[
+              { title: "iSDAsoil", desc: "30-metre high-resolution soil maps for Africa. Monitors pH, nitrogen, phosphorus, potassium, and organic carbon. Built using machine learning models trained on 100,000+ localized soil samples." },
+              { title: "ISRIC SoilGrids", desc: "250-metre global standardized soil databases. Provides secondary verification and robust fallback parameters when localized maps require broad calibration." },
+              { title: "Open-Meteo", desc: "Premium agronomic weather telemetry and 7-day predictive rainfall models. Dynamically calculates optimal application windows to prevent fertilizer runoff." }
+            ].map(source => (
+              <div 
+                key={source.title} 
+                className="bg-white/80 rounded-2xl p-6 border border-cream-200 hover:shadow-md hover:scale-[1.01] transition-all duration-300"
+              >
+                <div className="font-display font-extrabold text-forest-700 mb-2.5 text-base">{source.title}</div>
+                <p className="text-xs text-soil-400 leading-relaxed font-medium">{source.desc}</p>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* Partnership CTA */}
-        <section className="mt-12 bg-forest-700 rounded-2xl p-8 text-center">
-          <h2 className="font-display text-2xl font-bold text-cream-100 mb-3">
+        {/* Partnership Radially Gradiented CTA */}
+        <section className="mt-12 bg-gradient-to-br from-forest-800 to-forest-950 rounded-3xl p-8 md:p-12 text-center shadow-lg relative overflow-hidden group">
+          {/* Inner Light Flare effect */}
+          <div className="absolute top-0 left-0 right-0 h-40 bg-[radial-gradient(circle_at_top,rgba(234,179,8,0.12),transparent_60%)] pointer-events-none" />
+          
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold text-cream-100 tracking-tight leading-tight mb-4 relative z-10">
             Partner with us
           </h2>
-          <p className="text-cream-400 mb-6 max-w-lg mx-auto">
-            We&apos;re looking for development partners, county governments, and agricultural organizations
-            who want to bring precision soil data to Kenyan farmers at scale.
+          
+          <p className="text-cream-400 mb-8 max-w-xl mx-auto text-sm md:text-base leading-relaxed font-medium relative z-10">
+            We are actively looking for development partners, county agronomists, and non-profit organizations
+            who want to scale precision soil science and agricultural security for smallholder farmers.
           </p>
-          <div className="flex flex-wrap gap-3 justify-center">
+          
+          <div className="flex flex-wrap gap-4 justify-center relative z-10">
             <a
               href="mailto:andabwa0@gmail.com"
-              className="px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors"
+              className="px-8 py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-extrabold rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-gold-600/20 hover:-translate-y-0.5"
             >
               Get in Touch →
             </a>
             <Link
               href="/app"
-              className="px-8 py-3 bg-cream-200/10 hover:bg-cream-200/20 text-cream-200 font-semibold rounded-xl transition-colors border border-cream-200/20"
+              className="px-8 py-3.5 bg-white/10 hover:bg-white/15 text-cream-200 font-bold rounded-xl transition-all duration-300 border border-white/20 hover:-translate-y-0.5"
             >
               Try ShambaIQ Free
             </Link>

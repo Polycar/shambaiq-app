@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
   verification: { google: "hDkSRs8CVliEOaxCe1Odg6JKByTt7natiI-1DM4GHWo" },
-  alternates: { languages: { en: "https://www.shambaiq.com", sw: "https://www.shambaiq.com/sw" } },
+  alternates: { canonical: "https://www.shambaiq.com" },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

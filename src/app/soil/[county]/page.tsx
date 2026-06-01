@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [`/api/og/county/${slug}`],
     },
     alternates: {
-      languages: { sw: `/sw/udongo/${slug}` },
+      canonical: `https://www.shambaiq.com/soil/${slug}`,
     },
   };
 }

@@ -18,7 +18,7 @@ export const ORGANIZATION = {
     width: 512,
     height: 512,
   },
-  sameAs: ["https://github.com/Polycat", "https://twitter.com/shambaiq_ke"],
+  sameAs: ["https://github.com/Polycar", "https://twitter.com/shambaiq_ke"],
   description:
     "Kenya's precision soil intelligence platform. Satellite-powered soil scores and agronomic recommendations for all 47 counties.",
 };
@@ -83,7 +83,7 @@ export const AUTHOR_PERSON = {
     "Search Engine Optimisation",
   ],
   sameAs: [
-    "https://github.com/Polycat",
+    "https://github.com/Polycar",
     "https://www.linkedin.com/in/polycarp-a-a7174916b/",
   ],
 };

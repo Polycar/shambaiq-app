@@ -61,7 +61,7 @@ const CREDENTIALS = [
   {
     label: "SEO Expert Certification",
     org: "Coursera",
-    year: "2025–26",
+    year: "2023",
     type: "certificate",
   },
   {
@@ -76,7 +76,7 @@ const SKILLS = [
   {
     area: "Soil Science",
     detail:
-      "MSc thesis on spatial distribution of soil contamination across 493 samples, seven parameters, using IDW, Kriging, and Sequential Gaussian Simulation. Deep understanding of soil chemistry, nutrient cycling, and agronomic interpretation.",
+      "MSc Thesis: AI-assisted Geostatistical and stochastic mapping of heavy metal contamination in urban soils, Debrecen Hungary, 493 samples, seven parameters, using IDW, Kriging, and Sequential Gaussian Simulation. Deep understanding of soil chemistry, nutrient cycling, and agronomic interpretation. Built an interactive WebGIS Dashboard to monitor hotspots, uncertainty, and probability of exceedance.",
   },
   {
     area: "GIS and Remote Sensing",
@@ -238,7 +238,7 @@ export default function AboutPage() {
                 Read the Blog
               </Link>
               <Link
-                href="https://github.com/Polycat"
+                href="https://github.com/Polycar"
                 className="border border-cream-300 text-soil-500 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-cream-50 transition-colors"
                 rel="noopener noreferrer"
                 target="_blank"

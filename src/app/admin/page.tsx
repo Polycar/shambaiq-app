@@ -230,15 +230,20 @@ export default function AdminDashboard() {
   const saveBlogPost = async () => {
     setBlogSaving(true);
     try {
+      const payload = {
+        ...blogForm,
+        focus_keyword: focusKeyword
+      };
       const res = editing
-        ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(blogForm) })
-        : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(blogForm) });
+        ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) })
+        : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) });
 
       if (res.ok) {
         setEditing(null);
         setShowBlogEditor(false);
         setActiveEditorTab("write");
         setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
+        setFocusKeyword("");
         alert(editing ? "Blog post updated successfully!" : "Blog post created successfully!");
         fetchTab("blog");
       } else {
@@ -265,10 +270,26 @@ export default function AdminDashboard() {
     setShowBlogEditor(true);
     setActiveEditorTab("write");
     setBlogForm({ title: post.title, content: post.content || "", excerpt: post.excerpt || "", category: post.category, status: post.status, read_time: post.read_time || "" });
-    // Fetch full content if not already present
-    if (!post.content) {
-      fetch(`${API}/api/v1/blog/${post.slug}`).then(r => r.ok ? r.json() : null).then(d => { if (d) setBlogForm(f => ({ ...f, content: d.content })); });
-    }
+    setFocusKeyword(post.focus_keyword || "");
+    
+    // Securely fetch full blog content and keyword from admin endpoint (supports drafts/published posts)
+    fetch(`${API}/api/v1/blog/admin/${post.id}`, {
+      headers: { "Authorization": `Bearer ${code}` }
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (d) {
+          setBlogForm({
+            title: d.title,
+            content: d.content || "",
+            excerpt: d.excerpt || "",
+            category: d.category,
+            status: d.status,
+            read_time: d.read_time || ""
+          });
+          setFocusKeyword(d.focus_keyword || "");
+        }
+      });
   };
 
   const loadFarmerDetail = async (id: string) => {
@@ -972,7 +993,7 @@ export default function AdminDashboard() {
                     {aiGenerating ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
                     {aiGenerating ? "Generating…" : "AI Generate"}
                   </button>
-                  <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
+                  <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setFocusKeyword(""); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
                 </div>
               </div>
               {posts.length === 0 ? <p className="text-center py-12 text-soil-500">No blog posts yet.</p> : (
@@ -1109,7 +1130,7 @@ export default function AdminDashboard() {
                         <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
                         <p className="text-xs text-soil-500">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
                       </div>
-                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
+                      <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setFocusKeyword(""); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
                     </div>
                     
                     <div className="space-y-5">
@@ -1296,7 +1317,30 @@ export default function AdminDashboard() {
                           {editing ? "Update Post" : "Create Post"}
                         </button>
                         {editing && blogForm.status === "draft" && (
-                          <button onClick={async () => { const updatedForm = { ...blogForm, status: "published" }; setBlogForm(updatedForm); setBlogSaving(true); try { const res = editing ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(updatedForm) }) : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(updatedForm) }); if (res.ok) { setEditing(null); setShowBlogEditor(false); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); alert("Post published!"); fetchTab("blog"); } else { const err = await res.json().catch(() => ({})); alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed (${res.status})`); } } finally { setBlogSaving(false); } }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl shadow-sm transition-colors">Publish Now</button>
+                          <button onClick={async () => {
+                            const updatedForm = { ...blogForm, status: "published" };
+                            setBlogForm(updatedForm);
+                            setBlogSaving(true);
+                            try {
+                              const payload = { ...updatedForm, focus_keyword: focusKeyword };
+                              const res = editing
+                                ? await fetch(`${API}/api/v1/blog/admin/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) })
+                                : await fetch(`${API}/api/v1/blog/admin/create`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${code}` }, body: JSON.stringify(payload) });
+                              if (res.ok) {
+                                setEditing(null);
+                                setShowBlogEditor(false);
+                                setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" });
+                                setFocusKeyword("");
+                                alert("Post published successfully!");
+                                fetchTab("blog");
+                              } else {
+                                const err = await res.json().catch(() => ({}));
+                                alert(err.detail ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : `Failed (${res.status})`);
+                              }
+                            } finally {
+                              setBlogSaving(false);
+                            }
+                          }} className="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl shadow-sm transition-colors">Publish Now</button>
                         )}
                       </div>
                     </div>

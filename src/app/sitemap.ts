@@ -4,8 +4,9 @@ import { ALL_COUNTIES, ALL_CROPS, ALL_ZONES } from "@/lib/site-data";
 import { getWards, slugify } from "@/lib/data";
 
 const BASE = "https://www.shambaiq.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
   const wards = getWards();
 
@@ -22,13 +23,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/embed`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
   ];
 
-  // ── 2. Dynamic Blog Pages ──────────────────────────────────────────
-  const blogPages: MetadataRoute.Sitemap = ALL_POSTS.map((post) => ({
+  // Fetch dynamic blog posts from the API database
+  let dynamicPosts: any[] = [];
+  try {
+    const res = await fetch(`${API}/api/v1/blog`, { next: { revalidate: 3600 } });
+    if (res.ok) {
+      const data = await res.json();
+      dynamicPosts = data.posts || [];
+    }
+  } catch (e) {
+    console.error("Failed to fetch dynamic blog posts for sitemap:", e);
+  }
+
+  // ── 2. Dynamic Blog Pages (both static and backend API database posts) ──
+  const staticBlogPages: MetadataRoute.Sitemap = ALL_POSTS.map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
     lastModified: post.dateModified,
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));
+
+  const dynamicBlogPages: MetadataRoute.Sitemap = dynamicPosts.map((post) => ({
+    url: `${BASE}/blog/${post.slug}`,
+    lastModified: post.published_at || now,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
+
+  const blogPages = [...staticBlogPages, ...dynamicBlogPages];
 
   // ── 3. Top-Level Directories (Zones, Counties, Crops, Dealers) ──
   const zonePages: MetadataRoute.Sitemap = ALL_ZONES.map((zone) => ({

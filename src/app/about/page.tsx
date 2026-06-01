@@ -131,9 +131,13 @@ export default function AboutPage() {
         <div className="mt-8">
           {/* ── Hero ── */}
           <div className="flex flex-col sm:flex-row items-start gap-6 mb-10">
-            <div className="w-20 h-20 rounded-2xl bg-forest-700 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
-              PA
-            </div>
+            <img
+              src="/images/polycarp-andabwa-shambaiq.jpg"
+              alt="Polycarp Andabwa, founder of ShambaIQ"
+              width={80}
+              height={80}
+              className="w-20 h-20 rounded-2xl object-cover flex-shrink-0"
+            />
             <div>
               <h1 className="text-3xl font-display font-bold text-forest-900 mb-1">
                 Polycarp Andabwa

@@ -183,14 +183,34 @@ export default function AdminDashboard() {
     setLoading(false);
   }, [code, f, dealerFilter, farmerSearch]);
 
-  const login = async () => {
+  const login = async (overrideCode?: string) => {
     setAuthErr(false);
-    const res = await fetch(`${API}/api/v1/analytics/stats`, { headers: { "Authorization": `Bearer ${code}` } });
-    if (res.ok) { setAuth(true); setStats(await res.json()); const s = await f("/api/v1/admin/summary"); setSummary(s); }
-    else setAuthErr(true);
+    const activeCode = overrideCode || code;
+    if (!activeCode) return;
+    const res = await fetch(`${API}/api/v1/analytics/stats`, { headers: { "Authorization": `Bearer ${activeCode}` } });
+    if (res.ok) {
+      setAuth(true);
+      localStorage.setItem("shambaiq_admin_code", activeCode);
+      setStats(await res.json());
+      const s = await fetch(`${API}/api/v1/admin/summary`, { headers: { "Authorization": `Bearer ${activeCode}` } });
+      if (s.ok) setSummary(await s.json());
+    } else {
+      setAuthErr(true);
+      if (!overrideCode) {
+        localStorage.removeItem("shambaiq_admin_code");
+      }
+    }
   };
 
-  useEffect(() => { if (auth) fetchTab(tab); }, [auth, tab, dealerFilter]);
+  useEffect(() => {
+    const savedCode = localStorage.getItem("shambaiq_admin_code");
+    if (savedCode) {
+      setCode(savedCode);
+      login(savedCode);
+    }
+  }, []);
+
+  useEffect(() => { if (auth) fetchTab(tab); }, [auth, tab, dealerFilter, fetchTab]);
 
   // Actions
   const reviewDealer = async (id: string, status: string) => {
@@ -510,7 +530,10 @@ export default function AdminDashboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-display text-2xl font-bold text-forest-700">Admin Dashboard</h1>
-        <button onClick={() => fetchTab(tab)} className="flex items-center gap-2 px-4 py-2 text-sm text-soil-400 hover:text-forest-700 border border-cream-300 rounded-lg hover:border-gold-400 transition-colors"><RefreshCw size={14} /> Refresh</button>
+        <div className="flex gap-2">
+          <button onClick={() => fetchTab(tab)} className="flex items-center gap-2 px-4 py-2 text-sm text-soil-400 hover:text-forest-700 border border-cream-300 rounded-lg hover:border-gold-400 transition-colors"><RefreshCw size={14} /> Refresh</button>
+          <button onClick={() => { localStorage.removeItem("shambaiq_admin_code"); setAuth(false); setCode(""); }} className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 rounded-lg transition-colors"><X size={14} /> Sign Out</button>
+        </div>
       </div>
 
       {/* Summary bar */}

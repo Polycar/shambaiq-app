@@ -507,7 +507,7 @@ export default function AdminDashboard() {
         <p className="text-soil-400 text-center text-sm mb-8">Enter your officer access code</p>
         <input type="password" placeholder="Access code" value={code} onChange={e => setCode(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 mb-4" />
         {authErr && <p className="text-sm text-red-600 mb-4 text-center">Invalid access code</p>}
-        <button onClick={login} className="w-full py-3 bg-forest-700 hover:bg-forest-800 text-white font-semibold rounded-xl transition-colors">Sign In</button>
+        <button onClick={() => login()} className="w-full py-3 bg-forest-700 hover:bg-forest-800 text-white font-semibold rounded-xl transition-colors">Sign In</button>
       </div>
     </div>
   );

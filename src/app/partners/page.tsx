@@ -17,6 +17,8 @@ import {
   Cpu
 } from "lucide-react";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
+
 export default function PartnersPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,16 +30,45 @@ export default function PartnersPage() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API request
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setError("");
+
+    try {
+      const res = await fetch(`${API_BASE}/api/v1/partners/inquiry`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          partner_type: formData.partnerType,
+          message: formData.message,
+        }),
+      });
+
+      if (!res.ok) {
+        let errData: any = {};
+        try {
+          errData = await res.json();
+        } catch {}
+        throw new Error(errData.detail || errData.message || "Failed to submit proposal. Please try again.");
+      }
+
       setSubmitted(true);
-    }, 1200);
+    } catch (err: any) {
+      setError(err.message || "Could not reach the server. Please check your internet connection.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-cream-50 flex flex-col font-body">
@@ -199,6 +230,12 @@ export default function PartnersPage() {
                       placeholder="e.g. We wish to query your soil pH metrics inside our farmer SMS chatbot..."
                     />
                   </div>
+
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-600 text-sm font-semibold rounded-xl p-4">
+                      {error}
+                    </div>
+                  )}
 
                   <button 
                     type="submit"

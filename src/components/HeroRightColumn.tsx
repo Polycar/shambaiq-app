@@ -49,7 +49,7 @@ function StaticMockup() {
       <div className="flex items-center justify-between mb-5">
         <div>
           <p className="text-cream-200 text-xs font-medium tracking-wide uppercase mb-0.5">Soil Report</p>
-          <h3 className="text-white font-display font-bold text-base leading-tight">Nakuru County · Maize</h3>
+          <p className="text-white font-display font-bold text-base leading-tight">Nakuru County · Maize</p>
         </div>
         <ScoreRing score={74} />
       </div>
@@ -127,9 +127,9 @@ export default function HeroRightColumn() {
       <div className="flex items-start justify-between mb-4">
         <div>
           <p className="text-cream-200 text-xs font-medium tracking-wide uppercase mb-0.5">Your Last Report</p>
-          <h3 className="text-white font-display font-bold text-base leading-tight">
+          <p className="text-white font-display font-bold text-base leading-tight">
             {report?.county ?? "Your Farm"}{report?.crop ? ` · ${report.crop}` : ""}
-          </h3>
+          </p>
         </div>
         <ScoreRing score={score} />
       </div>

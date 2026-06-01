@@ -96,7 +96,7 @@ export default function HomePage() {
               <div className="fade-up fade-up-delay-3 flex flex-wrap gap-4">
                 <Link
                   href="/app"
-                  className="group px-8 py-4 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25 flex items-center gap-2"
+                  className="group px-8 py-4 bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25 flex items-center gap-2"
                 >
                   Get Free Advice
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -369,7 +369,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <Link href="/app" className="group inline-flex items-center gap-2 px-10 py-4 bg-gold-500 hover:bg-gold-400 text-white font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25">
+          <Link href="/app" className="group inline-flex items-center gap-2 px-10 py-4 bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25">
             Get Free Soil Advice
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>

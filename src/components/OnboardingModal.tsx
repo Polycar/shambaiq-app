@@ -78,7 +78,7 @@ export default function OnboardingModal() {
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-[fadeIn_0.3s_ease]">
         {/* Header */}
         <div className="bg-gradient-to-br from-forest-800 to-forest-700 px-6 py-5 relative">
-          <button onClick={dismiss} className="absolute top-4 right-4 text-cream-400 hover:text-cream-200 transition-colors">
+          <button onClick={dismiss} aria-label="Close" className="absolute top-4 right-4 text-cream-400 hover:text-cream-200 transition-colors">
             <X size={18} />
           </button>
           <p className="text-gold-300 text-xs font-semibold uppercase tracking-widest mb-1">
@@ -106,11 +106,12 @@ export default function OnboardingModal() {
           {/* Step 0 — County */}
           {step === 0 && (
             <div>
-              <label className="block text-sm font-bold text-forest-700 mb-1">
-                📍 What county is your farm in?
+              <label htmlFor="onboarding-county" className="block text-sm font-bold text-forest-700 mb-1">
+                What county is your farm in?
               </label>
               <p className="text-xs text-soil-400 mb-4">We'll look up your local soil data.</p>
               <select
+                id="onboarding-county"
                 value={county}
                 onChange={e => setCounty(e.target.value)}
                 className="w-full px-4 py-3 bg-cream-50 border border-cream-300 rounded-xl text-forest-800 text-sm focus:outline-none focus:ring-2 focus:ring-forest-600"
@@ -124,11 +125,12 @@ export default function OnboardingModal() {
           {/* Step 1 — Crop */}
           {step === 1 && (
             <div>
-              <label className="block text-sm font-bold text-forest-700 mb-1">
-                🌾 What are you growing this season?
+              <label htmlFor="onboarding-crop" className="block text-sm font-bold text-forest-700 mb-1">
+                What are you growing this season?
               </label>
               <p className="text-xs text-soil-400 mb-4">We'll match fertilizer to your crop's requirements.</p>
               <select
+                id="onboarding-crop"
                 value={crop}
                 onChange={e => setCrop(e.target.value)}
                 className="w-full px-4 py-3 bg-cream-50 border border-cream-300 rounded-xl text-forest-800 text-sm focus:outline-none focus:ring-2 focus:ring-forest-600"

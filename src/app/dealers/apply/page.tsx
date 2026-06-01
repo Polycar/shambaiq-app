@@ -90,7 +90,7 @@ export default function DealerApplyPage() {
           <CheckCircle size={32} className="text-green-600" />
         </div>
         <h1 className="font-display text-2xl font-bold text-forest-700 mb-3">Application submitted!</h1>
-        <p className="text-soil-400 mb-2">{message}</p>
+        <p className="text-soil-500 mb-2">{message}</p>
         <p className="text-sm text-soil-300 mb-8">
           Our team will review your application and notify you by email once approved.
           This usually takes 1-3 business days.
@@ -113,13 +113,13 @@ export default function DealerApplyPage() {
         <h1 className="font-display text-3xl font-bold text-forest-700 mb-2">
           Register your agrovet
         </h1>
-        <p className="text-soil-400">
+        <p className="text-soil-500">
           List your agricultural input shop on ShambaIQ and connect with farmers in your area.
         </p>
       </div>
 
       <div className="bg-gold-50 border border-gold-200 rounded-xl p-4 mb-8 flex gap-3 items-start">
-        <AlertCircle size={20} className="text-gold-600 flex-shrink-0 mt-0.5" />
+        <AlertCircle size={20} className="text-gold-700 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-gold-700">
           All submissions are reviewed by ShambaIQ before going live. You&apos;ll be notified by email when your listing is approved.
         </p>
@@ -270,7 +270,7 @@ export default function DealerApplyPage() {
               <button
                 type="button"
                 onClick={captureGPS}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-cream-300 rounded-xl text-soil-400 hover:border-gold-400 hover:text-forest-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-cream-300 rounded-xl text-soil-500 hover:border-gold-400 hover:text-forest-700 transition-colors"
               >
                 {gpsStatus === "loading" ? (
                   <><Loader2 size={16} className="animate-spin" /> Capturing location...</>

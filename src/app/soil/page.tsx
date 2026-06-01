@@ -42,7 +42,7 @@ export default function SoilDirectoryPage() {
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-3 leading-tight">
           Kenya County Soil Reports
         </h1>
-        <p className="text-soil-400 max-w-2xl text-lg leading-relaxed">
+        <p className="text-soil-500 max-w-2xl text-lg leading-relaxed">
           Explore soil health data for all {total} Kenyan counties. Each report
           includes pH, nitrogen, phosphorus, potassium, and organic carbon levels with
           crop recommendations — powered by 30m precision satellite data.
@@ -60,7 +60,7 @@ export default function SoilDirectoryPage() {
               <h2 className="font-display text-xl font-bold text-forest-600 leading-tight">
                 {g.zone}
               </h2>
-              <span className="text-sm text-soil-400">
+              <span className="text-sm text-soil-500">
                 {g.counties.length} counties
               </span>
             </div>
@@ -75,7 +75,7 @@ export default function SoilDirectoryPage() {
               >
                 {/* Top row: name + score badge */}
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-600 transition-colors text-lg leading-tight">
+                  <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-700 transition-colors text-lg leading-tight">
                     {c.county}
                   </h3>
                   <span
@@ -95,7 +95,7 @@ export default function SoilDirectoryPage() {
                   ].map((n) => (
                     <div key={n.label}>
                       <div className="flex justify-between text-xs mb-0.5">
-                        <span className="text-soil-400 font-medium">{n.label}</span>
+                        <span className="text-soil-500 font-medium">{n.label}</span>
                         <span className="font-semibold text-forest-700">{n.val}</span>
                       </div>
                       <div className="nutrient-bar">
@@ -106,7 +106,7 @@ export default function SoilDirectoryPage() {
                 </div>
 
                 {/* View link */}
-                <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-gold-600 group-hover:text-gold-500 transition-colors">
+                <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-gold-700 group-hover:text-gold-500 transition-colors">
                   View report <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </Link>

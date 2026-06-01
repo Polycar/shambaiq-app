@@ -90,7 +90,7 @@ export default async function CropPage({ params }: PageProps) {
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         {crop.crop} Farming Guide — Kenya
       </h1>
-      <p className="text-soil-400 mb-10">
+      <p className="text-soil-500 mb-10">
         Soil requirements, top counties, seed varieties, fertilizer plan &amp;
         economics
       </p>
@@ -113,14 +113,14 @@ export default async function CropPage({ params }: PageProps) {
                   key={r.label}
                   className="bg-cream-50 rounded-lg p-4 border border-cream-200 text-center"
                 >
-                  <div className="text-xs text-soil-400 mb-1">{r.label}</div>
+                  <div className="text-xs text-soil-500 mb-1">{r.label}</div>
                   <div className="font-bold text-forest-700 capitalize">
                     {r.val}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="mt-4 text-sm text-soil-400">
+            <div className="mt-4 text-sm text-soil-500">
               Preferred texture:{" "}
               <span className="font-semibold text-forest-700">
                 {crop.pref_texture}
@@ -140,13 +140,13 @@ export default async function CropPage({ params }: PageProps) {
                   href={`/soil/${county.slug}/${slug}`}
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-cream-100 transition-colors group"
                 >
-                  <span className="w-6 text-sm font-bold text-soil-400">
+                  <span className="w-6 text-sm font-bold text-soil-500">
                     #{i + 1}
                   </span>
-                  <span className="flex-1 font-medium text-forest-700 group-hover:text-gold-600 transition-colors">
+                  <span className="flex-1 font-medium text-forest-700 group-hover:text-gold-700 transition-colors">
                     {county.county}
                   </span>
-                  <span className="text-xs text-soil-400">{county.zone}</span>
+                  <span className="text-xs text-soil-500">{county.zone}</span>
                   <span
                     className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
                     style={{
@@ -170,7 +170,7 @@ export default async function CropPage({ params }: PageProps) {
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
               Challenging Counties for {crop.crop}
             </h2>
-            <p className="text-sm text-soil-400 mb-4">
+            <p className="text-sm text-soil-500 mb-4">
               These counties may need soil amendments for {crop.crop}
             </p>
             <div className="space-y-2">
@@ -211,7 +211,7 @@ export default async function CropPage({ params }: PageProps) {
                         {s.altitude_zone}
                       </span>
                     </div>
-                    <div className="text-xs text-soil-400">
+                    <div className="text-xs text-soil-500">
                       {s.breeder} · {s.maturity_days} days ·{" "}
                       {s.yield_bags} bags/acre
                     </div>
@@ -234,7 +234,7 @@ export default async function CropPage({ params }: PageProps) {
               </h2>
               {calendars.map((cal) => (
                 <div key={cal.season} className="mb-4 last:mb-0">
-                  <h3 className="text-sm font-bold text-gold-600 mb-2">
+                  <h3 className="text-sm font-bold text-gold-700 mb-2">
                     {cal.season}
                   </h3>
                   <div className="grid grid-cols-3 gap-3">
@@ -247,7 +247,7 @@ export default async function CropPage({ params }: PageProps) {
                         key={m.label}
                         className="bg-cream-50 rounded-lg p-3 border border-cream-200"
                       >
-                        <div className="text-xs text-soil-400 mb-1">
+                        <div className="text-xs text-soil-500 mb-1">
                           {m.label}
                         </div>
                         <div className="text-sm text-forest-700 font-medium">
@@ -270,20 +270,20 @@ export default async function CropPage({ params }: PageProps) {
             </h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-soil-400">Market price</span>
+                <span className="text-soil-500">Market price</span>
                 <span className="font-bold text-forest-700">
                   KES {displayPrice}/kg
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-soil-400">Expected yield</span>
+                <span className="text-soil-500">Expected yield</span>
                 <span className="font-bold text-forest-700">
                   {crop.yield_per_acre.toLocaleString()} kg/acre
                 </span>
               </div>
               <hr className="border-cream-200" />
               <div className="flex justify-between">
-                <span className="text-soil-400">Est. revenue</span>
+                <span className="text-soil-500">Est. revenue</span>
                 <span className="font-bold text-green-600">
                   KES {revenue.toLocaleString()}/acre
                 </span>
@@ -298,19 +298,19 @@ export default async function CropPage({ params }: PageProps) {
               </h2>
               <div className="space-y-2 text-sm">
                 <div>
-                  <span className="text-soil-400">Product:</span>{" "}
+                  <span className="text-soil-500">Product:</span>{" "}
                   <span className="font-semibold text-forest-700">
                     {topDress.product}
                   </span>
                 </div>
                 <div>
-                  <span className="text-soil-400">Timing:</span>{" "}
+                  <span className="text-soil-500">Timing:</span>{" "}
                   <span className="font-semibold text-forest-700">
                     {topDress.timing}
                   </span>
                 </div>
                 <div>
-                  <span className="text-soil-400">Bags/acre:</span>{" "}
+                  <span className="text-soil-500">Bags/acre:</span>{" "}
                   <span className="font-semibold text-forest-700">
                     {topDress.bags_per_acre}
                   </span>
@@ -329,7 +329,7 @@ export default async function CropPage({ params }: PageProps) {
             <div className="space-y-2 text-sm">
               {prices.slice(0, 5).map((p) => (
                 <div key={p.fertilizer} className="flex justify-between">
-                  <span className="text-soil-400">{p.fertilizer}</span>
+                  <span className="text-soil-500">{p.fertilizer}</span>
                   <span className="font-semibold text-forest-700">
                     KES {p.subsidized.toLocaleString()}
                   </span>
@@ -353,19 +353,19 @@ export default async function CropPage({ params }: PageProps) {
         {prevCrop ? (
           <Link
             href={`/crops/${prevCrop.slug}`}
-            className="flex items-center gap-2 text-sm font-semibold text-forest-600 hover:text-gold-600 transition-colors group"
+            className="flex items-center gap-2 text-sm font-semibold text-forest-600 hover:text-gold-700 transition-colors group"
           >
             <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
             {prevCrop.crop}
           </Link>
         ) : <span />}
-        <Link href="/crops" className="text-xs text-soil-400 hover:text-gold-600 transition-colors">
+        <Link href="/crops" className="text-xs text-soil-500 hover:text-gold-700 transition-colors">
           All crops
         </Link>
         {nextCrop ? (
           <Link
             href={`/crops/${nextCrop.slug}`}
-            className="flex items-center gap-2 text-sm font-semibold text-forest-600 hover:text-gold-600 transition-colors group"
+            className="flex items-center gap-2 text-sm font-semibold text-forest-600 hover:text-gold-700 transition-colors group"
           >
             {nextCrop.crop}
             <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M5 12h14m0 0l-7-7m7 7l-7 7"/></svg>

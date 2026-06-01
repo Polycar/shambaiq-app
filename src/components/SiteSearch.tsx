@@ -168,7 +168,7 @@ export default function SiteSearch() {
               >
                 <div>
                   <span className="text-sm font-medium text-forest-800">{result.label}</span>
-                  <span className="text-xs text-soil-400 ml-2">{result.sublabel}</span>
+                  <span className="text-xs text-soil-500 ml-2">{result.sublabel}</span>
                 </div>
                 <span className="text-xs text-gold-500 font-medium flex-shrink-0">Soil report →</span>
               </li>
@@ -199,7 +199,7 @@ export default function SiteSearch() {
                 >
                   <div>
                     <span className="text-sm font-medium text-forest-800">{result.label}</span>
-                    <span className="text-xs text-soil-400 ml-2">{result.sublabel}</span>
+                    <span className="text-xs text-soil-500 ml-2">{result.sublabel}</span>
                   </div>
                   <span className="text-xs text-gold-500 font-medium flex-shrink-0">Crop guide →</span>
                 </li>

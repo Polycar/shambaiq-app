@@ -289,13 +289,13 @@ export default function DealerDashboard() {
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 bg-gold-100 rounded-2xl flex items-center justify-center">
-            <Store size={28} className="text-gold-600" />
+            <Store size={28} className="text-gold-700" />
           </div>
           <div>
             <h1 className="font-display text-2xl font-bold text-forest-700">
               {dealer?.business_name || "Dealer Portal"}
             </h1>
-            <p className="text-sm text-soil-400">
+            <p className="text-sm text-soil-500">
               {dealer ? `${dealer.town}, ${dealer.county}` : profile.email}
             </p>
           </div>
@@ -306,7 +306,7 @@ export default function DealerDashboard() {
             <Lock size={14} /> Change Password
           </button>
           <button onClick={logout}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-soil-400 hover:text-red-600 border border-cream-300 rounded-lg hover:border-red-300 transition-colors">
+            className="flex items-center gap-2 px-4 py-2 text-sm text-soil-500 hover:text-red-600 border border-cream-300 rounded-lg hover:border-red-300 transition-colors">
             <LogOut size={14} /> Sign Out
           </button>
         </div>
@@ -320,7 +320,7 @@ export default function DealerDashboard() {
               <Lock size={18} className="text-gold-500" /> Change Password
             </h2>
             <button onClick={() => { setShowChangePw(false); setPwMsg(null); setCurrentPw(""); setNewPw(""); setConfirmPw(""); }}
-              className="text-soil-400 hover:text-forest-700"><X size={18} /></button>
+              className="text-soil-500 hover:text-forest-700"><X size={18} /></button>
           </div>
           {pwMsg && (
             <div className={`mb-4 p-3 rounded-xl text-sm font-medium ${
@@ -361,7 +361,7 @@ export default function DealerDashboard() {
         <div className="bg-gold-50 border border-gold-200 rounded-2xl p-8 text-center">
           <Store size={40} className="text-gold-500 mx-auto mb-4" />
           <h2 className="font-display text-lg font-bold text-forest-700 mb-2">No Approved Listing Yet</h2>
-          <p className="text-sm text-soil-400">Your dealer account exists, but no approved application was found. Your application may still be under review.</p>
+          <p className="text-sm text-soil-500">Your dealer account exists, but no approved application was found. Your application may still be under review.</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -377,19 +377,19 @@ export default function DealerDashboard() {
                     <div className="w-10 h-10 bg-forest-700/10 rounded-xl flex items-center justify-center">
                       <TrendingUp size={20} className="text-forest-700" />
                     </div>
-                    <span className="text-sm text-soil-400">Soil Queries (30 days)</span>
-                    {showNeeds ? <ChevronUp size={14} className="text-soil-400 ml-auto" /> : <ChevronDown size={14} className="text-soil-400 ml-auto group-hover:text-forest-700 transition-colors" />}
+                    <span className="text-sm text-soil-500">Soil Queries (30 days)</span>
+                    {showNeeds ? <ChevronUp size={14} className="text-soil-500 ml-auto" /> : <ChevronDown size={14} className="text-soil-500 ml-auto group-hover:text-forest-700 transition-colors" />}
                   </div>
                   <div className="font-display text-3xl font-bold text-forest-700">{analytics.recent_queries}</div>
-                  <p className="text-xs text-gold-600 mt-1 font-medium">Click to see farmer needs →</p>
+                  <p className="text-xs text-gold-700 mt-1 font-medium">Click to see farmer needs →</p>
                 </button>
 
                 <div className="bg-white rounded-2xl border border-cream-300 p-6">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-gold-100 rounded-xl flex items-center justify-center">
-                      <Users size={20} className="text-gold-600" />
+                      <Users size={20} className="text-gold-700" />
                     </div>
-                    <span className="text-sm text-soil-400">Registered Farmers</span>
+                    <span className="text-sm text-soil-500">Registered Farmers</span>
                   </div>
                   <div className="font-display text-3xl font-bold text-forest-700">{analytics.total_farmers}</div>
                   <p className="text-xs text-soil-300 mt-1">In {analytics.county} County</p>
@@ -400,7 +400,7 @@ export default function DealerDashboard() {
                     <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
                       <MapPin size={20} className="text-green-600" />
                     </div>
-                    <span className="text-sm text-soil-400">Your Location</span>
+                    <span className="text-sm text-soil-500">Your Location</span>
                   </div>
                   <div className="font-display text-lg font-bold text-forest-700">{dealer.town}</div>
                   <p className="text-xs text-soil-300 mt-1">{dealer.county} County</p>
@@ -415,7 +415,7 @@ export default function DealerDashboard() {
                       <BarChart3 size={20} className="text-forest-600" />
                       Farmer Needs in {analytics.county} County
                     </h2>
-                    {needsLoading && <Loader2 size={16} className="animate-spin text-soil-400" />}
+                    {needsLoading && <Loader2 size={16} className="animate-spin text-soil-500" />}
                   </div>
 
                   {needsLoading && !needs && (
@@ -425,12 +425,12 @@ export default function DealerDashboard() {
                   )}
 
                   {needs && needs.total_queries === 0 && (
-                    <p className="text-soil-400 text-sm text-center py-6">No soil queries recorded in the last 90 days yet.</p>
+                    <p className="text-soil-500 text-sm text-center py-6">No soil queries recorded in the last 90 days yet.</p>
                   )}
 
                   {needs && needs.total_queries > 0 && (
                     <div className="space-y-6">
-                      <p className="text-xs text-soil-400">
+                      <p className="text-xs text-soil-500">
                         Based on <strong className="text-forest-700">{needs.total_queries}</strong> soil queries in the last {needs.period_days} days
                       </p>
                       <div className="grid sm:grid-cols-2 gap-6">
@@ -441,12 +441,12 @@ export default function DealerDashboard() {
                           <div className="space-y-2">
                             {needs.top_crops.map((c: any, i: number) => (
                               <div key={i} className="flex items-center gap-2">
-                                <div className="text-xs w-5 text-soil-400 font-mono">{i + 1}.</div>
+                                <div className="text-xs w-5 text-soil-500 font-mono">{i + 1}.</div>
                                 <div className="flex-1 bg-cream-100 rounded-full h-2 overflow-hidden">
                                   <div className="bg-forest-500 h-2 rounded-full" style={{ width: `${Math.round(c.count / needs.top_crops[0].count * 100)}%` }} />
                                 </div>
                                 <span className="text-sm font-medium text-forest-800 w-24 truncate">{c.crop}</span>
-                                <span className="text-xs text-soil-400 w-8 text-right">{c.count}</span>
+                                <span className="text-xs text-soil-500 w-8 text-right">{c.count}</span>
                               </div>
                             ))}
                           </div>
@@ -458,12 +458,12 @@ export default function DealerDashboard() {
                           <div className="space-y-2">
                             {needs.top_fertilizers.map((f: any, i: number) => (
                               <div key={i} className="flex items-center gap-2">
-                                <div className="text-xs w-5 text-soil-400 font-mono">{i + 1}.</div>
+                                <div className="text-xs w-5 text-soil-500 font-mono">{i + 1}.</div>
                                 <div className="flex-1 bg-cream-100 rounded-full h-2 overflow-hidden">
                                   <div className="bg-gold-400 h-2 rounded-full" style={{ width: `${Math.round(f.count / needs.top_fertilizers[0].count * 100)}%` }} />
                                 </div>
                                 <span className="text-sm font-medium text-forest-800 w-24 truncate">{f.name}</span>
-                                <span className="text-xs text-soil-400 w-8 text-right">{f.count}</span>
+                                <span className="text-xs text-soil-500 w-8 text-right">{f.count}</span>
                               </div>
                             ))}
                           </div>
@@ -502,7 +502,7 @@ export default function DealerDashboard() {
                 <Package size={20} className="text-gold-500" />
                 <div>
                   <h2 className="font-display text-lg font-bold text-forest-700">Stock &amp; Inventory</h2>
-                  <p className="text-xs text-soil-400 mt-0.5">Update availability so farmers know what you have before visiting</p>
+                  <p className="text-xs text-soil-500 mt-0.5">Update availability so farmers know what you have before visiting</p>
                 </div>
               </div>
               <button
@@ -589,7 +589,7 @@ export default function DealerDashboard() {
                     {addSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />} Add to inventory
                   </button>
                   <button onClick={() => { setShowAddPanel(false); setAddForm({ product_name: "", category: "Fertilizer", unit: "", price: "" }); }}
-                    className="px-4 py-2.5 text-sm text-soil-400 border border-cream-300 rounded-xl hover:border-gold-400 transition-colors">Cancel</button>
+                    className="px-4 py-2.5 text-sm text-soil-500 border border-cream-300 rounded-xl hover:border-gold-400 transition-colors">Cancel</button>
                 </div>
               </div>
             )}
@@ -612,7 +612,7 @@ export default function DealerDashboard() {
                 <Loader2 size={24} className="animate-spin text-forest-500" />
               </div>
             ) : filteredInventory.length === 0 ? (
-              <div className="text-center py-10 text-soil-400 text-sm">
+              <div className="text-center py-10 text-soil-500 text-sm">
                 {inventory.length === 0
                   ? "No products added yet. Click \"Add Product\" to start building your inventory."
                   : "No products in this category."}
@@ -634,7 +634,7 @@ export default function DealerDashboard() {
                       <tr key={product.id} className={`border-b border-cream-100 ${i % 2 === 0 ? "bg-white" : "bg-cream-50"}`}>
                         <td className="py-3 px-3">
                           <div className="font-medium text-forest-800">{product.product_name}</div>
-                          {product.unit && <div className="text-xs text-soil-400">{product.unit}</div>}
+                          {product.unit && <div className="text-xs text-soil-500">{product.unit}</div>}
                         </td>
                         <td className="py-3 px-3 text-soil-500 text-xs">{product.category}</td>
                         <td className="py-3 px-3">
@@ -680,13 +680,13 @@ export default function DealerDashboard() {
               <Store size={20} className="text-gold-500" /> Business Details
             </h2>
             <div className="grid sm:grid-cols-2 gap-4 text-sm">
-              <div><span className="text-soil-400">Business Name</span><p className="font-semibold text-forest-700">{dealer.business_name}</p></div>
-              <div><span className="text-soil-400">Phone Number</span><p className="font-semibold text-forest-700">{dealer.phone_number}</p></div>
-              <div><span className="text-soil-400">Location</span><p className="font-semibold text-forest-700">{dealer.town}, {dealer.county}</p></div>
+              <div><span className="text-soil-500">Business Name</span><p className="font-semibold text-forest-700">{dealer.business_name}</p></div>
+              <div><span className="text-soil-500">Phone Number</span><p className="font-semibold text-forest-700">{dealer.phone_number}</p></div>
+              <div><span className="text-soil-500">Location</span><p className="font-semibold text-forest-700">{dealer.town}, {dealer.county}</p></div>
               {dealer.physical_address && (
-                <div><span className="text-soil-400">Address</span><p className="font-semibold text-forest-700">{dealer.physical_address}</p></div>
+                <div><span className="text-soil-500">Address</span><p className="font-semibold text-forest-700">{dealer.physical_address}</p></div>
               )}
-              <div><span className="text-soil-400">Status</span><p className="font-semibold text-green-600 flex items-center gap-1"><CheckCircle size={14} /> Approved &amp; Listed</p></div>
+              <div><span className="text-soil-500">Status</span><p className="font-semibold text-green-600 flex items-center gap-1"><CheckCircle size={14} /> Approved &amp; Listed</p></div>
             </div>
           </div>
         </div>

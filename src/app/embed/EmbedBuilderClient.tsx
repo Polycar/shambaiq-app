@@ -49,7 +49,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-3 leading-tight">
           Soil Health Widget Embed Builder
         </h1>
-        <p className="text-soil-400 max-w-2xl text-lg leading-relaxed">
+        <p className="text-soil-500 max-w-2xl text-lg leading-relaxed">
           Create dynamic, hyper-local soil reports to share on your agriculture website or blog. 
           Select a county, customize it, and copy the responsive iframe snippet below.
         </p>
@@ -84,7 +84,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
             </div>
 
             {/* Widget size details info */}
-            <div className="bg-cream-50 border border-cream-200 rounded-xl p-4 text-xs text-soil-400 leading-relaxed">
+            <div className="bg-cream-50 border border-cream-200 rounded-xl p-4 text-xs text-soil-500 leading-relaxed">
               <p className="font-bold text-forest-700 mb-1">💡 Pro-Tip for SEO backlinks</p>
               By embedding this widget, you get live agricultural data for your readers. 
               The widget automatically includes a deep link back to ShambaIQ, helping establish 
@@ -134,7 +134,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
               <Eye size={16} />
               Live Widget Preview
             </h2>
-            <span className="text-xs text-soil-400 flex items-center gap-1">
+            <span className="text-xs text-soil-500 flex items-center gap-1">
               <RefreshCw size={12} className="animate-spin-slow" /> Responsive Frame
             </span>
           </div>
@@ -156,7 +156,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
           <div className="text-center pt-2">
             <Link
               href={`/soil/${selectedSlug}`}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-600 hover:text-gold-500 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-700 hover:text-gold-500 transition-colors"
             >
               <ArrowLeft size={14} /> Back to full {selectedCountyName} County Soil Report
             </Link>

@@ -245,7 +245,7 @@ export default function FarmerLogin() {
                     Reset Password
                   </button>
                   <button onClick={() => { setForgotStep("request"); setForgotMsg(""); }}
-                    className="w-full text-center text-sm font-semibold text-soil-400 hover:text-gold-600 py-2 transition-colors">
+                    className="w-full text-center text-sm font-semibold text-soil-500 hover:text-gold-700 py-2 transition-colors">
                     Resend code
                   </button>
                 </>
@@ -255,7 +255,7 @@ export default function FarmerLogin() {
                 <div className="text-center py-4 space-y-4">
                   <CheckCircle2 size={48} className="text-forest-500 mx-auto" />
                   <p className="text-forest-800 font-semibold">Password updated successfully!</p>
-                  <p className="text-soil-400 text-sm">You can now log in with your new password.</p>
+                  <p className="text-soil-500 text-sm">You can now log in with your new password.</p>
                   <button onClick={() => { resetForgot(); setMode("login"); }}
                     className="w-full bg-gold-500 hover:bg-gold-400 text-white font-bold py-4 rounded-2xl shadow-lg shadow-gold-500/20 transition-all">
                     Back to Login
@@ -265,7 +265,7 @@ export default function FarmerLogin() {
 
               {forgotStep !== "done" && (
                 <button onClick={resetForgot}
-                  className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-soil-400 hover:text-forest-700 py-2 transition-colors">
+                  className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-soil-500 hover:text-forest-700 py-2 transition-colors">
                   <ChevronLeft size={16} /> Back to login
                 </button>
               )}
@@ -275,13 +275,13 @@ export default function FarmerLogin() {
               <div className="flex bg-cream-100 p-1.5 rounded-2xl mb-8">
                 <button type="button" onClick={() => { setMode("login"); setError(""); }}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all ${
-                    mode === "login" ? "bg-forest-800 text-white shadow-lg" : "text-soil-400 hover:text-forest-700"
+                    mode === "login" ? "bg-forest-800 text-white shadow-lg" : "text-soil-500 hover:text-forest-700"
                   }`}>
                   <LogIn size={16} /> Login
                 </button>
                 <button type="button" onClick={() => { setMode("register"); setError(""); }}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all ${
-                    mode === "register" ? "bg-forest-800 text-white shadow-lg" : "text-soil-400 hover:text-forest-700"
+                    mode === "register" ? "bg-forest-800 text-white shadow-lg" : "text-soil-500 hover:text-forest-700"
                   }`}>
                   <UserPlus size={16} /> Register
                 </button>
@@ -344,7 +344,7 @@ export default function FarmerLogin() {
                 {mode === "login" && (
                   <button type="button"
                     onClick={() => { setForgotStep("request"); setForgotId(phone); setForgotMsg(""); }}
-                    className="w-full text-center text-sm font-semibold text-soil-400 hover:text-gold-600 py-2 transition-colors">
+                    className="w-full text-center text-sm font-semibold text-soil-500 hover:text-gold-700 py-2 transition-colors">
                     Forgot Password?
                   </button>
                 )}
@@ -353,7 +353,7 @@ export default function FarmerLogin() {
           )}
         </div>
 
-        <div className="flex items-center justify-center gap-2 mt-6 text-xs text-soil-400">
+        <div className="flex items-center justify-center gap-2 mt-6 text-xs text-soil-500">
           <Satellite size={12} />
           <span>Your data is stored securely on ShambaIQ servers</span>
         </div>

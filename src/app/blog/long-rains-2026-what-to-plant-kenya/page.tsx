@@ -42,11 +42,11 @@ export default function Page() {
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=seasonal-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Seasonal Guides</Link>
+                <Link href="/blog?category=seasonal-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Seasonal Guides</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Long Rains 2026 Kenya: <span className="text-gold-600">What to Plant by County and Agroecological Zone</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Long Rains 2026 Kenya: <span className="text-gold-700">What to Plant by County and Agroecological Zone</span></h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Kenya's long rains (March–June 2026) are the primary planting window for over 70 percent of smallholder farmers. The decisions made in the first two weeks of March determine household food security and farm income for the next six months. This guide provides ShambaIQ's county-specific recommendations calibrated against soil data and historical rainfall patterns.</p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
                 <span className="text-soil-300">·</span><span>{POST.readingTimeMin} min read</span>
@@ -72,7 +72,7 @@ export default function Page() {
                     {[["Highland (> 1,800m)", "Nyandarua, Nyeri upper, Meru upper", "Late March\u2013April", "Potato, Wheat, Maize (H614D)", "Beans after potato"], ["Upper Midland", "Nakuru, U. Gishu, Trans Nzoia", "Late March\u2013Early April", "Maize (DK8031), Wheat", "Maize + beans intercrop"], ["Midland (1,200\u20131,500m)", "Kakamega, Nandi, Kisii, Embu", "Early\u2013Mid April", "Maize (DK777), Beans, Tea", "Maize + beans intercrop"], ["Lower Midland", "Machakos, Makueni highland", "Mid March\u2013April", "Maize (DUMA 43), Sorghum", "Maize + cowpea"], ["Semi-Arid", "Kitui, Kajiado, Baringo lower", "When rains arrive", "Sorghum, Cowpeas, Green grams", "Sorghum + pigeon peas"], ["Coastal", "Kilifi, Kwale, Mombasa", "March 15\u201320", "Cassava, Cowpeas, Coconut", "Cassava + cowpea"]].map(([zone, counties, onset, crops, inter], i) => (
                       <tr key={zone as string} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
                         <td className="px-3 py-3 font-semibold text-forest-800 text-xs">{zone}</td>
-                        <td className="px-3 py-3 text-xs text-soil-400">{counties}</td>
+                        <td className="px-3 py-3 text-xs text-soil-500">{counties}</td>
                         <td className="px-3 py-3 text-xs text-soil-600">{onset}</td>
                         <td className="px-3 py-3 text-xs text-forest-700 font-medium">{crops}</td>
                         <td className="px-3 py-3 text-xs text-soil-500">{inter}</td>
@@ -103,7 +103,7 @@ export default function Page() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/app", label: "Check Your Farm Soil" },
@@ -131,7 +131,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Onset (Coast)", "March 15–20"],
@@ -141,7 +141,7 @@ export default function Page() {
                     ["Top ASAL crop", "Sorghum + cowpeas"],
                     ["Key tool", "ShambaIQ soil check"],
                   ].map(([k, v]) => (
-                    <div key={k as string} className="flex justify-between gap-2"><span className="text-soil-400 text-xs">{k}</span><span className="font-medium text-forest-700 text-right text-xs">{v}</span></div>
+                    <div key={k as string} className="flex justify-between gap-2"><span className="text-soil-500 text-xs">{k}</span><span className="font-medium text-forest-700 text-right text-xs">{v}</span></div>
                   ))}
                 </div>
               </div>

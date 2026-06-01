@@ -61,7 +61,7 @@ export default function ScoreRing({
           {score}
         </text>
       </svg>
-      <span className="text-sm font-medium text-soil-400">{label}</span>
+      <span className="text-sm font-medium text-soil-500">{label}</span>
     </div>
   );
 }

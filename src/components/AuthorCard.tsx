@@ -7,12 +7,12 @@ interface AuthorCardProps {
 export default function AuthorCard({ compact = false }: AuthorCardProps) {
   if (compact) {
     return (
-      <div className="flex items-center gap-3 text-sm text-soil-400">
+      <div className="flex items-center gap-3 text-sm text-soil-500">
         <div className="w-8 h-8 rounded-full bg-forest-700 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
           PA
         </div>
         <div>
-          <Link href="/about" className="font-medium text-forest-700 hover:text-gold-600 transition-colors">
+          <Link href="/about" className="font-medium text-forest-700 hover:text-gold-700 transition-colors">
             Polycarp Andabwa
           </Link>
           <span className="mx-1.5 text-soil-300">·</span>
@@ -36,12 +36,12 @@ export default function AuthorCard({ compact = false }: AuthorCardProps) {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gold-600 mb-1">
+          <p className="text-xs font-semibold uppercase tracking-widest text-gold-700 mb-1">
             Written by
           </p>
           <Link
             href="/about"
-            className="text-lg font-display font-bold text-forest-800 hover:text-gold-600 transition-colors"
+            className="text-lg font-display font-bold text-forest-800 hover:text-gold-700 transition-colors"
           >
             Polycarp Andabwa
           </Link>

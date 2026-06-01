@@ -77,17 +77,17 @@ export default function AcidicSoilMeruNyeriPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
+                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
                 <Link href="/soil/meru" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Meru County</Link>
                 <Link href="/soil/nyeri" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Nyeri County</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Acidic Soil Treatment: <span className="text-gold-600">Restoring Crop Vitality in Meru and Nyeri</span>
+                Acidic Soil Treatment: <span className="text-gold-700">Restoring Crop Vitality in Meru and Nyeri</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 The volcanic highland soils of Meru and Nyeri counties are among the most naturally fertile in Kenya by total nutrient content. Yet large portions of both counties produce consistently poor yields of maize, beans, and vegetables — not because the nutrients are absent, but because soil pH below 5.0 locks them out entirely. Aluminium and manganese, soluble at low pH, accumulate to levels that poison root tips before they can absorb anything. Liming these soils is not a minor management tweak. It is the difference between farming and not farming productively.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -156,7 +156,7 @@ export default function AcidicSoilMeruNyeriPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Source: ShambaIQ precision soil mapping averages. Individual farm values may differ significantly. <Link href="/app?county=meru" className="text-gold-600 hover:underline">Get your exact farm pH here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Source: ShambaIQ precision soil mapping averages. Individual farm values may differ significantly. <Link href="/app?county=meru" className="text-gold-700 hover:underline">Get your exact farm pH here.</Link></p>
             </section>
 
             <section>
@@ -169,7 +169,7 @@ export default function AcidicSoilMeruNyeriPage() {
                 ].map((item) => (
                   <div key={item.type} className="bg-white border border-cream-300 rounded-xl p-5">
                     <h3 className="font-semibold text-forest-800 mb-1">{item.type}</h3>
-                    <p className="font-mono text-xs text-soil-400 mb-1">{item.formula}</p>
+                    <p className="font-mono text-xs text-soil-500 mb-1">{item.formula}</p>
                     <div className="flex gap-3 mb-3">
                       <span className="text-xs bg-forest-50 text-forest-700 border border-forest-200 px-2 py-0.5 rounded-full">{item.calcium}</span>
                       <span className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2 py-0.5 rounded-full">{item.magnesium}</span>
@@ -259,7 +259,7 @@ export default function AcidicSoilMeruNyeriPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Liming cost amortises over 3 to 4 seasons with annual maintenance top-ups. Find <Link href="/dealers/meru" className="text-gold-600 hover:underline">Meru County agrovets and current lime prices here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Liming cost amortises over 3 to 4 seasons with annual maintenance top-ups. Find <Link href="/dealers/meru" className="text-gold-700 hover:underline">Meru County agrovets and current lime prices here.</Link></p>
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
@@ -270,7 +270,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/meru", label: "Meru County Soil Report" },
@@ -309,19 +309,19 @@ export default function AcidicSoilMeruNyeriPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Meru Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Meru Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Central Highlands"], ["Altitude", "1,000 – 3,200 m"], ["Avg Rainfall", "900 – 1,400 mm/yr"], ["Soil Type", "Volcanic nitisol"], ["Avg Soil pH", "4.5 – 5.5"], ["Al Toxicity", "High above 1,800 m"], ["Priority", "Lime before anything"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right text-xs">{v}</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/soil/meru" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Full Meru Soil Report →</Link>
+                <Link href="/soil/meru" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Full Meru Soil Report →</Link>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Related Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Related Counties</p>
                 <div className="space-y-1.5">
                   {[{ slug: "nyeri", name: "Nyeri" }, { slug: "kirinyaga", name: "Kirinyaga" }, { slug: "tharaka-nithi", name: "Tharaka Nithi" }, { slug: "embu", name: "Embu" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

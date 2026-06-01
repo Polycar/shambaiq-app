@@ -144,7 +144,7 @@ export default function PrivacyPage() {
             <Link href="/terms" className="text-sm text-forest-600 font-semibold hover:text-forest-800 transition-colors">
               Read our Terms of Service →
             </Link>
-            <Link href="/" className="text-sm text-soil-400 hover:text-soil-600 transition-colors">
+            <Link href="/" className="text-sm text-soil-500 hover:text-soil-600 transition-colors">
               ← Back to ShambaIQ
             </Link>
           </div>

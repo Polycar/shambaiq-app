@@ -29,14 +29,14 @@ export default function ApiDocsPage() {
 
       {/* Hero Header */}
       <div className="mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-600 font-semibold text-xs uppercase tracking-wider mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-700 font-semibold text-xs uppercase tracking-wider mb-4">
           <Cpu size={12} />
           Open Agricultural Data
         </div>
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-4 leading-tight">
           ShambaIQ Open Soil & Crop API
         </h1>
-        <p className="text-soil-400 max-w-3xl text-lg leading-relaxed">
+        <p className="text-soil-500 max-w-3xl text-lg leading-relaxed">
           Unlock 30m precision satellite-derived soil data and dynamic fertilizer recommendations.
           We provide a public, free REST API for developers, researchers, and agronomists to build
           sustainable tech solutions for Kenyan farmers.
@@ -50,7 +50,7 @@ export default function ApiDocsPage() {
             <Globe className="text-forest-600" size={20} />
           </div>
           <h2 className="font-display text-lg font-bold text-forest-700 mb-2">Hyper-Local Soil Metrics</h2>
-          <p className="text-sm text-soil-400 leading-relaxed">
+          <p className="text-sm text-soil-500 leading-relaxed">
             Get instant pH, Total Nitrogen, Extractable Phosphorus, Potassium, and Organic Carbon values for all 47 counties.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function ApiDocsPage() {
             <Terminal className="text-forest-600" size={20} />
           </div>
           <h2 className="font-display text-lg font-bold text-forest-700 mb-2">Crop Suitability Scoring</h2>
-          <p className="text-sm text-soil-400 leading-relaxed">
+          <p className="text-sm text-soil-500 leading-relaxed">
             Calculate suitability indices for 25 major crops based on regional soil chemistry models and pH tolerances.
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function ApiDocsPage() {
             <Key className="text-forest-600" size={20} />
           </div>
           <h2 className="font-display text-lg font-bold text-forest-700 mb-2">No API Key Required</h2>
-          <p className="text-sm text-soil-400 leading-relaxed">
+          <p className="text-sm text-soil-500 leading-relaxed">
             Free tier requires no complex onboarding. Start building immediately with zero rate-limit friction for public use.
           </p>
         </div>
@@ -100,18 +100,18 @@ export default function ApiDocsPage() {
               <h3 className="font-mono text-base font-bold text-forest-700 break-all">/county/{"{county_slug}"}/soil</h3>
             </div>
             <h2 className="font-display text-xl font-bold text-forest-700 mb-3">Retrieve County Soil Profile</h2>
-            <p className="text-soil-400 text-sm mb-6 leading-relaxed">
+            <p className="text-soil-500 text-sm mb-6 leading-relaxed">
               Returns the aggregated 30m resolution satellite soil metrics for a given county. Replace{" "}
               <code className="bg-cream-100 text-forest-700 px-1 py-0.5 rounded font-mono text-xs">{"{county_slug}"}</code>{" "}
               with the lowercase county slug (e.g. <code className="bg-cream-100 text-forest-700 px-1 py-0.5 rounded font-mono text-xs">kakamega</code>).
             </p>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-400 font-semibold mb-2">Request Headers</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">Request Headers</h3>
             <pre className="bg-cream-50 border border-cream-200 rounded-lg p-3 text-xs font-mono text-forest-700 mb-6">
               {"Content-Type: application/json"}
             </pre>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-400 font-semibold mb-2">JSON Response Body</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON Response Body</h3>
             <pre className="bg-forest-950 text-gold-300 rounded-lg p-4 font-mono text-xs overflow-x-auto leading-relaxed">
 {`{
   "status": "success",
@@ -135,11 +135,11 @@ export default function ApiDocsPage() {
               <h3 className="font-mono text-base font-bold text-forest-700 break-all">/recommend</h3>
             </div>
             <h2 className="font-display text-xl font-bold text-forest-700 mb-3">Generate Fertilizer Recommendation</h2>
-            <p className="text-soil-400 text-sm mb-6 leading-relaxed">
+            <p className="text-soil-500 text-sm mb-6 leading-relaxed">
               Provides precision fertilizer requirements (basal, top-dressing bag quantities) and soil health assessments tailored dynamically to the crop and soil parameters.
             </p>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-400 font-semibold mb-2">JSON Request Body</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON Request Body</h3>
             <pre className="bg-forest-950 text-gold-300 rounded-lg p-4 font-mono text-xs overflow-x-auto leading-relaxed mb-6">
 {`{
   "county": "Kakamega",
@@ -151,7 +151,7 @@ export default function ApiDocsPage() {
 }`}
             </pre>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-400 font-semibold mb-2">JSON Response Body</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON Response Body</h3>
             <pre className="bg-forest-950 text-gold-300 rounded-lg p-4 font-mono text-xs overflow-x-auto leading-relaxed">
 {`{
   "county_data": {
@@ -224,12 +224,12 @@ print(response.json())`}
 
             <div className="mt-8 pt-6 border-t border-cream-200">
               <h3 className="font-display font-bold text-forest-700 text-sm mb-2">Want to browse reports manually?</h3>
-              <p className="text-xs text-soil-400 mb-4">
+              <p className="text-xs text-soil-500 mb-4">
                 Explore individual county pages to see aggregated details compiled on top of our dataset.
               </p>
               <Link
                 href="/soil"
-                className="inline-flex items-center gap-1 text-sm font-bold text-gold-600 hover:text-gold-500 transition-colors"
+                className="inline-flex items-center gap-1 text-sm font-bold text-gold-700 hover:text-gold-500 transition-colors"
               >
                 Browse Soil Reports <ArrowRight size={14} />
               </Link>

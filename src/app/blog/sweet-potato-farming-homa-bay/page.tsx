@@ -245,7 +245,7 @@ export default function SweetPotatoHomaBayPage() {
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 <Link
                   href="/blog?category=county-farming-guides"
-                  className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors"
+                  className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors"
                 >
                   County Farming Guides
                 </Link>
@@ -269,7 +269,7 @@ export default function SweetPotatoHomaBayPage() {
                 className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4"
               >
                 Sweet Potato Farming in Homa Bay:{" "}
-                <span className="text-gold-600">The Complete Lake Victoria Shore Guide</span>
+                <span className="text-gold-700">The Complete Lake Victoria Shore Guide</span>
               </h1>
 
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
@@ -281,7 +281,7 @@ export default function SweetPotatoHomaBayPage() {
               </p>
 
               {/* Post meta bar */}
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>
@@ -359,7 +359,7 @@ export default function SweetPotatoHomaBayPage() {
               </h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 ShambaIQ pulls soil nutrient data from{" "}
-                <Link href="/about" className="text-gold-600 hover:underline">
+                <Link href="/about" className="text-gold-700 hover:underline">
                   ShambaIQ precision data
                 </Link>
                 {" "}— 30-metre resolution satellite predictions trained on 130,000+ African soil
@@ -395,10 +395,10 @@ export default function SweetPotatoHomaBayPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">
+              <p className="text-xs text-soil-500 mb-4">
                 Source: high-resolution satellite prediction, 0–20 cm depth, Homa Bay County average.
                 Individual farm values may vary.{" "}
-                <Link href="/app?county=homa-bay&crop=sweet-potato" className="text-gold-600 hover:underline">
+                <Link href="/app?county=homa-bay&crop=sweet-potato" className="text-gold-700 hover:underline">
                   Get your exact farm data →
                 </Link>
               </p>
@@ -440,7 +440,7 @@ export default function SweetPotatoHomaBayPage() {
                 logic that is deeply embedded in Kenyan farming culture. Farmers who have grown
                 maize for generations transfer that fertilizer behaviour to sweet potatoes — and
                 it backfires entirely. Unlike{" "}
-                <Link href="/soil/homa-bay/maize" className="text-gold-600 hover:underline">
+                <Link href="/soil/homa-bay/maize" className="text-gold-700 hover:underline">
                   maize in Homa Bay
                 </Link>
                 {" "}which responds well to nitrogen top-dressing, sweet potatoes need the
@@ -494,7 +494,7 @@ export default function SweetPotatoHomaBayPage() {
                   { time: "Month 3–4", action: "Harvest when vines yellow and die back. Early-morning harvest reduces field heat damage in Homa Bay's lowland climate." },
                 ].map((row) => (
                   <div key={row.time} className="flex gap-4 bg-cream-50 border border-cream-200 rounded-xl p-4">
-                    <div className="text-xs font-bold text-gold-600 w-28 flex-shrink-0 pt-0.5">{row.time}</div>
+                    <div className="text-xs font-bold text-gold-700 w-28 flex-shrink-0 pt-0.5">{row.time}</div>
                     <p className="text-sm text-soil-600">{row.action}</p>
                   </div>
                 ))}
@@ -508,7 +508,7 @@ export default function SweetPotatoHomaBayPage() {
               </h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 Only plant{" "}
-                <Link href="https://www.kephis.org" className="text-gold-600 hover:underline" rel="noopener noreferrer" target="_blank">
+                <Link href="https://www.kephis.org" className="text-gold-700 hover:underline" rel="noopener noreferrer" target="_blank">
                   KEPHIS-certified
                 </Link>
                 {" "}material. Uncertified vines carry Sweet Potato Feathery Mottle Virus (SPFMV)
@@ -533,12 +533,12 @@ export default function SweetPotatoHomaBayPage() {
                         ["Expected yield", v.yield],
                       ].map(([label, val]) => (
                         <div key={label} className="flex justify-between">
-                          <span className="text-soil-400">{label}</span>
+                          <span className="text-soil-500">{label}</span>
                           <span className="font-medium text-forest-700">{val}</span>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-soil-400 mt-3 border-t border-cream-200 pt-2">{v.notes}</p>
+                    <p className="text-xs text-soil-500 mt-3 border-t border-cream-200 pt-2">{v.notes}</p>
                   </div>
                 ))}
               </div>
@@ -607,7 +607,7 @@ export default function SweetPotatoHomaBayPage() {
                       <div key={item.season} className="bg-white border border-forest-200 rounded-lg p-3 text-center min-w-[120px]">
                         <p className="text-xs text-forest-500 font-semibold mb-1">{item.season}</p>
                         <p className="text-sm font-bold text-forest-800">{item.crop}</p>
-                        <p className="text-xs text-soil-400 mt-1">{item.note}</p>
+                        <p className="text-xs text-soil-500 mt-1">{item.note}</p>
                       </div>
                     )
                   )}
@@ -617,7 +617,7 @@ export default function SweetPotatoHomaBayPage() {
                 This rotation improves soil organic matter progressively across all three seasons,
                 reduces external fertilizer inputs by ~30% by Year 2, and eliminates striga. See
                 the full rotation analysis for Homa Bay at{" "}
-                <Link href="/soil/homa-bay" className="text-gold-600 hover:underline">
+                <Link href="/soil/homa-bay" className="text-gold-700 hover:underline">
                   Homa Bay County Soil Report
                 </Link>
                 .
@@ -696,10 +696,10 @@ export default function SweetPotatoHomaBayPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">
+              <p className="text-xs text-soil-500 mb-4">
                 * Lime only required if ShambaIQ shows pH below 5.5 for your specific farm.
                 Prices are indicative 2026 market rates. Use{" "}
-                <Link href="/dealers/homa-bay" className="text-gold-600 hover:underline">
+                <Link href="/dealers/homa-bay" className="text-gold-700 hover:underline">
                   Homa Bay agrovets
                 </Link>{" "}
                 for current pricing.
@@ -729,7 +729,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── Internal links: related county/crop pages ── */}
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/homa-bay", label: "Homa Bay County Soil Report" },
@@ -798,7 +798,7 @@ export default function SweetPotatoHomaBayPage() {
 
               {/* Quick county facts */}
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">
                   Homa Bay Quick Facts
                 </p>
                 <div className="space-y-2 text-sm">
@@ -811,14 +811,14 @@ export default function SweetPotatoHomaBayPage() {
                     ["K Status", "Deficient"],
                   ].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right">{v}</span>
                     </div>
                   ))}
                 </div>
                 <Link
                   href="/soil/homa-bay"
-                  className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors"
+                  className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors"
                 >
                   Full Homa Bay Soil Report →
                 </Link>
@@ -826,7 +826,7 @@ export default function SweetPotatoHomaBayPage() {
 
               {/* Neighboring counties */}
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">
                   Neighbouring Counties
                 </p>
                 <div className="space-y-1.5">

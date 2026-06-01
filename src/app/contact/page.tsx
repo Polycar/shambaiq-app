@@ -41,12 +41,12 @@ export default function ContactPage() {
               href="mailto:info@shambaiq.com"
               className="bg-white p-8 rounded-2xl shadow-sm border border-cream-200 hover:border-gold-500 transition-all group"
             >
-              <div className="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center text-gold-600 mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center text-gold-700 mb-6 group-hover:scale-110 transition-transform">
                 <Mail size={24} />
               </div>
               <h3 className="font-bold text-xl text-forest-900 mb-2">Email Inquiries</h3>
               <p className="text-forest-600 text-sm mb-4">For partnerships and detailed reports.</p>
-              <span className="text-gold-600 font-semibold">info@shambaiq.com</span>
+              <span className="text-gold-700 font-semibold">info@shambaiq.com</span>
             </a>
 
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-cream-200">
@@ -119,7 +119,7 @@ export default function ContactPage() {
             {/* Content Side */}
             <div className="space-y-12 pt-8">
               <div>
-                <h3 className="text-gold-600 font-bold tracking-widest uppercase text-sm mb-4">Why Reach Out?</h3>
+                <h3 className="text-gold-700 font-bold tracking-widest uppercase text-sm mb-4">Why Reach Out?</h3>
                 <h2 className="text-3xl font-bold text-forest-900 mb-6 leading-tight">We are building the future of Kenyan Agriculture.</h2>
                 <div className="space-y-6">
                   {[

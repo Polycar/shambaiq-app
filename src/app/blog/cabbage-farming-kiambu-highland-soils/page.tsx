@@ -142,18 +142,18 @@ export default function CabbageKiambuPage() {
 
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
                 <Link href="/soil/kiambu" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kiambu County</Link>
                 <Link href="/crops/cabbage" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Cabbage</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
                 Cabbage Farming in Kiambu:{" "}
-                <span className="text-gold-600">A High-Yield Guide for Highland Soils</span>
+                <span className="text-gold-700">A High-Yield Guide for Highland Soils</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Kiambu County supplies more fresh cabbage to Nairobi's markets than any other single county in Kenya. Its cool highland temperatures, abundant rainfall, and proximity to the city's wholesale markets give Kiambu farmers a structural advantage that is difficult to replicate. But that advantage is being eroded farm by farm — by acidic soils that were never limed, by clubroot disease that spreads silently through transplanting equipment, and by fertilizer programmes designed for maize being applied unchanged to a crop with completely different nutritional requirements. This guide addresses all three.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -211,13 +211,13 @@ export default function CabbageKiambuPage() {
                         <td className="px-4 py-3 text-soil-600">{v}</td>
                         <td className="px-4 py-3 text-soil-500">{o}</td>
                         <td className="px-4 py-3 font-medium text-sm">{s}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{a}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{a}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-5">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Kiambu County average. <Link href="/app?county=kiambu&crop=cabbage" className="text-gold-600 hover:underline">Get your farm-specific reading here.</Link></p>
+              <p className="text-xs text-soil-500 mb-5">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Kiambu County average. <Link href="/app?county=kiambu&crop=cabbage" className="text-gold-700 hover:underline">Get your farm-specific reading here.</Link></p>
 
               <div className="bg-red-50 border-l-4 border-red-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-red-800 mb-2">The pH Crisis Across Kiambu Highlands</p>
@@ -251,7 +251,7 @@ export default function CabbageKiambuPage() {
                         <td className="px-4 py-3 font-semibold text-forest-700">{rate}</td>
                         <td className="px-4 py-3 text-soil-500">{prod}</td>
                         <td className="px-4 py-3 text-soil-500 text-xs">{timing}</td>
-                        <td className="px-4 py-3 text-soil-400 text-xs">{after}</td>
+                        <td className="px-4 py-3 text-soil-500 text-xs">{after}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -309,12 +309,12 @@ export default function CabbageKiambuPage() {
                     <div className="space-y-1.5 text-sm mb-3">
                       {[["Maturity", v.maturity], ["Head weight", v.headWeight], ["Expected yield", v.yield]].map(([label, val]) => (
                         <div key={label as string} className="flex justify-between gap-2">
-                          <span className="text-soil-400">{label}</span>
+                          <span className="text-soil-500">{label}</span>
                           <span className="font-medium text-forest-700 text-right">{val}</span>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-soil-400 border-t border-cream-200 pt-2">{v.notes}</p>
+                    <p className="text-xs text-soil-500 border-t border-cream-200 pt-2">{v.notes}</p>
                   </div>
                 ))}
               </div>
@@ -436,8 +436,8 @@ export default function CabbageKiambuPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">
-                Lime cost assumes pH 5.5 to 5.9 requiring 1,000 kg per acre. Higher-acidity farms will have higher lime costs in Year 1 but lower maintenance rates thereafter. Seedling cost assumes purchase from a certified Kiambu nursery. Find <Link href="/dealers/kiambu" className="text-gold-600 hover:underline">Kiambu agrovets and current input prices here.</Link>
+              <p className="text-xs text-soil-500 mb-4">
+                Lime cost assumes pH 5.5 to 5.9 requiring 1,000 kg per acre. Higher-acidity farms will have higher lime costs in Year 1 but lower maintenance rates thereafter. Seedling cost assumes purchase from a certified Kiambu nursery. Find <Link href="/dealers/kiambu" className="text-gold-700 hover:underline">Kiambu agrovets and current input prices here.</Link>
               </p>
             </section>
 
@@ -449,7 +449,7 @@ export default function CabbageKiambuPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/kiambu", label: "Kiambu County Soil Report" },
@@ -490,19 +490,19 @@ export default function CabbageKiambuPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Kiambu Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kiambu Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Central Highlands"], ["Altitude", "1,500 – 2,100 m"], ["Avg Rainfall", "900 – 1,100 mm/yr"], ["Dominant Soil", "Humic nitisol"], ["Avg Soil pH", "4.8 – 5.8"], ["pH Status", "Acidic — lime needed"], ["Nearest Market", "Nairobi (1–2 hrs)"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right">{v}</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/soil/kiambu" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Full Kiambu Soil Report →</Link>
+                <Link href="/soil/kiambu" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Full Kiambu Soil Report →</Link>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Neighbouring Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
                   {[{ slug: "murang-a", name: "Muranga" }, { slug: "nyeri", name: "Nyeri" }, { slug: "nairobi", name: "Nairobi" }, { slug: "kajiado", name: "Kajiado" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

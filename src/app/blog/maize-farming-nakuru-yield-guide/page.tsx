@@ -79,17 +79,17 @@ export default function MaizeNakuruPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
                 <Link href="/soil/nakuru" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Nakuru County</Link>
                 <Link href="/crops/maize" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Maize</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Maize Farming in Nakuru County: <span className="text-gold-600">A Precision Guide to Maximum Yields</span>
+                Maize Farming in Nakuru County: <span className="text-gold-700">A Precision Guide to Maximum Yields</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Nakuru County sits at the heart of Kenya's maize belt. Its loam soils, reliable bimodal rainfall, and altitude range of 1,700 to 2,400 metres create near-ideal conditions for maize production. Yet the average smallholder here harvests barely half of what the same farm is capable of producing. The gap is not rainfall, not seed, not labour. It is precision: applying the right fertilizer, at the right amount, at the right time, based on what the soil actually contains.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -143,13 +143,13 @@ export default function MaizeNakuruPage() {
                         <td className="px-4 py-3 text-soil-600">{v}</td>
                         <td className="px-4 py-3 text-soil-500">{o}</td>
                         <td className="px-4 py-3 font-medium">{s}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{i}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{i}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Nakuru County average. Farm-level values vary by sub-location. <Link href="/app?county=nakuru&crop=maize" className="text-gold-600 hover:underline">Get your exact farm reading here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Nakuru County average. Farm-level values vary by sub-location. <Link href="/app?county=nakuru&crop=maize" className="text-gold-700 hover:underline">Get your exact farm reading here.</Link></p>
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-amber-800 mb-2">The Key Insight for Nakuru Maize Farmers</p>
                 <p className="text-sm text-amber-700 leading-relaxed">Phosphorus is the variable nutrient in Nakuru. At 12 mg/kg in lower-rainfall sub-locations, DAP underdosing directly limits root development. At 28 mg/kg in high-organic-matter Molo soils, DAP rates can be reduced without yield penalty. This 2.3-fold range is why a county-average recommendation is less accurate than a farm-level one.</p>
@@ -171,12 +171,12 @@ export default function MaizeNakuruPage() {
                     <div className="space-y-1.5 text-sm mb-3">
                       {[["Altitude range", v.altitude], ["Maturity", v.maturity], ["Expected yield", v.yield]].map(([label, val]) => (
                         <div key={label as string} className="flex justify-between gap-2">
-                          <span className="text-soil-400">{label}</span>
+                          <span className="text-soil-500">{label}</span>
                           <span className="font-medium text-forest-700 text-right">{val}</span>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-soil-400 border-t border-cream-200 pt-2">{v.notes}</p>
+                    <p className="text-xs text-soil-500 border-t border-cream-200 pt-2">{v.notes}</p>
                   </div>
                 ))}
               </div>
@@ -204,7 +204,7 @@ export default function MaizeNakuruPage() {
                         <td className="px-4 py-3 font-mono text-xs text-soil-500">{fert}</td>
                         <td className="px-4 py-3 text-soil-600">{rate}</td>
                         <td className="px-4 py-3 text-soil-500">{timing}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{placement}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{placement}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -257,7 +257,7 @@ export default function MaizeNakuruPage() {
                 ].map((item) => (
                   <div key={item.window} className="bg-white border border-cream-300 rounded-xl p-4">
                     <div className="flex items-start gap-3">
-                      <div className="text-xs font-bold text-gold-600 bg-gold-50 border border-gold-200 px-2.5 py-1 rounded-full flex-shrink-0 mt-0.5">{item.window}</div>
+                      <div className="text-xs font-bold text-gold-700 bg-gold-50 border border-gold-200 px-2.5 py-1 rounded-full flex-shrink-0 mt-0.5">{item.window}</div>
                       <div>
                         <p className="font-semibold text-forest-800 text-sm mb-1">{item.action}</p>
                         <p className="text-xs text-soil-500 leading-relaxed">{item.detail}</p>
@@ -325,7 +325,7 @@ export default function MaizeNakuruPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Prices are indicative 2026 Nakuru market rates. Yield assumes certified hybrid seed and full fertilizer programme. Find <Link href="/dealers/nakuru" className="text-gold-600 hover:underline">Nakuru agrovets and current input prices here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Prices are indicative 2026 Nakuru market rates. Yield assumes certified hybrid seed and full fertilizer programme. Find <Link href="/dealers/nakuru" className="text-gold-700 hover:underline">Nakuru agrovets and current input prices here.</Link></p>
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
@@ -336,7 +336,7 @@ export default function MaizeNakuruPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/nakuru", label: "Nakuru County Soil Report" },
@@ -377,19 +377,19 @@ export default function MaizeNakuruPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Nakuru Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Nakuru Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Rift Valley"], ["Altitude", "1,700 – 2,400 m"], ["Avg Rainfall", "800 – 1,200 mm/yr"], ["Dominant Soil", "Sandy clay loam"], ["Avg Soil pH", "6.0 – 6.8"], ["K Status", "Sufficient"], ["P Status", "Marginal to Good"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right">{v}</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/soil/nakuru" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Full Nakuru Soil Report →</Link>
+                <Link href="/soil/nakuru" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Full Nakuru Soil Report →</Link>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Neighbouring Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
                   {[{ slug: "narok", name: "Narok" }, { slug: "baringo", name: "Baringo" }, { slug: "nyandarua", name: "Nyandarua" }, { slug: "laikipia", name: "Laikipia" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

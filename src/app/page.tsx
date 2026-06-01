@@ -164,7 +164,7 @@ export default function HomePage() {
             <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 mb-4 leading-tight">
               Everything your shamba needs
             </h2>
-            <p className="text-soil-400 max-w-xl mx-auto text-lg">
+            <p className="text-soil-500 max-w-xl mx-auto text-lg">
               Soil reports, fertilizer plans, yield tracking, and crop disease diagnosis — all in one place
             </p>
           </div>
@@ -181,8 +181,8 @@ export default function HomePage() {
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ backgroundColor: `${card.color}12` }}>
                     <Icon size={24} strokeWidth={1.8} style={{ color: card.color }} />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-forest-700 mb-2 group-hover:text-gold-600 transition-colors">{card.title}</h3>
-                  <p className="text-sm text-soil-400 leading-relaxed">{card.desc}</p>
+                  <h3 className="font-display text-lg font-bold text-forest-700 mb-2 group-hover:text-gold-700 transition-colors">{card.title}</h3>
+                  <p className="text-sm text-soil-500 leading-relaxed">{card.desc}</p>
                   <div className="mt-4 text-sm font-semibold flex items-center gap-1 transition-colors" style={{ color: card.color }}>
                     Explore <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -198,7 +198,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 mb-4 leading-tight">How ShambaIQ works</h2>
-            <p className="text-soil-400 max-w-lg mx-auto text-lg">From satellite to shamba in three steps</p>
+            <p className="text-soil-500 max-w-lg mx-auto text-lg">From satellite to shamba in three steps</p>
           </div>
           <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8">
             {([
@@ -215,7 +215,7 @@ export default function HomePage() {
                       <Icon size={28} strokeWidth={1.8} />
                     </div>
                     <h3 className="font-display text-xl font-bold text-forest-700 mb-3">{s.title}</h3>
-                    <p className="text-soil-400 leading-relaxed">{s.desc}</p>
+                    <p className="text-soil-500 leading-relaxed">{s.desc}</p>
                   </div>
                 </div>
               );
@@ -230,9 +230,9 @@ export default function HomePage() {
           <div className="flex justify-between items-end mb-10 md:mb-12">
             <div>
               <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 leading-tight">County Soil Data</h2>
-              <p className="text-soil-400 mt-2 text-lg">Tap any county to get your free farm plan</p>
+              <p className="text-soil-500 mt-2 text-lg">Tap any county to get your free farm plan</p>
             </div>
-            <Link href="/soil" className="hidden sm:flex items-center gap-1 text-gold-600 hover:text-gold-700 font-semibold text-sm transition-colors">
+            <Link href="/soil" className="hidden sm:flex items-center gap-1 text-gold-700 hover:text-gold-700 font-semibold text-sm transition-colors">
               All 47 counties <ArrowRight size={14} />
             </Link>
           </div>
@@ -241,8 +241,8 @@ export default function HomePage() {
               <Link key={c.slug} href={`/app?county=${encodeURIComponent(c.county)}`} className="w-[85vw] shrink-0 sm:w-[350px] md:min-w-0 md:w-auto snap-center bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 card-hover group relative overflow-hidden">
                 <div className="flex items-start justify-between mb-5">
                   <div>
-                    <h3 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors">{c.county}</h3>
-                    <span className="text-xs text-soil-400 font-medium">{c.zone}</span>
+                    <h3 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-700 transition-colors">{c.county}</h3>
+                    <span className="text-xs text-soil-500 font-medium">{c.zone}</span>
                   </div>
                   <div className="w-14 h-14 rounded-full flex items-center justify-center font-display text-lg font-bold text-white shadow-md shrink-0" style={{ backgroundColor: scoreColor(c.score) }}>
                     {c.score}
@@ -258,7 +258,7 @@ export default function HomePage() {
                   ].map((n) => (
                     <div key={n.label}>
                       <div className="flex justify-between text-xs mb-1">
-                        <span className="text-soil-400">{n.label}</span>
+                        <span className="text-soil-500">{n.label}</span>
                         <span className="font-semibold text-forest-700">{n.display}</span>
                       </div>
                       <div className="nutrient-bar">
@@ -268,20 +268,20 @@ export default function HomePage() {
                   ))}
                 </div>
                 <div className="mt-4 pt-3 border-t border-cream-200 flex items-center justify-between">
-                  <span className="text-xs font-bold text-gold-600">Get farm plan for {c.county}</span>
+                  <span className="text-xs font-bold text-gold-700">Get farm plan for {c.county}</span>
                   <ArrowRight size={14} className="text-gold-500 group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
             ))}
           </div>
           {/* Item 15: County score color legend */}
-          <div className="mt-4 flex items-center justify-center gap-4 text-xs text-soil-400">
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs text-soil-500">
             <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#16a34a' }} /> Good (70+)</span>
             <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#f59e0b' }} /> Moderate (50–69)</span>
             <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#dc2626' }} /> Low (&lt;50)</span>
           </div>
           <div className="mt-6 text-center sm:hidden">
-            <Link href="/soil" className="text-gold-600 hover:text-gold-700 font-semibold text-sm">
+            <Link href="/soil" className="text-gold-700 hover:text-gold-700 font-semibold text-sm">
               View all 47 counties →
             </Link>
           </div>
@@ -329,9 +329,9 @@ export default function HomePage() {
                     <div className="w-10 h-10 rounded-lg bg-forest-700/8 flex items-center justify-center">
                       <Layers size={18} className="text-forest-600" strokeWidth={1.8} />
                     </div>
-                    <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-600 transition-colors leading-tight">{z}</h3>
+                    <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-700 transition-colors leading-tight">{z}</h3>
                   </div>
-                  <p className="text-sm text-soil-400">{zoneCounties.length} counties</p>
+                  <p className="text-sm text-soil-500">{zoneCounties.length} counties</p>
                 </Link>
               );
             })}
@@ -341,7 +341,7 @@ export default function HomePage() {
 
       {/* ─── TRUST BAR ─────────────────────────────────────── */}
       <section className="py-10 bg-cream-200/60 border-y border-cream-300">
-        <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-x-12 gap-y-4 text-sm text-soil-400">
+        <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-x-12 gap-y-4 text-sm text-soil-500">
           <div className="flex items-center gap-2"><Satellite size={16} className="text-forest-500" /> 30m precision satellite data</div>
           <div className="flex items-center gap-2"><TrendingUp size={16} className="text-forest-500" /> Updated annually</div>
           <div className="flex items-center gap-2"><MapPin size={16} className="text-forest-500" /> All 47 counties covered</div>
@@ -353,7 +353,7 @@ export default function HomePage() {
       <section className="py-16 md:py-24 bg-cream-200">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 mb-5 leading-tight">Ready to farm with data?</h2>
-          <p className="text-lg text-soil-400 mb-8 max-w-xl mx-auto">Get a free, personalized soil report and fertilizer plan for your county in under 30 seconds.</p>
+          <p className="text-lg text-soil-500 mb-8 max-w-xl mx-auto">Get a free, personalized soil report and fertilizer plan for your county in under 30 seconds.</p>
           
           <div className="flex justify-center items-center gap-3 mb-8">
             <div className="flex -space-x-2.5">
@@ -365,7 +365,7 @@ export default function HomePage() {
             </div>
             <div className="text-left">
               <div className="flex text-gold-500 text-sm">★★★★★</div>
-              <div className="text-xs text-soil-400 font-semibold mt-0.5">Join 15,000+ farmers</div>
+              <div className="text-xs text-soil-500 font-semibold mt-0.5">Join 15,000+ farmers</div>
             </div>
           </div>
 

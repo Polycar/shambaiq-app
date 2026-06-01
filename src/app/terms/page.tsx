@@ -189,7 +189,7 @@ export default function TermsPage() {
             <h2 className="font-display text-lg font-bold text-forest-700 mb-3 pb-2 border-b border-cream-300">Changelog</h2>
             <div className="text-sm text-soil-500 space-y-1">
               <div className="flex gap-4">
-                <span className="font-mono text-xs text-soil-400 shrink-0 pt-0.5">28 May 2026</span>
+                <span className="font-mono text-xs text-soil-500 shrink-0 pt-0.5">28 May 2026</span>
                 <span>Initial version published.</span>
               </div>
             </div>
@@ -199,7 +199,7 @@ export default function TermsPage() {
             <Link href="/privacy" className="text-sm text-forest-600 font-semibold hover:text-forest-800 transition-colors">
               Read our Privacy Policy →
             </Link>
-            <Link href="/" className="text-sm text-soil-400 hover:text-soil-600 transition-colors">
+            <Link href="/" className="text-sm text-soil-500 hover:text-soil-600 transition-colors">
               ← Back to ShambaIQ
             </Link>
           </div>

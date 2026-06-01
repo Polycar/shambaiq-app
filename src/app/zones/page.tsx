@@ -19,7 +19,7 @@ export default function ZonesPage() {
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         Agroecological Zones of Kenya
       </h1>
-      <p className="text-soil-400 mb-10 max-w-2xl">
+      <p className="text-soil-500 mb-10 max-w-2xl">
         Kenya&apos;s 47 counties fall across distinct agroecological zones, each
         with unique soil characteristics and farming potential.
       </p>
@@ -43,14 +43,14 @@ export default function ZonesPage() {
               className="bg-white rounded-2xl p-6 border border-cream-300 hover:border-gold-400 hover:shadow-lg transition-all group"
             >
               <div className="flex justify-between items-start mb-4">
-                <h2 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors">
+                <h2 className="font-display text-xl font-bold text-forest-700 group-hover:text-gold-700 transition-colors">
                   {z}
                 </h2>
-                <span className="text-sm font-bold text-gold-600">
+                <span className="text-sm font-bold text-gold-700">
                   Avg: {avgScore}
                 </span>
               </div>
-              <div className="text-sm text-soil-400 mb-3">
+              <div className="text-sm text-soil-500 mb-3">
                 {counties.length} counties · Avg pH {avgPH}
               </div>
               <div className="flex flex-wrap gap-1.5">

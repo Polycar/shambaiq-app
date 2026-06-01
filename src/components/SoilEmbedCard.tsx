@@ -29,7 +29,7 @@ export default function SoilEmbedCard({ countyName, countySlug }: { countyName: 
           <h2 className="font-display text-xl font-bold text-forest-700 leading-tight">
             Embed {countyName} Soil Data on Your Website
           </h2>
-          <p className="text-sm text-soil-400 mt-1 max-w-xl">
+          <p className="text-sm text-soil-500 mt-1 max-w-xl">
             Are you a local blogger, news agency, or county advisor? You can embed this live, 30m resolution soil suitability report card on your website for free.
           </p>
         </div>

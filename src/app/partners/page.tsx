@@ -60,14 +60,14 @@ export default function PartnersPage() {
         {/* Core Value Pillars */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-cream-200 hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center text-gold-600 mb-6">
+            <div className="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center text-gold-700 mb-6">
               <Cpu size={24} />
             </div>
             <h3 className="font-display font-bold text-xl text-forest-900 mb-3">1. B2B Precision API</h3>
             <p className="text-forest-600 text-sm leading-relaxed mb-4">
               Query our dynamic soil diagnostics and crop suitability matrix via a secure, sub-second JSON API. Ideal for powering WhatsApp bots, USSD channels, or credit-scoring models.
             </p>
-            <span className="text-xs text-soil-400 font-semibold uppercase tracking-wider block">API Tiers available</span>
+            <span className="text-xs text-soil-500 font-semibold uppercase tracking-wider block">API Tiers available</span>
           </div>
 
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-cream-200 hover:shadow-md transition-shadow">
@@ -78,7 +78,7 @@ export default function PartnersPage() {
             <p className="text-forest-600 text-sm leading-relaxed mb-4">
               Get a co-branded subdomain portal (e.g. <i>coop.shambaiq.com</i>) complete with custom crop lists and local agrovets to support extension workers and county initiatives.
             </p>
-            <span className="text-xs text-soil-400 font-semibold uppercase tracking-wider block">Annual licensing model</span>
+            <span className="text-xs text-soil-500 font-semibold uppercase tracking-wider block">Annual licensing model</span>
           </div>
 
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-cream-200 hover:shadow-md transition-shadow">
@@ -89,7 +89,7 @@ export default function PartnersPage() {
             <p className="text-forest-600 text-sm leading-relaxed mb-4">
               Feature your premium seeds, fertilizers, or agrovet locations as the verified recommendation when farmers search their specific county soil conditions.
             </p>
-            <span className="text-xs text-soil-400 font-semibold uppercase tracking-wider block">Lead generation program</span>
+            <span className="text-xs text-soil-500 font-semibold uppercase tracking-wider block">Lead generation program</span>
           </div>
         </div>
 
@@ -119,7 +119,7 @@ export default function PartnersPage() {
             ) : (
               <>
                 <h2 className="font-display text-2xl font-bold text-forest-900 mb-2">Licensing Inquiry</h2>
-                <p className="text-soil-400 text-sm mb-8">
+                <p className="text-soil-500 text-sm mb-8">
                   Tell us about your organization and how you'd like to integrate our agronomic solutions.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -216,7 +216,7 @@ export default function PartnersPage() {
           {/* Right Column: IP Security & Proof */}
           <div className="space-y-12">
             <div>
-              <span className="text-gold-600 font-bold tracking-widest uppercase text-xs block mb-3">IP Protection Framework</span>
+              <span className="text-gold-700 font-bold tracking-widest uppercase text-xs block mb-3">IP Protection Framework</span>
               <h2 className="font-display text-3xl font-bold text-forest-900 mb-6 leading-tight">
                 Partner with total peace of mind.
               </h2>

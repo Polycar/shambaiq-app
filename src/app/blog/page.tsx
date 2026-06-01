@@ -181,7 +181,7 @@ export default async function BlogPage() {
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         ShambaIQ Blog
       </h1>
-      <p className="text-soil-400 mb-10 max-w-2xl">
+      <p className="text-soil-500 mb-10 max-w-2xl">
         Data-driven farming guides, county soil reports, and seasonal advice. Every article uses real 30m precision satellite soil data covering all 47 Kenyan counties.
       </p>
 
@@ -196,18 +196,18 @@ export default async function BlogPage() {
               <span className="px-3 py-1 bg-forest-700/10 text-forest-700 text-xs font-semibold rounded-full">
                 {post.category}
               </span>
-              <span className="flex items-center gap-1 text-xs text-soil-400">
+              <span className="flex items-center gap-1 text-xs text-soil-500">
                 <Calendar size={12} /> {post.date}
               </span>
-              <span className="flex items-center gap-1 text-xs text-soil-400">
+              <span className="flex items-center gap-1 text-xs text-soil-500">
                 <Clock size={12} /> {post.readTime}
               </span>
             </div>
-            <h2 className="font-display text-xl md:text-2xl font-bold text-forest-700 group-hover:text-gold-600 transition-colors mb-2">
+            <h2 className="font-display text-xl md:text-2xl font-bold text-forest-700 group-hover:text-gold-700 transition-colors mb-2">
               {post.title}
             </h2>
-            <p className="text-soil-400 leading-relaxed mb-4">{post.excerpt}</p>
-            <span className="inline-flex items-center gap-1 text-gold-600 font-semibold text-sm group-hover:gap-2 transition-all">
+            <p className="text-soil-500 leading-relaxed mb-4">{post.excerpt}</p>
+            <span className="inline-flex items-center gap-1 text-gold-700 font-semibold text-sm group-hover:gap-2 transition-all">
               Read article <ArrowRight size={14} />
             </span>
           </Link>

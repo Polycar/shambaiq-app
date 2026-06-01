@@ -42,11 +42,11 @@ export default function Page() {
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
+                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Cheapest Way to Fix Acidic Soil in Kenya: <span className="text-gold-600">Lime vs Wood Ash vs Compost — Cost-Benefit Comparison</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Cheapest Way to Fix Acidic Soil in Kenya: <span className="text-gold-700">Lime vs Wood Ash vs Compost — Cost-Benefit Comparison</span></h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Agricultural lime is the correct treatment for acidic soil — but at KES 700 to 900 per 50 kg bag and 20 to 50 bags per acre required, the upfront cost is a real barrier. Wood ash, compost, and organic amendments offer partial correction at lower or zero cost. This guide compares the cost-effectiveness of each approach with realistic assessments of what each can and cannot achieve.</p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
                 <span className="text-soil-300">·</span><span>{POST.readingTimeMin} min read</span>
@@ -111,7 +111,7 @@ export default function Page() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/app", label: "Check Your Farm Soil" },
@@ -139,7 +139,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Lime cost/acre", "KES 10,500–35,000"],
@@ -149,7 +149,7 @@ export default function Page() {
                     ["Best combo", "Lime + compost"],
                     ["Subsidy", "Check county gov"],
                   ].map(([k, v]) => (
-                    <div key={k as string} className="flex justify-between gap-2"><span className="text-soil-400 text-xs">{k}</span><span className="font-medium text-forest-700 text-right text-xs">{v}</span></div>
+                    <div key={k as string} className="flex justify-between gap-2"><span className="text-soil-500 text-xs">{k}</span><span className="font-medium text-forest-700 text-right text-xs">{v}</span></div>
                   ))}
                 </div>
               </div>

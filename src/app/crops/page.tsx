@@ -113,7 +113,7 @@ export default async function CropsDirectoryPage() {
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-3 leading-tight">
           Crop Farming Guides
         </h1>
-        <p className="text-soil-400 max-w-2xl text-lg leading-relaxed">
+        <p className="text-soil-500 max-w-2xl text-lg leading-relaxed">
           Detailed guides for {merged.length} crops grown in Kenya. Each guide includes soil
           requirements, best counties, seed varieties, fertilizer plans, and
           expected economics.
@@ -128,7 +128,7 @@ export default async function CropsDirectoryPage() {
             <div className="flex items-center gap-3 mb-6 pb-3 border-b border-cream-300">
               <span className="text-2xl">{meta.emoji}</span>
               <h2 className="font-display text-xl font-bold text-forest-600">{cat}</h2>
-              <span className="text-sm text-soil-400 ml-1">{catCrops.length} crops</span>
+              <span className="text-sm text-soil-500 ml-1">{catCrops.length} crops</span>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -138,10 +138,10 @@ export default async function CropsDirectoryPage() {
                   href={`/crops/${c.slug}`}
                   className="bg-white rounded-2xl p-5 border border-cream-300 hover:border-gold-400 card-hover group"
                 >
-                  <h3 className="font-display text-lg font-bold text-forest-700 group-hover:text-gold-600 transition-colors mb-3 leading-tight">
+                  <h3 className="font-display text-lg font-bold text-forest-700 group-hover:text-gold-700 transition-colors mb-3 leading-tight">
                     {c.crop}
                   </h3>
-                  <div className="space-y-2 text-xs text-soil-400">
+                  <div className="space-y-2 text-xs text-soil-500">
                     <div>
                       <div className="flex justify-between mb-0.5">
                         <span>pH range</span>
@@ -170,7 +170,7 @@ export default async function CropsDirectoryPage() {
                       </span>
                     </div>
                   </div>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-gold-600 group-hover:text-gold-500 transition-colors">
+                  <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-gold-700 group-hover:text-gold-500 transition-colors">
                     Full guide <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </Link>

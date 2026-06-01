@@ -195,7 +195,7 @@ export default function AgronomyPage() {
           <Lock size={28} className="text-white" />
         </div>
         <h2 className="font-display text-xl font-bold text-forest-700 mb-2">Login Required</h2>
-        <p className="text-soil-400 text-sm max-w-xs mb-6">
+        <p className="text-soil-500 text-sm max-w-xs mb-6">
           Shamba Mshauri is available to registered farmers. Create a free account to get personalized agronomic advice.
         </p>
         <div className="flex gap-3">
@@ -273,7 +273,7 @@ export default function AgronomyPage() {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-forest-700">Shamba Mshauri</p>
-                  <p className="text-[10px] text-soil-400">AI Agronomist</p>
+                  <p className="text-[10px] text-soil-500">AI Agronomist</p>
                 </div>
               </div>
               <button
@@ -288,10 +288,10 @@ export default function AgronomyPage() {
             {/* Starter prompts when no conversation active */}
             {messages.length === 0 && conversations.length === 0 && (
               <>
-                <p className="text-xs text-soil-400 mb-3 leading-relaxed">
+                <p className="text-xs text-soil-500 mb-3 leading-relaxed">
                   Ask anything about crops, soil, fertilizers, or pests — in English or Kiswahili.
                 </p>
-                <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2">Try asking</p>
+                <p className="text-[10px] font-bold text-soil-500 uppercase tracking-widest mb-2">Try asking</p>
                 <div className="space-y-1.5">
                   {STARTER_PROMPTS.map((prompt) => (
                     <button
@@ -309,7 +309,7 @@ export default function AgronomyPage() {
             {/* Past conversations */}
             {conversations.length > 0 && (
               <>
-                <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2 mt-1">Recent chats</p>
+                <p className="text-[10px] font-bold text-soil-500 uppercase tracking-widest mb-2 mt-1">Recent chats</p>
                 {historyLoading ? (
                   <div className="flex justify-center py-4">
                     <Loader2 size={16} className="animate-spin text-forest-600" />
@@ -346,7 +346,7 @@ export default function AgronomyPage() {
                 {messages.length === 0 && (
                   <>
                     <div className="my-3 border-t border-cream-200" />
-                    <p className="text-[10px] font-bold text-soil-400 uppercase tracking-widest mb-2">Try asking</p>
+                    <p className="text-[10px] font-bold text-soil-500 uppercase tracking-widest mb-2">Try asking</p>
                     <div className="space-y-1.5">
                       {STARTER_PROMPTS.slice(0, 3).map((prompt) => (
                         <button
@@ -378,7 +378,7 @@ export default function AgronomyPage() {
                 </div>
                 <div>
                   <h2 className="font-display text-xl font-bold text-forest-700 mb-1">Shamba Mshauri</h2>
-                  <p className="text-soil-400 text-sm max-w-xs">
+                  <p className="text-soil-500 text-sm max-w-xs">
                     Your AI agronomist for all 47 Kenyan counties. Ask anything about crops, soil, fertilizers, or pests — in English or Kiswahili.
                   </p>
                 </div>
@@ -447,7 +447,7 @@ export default function AgronomyPage() {
                 </div>
                 <div className="bg-white border border-cream-300 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-2">
                   <Loader2 size={14} className="animate-spin text-forest-600" />
-                  <span className="text-sm text-soil-400">Analyzing...</span>
+                  <span className="text-sm text-soil-500">Analyzing...</span>
                 </div>
               </div>
             )}

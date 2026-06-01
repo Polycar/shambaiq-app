@@ -88,7 +88,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
             Growing {crop.crop} in {county.county}
           </h1>
-          <p className="text-soil-400">
+          <p className="text-soil-500">
             Soil suitability analysis based on {county.county}&apos;s nutrient
             profile
           </p>
@@ -108,16 +108,16 @@ export default async function CountyCropPage({ params }: PageProps) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-cream-300">
-                    <th className="text-left py-2 text-soil-400 font-medium">
+                    <th className="text-left py-2 text-soil-500 font-medium">
                       Nutrient
                     </th>
-                    <th className="text-right py-2 text-soil-400 font-medium">
+                    <th className="text-right py-2 text-soil-500 font-medium">
                       {county.county} Soil
                     </th>
-                    <th className="text-right py-2 text-soil-400 font-medium">
+                    <th className="text-right py-2 text-soil-500 font-medium">
                       {crop.crop} Needs
                     </th>
-                    <th className="text-right py-2 text-soil-400 font-medium">
+                    <th className="text-right py-2 text-soil-500 font-medium">
                       Status
                     </th>
                   </tr>
@@ -176,7 +176,7 @@ export default async function CountyCropPage({ params }: PageProps) {
                       <td className="py-3 text-right">
                         {row.val} {row.unit}
                       </td>
-                      <td className="py-3 text-right capitalize text-soil-400 text-xs">
+                      <td className="py-3 text-right capitalize text-soil-500 text-xs">
                         min {row.min} {row.unit}
                       </td>
                       <td className="py-3 text-right">
@@ -205,7 +205,7 @@ export default async function CountyCropPage({ params }: PageProps) {
               </h2>
               {calendars.map((cal) => (
                 <div key={cal.season} className="mb-4 last:mb-0">
-                  <h3 className="text-sm font-bold text-gold-600 mb-2">
+                  <h3 className="text-sm font-bold text-gold-700 mb-2">
                     {cal.season}
                   </h3>
                   <div className="grid grid-cols-3 gap-3">
@@ -218,7 +218,7 @@ export default async function CountyCropPage({ params }: PageProps) {
                         key={m.label}
                         className="bg-cream-50 rounded-lg p-3 border border-cream-200"
                       >
-                        <div className="text-xs text-soil-400 mb-1">
+                        <div className="text-xs text-soil-500 mb-1">
                           {m.label}
                         </div>
                         <div className="text-sm text-forest-700 font-medium">
@@ -240,25 +240,25 @@ export default async function CountyCropPage({ params }: PageProps) {
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="bg-cream-50 rounded-lg p-4 border border-cream-200">
-                  <div className="text-xs text-soil-400 mb-1">Product</div>
+                  <div className="text-xs text-soil-500 mb-1">Product</div>
                   <div className="font-semibold text-forest-700">
                     {topDress.product}
                   </div>
                 </div>
                 <div className="bg-cream-50 rounded-lg p-4 border border-cream-200">
-                  <div className="text-xs text-soil-400 mb-1">Timing</div>
+                  <div className="text-xs text-soil-500 mb-1">Timing</div>
                   <div className="font-semibold text-forest-700">
                     {topDress.timing}
                   </div>
                 </div>
                 <div className="bg-cream-50 rounded-lg p-4 border border-cream-200 sm:col-span-2">
-                  <div className="text-xs text-soil-400 mb-1">Instruction</div>
+                  <div className="text-xs text-soil-500 mb-1">Instruction</div>
                   <div className="text-sm text-forest-700">
                     {topDress.instruction}
                   </div>
                 </div>
                 <div className="bg-cream-50 rounded-lg p-4 border border-cream-200">
-                  <div className="text-xs text-soil-400 mb-1">
+                  <div className="text-xs text-soil-500 mb-1">
                     Bags per Acre
                   </div>
                   <div className="font-semibold text-forest-700">
@@ -289,7 +289,7 @@ export default async function CountyCropPage({ params }: PageProps) {
                         {s.altitude_zone}
                       </span>
                     </div>
-                    <div className="text-xs text-soil-400 mb-1">
+                    <div className="text-xs text-soil-500 mb-1">
                       {s.breeder} · {s.maturity_days} days ·{" "}
                       {s.yield_bags} bags/acre
                     </div>
@@ -314,26 +314,26 @@ export default async function CountyCropPage({ params }: PageProps) {
             </h2>
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-soil-400">Market price</span>
+                <span className="text-soil-500">Market price</span>
                 <span className="font-semibold text-forest-700">
                   KES {crop.price_per_kg}/kg
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-soil-400">Expected yield</span>
+                <span className="text-soil-500">Expected yield</span>
                 <span className="font-semibold text-forest-700">
                   {crop.yield_per_acre.toLocaleString()} kg/acre
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-soil-400">Estimated revenue</span>
+                <span className="text-soil-500">Estimated revenue</span>
                 <span className="font-bold text-green-600">
                   KES {estimatedRevenue.toLocaleString()}/acre
                 </span>
               </div>
               <hr className="border-cream-200" />
               <div className="flex justify-between text-sm">
-                <span className="text-soil-400">Preferred texture</span>
+                <span className="text-soil-500">Preferred texture</span>
                 <span className="font-semibold text-forest-700">
                   {crop.pref_texture}
                 </span>
@@ -349,7 +349,7 @@ export default async function CountyCropPage({ params }: PageProps) {
             <div className="space-y-2">
               {prices.slice(0, 5).map((p) => (
                 <div key={p.fertilizer} className="flex justify-between text-sm">
-                  <span className="text-soil-400">{p.fertilizer}</span>
+                  <span className="text-soil-500">{p.fertilizer}</span>
                   <div className="text-right">
                     <span className="font-semibold text-green-600">
                       KES {p.subsidized.toLocaleString()}

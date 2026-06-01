@@ -140,18 +140,18 @@ export default function WheatUasinGishuPage() {
 
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
                 <Link href="/soil/uasin-gishu" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Uasin Gishu County</Link>
                 <Link href="/crops/wheat" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Wheat</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
                 Wheat Farming in Uasin Gishu:{" "}
-                <span className="text-gold-600">Data-Driven Yield Maximization on the Eldoret Plateau</span>
+                <span className="text-gold-700">Data-Driven Yield Maximization on the Eldoret Plateau</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Uasin Gishu County produces more wheat than any other county in Kenya. The Eldoret plateau's cool temperatures, reliable long rains, and heavy clay loam soils create conditions that suit wheat better than almost any other food crop. Yet phosphorus deficiency — consistent, measurable, and almost universally undercorrected — is quietly suppressing yields across the plateau. The difference between 12 bags per acre and 24 bags per acre on the same farm, in the same season, often comes down to one bag of DAP applied correctly at planting.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -206,13 +206,13 @@ export default function WheatUasinGishuPage() {
                         <td className="px-4 py-3 text-soil-600">{v}</td>
                         <td className="px-4 py-3 text-soil-500">{o}</td>
                         <td className="px-4 py-3 font-medium">{s}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{i}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{i}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-5">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Uasin Gishu County average. <Link href="/app?county=uasin-gishu&crop=wheat" className="text-gold-600 hover:underline">Get your farm-specific phosphorus reading here.</Link></p>
+              <p className="text-xs text-soil-500 mb-5">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Uasin Gishu County average. <Link href="/app?county=uasin-gishu&crop=wheat" className="text-gold-700 hover:underline">Get your farm-specific phosphorus reading here.</Link></p>
 
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-amber-800 mb-2">Why Phosphorus Fixation Happens in Clay Loam Soils</p>
@@ -236,12 +236,12 @@ export default function WheatUasinGishuPage() {
                     <div className="space-y-1.5 text-sm mb-3">
                       {[["Maturity", v.maturity], ["Yield", v.yield], ["Rust resistance", v.rust]].map(([label, val]) => (
                         <div key={label as string} className="flex justify-between gap-2">
-                          <span className="text-soil-400">{label}</span>
+                          <span className="text-soil-500">{label}</span>
                           <span className="font-medium text-forest-700 text-right text-xs">{val}</span>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-soil-400 border-t border-cream-200 pt-2">{v.notes}</p>
+                    <p className="text-xs text-soil-500 border-t border-cream-200 pt-2">{v.notes}</p>
                   </div>
                 ))}
               </div>
@@ -267,7 +267,7 @@ export default function WheatUasinGishuPage() {
                         <td className="px-4 py-3 font-mono text-xs text-soil-500">{fert}</td>
                         <td className="px-4 py-3 text-soil-600">{rate}</td>
                         <td className="px-4 py-3 text-soil-500 text-xs">{timing}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{purpose}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{purpose}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -382,7 +382,7 @@ export default function WheatUasinGishuPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Combine hire cost applies to farms above 2 acres — smaller plots use manual harvest. NCPB floor price used for revenue calculation. Find <Link href="/dealers/uasin-gishu" className="text-gold-600 hover:underline">Uasin Gishu agrovets and current input prices here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Combine hire cost applies to farms above 2 acres — smaller plots use manual harvest. NCPB floor price used for revenue calculation. Find <Link href="/dealers/uasin-gishu" className="text-gold-700 hover:underline">Uasin Gishu agrovets and current input prices here.</Link></p>
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
@@ -393,7 +393,7 @@ export default function WheatUasinGishuPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/uasin-gishu", label: "Uasin Gishu County Soil Report" },
@@ -434,19 +434,19 @@ export default function WheatUasinGishuPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Uasin Gishu Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Uasin Gishu Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Rift Valley Plateau"], ["Altitude", "1,900 – 2,400 m"], ["Avg Rainfall", "900 – 1,100 mm/yr"], ["Dominant Soil", "Clay loam"], ["Avg Soil pH", "5.5 – 6.2"], ["P Status", "Deficient"], ["K Status", "Sufficient"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right">{v}</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/soil/uasin-gishu" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Full Uasin Gishu Soil Report →</Link>
+                <Link href="/soil/uasin-gishu" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Full Uasin Gishu Soil Report →</Link>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Neighbouring Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
                   {[{ slug: "trans-nzoia", name: "Trans Nzoia" }, { slug: "nandi", name: "Nandi" }, { slug: "elgeyo-marakwet", name: "Elgeyo Marakwet" }, { slug: "baringo", name: "Baringo" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

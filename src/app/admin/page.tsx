@@ -24,7 +24,7 @@ const parseInlineMarkdown = (text: string): string => {
   return text
     .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" class="inline rounded my-1 max-w-full" />')
     .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-forest-700">$1</strong>')
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" class="text-gold-600 hover:underline font-medium">$1</a>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" class="text-gold-700 hover:underline font-medium">$1</a>')
     .replace(/`(.+?)`/g, '<code class="bg-cream-100 px-1 border rounded font-mono text-xs text-forest-800">$1</code>');
 };
 
@@ -93,7 +93,7 @@ const renderMarkdown = (content: string) => {
         return (
           <div key={i} className="my-6">
             <img src={url} alt={alt} className="rounded-xl border border-cream-200 shadow-sm max-w-full mx-auto" />
-            {alt && <p className="text-center text-xs text-soil-400 mt-2 font-medium">{alt}</p>}
+            {alt && <p className="text-center text-xs text-soil-500 mt-2 font-medium">{alt}</p>}
           </div>
         );
       }
@@ -504,7 +504,7 @@ export default function AdminDashboard() {
       <div className="w-full max-w-sm">
         <div className="w-14 h-14 bg-forest-700/10 rounded-xl flex items-center justify-center mx-auto mb-6"><Lock size={28} className="text-forest-700" /></div>
         <h1 className="font-display text-2xl font-bold text-forest-700 text-center mb-2">Admin Dashboard</h1>
-        <p className="text-soil-400 text-center text-sm mb-8">Enter your officer access code</p>
+        <p className="text-soil-500 text-center text-sm mb-8">Enter your officer access code</p>
         <input type="password" placeholder="Access code" value={code} onChange={e => setCode(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 mb-4" />
         {authErr && <p className="text-sm text-red-600 mb-4 text-center">Invalid access code</p>}
         <button onClick={() => login()} className="w-full py-3 bg-forest-700 hover:bg-forest-800 text-white font-semibold rounded-xl transition-colors">Sign In</button>
@@ -531,7 +531,7 @@ export default function AdminDashboard() {
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-display text-2xl font-bold text-forest-700">Admin Dashboard</h1>
         <div className="flex gap-2">
-          <button onClick={() => fetchTab(tab)} className="flex items-center gap-2 px-4 py-2 text-sm text-soil-400 hover:text-forest-700 border border-cream-300 rounded-lg hover:border-gold-400 transition-colors"><RefreshCw size={14} /> Refresh</button>
+          <button onClick={() => fetchTab(tab)} className="flex items-center gap-2 px-4 py-2 text-sm text-soil-500 hover:text-forest-700 border border-cream-300 rounded-lg hover:border-gold-400 transition-colors"><RefreshCw size={14} /> Refresh</button>
           <button onClick={() => { localStorage.removeItem("shambaiq_admin_code"); setAuth(false); setCode(""); }} className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 rounded-lg transition-colors"><X size={14} /> Sign Out</button>
         </div>
       </div>
@@ -550,7 +550,7 @@ export default function AdminDashboard() {
           ].map(s => (
             <div key={s.l} className="bg-white rounded-lg p-3 border border-cream-300 text-center">
               <div className="font-display text-xl font-bold text-forest-700">{s.v}</div>
-              <div className="text-xs text-soil-400">{s.l}</div>
+              <div className="text-xs text-soil-500">{s.l}</div>
             </div>
           ))}
         </div>
@@ -558,7 +558,7 @@ export default function AdminDashboard() {
 
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
         {tabs.map(t => { const Icon = t.icon; return (
-          <button key={t.key} onClick={() => setTab(t.key)} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${tab === t.key ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-400 hover:border-gold-400"}`}>
+          <button key={t.key} onClick={() => setTab(t.key)} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${tab === t.key ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-500 hover:border-gold-400"}`}>
             <Icon size={16} />{t.label}
             {t.badge != null && t.badge > 0 && <span className="ml-1 px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full">{t.badge}</span>}
           </button>
@@ -570,7 +570,7 @@ export default function AdminDashboard() {
       {/* ═══ STATS ═══ */}
       {!loading && tab === "stats" && stats && (
         stats.total_queries === 0 ? (
-          <div className="text-center py-16 text-soil-400">
+          <div className="text-center py-16 text-soil-500">
             <BarChart3 size={32} className="text-cream-300 mx-auto mb-4" />
             <p>No statistics data available yet.</p>
           </div>
@@ -578,21 +578,21 @@ export default function AdminDashboard() {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl p-6 border border-cream-300">
               <h3 className="font-display font-bold text-forest-700 mb-4">Soil Health Issues</h3>
-              {Object.entries(stats.soil_health || {}).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-400 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
+              {Object.entries(stats.soil_health || {}).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-500 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
               <h3 className="font-display font-bold text-forest-700 mb-4">Top Counties</h3>
-              {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
+              {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-500">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
               <h3 className="font-display font-bold text-forest-700 mb-4">Top Crops</h3>
-              {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-400">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
+              {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-500">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
               <h3 className="font-display font-bold text-forest-700 mb-4">Feedback</h3>
               <div className="text-center py-4">
                 <div className="font-display text-4xl font-bold text-forest-700">{stats.feedback?.average_rating?.toFixed(1) || "—"}</div>
-                <div className="text-sm text-soil-400 mt-1">Average rating · {stats.feedback?.total_responses || 0} responses</div>
+                <div className="text-sm text-soil-500 mt-1">Average rating · {stats.feedback?.total_responses || 0} responses</div>
               </div>
             </div>
           </div>
@@ -682,12 +682,12 @@ export default function AdminDashboard() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-forest-700 text-sm mb-1">{title}</h3>
-                  <p className="text-xs text-soil-400 leading-relaxed">{description}</p>
+                  <p className="text-xs text-soil-500 leading-relaxed">{description}</p>
                 </div>
                 <button
                   onClick={action}
                   disabled={b2bExporting === key}
-                  className={`flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${b2bExporting === key ? "bg-cream-100 text-soil-400 cursor-wait" : "bg-forest-700 hover:bg-forest-800 text-white"}`}
+                  className={`flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${b2bExporting === key ? "bg-cream-100 text-soil-500 cursor-wait" : "bg-forest-700 hover:bg-forest-800 text-white"}`}
                 >
                   {b2bExporting === key ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} className="rotate-180" />}
                   {b2bExporting === key ? "Exporting…" : "Download CSV"}
@@ -754,7 +754,7 @@ export default function AdminDashboard() {
             <div className="flex flex-wrap items-center gap-3 mb-2">
               <div className="flex-1">
                 <h3 className="font-semibold text-forest-700">Crop Economics ({cropPrices.length})</h3>
-                <p className="text-xs text-soil-400 mt-0.5">Click any row to edit. Changes go live on the website immediately.</p>
+                <p className="text-xs text-soil-500 mt-0.5">Click any row to edit. Changes go live on the website immediately.</p>
               </div>
               <button
                 onClick={() => setNewPriceForm({ crop: "", price_per_kg: "", unit: "", market: "" })}
@@ -765,7 +765,7 @@ export default function AdminDashboard() {
             </div>
 
             {cropPrices.length === 0 && !newPriceForm && (
-              <p className="text-soil-400 text-sm text-center py-8">Loading crop data from server…</p>
+              <p className="text-soil-500 text-sm text-center py-8">Loading crop data from server…</p>
             )}
 
             <div className="overflow-x-auto">
@@ -782,11 +782,11 @@ export default function AdminDashboard() {
                     <tr className="border-b border-green-100 bg-green-50">
                       <td className="py-1.5 px-2"><input autoFocus value={newPriceForm.crop} onChange={e => setNewPriceForm((f: any) => ({...f, crop: e.target.value}))} placeholder="Crop name" className="border border-cream-300 rounded px-2 py-1 text-xs w-28 focus:outline-none focus:ring-1 focus:ring-forest-400" /></td>
                       <td className="py-1.5 px-2"><select value={newPriceForm.market} onChange={e => setNewPriceForm((f: any) => ({...f, market: e.target.value}))} className="border border-cream-300 rounded px-1 py-1 text-xs focus:outline-none"><option value="">Category</option>{["Cereals","Legumes","Root & Tuber Crops","Vegetables","Cash Crops","Fruits & Trees"].map(c => <option key={c}>{c}</option>)}</select></td>
-                      <td className="py-1.5 px-2 text-xs text-soil-400">auto</td>
+                      <td className="py-1.5 px-2 text-xs text-soil-500">auto</td>
                       <td className="py-1.5 px-2"><input type="number" value={newPriceForm.unit} onChange={e => setNewPriceForm((f: any) => ({...f, unit: e.target.value}))} placeholder="kg/acre" className="border border-cream-300 rounded px-2 py-1 text-xs w-20 focus:outline-none" /></td>
                       <td className="py-1.5 px-2"><input type="number" value={newPriceForm.price_per_kg} onChange={e => setNewPriceForm((f: any) => ({...f, price_per_kg: e.target.value}))} placeholder="KES" className="border border-cream-300 rounded px-2 py-1 text-xs w-16 focus:outline-none" /></td>
-                      <td colSpan={4} className="py-1.5 px-2 text-xs text-soil-400">medium</td>
-                      <td className="py-1.5 px-2 text-xs text-soil-400">—</td>
+                      <td colSpan={4} className="py-1.5 px-2 text-xs text-soil-500">medium</td>
+                      <td className="py-1.5 px-2 text-xs text-soil-500">—</td>
                       <td className="py-1.5 px-2">
                         <div className="flex gap-1">
                           <button
@@ -825,7 +825,7 @@ export default function AdminDashboard() {
                             <td key={k} className="py-1.5 px-1"><select value={editingPrice[k]} onChange={e => setEditingPrice((p: any) => ({...p, [k]: e.target.value}))} className="border border-cream-300 rounded px-1 py-1 text-xs focus:outline-none"><option>low</option><option>medium</option><option>high</option></select></td>
                           ))}
                           <td className="py-1.5 px-2"><input value={editingPrice.pref_texture} onChange={e => setEditingPrice((p: any) => ({...p, pref_texture: e.target.value}))} className="border border-cream-300 rounded px-2 py-1 text-xs w-24 focus:outline-none" /></td>
-                          <td className="py-1.5 px-2 text-xs text-soil-400">—</td>
+                          <td className="py-1.5 px-2 text-xs text-soil-500">—</td>
                           <td className="py-1.5 px-2">
                             <div className="flex gap-1">
                               <button
@@ -856,15 +856,15 @@ export default function AdminDashboard() {
                           <td className="py-2 px-2 text-xs text-soil-500">{p.ph_min}–{p.ph_max}</td>
                           <td className="py-2 px-2 text-xs text-forest-700">{p.yield_per_acre ? p.yield_per_acre.toLocaleString() : "—"}</td>
                           <td className="py-2 px-2 text-xs font-semibold text-green-700">KES {p.price_per_kg ?? "—"}</td>
-                          <td className="py-2 px-2 text-xs text-soil-400">{p.n_need}</td>
-                          <td className="py-2 px-2 text-xs text-soil-400">{p.p_need}</td>
-                          <td className="py-2 px-2 text-xs text-soil-400">{p.k_need}</td>
-                          <td className="py-2 px-2 text-xs text-soil-400">{p.pref_texture || "—"}</td>
+                          <td className="py-2 px-2 text-xs text-soil-500">{p.n_need}</td>
+                          <td className="py-2 px-2 text-xs text-soil-500">{p.p_need}</td>
+                          <td className="py-2 px-2 text-xs text-soil-500">{p.k_need}</td>
+                          <td className="py-2 px-2 text-xs text-soil-500">{p.pref_texture || "—"}</td>
                           <td className="py-2 px-2 text-xs text-soil-300">{p.updated_at ? new Date(p.updated_at).toLocaleDateString() : "—"}</td>
                           <td className="py-2 px-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <div className="flex gap-1">
-                              <button onClick={() => setEditingPrice({...p, price_per_kg: String(p.price_per_kg ?? ""), yield_per_acre: String(p.yield_per_acre ?? ""), ph_min: String(p.ph_min), ph_max: String(p.ph_max), pref_texture: p.pref_texture ?? ""})} className="p-1.5 text-soil-400 hover:text-forest-700 transition-colors"><PenLine size={13} /></button>
-                              <button onClick={async () => { if (!confirm(`Delete ${p.name}?`)) return; const res = await fetch(`${API}/api/v1/crops/admin/economics/${p.id}`, { method: "DELETE", headers: { "Authorization": `Bearer ${code}` } }); if (res.ok) { setCropPriceMsg({type:"success",text:`${p.name} deleted`}); fetchTab("crops"); } }} className="p-1.5 text-soil-400 hover:text-red-500 transition-colors"><Trash2 size={13} /></button>
+                              <button onClick={() => setEditingPrice({...p, price_per_kg: String(p.price_per_kg ?? ""), yield_per_acre: String(p.yield_per_acre ?? ""), ph_min: String(p.ph_min), ph_max: String(p.ph_max), pref_texture: p.pref_texture ?? ""})} className="p-1.5 text-soil-500 hover:text-forest-700 transition-colors"><PenLine size={13} /></button>
+                              <button onClick={async () => { if (!confirm(`Delete ${p.name}?`)) return; const res = await fetch(`${API}/api/v1/crops/admin/economics/${p.id}`, { method: "DELETE", headers: { "Authorization": `Bearer ${code}` } }); if (res.ok) { setCropPriceMsg({type:"success",text:`${p.name} deleted`}); fetchTab("crops"); } }} className="p-1.5 text-soil-500 hover:text-red-500 transition-colors"><Trash2 size={13} /></button>
                             </div>
                           </td>
                         </>
@@ -883,17 +883,17 @@ export default function AdminDashboard() {
         <div>
           <div className="flex gap-2 mb-6">
             {["pending", "approved", "declined", "all"].map(s => (
-              <button key={s} onClick={() => setDealerFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${dealerFilter === s ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-400"}`}>{s}</button>
+              <button key={s} onClick={() => setDealerFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${dealerFilter === s ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-500"}`}>{s}</button>
             ))}
           </div>
-          {dealers.length === 0 ? <p className="text-center py-12 text-soil-400">No {dealerFilter} applications.</p> : (
+          {dealers.length === 0 ? <p className="text-center py-12 text-soil-500">No {dealerFilter} applications.</p> : (
             <div className="space-y-4">
               {dealers.map(d => (
                 <div key={d.id} className="bg-white rounded-xl border border-cream-300 p-6">
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                     <div className="flex-1">
                       <h3 className="font-bold text-forest-700 text-lg">{d.business_name}</h3>
-                      <p className="text-sm text-soil-400">{d.town}, {d.county} · {d.phone_number}</p>
+                      <p className="text-sm text-soil-500">{d.town}, {d.county} · {d.phone_number}</p>
                       {d.products_stocked && <p className="text-xs text-soil-300 mt-1">Products: {d.products_stocked}</p>}
                       <p className="text-xs text-soil-300 mt-1">{new Date(d.created_at).toLocaleDateString("en-KE")}</p>
                       {d.decline_reason && <p className="text-xs text-red-500 mt-1">Reason: {d.decline_reason}</p>}
@@ -916,13 +916,13 @@ export default function AdminDashboard() {
       {/* ═══ YIELDS ═══ */}
       {!loading && tab === "yields" && (
         <div>
-          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-400">No flagged yields.</p></div> : (
+          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-500">No flagged yields.</p></div> : (
             <div className="space-y-4">
               {yields.map(y => (
                 <div key={y.id} className="bg-white rounded-xl border border-cream-300 p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div>
                     <h3 className="font-bold text-forest-700">{y.crop} — {y.yield_bags_per_acre} bags/acre</h3>
-                    <p className="text-sm text-soil-400">Farmer: {y.farmer_id} · {y.season}</p>
+                    <p className="text-sm text-soil-500">Farmer: {y.farmer_id} · {y.season}</p>
                     <span className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-full"><AlertTriangle size={12} /> {y.flag_reason}</span>
                   </div>
                   <div className="flex gap-2">
@@ -944,7 +944,7 @@ export default function AdminDashboard() {
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <h2 className="font-display text-lg font-bold text-forest-700">Blog Posts</h2>
-                  <p className="text-xs text-soil-400 mt-0.5">AI auto-posts every Monday 08:00 EAT</p>
+                  <p className="text-xs text-soil-500 mt-0.5">AI auto-posts every Monday 08:00 EAT</p>
                 </div>
                 <div className="flex gap-2">
                   <button
@@ -975,13 +975,13 @@ export default function AdminDashboard() {
                   <button onClick={() => { setEditing(null); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setShowBlogEditor(true); setActiveEditorTab("write"); }} className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl"><Plus size={14} /> New Post</button>
                 </div>
               </div>
-              {posts.length === 0 ? <p className="text-center py-12 text-soil-400">No blog posts yet.</p> : (
+              {posts.length === 0 ? <p className="text-center py-12 text-soil-500">No blog posts yet.</p> : (
                 <div className="space-y-3">
                   {posts.map(p => (
                     <div key={p.id} className="bg-white rounded-xl border border-cream-300 p-4 flex items-center justify-between">
                       <div>
                         <h3 className="font-semibold text-forest-700">{p.title}</h3>
-                        <div className="flex gap-3 mt-1 text-xs text-soil-400">
+                        <div className="flex gap-3 mt-1 text-xs text-soil-500">
                           <span className={`px-2 py-0.5 rounded-full font-semibold ${p.status === "published" ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"}`}>{p.status}</span>
                           <span>{p.category}</span>
                           {p.published_at && <span>{new Date(p.published_at).toLocaleDateString("en-KE")}</span>}
@@ -1107,7 +1107,7 @@ export default function AdminDashboard() {
                     <div className="flex justify-between items-center mb-6 pb-4 border-b border-cream-100">
                       <div>
                         <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
-                        <p className="text-xs text-soil-400">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
+                        <p className="text-xs text-soil-500">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
                       </div>
                       <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
                     </div>
@@ -1161,7 +1161,7 @@ export default function AdminDashboard() {
                       <div>
                         <div className="flex justify-between items-center mb-1.5">
                           <label className="text-sm font-semibold text-forest-700 block">Excerpt / Meta Description</label>
-                          <span className={`text-xs font-semibold ${isExcerptLenGood ? "text-emerald-600" : "text-soil-400"}`}>
+                          <span className={`text-xs font-semibold ${isExcerptLenGood ? "text-emerald-600" : "text-soil-500"}`}>
                             {excerptLen} / 160 characters (ideal: 80-160)
                           </span>
                         </div>
@@ -1183,7 +1183,7 @@ export default function AdminDashboard() {
                               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
                                 activeEditorTab === "write"
                                   ? "bg-white text-forest-700 shadow-sm border border-cream-200"
-                                  : "text-soil-400 hover:text-forest-700"
+                                  : "text-soil-500 hover:text-forest-700"
                               }`}
                             >
                               <PenLine size={13} />
@@ -1195,7 +1195,7 @@ export default function AdminDashboard() {
                               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
                                 activeEditorTab === "preview"
                                   ? "bg-white text-forest-700 shadow-sm border border-cream-200"
-                                  : "text-soil-400 hover:text-forest-700"
+                                  : "text-soil-500 hover:text-forest-700"
                               }`}
                             >
                               <Eye size={13} />
@@ -1207,7 +1207,7 @@ export default function AdminDashboard() {
                               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
                                 activeEditorTab === "split"
                                   ? "bg-white text-forest-700 shadow-sm border border-cream-200"
-                                  : "text-soil-400 hover:text-forest-700"
+                                  : "text-soil-500 hover:text-forest-700"
                               }`}
                             >
                               <Columns size={13} />
@@ -1215,7 +1215,7 @@ export default function AdminDashboard() {
                             </button>
                           </div>
                           
-                          <span className={`text-xs font-semibold ${isWordCountGood ? "text-emerald-600" : "text-soil-400"}`}>
+                          <span className={`text-xs font-semibold ${isWordCountGood ? "text-emerald-600" : "text-soil-500"}`}>
                             {wordCount} words
                           </span>
                         </div>
@@ -1307,7 +1307,7 @@ export default function AdminDashboard() {
                     {/* Focus Keyword Input Card */}
                     <div className="bg-white rounded-2xl border border-cream-300 p-5 shadow-sm">
                       <div className="flex items-center gap-2 mb-3">
-                        <div className="p-1.5 bg-gold-50 border border-gold-200 text-gold-600 rounded-lg">
+                        <div className="p-1.5 bg-gold-50 border border-gold-200 text-gold-700 rounded-lg">
                           <Sparkles size={16} />
                         </div>
                         <h3 className="font-display font-bold text-forest-700 text-sm">Focus Keyword</h3>
@@ -1321,7 +1321,7 @@ export default function AdminDashboard() {
                           className="w-full pl-9 pr-4 py-2.5 border border-cream-300 rounded-xl text-forest-700 text-sm placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 font-medium"
                         />
                       </div>
-                      <p className="text-[11px] text-soil-400 mt-2 leading-relaxed">
+                      <p className="text-[11px] text-soil-500 mt-2 leading-relaxed">
                         Specify the search query this post aims to rank for. Real-time checklist matches will sync below.
                       </p>
                     </div>
@@ -1330,7 +1330,7 @@ export default function AdminDashboard() {
                     <div className={`bg-white rounded-2xl border p-5 shadow-sm transition-all duration-300`}>
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <span className="text-[11px] font-bold text-soil-400 uppercase tracking-wider block">SEO Health Score</span>
+                          <span className="text-[11px] font-bold text-soil-500 uppercase tracking-wider block">SEO Health Score</span>
                           <span className="font-display text-3xl font-extrabold text-forest-700">{score}<span className="text-sm font-normal text-soil-300">/100</span></span>
                         </div>
                         <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${scoreColor}`}>
@@ -1346,7 +1346,7 @@ export default function AdminDashboard() {
                         />
                       </div>
 
-                      <p className="text-[11px] text-soil-400 leading-relaxed">
+                      <p className="text-[11px] text-soil-500 leading-relaxed">
                         {score >= 80 
                           ? "🎉 Excellent optimization! Your blog post adheres to advanced SEO standards and is ready to compete on Google."
                           : score >= 50
@@ -1358,13 +1358,13 @@ export default function AdminDashboard() {
                     {/* SERP Search Preview */}
                     <div className="bg-white rounded-2xl border border-cream-300 p-5 shadow-sm">
                       <div className="flex items-center gap-2 mb-3 pb-2 border-b border-cream-100">
-                        <Globe size={15} className="text-soil-400" />
+                        <Globe size={15} className="text-soil-500" />
                         <h3 className="font-display font-bold text-forest-700 text-sm">Google SERP Snippet Preview</h3>
                       </div>
                       
                       <div className="bg-cream-50/50 p-4 border border-cream-200 rounded-xl font-sans text-left space-y-1.5 shadow-inner">
                         {/* URL snippet */}
-                        <div className="flex items-center gap-1.5 text-xs text-soil-400 truncate">
+                        <div className="flex items-center gap-1.5 text-xs text-soil-500 truncate">
                           <span className="bg-cream-200 px-1 py-0.5 rounded text-[9px] font-semibold text-forest-700 uppercase tracking-tight">organic</span>
                           <span className="truncate">https://shambaiq.com › blog › {slugPreview}</span>
                         </div>
@@ -1373,7 +1373,7 @@ export default function AdminDashboard() {
                           {blogForm.title || "Post Title Preview"}
                         </a>
                         {/* Snippet Description */}
-                        <p className="text-xs text-soil-400 font-sans leading-relaxed line-clamp-2">
+                        <p className="text-xs text-soil-500 font-sans leading-relaxed line-clamp-2">
                           {blogForm.excerpt || "Please enter an excerpt / meta description to preview how this listing description will appear in Google Search results..."}
                         </p>
                       </div>
@@ -1399,9 +1399,9 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className={`font-medium ${isTitleLenGood ? "text-forest-700" : "text-soil-500"}`}>Title Character Count</span>
-                                <span className="font-semibold text-soil-400">{titleLen}/60 chars</span>
+                                <span className="font-semibold text-soil-500">{titleLen}/60 chars</span>
                               </div>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 Ideal: 30 to 60 characters for search snippet formatting.
                               </p>
                             </div>
@@ -1416,7 +1416,7 @@ export default function AdminDashboard() {
                             )}
                             <div className="flex-1">
                               <span className={`font-medium ${hasKeywordInTitle ? "text-forest-700" : "text-soil-500"}`}>Keyword in Title</span>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 {focusKeyword 
                                   ? `Include "${focusKeyword}" in the article title.` 
                                   : "Define a focus keyword to trace title optimization."}
@@ -1434,9 +1434,9 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className={`font-medium ${isH2CountGood ? "text-forest-700" : "text-soil-500"}`}>H2 Subheadings</span>
-                                <span className="font-semibold text-soil-400">{h2Count} found</span>
+                                <span className="font-semibold text-soil-500">{h2Count} found</span>
                               </div>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 Add at least two subheadings starting with <code className="bg-cream-50 border px-1 rounded">## </code> for clear content hierarchy.
                               </p>
                             </div>
@@ -1462,9 +1462,9 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className={`font-medium ${isWordCountGood ? "text-forest-700" : "text-soil-500"}`}>Minimum Word Count</span>
-                                <span className="font-semibold text-soil-400">{wordCount} / 300 words</span>
+                                <span className="font-semibold text-soil-500">{wordCount} / 300 words</span>
                               </div>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 Ideal posts contain at least 300 words to establish high authority.
                               </p>
                             </div>
@@ -1479,7 +1479,7 @@ export default function AdminDashboard() {
                             )}
                             <div className="flex-1">
                               <span className={`font-medium ${hasKeywordInH2 ? "text-forest-700" : "text-soil-500"}`}>Keyword in H2 Subheadings</span>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 {focusKeyword 
                                   ? `Include "${focusKeyword}" in at least one H2 heading.` 
                                   : "Define a focus keyword to verify subheading placement."}
@@ -1495,9 +1495,9 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className="font-medium text-forest-700">Keyword Density / Count</span>
-                                <span className="font-semibold text-soil-400">{keywordDensity}% ({keywordCount}x)</span>
+                                <span className="font-semibold text-soil-500">{keywordDensity}% ({keywordCount}x)</span>
                               </div>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 Density matches for focus keyword. Standard ranges lie between 0.5% and 2.5%.
                               </p>
                             </div>
@@ -1523,9 +1523,9 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className={`font-medium ${isExcerptLenGood ? "text-forest-700" : "text-soil-500"}`}>Excerpt Length</span>
-                                <span className="font-semibold text-soil-400">{excerptLen}/160 chars</span>
+                                <span className="font-semibold text-soil-500">{excerptLen}/160 chars</span>
                               </div>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 Keep between 80 and 160 characters to ensure it is not truncated on search listings.
                               </p>
                             </div>
@@ -1540,7 +1540,7 @@ export default function AdminDashboard() {
                             )}
                             <div className="flex-1">
                               <span className={`font-medium ${hasKeywordInExcerpt ? "text-forest-700" : "text-soil-500"}`}>Keyword in Excerpt</span>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 {focusKeyword 
                                   ? `Integrate "${focusKeyword}" into the summary excerpt.` 
                                   : "Define a focus keyword to verify meta description presence."}
@@ -1558,9 +1558,9 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className={`font-medium ${hasInternalLinks ? "text-forest-700" : "text-soil-500"}`}>Internal Linking</span>
-                                <span className="font-semibold text-soil-400">{internalLinks.length} added</span>
+                                <span className="font-semibold text-soil-500">{internalLinks.length} added</span>
                               </div>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 Link to other platform pages (e.g. <code className="bg-cream-50 border px-1 rounded">(/soil/nakuru)</code> or <code className="bg-cream-50 border px-1 rounded">(/crops/maize)</code>) to improve navigation authority.
                               </p>
 
@@ -1572,7 +1572,7 @@ export default function AdminDashboard() {
                                     const url = m[2] || "";
                                     return (
                                       <div key={idx} className="flex items-center gap-1">
-                                        <Link2 size={10} className="text-soil-400 shrink-0" />
+                                        <Link2 size={10} className="text-soil-500 shrink-0" />
                                         <span className="font-semibold text-forest-700 truncate max-w-[80px]">"{text}"</span>
                                         <span className="text-soil-300 shrink-0">→</span>
                                         <code className="bg-white border px-1 rounded text-[9px] truncate max-w-[90px]">{url}</code>
@@ -1584,8 +1584,8 @@ export default function AdminDashboard() {
 
                               {linkSuggestions.length > 0 && (
                                 <div className="mt-2.5 pl-3 pr-2 py-2 bg-gold-50 border border-gold-200 text-[10px] text-gold-850 rounded-lg space-y-1">
-                                  <span className="font-bold flex items-center gap-1 text-gold-800"><Sparkles size={10} className="text-gold-600" /> Link Suggestions:</span>
-                                  <p className="text-[9px] text-gold-600 leading-snug">We noticed these keywords. Copy-paste these internal links to boost SEO ranking:</p>
+                                  <span className="font-bold flex items-center gap-1 text-gold-800"><Sparkles size={10} className="text-gold-700" /> Link Suggestions:</span>
+                                  <p className="text-[9px] text-gold-700 leading-snug">We noticed these keywords. Copy-paste these internal links to boost SEO ranking:</p>
                                   <div className="space-y-1 mt-1">
                                     {linkSuggestions.slice(0, 3).map((s, idx) => (
                                       <div key={idx} className="flex flex-col gap-0.5 bg-white border border-gold-150 p-1.5 rounded">
@@ -1615,11 +1615,11 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className={`font-medium ${hasImages && !imageAltIssues ? "text-forest-700" : "text-soil-500"}`}>Image Alt Tags</span>
-                                <span className="font-semibold text-soil-400">
+                                <span className="font-semibold text-soil-500">
                                   {hasImages ? `${imageMatches.length} img` : "No images"}
                                 </span>
                               </div>
-                              <p className="text-[10px] text-soil-400 mt-0.5 leading-snug">
+                              <p className="text-[10px] text-soil-500 mt-0.5 leading-snug">
                                 {!hasImages 
                                   ? "Tip: Add standard images with ![descriptive alt text](image_url) to improve rich readability."
                                   : imageAltIssues
@@ -1636,7 +1636,7 @@ export default function AdminDashboard() {
                                     const isGood = alt.trim().length >= 3;
                                     return (
                                       <div key={idx} className="flex items-center justify-between gap-1">
-                                        <span className="truncate max-w-[100px] font-mono text-soil-400">{url.split('/').pop()}</span>
+                                        <span className="truncate max-w-[100px] font-mono text-soil-500">{url.split('/').pop()}</span>
                                         {isGood ? (
                                           <span className="text-emerald-600 font-medium flex items-center gap-0.5"><Check size={9} /> "{alt}"</span>
                                         ) : (
@@ -1665,12 +1665,12 @@ export default function AdminDashboard() {
         <div>
           <div className="flex gap-3 mb-6">
             <div className="flex-1 relative">
-              <Search size={16} className="absolute left-4 top-3.5 text-soil-400" />
+              <Search size={16} className="absolute left-4 top-3.5 text-soil-500" />
               <input value={farmerSearch} onChange={e => setFarmerSearch(e.target.value)} onKeyDown={e => e.key === "Enter" && fetchTab("farmers")} placeholder="Search by name, phone, or county..." className="w-full pl-10 pr-4 py-3 border border-cream-300 rounded-xl text-forest-700 focus:outline-none focus:border-gold-400" />
             </div>
             <button onClick={() => fetchTab("farmers")} className="px-6 py-3 bg-forest-700 text-white font-semibold rounded-xl">Search</button>
           </div>
-          {farmers.length === 0 ? <p className="text-center py-12 text-soil-400">No farmers found.</p> : (
+          {farmers.length === 0 ? <p className="text-center py-12 text-soil-500">No farmers found.</p> : (
             <div className="space-y-3">
               {farmers.map(fm => (
                 <div key={fm.id} className="bg-white rounded-xl border border-cream-300">
@@ -1679,39 +1679,39 @@ export default function AdminDashboard() {
                       <div className="w-10 h-10 bg-forest-700/10 rounded-full flex items-center justify-center text-forest-700 font-bold text-sm">{fm.name?.charAt(0) || "?"}</div>
                       <div>
                         <h3 className="font-semibold text-forest-700">{fm.name || "Unnamed"}</h3>
-                        <div className="flex gap-3 text-xs text-soil-400">
+                        <div className="flex gap-3 text-xs text-soil-500">
                           <span className="flex items-center gap-1"><Phone size={10} /> {fm.phone_number}</span>
                           <span className="flex items-center gap-1"><MapPin size={10} /> {fm.county}</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
-                      <div className="text-right text-xs text-soil-400 hidden sm:block">
+                      <div className="text-right text-xs text-soil-500 hidden sm:block">
                         <div>{fm.fields} fields · {fm.recommendations} recs · {fm.yields_logged} yields</div>
                         <div>{new Date(fm.created_at).toLocaleDateString("en-KE")}</div>
                       </div>
-                      {farmerDetail?.farmer?.id === fm.id ? <ChevronDown size={16} className="text-soil-400" /> : <ChevronRight size={16} className="text-soil-400" />}
+                      {farmerDetail?.farmer?.id === fm.id ? <ChevronDown size={16} className="text-soil-500" /> : <ChevronRight size={16} className="text-soil-500" />}
                     </div>
                   </button>
                   {farmerDetail?.farmer?.id === fm.id && (
                     <div className="border-t border-cream-200 p-4 bg-cream-50">
                       <div className="grid md:grid-cols-3 gap-4">
                         <div>
-                          <h4 className="text-xs font-semibold text-soil-400 uppercase mb-2">Fields ({farmerDetail.fields.length})</h4>
+                          <h4 className="text-xs font-semibold text-soil-500 uppercase mb-2">Fields ({farmerDetail.fields.length})</h4>
                           {farmerDetail.fields.length === 0 ? <p className="text-xs text-soil-300">No fields registered</p> : farmerDetail.fields.map((f: any) => (
-                            <div key={f.id} className="text-sm mb-2"><span className="font-medium text-forest-700">{f.name}</span><br /><span className="text-xs text-soil-400">{f.size_acres} acres · {f.primary_crop} · {f.ward || f.county}</span></div>
+                            <div key={f.id} className="text-sm mb-2"><span className="font-medium text-forest-700">{f.name}</span><br /><span className="text-xs text-soil-500">{f.size_acres} acres · {f.primary_crop} · {f.ward || f.county}</span></div>
                           ))}
                         </div>
                         <div>
-                          <h4 className="text-xs font-semibold text-soil-400 uppercase mb-2">Recent Recommendations ({farmerDetail.recommendations.length})</h4>
+                          <h4 className="text-xs font-semibold text-soil-500 uppercase mb-2">Recent Recommendations ({farmerDetail.recommendations.length})</h4>
                           {farmerDetail.recommendations.slice(0, 5).map((r: any) => (
-                            <div key={r.id} className="text-sm mb-2"><span className="font-medium text-forest-700">{r.crop}</span> in {r.county}<br /><span className="text-xs text-soil-400">Score: {r.health_score} · KES {r.total_budget?.toLocaleString()} · {new Date(r.created_at).toLocaleDateString("en-KE")}</span></div>
+                            <div key={r.id} className="text-sm mb-2"><span className="font-medium text-forest-700">{r.crop}</span> in {r.county}<br /><span className="text-xs text-soil-500">Score: {r.health_score} · KES {r.total_budget?.toLocaleString()} · {new Date(r.created_at).toLocaleDateString("en-KE")}</span></div>
                           ))}
                         </div>
                         <div>
-                          <h4 className="text-xs font-semibold text-soil-400 uppercase mb-2">Yield History ({farmerDetail.yields.length})</h4>
+                          <h4 className="text-xs font-semibold text-soil-500 uppercase mb-2">Yield History ({farmerDetail.yields.length})</h4>
                           {farmerDetail.yields.map((y: any) => (
-                            <div key={y.id} className="text-sm mb-2"><span className="font-medium text-forest-700">{y.crop}</span> — {y.yield_bags_per_acre} bags/acre<br /><span className="text-xs text-soil-400">{y.season} · <span className={y.status === "flagged" ? "text-red-500" : "text-green-600"}>{y.status}</span></span></div>
+                            <div key={y.id} className="text-sm mb-2"><span className="font-medium text-forest-700">{y.crop}</span> — {y.yield_bags_per_acre} bags/acre<br /><span className="text-xs text-soil-500">{y.season} · <span className={y.status === "flagged" ? "text-red-500" : "text-green-600"}>{y.status}</span></span></div>
                           ))}
                         </div>
                       </div>
@@ -1731,11 +1731,11 @@ export default function AdminDashboard() {
             <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
               <div>
                 <h2 className="font-display text-lg font-bold text-forest-700">Agrovet Directory</h2>
-                <p className="text-xs text-soil-400">Upload a CSV to add or replace agrovets in the directory. CSV must have at least <code className="bg-cream-100 px-1 rounded">name</code> and <code className="bg-cream-100 px-1 rounded">county</code> columns.</p>
+                <p className="text-xs text-soil-500">Upload a CSV to add or replace agrovets in the directory. CSV must have at least <code className="bg-cream-100 px-1 rounded">name</code> and <code className="bg-cream-100 px-1 rounded">county</code> columns.</p>
               </div>
               <div className="text-right">
                 <div className="font-display text-2xl font-bold text-forest-700">{agrovetTotal}</div>
-                <div className="text-xs text-soil-400">Total Agrovets</div>
+                <div className="text-xs text-soil-500">Total Agrovets</div>
               </div>
             </div>
 
@@ -1750,8 +1750,8 @@ export default function AdminDashboard() {
               <div>
                 <label className="text-sm font-semibold text-forest-700 mb-2 block">Add to existing directory</label>
                 <label className={`flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-cream-300 rounded-xl cursor-pointer hover:border-gold-400 transition-colors ${agrovetUploading ? "opacity-50 pointer-events-none" : ""}`}>
-                  <Upload size={20} className="text-soil-400" />
-                  <span className="text-sm text-soil-400">{agrovetUploading ? "Uploading..." : "Drop CSV or click to browse"}</span>
+                  <Upload size={20} className="text-soil-500" />
+                  <span className="text-sm text-soil-500">{agrovetUploading ? "Uploading..." : "Drop CSV or click to browse"}</span>
                   <input type="file" accept=".csv" className="hidden" onChange={async (e) => {
                     const file = e.target.files?.[0]; if (!file) return;
                     setAgrovetUploading(true); setAgrovetMsg(null);
@@ -1791,7 +1791,7 @@ export default function AdminDashboard() {
             {/* Search and Table */}
             <div className="mb-4">
               <div className="relative">
-                <Search size={16} className="absolute left-4 top-3.5 text-soil-400" />
+                <Search size={16} className="absolute left-4 top-3.5 text-soil-500" />
                 <input value={agrovetSearch} onChange={e => setAgrovetSearch(e.target.value)} placeholder="Search agrovets by name or county..." className="w-full pl-10 pr-4 py-3 border border-cream-300 rounded-xl text-forest-700 focus:outline-none focus:border-gold-400" />
               </div>
             </div>
@@ -1814,10 +1814,10 @@ export default function AdminDashboard() {
                     .map((a, i) => (
                     <tr key={i} className="hover:bg-cream-50/50">
                       <td className="px-4 py-3 font-medium text-forest-700">{a.name}</td>
-                      <td className="px-4 py-3 text-soil-400">{a.county}</td>
-                      <td className="px-4 py-3 text-soil-400">{a.town || "—"}</td>
-                      <td className="px-4 py-3 text-soil-400">{a.phone || "—"}</td>
-                      <td className="px-4 py-3 text-soil-400">{a.rating || "—"}</td>
+                      <td className="px-4 py-3 text-soil-500">{a.county}</td>
+                      <td className="px-4 py-3 text-soil-500">{a.town || "—"}</td>
+                      <td className="px-4 py-3 text-soil-500">{a.phone || "—"}</td>
+                      <td className="px-4 py-3 text-soil-500">{a.rating || "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1833,16 +1833,16 @@ export default function AdminDashboard() {
       {/* ═══ AUDIT LOG ═══ */}
       {!loading && tab === "audit" && (
         <div>
-          {audit.length === 0 ? <p className="text-center py-16 text-soil-400">No audit entries yet.</p> : (
+          {audit.length === 0 ? <p className="text-center py-16 text-soil-500">No audit entries yet.</p> : (
             <div className="bg-white rounded-xl border border-cream-300 overflow-hidden overflow-x-auto">
               <table className="w-full text-sm">
                 <thead><tr className="bg-cream-100"><th className="px-4 py-3 text-left font-semibold text-forest-700">Action</th><th className="px-4 py-3 text-left font-semibold text-forest-700">Target</th><th className="px-4 py-3 text-left font-semibold text-forest-700">Details</th><th className="px-4 py-3 text-left font-semibold text-forest-700">Date</th></tr></thead>
                 <tbody>{audit.map(a => (
                   <tr key={a.id} className="border-t border-cream-200">
                     <td className="px-4 py-3"><span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${a.action.includes("approved") || a.action.includes("verified") ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>{a.action.replace(/_/g, " ")}</span></td>
-                    <td className="px-4 py-3 text-soil-400">{a.target_type?.replace(/_/g, " ")}</td>
-                    <td className="px-4 py-3 text-soil-400">{a.details || "—"}</td>
-                    <td className="px-4 py-3 text-soil-400 whitespace-nowrap">{new Date(a.created_at).toLocaleDateString("en-KE")}</td>
+                    <td className="px-4 py-3 text-soil-500">{a.target_type?.replace(/_/g, " ")}</td>
+                    <td className="px-4 py-3 text-soil-500">{a.details || "—"}</td>
+                    <td className="px-4 py-3 text-soil-500 whitespace-nowrap">{new Date(a.created_at).toLocaleDateString("en-KE")}</td>
                   </tr>
                 ))}</tbody>
               </table>
@@ -1858,7 +1858,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-display font-bold text-forest-700 text-lg">Insert Image</h3>
-            <button onClick={() => setImgModal(null)} className="p-1.5 text-soil-400 hover:text-red-500 transition-colors"><X size={18} /></button>
+            <button onClick={() => setImgModal(null)} className="p-1.5 text-soil-500 hover:text-red-500 transition-colors"><X size={18} /></button>
           </div>
           <div className="space-y-4">
             <div>

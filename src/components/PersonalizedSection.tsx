@@ -137,13 +137,13 @@ export default function PersonalizedSection() {
                 {weatherIcon(today.description)}
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-soil-400 uppercase tracking-wider mb-1">
+                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">
                   Today · {report.county}
                 </p>
                 <p className="font-display text-2xl font-bold text-forest-700 leading-none">
-                  {Math.round(today.temp_max)}°<span className="text-base font-normal text-soil-400 ml-1">/ {Math.round(today.temp_min)}°C</span>
+                  {Math.round(today.temp_max)}°<span className="text-base font-normal text-soil-500 ml-1">/ {Math.round(today.temp_min)}°C</span>
                 </p>
-                <p className="text-xs text-soil-400 mt-1 leading-snug">{today.description}</p>
+                <p className="text-xs text-soil-500 mt-1 leading-snug">{today.description}</p>
                 {today.rain_mm > 2 && (
                   <p className="text-xs text-blue-600 font-semibold mt-1">💧 {today.rain_mm.toFixed(1)}mm rain expected</p>
                 )}
@@ -158,8 +158,8 @@ export default function PersonalizedSection() {
                 <CloudSun size={22} className="text-blue-400" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-soil-400 uppercase tracking-wider mb-1">{report.county}</p>
-                <p className="text-sm text-soil-400">Weather unavailable right now</p>
+                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">{report.county}</p>
+                <p className="text-sm text-soil-500">Weather unavailable right now</p>
               </div>
             </div>
           )}
@@ -183,9 +183,9 @@ export default function PersonalizedSection() {
                 <Stethoscope size={20} className="text-red-500" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-soil-400 uppercase tracking-wider mb-1">Last Diagnosis</p>
+                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">Last Diagnosis</p>
                 <p className="text-sm font-semibold text-forest-700 leading-tight truncate">{lastDx.condition}</p>
-                {lastDx.crop && <p className="text-xs text-soil-400 mt-0.5">{lastDx.crop}</p>}
+                {lastDx.crop && <p className="text-xs text-soil-500 mt-0.5">{lastDx.crop}</p>}
                 <Link href="/doctor" className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 mt-2 transition-colors">
                   Plant Doctor <ArrowRight size={11} />
                 </Link>
@@ -197,8 +197,8 @@ export default function PersonalizedSection() {
                 <TrendingUp size={20} className="text-blue-500" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-soil-400 uppercase tracking-wider mb-1">Track Your Yields</p>
-                <p className="text-xs text-soil-400 leading-relaxed mb-2">Log your harvest season by season to see progress.</p>
+                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">Track Your Yields</p>
+                <p className="text-xs text-soil-500 leading-relaxed mb-2">Log your harvest season by season to see progress.</p>
                 <Link href="/yields" className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
                   My Yields <ArrowRight size={11} />
                 </Link>

@@ -42,11 +42,11 @@ export default function Page() {
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=diagnostic-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Diagnostic Guides</Link>
+                <Link href="/blog?category=diagnostic-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Diagnostic Guides</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Yellow Maize Leaves in Kenya: <span className="text-gold-600">Diagnosing Soil Deficiency vs Disease</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Yellow Maize Leaves in Kenya: <span className="text-gold-700">Diagnosing Soil Deficiency vs Disease</span></h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Yellow maize leaves are the most common distress signal from Kenyan farms, with at least eight distinct causes requiring completely different treatments. Applying CAN to yellow maize caused by aluminium toxicity wastes money. Applying lime to nitrogen deficiency misses the problem. This guide provides the precise diagnostic criteria for each cause.</p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
                 <span className="text-soil-300">·</span><span>{POST.readingTimeMin} min read</span>
@@ -74,7 +74,7 @@ export default function Page() {
                         <td className="px-3 py-3 font-semibold text-forest-800 text-xs">{cause}</td>
                         <td className="px-3 py-3 text-xs text-soil-600">{pattern}</td>
                         <td className="px-3 py-3 text-xs text-soil-500">{leaves}</td>
-                        <td className="px-3 py-3 text-xs text-soil-400">{signs}</td>
+                        <td className="px-3 py-3 text-xs text-soil-500">{signs}</td>
                         <td className="px-3 py-3 text-xs text-forest-700 font-medium">{fix}</td>
                         <td className="px-3 py-3 text-xs text-gold-700">{time}</td>
                       </tr>
@@ -109,7 +109,7 @@ export default function Page() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/app", label: "Check Your Farm Soil" },
@@ -137,7 +137,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Most common cause", "N deficiency"],
@@ -147,7 +147,7 @@ export default function Page() {
                     ["Al fix", "Lime — next season"],
                     ["Zinc fix", "Foliar ZnSO4 2g/L"],
                   ].map(([k, v]) => (
-                    <div key={k as string} className="flex justify-between gap-2"><span className="text-soil-400 text-xs">{k}</span><span className="font-medium text-forest-700 text-right text-xs">{v}</span></div>
+                    <div key={k as string} className="flex justify-between gap-2"><span className="text-soil-500 text-xs">{k}</span><span className="font-medium text-forest-700 text-right text-xs">{v}</span></div>
                   ))}
                 </div>
               </div>

@@ -38,7 +38,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
       aria-label="Table of contents"
       className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8 lg:sticky lg:top-6"
     >
-      <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">
+      <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">
         In This Article
       </p>
       <ol className="space-y-1.5">
@@ -49,7 +49,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
               className={`text-sm leading-snug block transition-colors duration-150 ${
                 active === item.id
                   ? "text-forest-700 font-semibold"
-                  : "text-soil-400 hover:text-forest-700"
+                  : "text-soil-500 hover:text-forest-700"
               }`}
             >
               {item.label}

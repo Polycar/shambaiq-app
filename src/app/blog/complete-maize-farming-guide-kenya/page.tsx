@@ -76,17 +76,17 @@ export default function CompleteMaizeGuidePage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=crop-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Crop Guides</Link>
+                <Link href="/blog?category=crop-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Crop Guides</Link>
                 <Link href="/crops/maize" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Maize</Link>
                 <span className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full">All Counties</span>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Complete Maize Farming Guide Kenya 2026: <span className="text-gold-600">From Soil to 30 Bags Per Acre</span>
+                Complete Maize Farming Guide Kenya 2026: <span className="text-gold-700">From Soil to 30 Bags Per Acre</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 The average Kenyan smallholder maize farmer harvests 8 to 12 bags per acre. The precision farmer on the same soil in the same county harvests 25 to 35. The difference is not luck, land size, or expensive equipment. It is four decisions made correctly: soil pH before anything, the right variety for the right altitude, fertilizer applied at the right time, and fall armyworm caught early. This guide covers every step from soil to storage with specific recommendations for Kenya's seven major maize-growing agroecological zones.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -138,7 +138,7 @@ export default function CompleteMaizeGuidePage() {
                       <tr key={zone as string} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
                         <td className="px-3 py-3 font-semibold text-forest-800">{zone}</td>
                         <td className="px-3 py-3 text-xs text-soil-500">{alt}</td>
-                        <td className="px-3 py-3 text-xs text-soil-400">{counties}</td>
+                        <td className="px-3 py-3 text-xs text-soil-500">{counties}</td>
                         <td className="px-3 py-3 font-mono text-xs text-forest-700">{vars}</td>
                         <td className="px-3 py-3 text-xs">{days}</td>
                         <td className="px-3 py-3 font-semibold text-green-700 text-xs">{yield_}</td>
@@ -168,7 +168,7 @@ export default function CompleteMaizeGuidePage() {
                         <td className="px-4 py-3 font-semibold text-forest-800">{stage}</td>
                         <td className="px-4 py-3 font-mono text-xs text-gold-700">{fert}</td>
                         <td className="px-4 py-3 text-soil-600">{rate}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{place}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{place}</td>
                         <td className="px-4 py-3 text-xs text-red-700 font-medium">{timing}</td>
                       </tr>
                     ))}
@@ -192,10 +192,10 @@ export default function CompleteMaizeGuidePage() {
                       <span className="text-xs bg-red-50 border border-red-200 text-red-700 px-2.5 py-0.5 rounded-full">Threshold: {item.threshold}</span>
                     </div>
                     <div className="grid sm:grid-cols-2 gap-2 text-xs mb-2">
-                      <div><span className="text-soil-400">Timing: </span><span className="text-soil-600">{item.timing}</span></div>
-                      <div><span className="text-soil-400">Product: </span><span className="font-medium text-forest-700">{item.product}</span></div>
+                      <div><span className="text-soil-500">Timing: </span><span className="text-soil-600">{item.timing}</span></div>
+                      <div><span className="text-soil-500">Product: </span><span className="font-medium text-forest-700">{item.product}</span></div>
                     </div>
-                    <p className="text-xs text-soil-400 border-t border-cream-200 pt-2">{item.note}</p>
+                    <p className="text-xs text-soil-500 border-t border-cream-200 pt-2">{item.note}</p>
                   </div>
                 ))}
               </div>
@@ -267,11 +267,11 @@ export default function CompleteMaizeGuidePage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Maize Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Maize Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["National avg yield", "8–12 bags/acre"], ["Precision avg yield", "25–35 bags/acre"], ["Key input #1", "Correct variety"], ["Key input #2", "Soil pH ≥ 5.8"], ["Key input #3", "CAN at knee height"], ["Biggest pest", "Fall armyworm"], ["Best certification", "KEPHIS F1 seed"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400 text-xs">{k}</span>
+                      <span className="text-soil-500 text-xs">{k}</span>
                       <span className="font-medium text-forest-700 text-right text-xs">{v}</span>
                     </div>
                   ))}

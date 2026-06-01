@@ -94,10 +94,10 @@ export default async function WardPage({ params }: PageProps) {
               <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700">
                 {ward.ward} Ward
               </h1>
-              <p className="text-soil-400 mt-1">
+              <p className="text-soil-500 mt-1">
                 {ward.subcounty} Sub-County · {county.county} County
               </p>
-              <p className="text-xs text-soil-400 mt-1 font-mono">
+              <p className="text-xs text-soil-500 mt-1 font-mono">
                 📍 {ward.latitude.toFixed(4)}°, {ward.longitude.toFixed(4)}°
                 {ward.population > 0 && ` · Pop: ${ward.population.toLocaleString()}`}
               </p>
@@ -130,7 +130,7 @@ export default async function WardPage({ params }: PageProps) {
             { label: "Potassium", value: `${soilK.toFixed(1)} mg/kg`, status: soilK >= 200 ? "good" : soilK >= 150 ? "warn" : "low" },
           ].map((n) => (
             <div key={n.label} className="bg-white rounded-xl p-4 border border-cream-300 shadow-sm">
-              <span className="text-xs text-soil-400 font-medium">{n.label}</span>
+              <span className="text-xs text-soil-500 font-medium">{n.label}</span>
               <div className="font-display text-xl font-bold text-forest-700 mt-1">{n.value}</div>
               <div
                 className={`mt-1 text-xs font-semibold ${
@@ -155,7 +155,7 @@ export default async function WardPage({ params }: PageProps) {
                 href={`/soil/${county.slug}/${crop.slug}`}
                 className="flex items-center gap-4 py-2 border-b border-cream-200 last:border-0 hover:bg-cream-50 -mx-2 px-2 rounded transition-colors"
               >
-                <span className="text-lg font-bold text-soil-400 w-6">{i + 1}</span>
+                <span className="text-lg font-bold text-soil-500 w-6">{i + 1}</span>
                 <span className="flex-1 font-semibold text-forest-700">{crop.crop}</span>
                 <span
                   className="px-3 py-1 rounded-full text-sm font-bold text-white"
@@ -182,7 +182,7 @@ export default async function WardPage({ params }: PageProps) {
                 <Link
                   key={w.slug}
                   href={`/soil/${county.slug}/ward/${slugify(w.ward)}`}
-                  className="text-sm text-forest-600 hover:text-gold-600 py-1 transition-colors"
+                  className="text-sm text-forest-600 hover:text-gold-700 py-1 transition-colors"
                 >
                   {w.ward}
                 </Link>

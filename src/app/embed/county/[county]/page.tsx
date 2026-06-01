@@ -76,7 +76,7 @@ export default async function CountyEmbedPage({ params }: PageProps) {
             return (
               <div key={n.type} className="flex justify-between items-center bg-white rounded-lg p-2 border border-cream-100 shadow-sm">
                 <div>
-                  <div className="text-[10px] text-soil-400 font-medium leading-none">{n.label}</div>
+                  <div className="text-[10px] text-soil-500 font-medium leading-none">{n.label}</div>
                   <div className="text-xs font-bold text-forest-700 mt-0.5">{n.val}</div>
                 </div>
                 <span
@@ -97,11 +97,11 @@ export default async function CountyEmbedPage({ params }: PageProps) {
           href={`https://www.shambaiq.com/soil/${slug}`}
           target="_blank"
           rel="noopener"
-          className="text-gold-600 hover:text-gold-500 font-bold flex items-center gap-0.5 transition-colors"
+          className="text-gold-700 hover:text-gold-500 font-bold flex items-center gap-0.5 transition-colors"
         >
           View Full Report →
         </Link>
-        <span className="text-soil-400">
+        <span className="text-soil-500">
           Powered by{" "}
           <Link
             href={`https://www.shambaiq.com/soil/${slug}`}

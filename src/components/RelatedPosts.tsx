@@ -19,14 +19,14 @@ export default function RelatedPosts({ posts, heading = "Continue Reading" }: Re
             href={`/blog/${post.slug}`}
             className="group block bg-white border border-cream-300 rounded-xl p-5 hover:border-gold-400 hover:shadow-sm transition-all duration-150"
           >
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold-600 mb-2 block">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gold-700 mb-2 block">
               {post.category}
             </span>
             <h3 className="text-sm font-semibold text-forest-800 leading-snug group-hover:text-gold-700 transition-colors">
               {post.title}
             </h3>
-            <p className="text-xs text-soil-400 mt-2 line-clamp-2">{post.metaDescription}</p>
-            <span className="text-xs text-gold-600 font-medium mt-3 block">
+            <p className="text-xs text-soil-500 mt-2 line-clamp-2">{post.metaDescription}</p>
+            <span className="text-xs text-gold-700 font-medium mt-3 block">
               {post.readingTimeMin} min read →
             </span>
           </Link>

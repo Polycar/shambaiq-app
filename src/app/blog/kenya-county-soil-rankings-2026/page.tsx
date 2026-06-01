@@ -70,16 +70,16 @@ export default function KenyaCountySoilRankingsPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-intelligence" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Intelligence</Link>
+                <Link href="/blog?category=soil-intelligence" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Intelligence</Link>
                 <span className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full">All 47 Counties</span>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Kenya County Soil Rankings 2026: <span className="text-gold-600">Which Counties Have the Best Farming Soil?</span>
+                Kenya County Soil Rankings 2026: <span className="text-gold-700">Which Counties Have the Best Farming Soil?</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Not all Kenyan soils are equal — and the gap between the best and worst counties is not a matter of luck. It is geology, rainfall, land management history, and the accumulated effect of farming decisions made over decades. ShambaIQ has mapped soil quality across all 47 counties using precision soil prediction models calibrated against ground-truth data, scoring each county on pH, nitrogen, phosphorus, potassium, and organic carbon. Here is what the data shows.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -106,8 +106,8 @@ export default function KenyaCountySoilRankingsPage() {
                 ].map((item) => (
                   <div key={item.param} className="bg-cream-50 border border-cream-300 rounded-xl p-3 text-center">
                     <p className="font-bold text-forest-800 text-sm mb-1">{item.param}</p>
-                    <p className="text-2xl font-display font-bold text-gold-600 mb-1">{item.weight}</p>
-                    <p className="text-xs text-soil-400 leading-tight">{item.why}</p>
+                    <p className="text-2xl font-display font-bold text-gold-700 mb-1">{item.weight}</p>
+                    <p className="text-xs text-soil-500 leading-tight">{item.why}</p>
                   </div>
                 ))}
               </div>
@@ -124,11 +124,11 @@ export default function KenyaCountySoilRankingsPage() {
                   <tbody className="divide-y divide-cream-200">
                     {TOP_COUNTIES.map((c, i) => (
                       <tr key={c.county} className={i % 2 === 0 ? "bg-white" : "bg-cream-50"}>
-                        <td className="px-3 py-3 font-bold text-gold-600">#{c.rank}</td>
+                        <td className="px-3 py-3 font-bold text-gold-700">#{c.rank}</td>
                         <td className="px-3 py-3 font-semibold text-forest-800">
-                          <Link href={`/soil/${c.county.toLowerCase().replace(/'/g, "").replace(/ /g, "-")}`} className="hover:text-gold-600 transition-colors">{c.county}</Link>
+                          <Link href={`/soil/${c.county.toLowerCase().replace(/'/g, "").replace(/ /g, "-")}`} className="hover:text-gold-700 transition-colors">{c.county}</Link>
                         </td>
-                        <td className="px-3 py-3 text-xs text-soil-400">{c.zone}</td>
+                        <td className="px-3 py-3 text-xs text-soil-500">{c.zone}</td>
                         <td className="px-3 py-3 font-mono text-xs">{c.ph}</td>
                         <td className="px-3 py-3 text-xs">{c.nitrogen}</td>
                         <td className="px-3 py-3 text-xs">{c.phosphorus}</td>
@@ -140,7 +140,7 @@ export default function KenyaCountySoilRankingsPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">CSQI = County Soil Quality Index (0–100). Source: ShambaIQ precision soil mapping 2026. <Link href="/app" className="text-gold-600 hover:underline">Check your farm's specific score here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">CSQI = County Soil Quality Index (0–100). Source: ShambaIQ precision soil mapping 2026. <Link href="/app" className="text-gold-700 hover:underline">Check your farm's specific score here.</Link></p>
             </section>
 
             <section>
@@ -163,7 +163,7 @@ export default function KenyaCountySoilRankingsPage() {
                       <span className="text-xs text-gold-700 font-semibold bg-gold-50 border border-gold-200 px-2 py-0.5 rounded-full">{item.topCounties.split(",")[0].trim()} leads</span>
                     </div>
                     <p className="text-xs text-forest-700 font-medium mb-1">Top: {item.topCounties}</p>
-                    <p className="text-xs text-soil-400 leading-relaxed">{item.why}</p>
+                    <p className="text-xs text-soil-500 leading-relaxed">{item.why}</p>
                   </div>
                 ))}
               </div>
@@ -246,7 +246,7 @@ export default function KenyaCountySoilRankingsPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Top 5 Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Top 5 Counties</p>
                 <div className="space-y-2">
                   {TOP_COUNTIES.slice(0, 5).map((c) => (
                     <Link key={c.county} href={`/soil/${c.county.toLowerCase().replace(/'/g, "").replace(/ /g, "-")}`} className="flex items-center justify-between text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">
@@ -255,7 +255,7 @@ export default function KenyaCountySoilRankingsPage() {
                     </Link>
                   ))}
                 </div>
-                <Link href="/app" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Check your county →</Link>
+                <Link href="/app" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Check your county →</Link>
               </div>
             </div>
           </aside>

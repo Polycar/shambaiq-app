@@ -19,7 +19,7 @@ export default function DealersPage() {
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         Agrovet Directory
       </h1>
-      <p className="text-soil-400 mb-10 max-w-2xl">
+      <p className="text-soil-500 mb-10 max-w-2xl">
         Find verified farm input dealers — fertilizer, seeds, and pesticides —
         across all 47 Kenyan counties.
       </p>
@@ -35,10 +35,10 @@ export default function DealersPage() {
                 href={`/dealers/${c.slug}`}
                 className="bg-white rounded-xl p-5 border border-cream-300 hover:border-gold-400 hover:shadow-md transition-all group"
               >
-                <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-600 transition-colors">
+                <h3 className="font-display font-bold text-forest-700 group-hover:text-gold-700 transition-colors">
                   {c.county}
                 </h3>
-                <p className="text-sm text-soil-400 mt-1">
+                <p className="text-sm text-soil-500 mt-1">
                   {dealers.length > 0
                     ? `${dealers.length} dealer${dealers.length > 1 ? "s" : ""} listed`
                     : "No dealers yet"}

@@ -109,7 +109,7 @@ export default function OnboardingModal() {
               <label htmlFor="onboarding-county" className="block text-sm font-bold text-forest-700 mb-1">
                 What county is your farm in?
               </label>
-              <p className="text-xs text-soil-400 mb-4">We'll look up your local soil data.</p>
+              <p className="text-xs text-soil-500 mb-4">We'll look up your local soil data.</p>
               <select
                 id="onboarding-county"
                 value={county}
@@ -128,7 +128,7 @@ export default function OnboardingModal() {
               <label htmlFor="onboarding-crop" className="block text-sm font-bold text-forest-700 mb-1">
                 What are you growing this season?
               </label>
-              <p className="text-xs text-soil-400 mb-4">We'll match fertilizer to your crop's requirements.</p>
+              <p className="text-xs text-soil-500 mb-4">We'll match fertilizer to your crop's requirements.</p>
               <select
                 id="onboarding-crop"
                 value={crop}
@@ -147,7 +147,7 @@ export default function OnboardingModal() {
               <label className="block text-sm font-bold text-forest-700 mb-1">
                 🎯 What's your main challenge right now?
               </label>
-              <p className="text-xs text-soil-400 mb-4">Your plan will prioritize this.</p>
+              <p className="text-xs text-soil-500 mb-4">Your plan will prioritize this.</p>
               <div className="grid grid-cols-2 gap-3">
                 {CHALLENGES.map(ch => (
                   <button
@@ -161,7 +161,7 @@ export default function OnboardingModal() {
                   >
                     <span className="text-2xl block mb-1">{ch.icon}</span>
                     <p className="text-xs font-bold text-forest-700">{ch.label}</p>
-                    <p className="text-[10px] text-soil-400 leading-tight mt-0.5">{ch.desc}</p>
+                    <p className="text-[10px] text-soil-500 leading-tight mt-0.5">{ch.desc}</p>
                   </button>
                 ))}
               </div>

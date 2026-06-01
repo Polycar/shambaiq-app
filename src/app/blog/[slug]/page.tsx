@@ -122,7 +122,7 @@ function parseInline(text: string, featuredImage?: string): string {
   }
   return parsed
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-xl my-4 w-full object-cover max-h-80" loading="lazy">')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-gold-600 hover:underline font-medium">$1</a>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-gold-700 hover:underline font-medium">$1</a>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-forest-700">$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em class="italic text-soil-500">$1</em>');
 }
@@ -498,7 +498,7 @@ export default async function DynamicBlogPost({ params }: PageProps) {
             <header className="mb-10">
               <span className="px-3 py-1 bg-forest-700/10 text-forest-700 text-xs font-semibold rounded-full">{post.category}</span>
               <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mt-4 mb-3" itemProp="headline">{post.title}</h1>
-              {post.excerpt && <p className="text-soil-400 leading-relaxed max-w-2xl" itemProp="description">{post.excerpt}</p>}
+              {post.excerpt && <p className="text-soil-500 leading-relaxed max-w-2xl" itemProp="description">{post.excerpt}</p>}
               
               <div className="flex items-center gap-3 text-xs text-soil-300 mt-4 flex-wrap pb-6 border-b border-cream-300">
                 <AuthorCard compact />

@@ -142,18 +142,18 @@ export default function TomatoKirinyagaPage() {
 
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
                 <Link href="/soil/kirinyaga" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kirinyaga County</Link>
                 <Link href="/crops/tomato" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Tomato</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
                 Tomato Farming in Kirinyaga:{" "}
-                <span className="text-gold-600">Maximizing Yields on Mwea's Black Cotton Soils</span>
+                <span className="text-gold-700">Maximizing Yields on Mwea's Black Cotton Soils</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 The Mwea irrigation scheme in Kirinyaga County is one of Kenya's most productive agricultural zones — and one of its most technically demanding environments for tomato production. The same black cotton soils that retain irrigation water so efficiently also create two compounding problems that most Kirinyaga farmers have never been told to connect: calcium mobility blockage that causes blossom end rot, and root oxygen depletion that invites late blight. Solve both and Kirinyaga's tomato potential is exceptional. Ignore either and the season becomes a cycle of losses that feels like bad luck but is actually predictable soil chemistry.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -264,13 +264,13 @@ export default function TomatoKirinyagaPage() {
                         <td className="px-4 py-3 text-soil-600">{v}</td>
                         <td className="px-4 py-3 text-soil-500">{o}</td>
                         <td className="px-4 py-3 font-medium text-sm">{s}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{a}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{a}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Kirinyaga County Mwea lowland average. <Link href="/app?county=kirinyaga&crop=tomato" className="text-gold-600 hover:underline">Get your farm-specific calcium and pH reading here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Source: ShambaIQ precision soil mapping, 0 to 20 cm depth, Kirinyaga County Mwea lowland average. <Link href="/app?county=kirinyaga&crop=tomato" className="text-gold-700 hover:underline">Get your farm-specific calcium and pH reading here.</Link></p>
             </section>
 
             <section>
@@ -285,16 +285,16 @@ export default function TomatoKirinyagaPage() {
                 ].map((v) => (
                   <div key={v.variety} className="bg-white border border-cream-300 rounded-xl p-4">
                     <h3 className="font-semibold text-forest-800 mb-1">{v.variety}</h3>
-                    <p className="text-xs text-gold-600 font-medium mb-3">{v.type}</p>
+                    <p className="text-xs text-gold-700 font-medium mb-3">{v.type}</p>
                     <div className="space-y-1.5 text-sm mb-3">
                       {[["Maturity", v.maturity], ["Expected yield", v.yield]].map(([label, val]) => (
                         <div key={label as string} className="flex justify-between gap-2">
-                          <span className="text-soil-400">{label}</span>
+                          <span className="text-soil-500">{label}</span>
                           <span className="font-medium text-forest-700 text-right">{val}</span>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-soil-400 border-t border-cream-200 pt-2">{v.notes}</p>
+                    <p className="text-xs text-soil-500 border-t border-cream-200 pt-2">{v.notes}</p>
                   </div>
                 ))}
               </div>
@@ -422,7 +422,7 @@ export default function TomatoKirinyagaPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Drip irrigation cost amortises over 3 to 4 seasons — Year 2 onwards input cost drops by KES 12,000. Tomato price assumes off-peak season; long rains harvest prices can drop to KES 15 to 20/kg. Find <Link href="/dealers/kirinyaga" className="text-gold-600 hover:underline">Kirinyaga agrovets and current calcium nitrate prices here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Drip irrigation cost amortises over 3 to 4 seasons — Year 2 onwards input cost drops by KES 12,000. Tomato price assumes off-peak season; long rains harvest prices can drop to KES 15 to 20/kg. Find <Link href="/dealers/kirinyaga" className="text-gold-700 hover:underline">Kirinyaga agrovets and current calcium nitrate prices here.</Link></p>
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
@@ -433,7 +433,7 @@ export default function TomatoKirinyagaPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/kirinyaga", label: "Kirinyaga County Soil Report" },
@@ -473,19 +473,19 @@ export default function TomatoKirinyagaPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Kirinyaga Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kirinyaga Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Central Kenya Lowland"], ["Altitude", "1,000 – 1,200 m (Mwea)"], ["Avg Rainfall", "900 – 1,100 mm/yr"], ["Irrigation", "Mwea Scheme (canal)"], ["Dominant Soil", "Black cotton (vertisol)"], ["Avg Soil pH", "6.8 – 7.4"], ["Ca Status", "High total — low mobility"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right text-xs">{v}</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/soil/kirinyaga" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Full Kirinyaga Soil Report →</Link>
+                <Link href="/soil/kirinyaga" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Full Kirinyaga Soil Report →</Link>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Neighbouring Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
                   {[{ slug: "murang-a", name: "Muranga" }, { slug: "nyeri", name: "Nyeri" }, { slug: "embu", name: "Embu" }, { slug: "meru", name: "Meru" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

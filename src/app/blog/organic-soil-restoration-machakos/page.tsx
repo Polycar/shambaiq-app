@@ -75,16 +75,16 @@ export default function OrganicSoilMachakosPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
+                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
                 <Link href="/soil/machakos" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Machakos County</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Building Soil Organic Matter in Machakos: <span className="text-gold-600">A Dryland Restoration Guide</span>
+                Building Soil Organic Matter in Machakos: <span className="text-gold-700">A Dryland Restoration Guide</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Machakos County's alfisol soils were once highly productive under the traditional land management systems that built the famous Machakos terraces. Decades of continuous cropping, land fragmentation, and removal of organic matter have reduced soil organic carbon to below 1 percent across large areas — well below the 2 percent minimum needed for adequate water retention and nutrient cycling. The good news is that organic matter can be rebuilt, and in Machakos the tools — pigeon peas, zai pits, tied ridges, and on-farm composting — are inexpensive and proven.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -138,13 +138,13 @@ export default function OrganicSoilMachakosPage() {
                         <td className="px-4 py-3 text-soil-600">{avg}</td>
                         <td className="px-4 py-3 text-soil-500">{target}</td>
                         <td className="px-4 py-3 font-medium">{gap}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{fix}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{fix}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Source: ShambaIQ precision soil mapping, Machakos County average. <Link href="/app?county=machakos" className="text-gold-600 hover:underline">Get your farm-specific organic carbon reading here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Source: ShambaIQ precision soil mapping, Machakos County average. <Link href="/app?county=machakos" className="text-gold-700 hover:underline">Get your farm-specific organic carbon reading here.</Link></p>
             </section>
 
             <section>
@@ -248,7 +248,7 @@ export default function OrganicSoilMachakosPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/machakos", label: "Machakos County Soil Report" },
@@ -287,19 +287,19 @@ export default function OrganicSoilMachakosPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Machakos Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Machakos Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Semi-Arid"], ["Altitude", "1,000 – 1,800 m"], ["Avg Rainfall", "500 – 800 mm/yr"], ["Soil Type", "Alfisol"], ["Avg OC", "0.6 – 1.2%"], ["Hardpan", "Common at 20–35 cm"], ["Priority", "Organic matter first"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right text-xs">{v}</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/soil/machakos" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Full Machakos Soil Report →</Link>
+                <Link href="/soil/machakos" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Full Machakos Soil Report →</Link>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Neighbouring Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
                   {[{ slug: "makueni", name: "Makueni" }, { slug: "kitui", name: "Kitui" }, { slug: "kajiado", name: "Kajiado" }, { slug: "nairobi", name: "Nairobi" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

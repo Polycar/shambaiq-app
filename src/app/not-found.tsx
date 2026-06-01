@@ -10,7 +10,7 @@ export default function NotFound() {
         <h1 className="font-display text-2xl font-bold text-forest-700 mb-3">
           Page not found
         </h1>
-        <p className="text-soil-400 mb-8 max-w-md mx-auto">
+        <p className="text-soil-500 mb-8 max-w-md mx-auto">
           This soil plot doesn&apos;t exist. Try exploring our county reports or
           crop guides instead.
         </p>

@@ -901,7 +901,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   );
                 })
               ) : (
-                <div className="text-xs text-soil-400 p-4 text-center">
+                <div className="text-xs text-soil-500 p-4 text-center">
                   {lang === "en" ? "No crops found" : "Hakuna mazao yaliyopatikana"}
                 </div>
               )}
@@ -924,7 +924,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             {showCompanion && (
               <div className="flex flex-col gap-1.5 overflow-y-auto max-h-48 p-2 border border-cream-300 rounded-xl bg-cream-50/50 slide-down">
                 {!crop ? (
-                  <div className="text-xs text-soil-400 p-4 text-center">
+                  <div className="text-xs text-soil-500 p-4 text-center">
                     {lang === "en" ? "Please select a primary crop first" : "Tafadhali chagua zao kuu kwanza"}
                   </div>
                 ) : (
@@ -1228,7 +1228,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   : (lang === "en" ? "Poor — Action Required" : "Mbaya — Hatua Inahitajika")}
               </p>
               {/* Item 9: Plain-language score explanation */}
-              <p className="text-xs text-soil-400 mt-2 max-w-xs mx-auto leading-relaxed">
+              <p className="text-xs text-soil-500 mt-2 max-w-xs mx-auto leading-relaxed">
                 {result.health_score >= 80
                   ? (lang === "en" ? "Your soil is well-suited for this crop. Minimal amendments needed." : "Udongo wako unafaa kwa zao hili. Marekebisho madogo yanahitajika.")
                   : result.health_score >= 60
@@ -1237,7 +1237,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   ? (lang === "en" ? "Several nutrient gaps detected. Follow the fertilizer plan below carefully." : "Mapungufu ya virutubisho yamegunduliwa. Fuata mpango wa mbolea.")
                   : (lang === "en" ? "Major soil deficiencies. Consider soil amendments and the alternative crops listed below." : "Upungufu mkubwa wa udongo. Fikiria marekebisho ya udongo.")}
               </p>
-              <p className="text-xs text-soil-400 mt-1">{t("result_score", lang)} · {result.county}</p>
+              <p className="text-xs text-soil-500 mt-1">{t("result_score", lang)} · {result.county}</p>
             </div>
 
             {/* Data source badge */}
@@ -1263,7 +1263,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               <h3 className="font-display font-bold text-base mb-1 text-forest-700">
                 {t("shopping_title", lang)}
               </h3>
-              <p className="text-xs text-soil-400 mb-3">
+              <p className="text-xs text-soil-500 mb-3">
                 {t("shopping_for", lang)} <strong>{acres} {t("shopping_acres", lang)}</strong>
               </p>
               <div className="rounded-xl p-4 mb-3 text-center bg-forest-700">
@@ -1427,7 +1427,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-soil-400 py-1.5">
+                  <p className="text-sm text-soil-500 py-1.5">
                     {lang === "en"
                       ? `No certified seed varieties found for ${result.crop} in this region. Check with your local KALRO office.`
                       : `Hakuna aina za mbegu zilizoidhinishwa kwa ${result.crop} katika eneo hili. Wasiliana na ofisi ya KALRO.`}
@@ -1456,7 +1456,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-soil-400 py-1.5">
+                    <p className="text-sm text-soil-500 py-1.5">
                       {lang === "en"
                         ? `No certified seed varieties found for ${companionCrop} in this region.`
                         : `Hakuna aina za mbegu zilizoidhinishwa kwa ${companionCrop} katika eneo hili.`}
@@ -1884,7 +1884,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </svg>
             </div>
             <p className="font-display text-lg font-bold text-forest-700 mb-2">{lang === "en" ? "Your results will appear here" : "Matokeo yako yataonekana hapa"}</p>
-            <p className="text-sm text-soil-400 max-w-xs">{lang === "en" ? "Select your county, crop, and farm size \u2014 then get your free soil analysis and fertilizer plan." : "Chagua kaunti yako, zao, na ukubwa wa shamba \u2014 kisha pata uchambuzi wako wa udongo bila malipo."}</p>
+            <p className="text-sm text-soil-500 max-w-xs">{lang === "en" ? "Select your county, crop, and farm size \u2014 then get your free soil analysis and fertilizer plan." : "Chagua kaunti yako, zao, na ukubwa wa shamba \u2014 kisha pata uchambuzi wako wa udongo bila malipo."}</p>
           </div>
         )}
 

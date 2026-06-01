@@ -183,7 +183,7 @@ export default function DoctorPage() {
           {/* ── Left: upload ── */}
           <div className="space-y-5">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-300">
-              <p className="text-sm text-soil-400 mb-5">
+              <p className="text-sm text-soil-500 mb-5">
                 Take a photo of a sick leaf or stem. The AI identifies the disease and gives you exact treatment steps with product names and dosages.
               </p>
 
@@ -268,7 +268,7 @@ export default function DoctorPage() {
                       <h3 className="font-display text-lg font-bold text-forest-700 leading-tight">{result.condition}</h3>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
                         {result.confidence > 0 && (
-                          <span className="text-xs text-soil-400">{result.confidence.toFixed(0)}% confidence</span>
+                          <span className="text-xs text-soil-500">{result.confidence.toFixed(0)}% confidence</span>
                         )}
                         <SeverityBadge severity={result.severity} />
                       </div>
@@ -339,7 +339,7 @@ export default function DoctorPage() {
             {(history.length > 0 || historyLoading) && (
               <div className="bg-white rounded-2xl shadow-sm border border-cream-300 overflow-hidden">
                 <div className="flex items-center gap-2 px-5 py-4 border-b border-cream-200">
-                  <Clock size={16} className="text-soil-400" />
+                  <Clock size={16} className="text-soil-500" />
                   <h2 className="font-display font-bold text-forest-700 text-sm">Past Diagnoses</h2>
                 </div>
 
@@ -362,15 +362,15 @@ export default function DoctorPage() {
                           >
                             <div>
                               <p className="text-sm font-semibold text-forest-700 leading-tight">{rec.condition}</p>
-                              <p className="text-xs text-soil-400 mt-0.5">
+                              <p className="text-xs text-soil-500 mt-0.5">
                                 {[rec.crop, rec.county ? `${rec.county} County` : null, date].filter(Boolean).join(" · ")}
                               </p>
                             </div>
                             <div className="flex items-center gap-2 shrink-0 ml-3">
                               {rec.confidence != null && (
-                                <span className="text-xs text-soil-400">{rec.confidence.toFixed(0)}%</span>
+                                <span className="text-xs text-soil-500">{rec.confidence.toFixed(0)}%</span>
                               )}
-                              {isOpen ? <ChevronUp size={14} className="text-soil-400" /> : <ChevronDown size={14} className="text-soil-400" />}
+                              {isOpen ? <ChevronUp size={14} className="text-soil-500" /> : <ChevronDown size={14} className="text-soil-500" />}
                             </div>
                           </button>
                           {isOpen && (

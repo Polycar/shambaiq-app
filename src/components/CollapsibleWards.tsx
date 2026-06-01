@@ -37,13 +37,13 @@ export default function CollapsibleWards({ countySlug, subcounties, wards }: Pro
                 <span className="text-sm font-bold text-forest-600 uppercase tracking-wide">
                   {sc}
                 </span>
-                <span className="text-xs text-soil-400 ml-2">
+                <span className="text-xs text-soil-500 ml-2">
                   {scWards.length} wards
                 </span>
               </div>
               <ChevronDown
                 size={18}
-                className={`text-soil-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                className={`text-soil-500 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
               />
             </button>
             {isOpen && (

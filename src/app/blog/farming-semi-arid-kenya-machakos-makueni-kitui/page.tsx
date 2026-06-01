@@ -76,18 +76,18 @@ export default function SemiAridKenyaPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=regional-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Regional Guides</Link>
+                <Link href="/blog?category=regional-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Regional Guides</Link>
                 <Link href="/soil/machakos" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Machakos</Link>
                 <Link href="/soil/makueni" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Makueni</Link>
                 <Link href="/soil/kitui" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kitui</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Farming in Semi-Arid Kenya: <span className="text-gold-600">Precision Strategies for Machakos, Makueni, and Kitui</span>
+                Farming in Semi-Arid Kenya: <span className="text-gold-700">Precision Strategies for Machakos, Makueni, and Kitui</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Machakos, Makueni, and Kitui counties cover Kenya's largest contiguous dryland farming zone — over 36,000 square kilometres of alfisol soils receiving 400 to 800 mm of erratic annual rainfall. Conventional extension advice fails here because it was developed for highland conditions and assumes rainfall regularity that does not exist. Precision farming in semi-arid Kenya starts from a different premise: work with the rainfall that arrives rather than managing for the rainfall you hope for. These three counties share the same challenges — low organic carbon, phosphorus deficiency, and unpredictable moisture — but each has distinct sub-county variation that demands targeted rather than blanket recommendations.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -115,7 +115,7 @@ export default function SemiAridKenyaPage() {
                     <div className="space-y-1.5 text-xs mb-3">
                       {[["Altitude", c.altitude], ["Rainfall", c.rainfall], ["Soil", c.soilType], ["Market", c.market]].map(([label, val]) => (
                         <div key={label as string} className="flex justify-between gap-2">
-                          <span className="text-soil-400">{label}</span>
+                          <span className="text-soil-500">{label}</span>
                           <span className="font-medium text-forest-700 text-right">{val}</span>
                         </div>
                       ))}
@@ -154,7 +154,7 @@ export default function SemiAridKenyaPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Source: ShambaIQ precision soil mapping, county averages at 0–20 cm depth. <Link href="/app?county=machakos" className="text-gold-600 hover:underline">Get your farm-specific values here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Source: ShambaIQ precision soil mapping, county averages at 0–20 cm depth. <Link href="/app?county=machakos" className="text-gold-700 hover:underline">Get your farm-specific values here.</Link></p>
             </section>
 
             <section>
@@ -183,7 +183,7 @@ export default function SemiAridKenyaPage() {
                         <td className="px-3 py-3 text-xs text-soil-500">{season}</td>
                         <td className="px-3 py-3 text-soil-500 text-xs">{yield_}</td>
                         <td className="px-3 py-3 font-medium text-green-700 text-xs">{rev}</td>
-                        <td className="px-3 py-3 text-xs text-soil-400">{zone}</td>
+                        <td className="px-3 py-3 text-xs text-soil-500">{zone}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -231,7 +231,7 @@ export default function SemiAridKenyaPage() {
                         <td className="px-4 py-3 font-semibold text-forest-800">{input}</td>
                         <td className="px-4 py-3 text-soil-600">{rate}</td>
                         <td className="px-4 py-3 text-xs text-soil-500">{when}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{why}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{why}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -317,7 +317,7 @@ export default function SemiAridKenyaPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Rainfed budget assumes good season. In drought years, rainfed income drops to KES 15,000–30,000 while irrigated income is stable. Find <Link href="/dealers/machakos" className="text-gold-600 hover:underline">agrovets and input prices across all three counties here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Rainfed budget assumes good season. In drought years, rainfed income drops to KES 15,000–30,000 while irrigated income is stable. Find <Link href="/dealers/machakos" className="text-gold-700 hover:underline">agrovets and input prices across all three counties here.</Link></p>
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
@@ -328,7 +328,7 @@ export default function SemiAridKenyaPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and zone pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/machakos", label: "Machakos County Soil Report" },
@@ -367,18 +367,18 @@ export default function SemiAridKenyaPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Region Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Region Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Semi-Arid / ASAL"], ["Area", "36,000+ km²"], ["Avg Rainfall", "400–900 mm/yr"], ["Soil Type", "Alfisol"], ["Avg OC", "0.4–1.4%"], ["Best Strategy", "Water harvest first"], ["Top Crop", "Sorghum + cowpeas"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right text-xs">{v}</span>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">County Soil Reports</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">County Soil Reports</p>
                 <div className="space-y-1.5">
                   {[{ slug: "machakos", name: "Machakos" }, { slug: "makueni", name: "Makueni" }, { slug: "kitui", name: "Kitui" }, { slug: "kajiado", name: "Kajiado" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

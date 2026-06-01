@@ -68,7 +68,7 @@ export default async function DealerCountyPage({ params }: PageProps) {
         <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
           Agrovets in {county.county} County
         </h1>
-        <p className="text-soil-400 mb-10">
+        <p className="text-soil-500 mb-10">
           {dealers.length} farm input dealer{dealers.length !== 1 ? "s" : ""} found
         </p>
 
@@ -90,12 +90,12 @@ export default async function DealerCountyPage({ params }: PageProps) {
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-soil-400 mb-4">{d.town}</p>
+                  <p className="text-sm text-soil-500 mb-4">{d.town}</p>
                 </div>
                 {d.phone && (
                   <p className="text-sm text-forest-600 mb-2">
                     📞{" "}
-                    <a href={`tel:${d.phone}`} className="hover:text-gold-600">
+                    <a href={`tel:${d.phone}`} className="hover:text-gold-700">
                       {d.phone}
                     </a>
                   </p>
@@ -117,12 +117,12 @@ export default async function DealerCountyPage({ params }: PageProps) {
           </div>
         ) : (
           <div className="bg-white rounded-2xl p-10 border border-cream-300 text-center">
-            <p className="text-soil-400 mb-4">
+            <p className="text-soil-500 mb-4">
               No dealers listed in {county.county} yet.
             </p>
             <p className="text-sm text-soil-300">
               Are you an agrovet in {county.county}?{" "}
-              <span className="text-gold-600 font-medium">Apply to be listed</span> on
+              <span className="text-gold-700 font-medium">Apply to be listed</span> on
               ShambaIQ.
             </p>
           </div>
@@ -131,7 +131,7 @@ export default async function DealerCountyPage({ params }: PageProps) {
         <div className="mt-8 text-center">
           <Link
             href={`/soil/${county.slug}`}
-            className="text-gold-600 hover:text-gold-700 font-medium text-sm"
+            className="text-gold-700 hover:text-gold-700 font-medium text-sm"
           >
             ← View {county.county} soil report
           </Link>

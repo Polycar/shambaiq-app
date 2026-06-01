@@ -114,7 +114,7 @@ export default async function CountySoilPage({ params }: PageProps) {
             <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
               {county.county} County Soil Health Report
             </h1>
-            <p className="text-soil-400 mb-1">
+            <p className="text-soil-500 mb-1">
               <span className="font-medium">{county.zone}</span> agroecological
               zone
             </p>
@@ -174,7 +174,7 @@ export default async function CountySoilPage({ params }: PageProps) {
           <h2 className="font-display text-xl font-bold text-forest-700 mb-2">
             Best Crops for {county.county}
           </h2>
-          <p className="text-sm text-soil-400 mb-6">
+          <p className="text-sm text-soil-500 mb-6">
             Scored against {county.county}&apos;s soil nutrients
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -185,7 +185,7 @@ export default async function CountySoilPage({ params }: PageProps) {
                 className="rounded-xl border border-cream-300 hover:border-gold-400 p-4 transition-all group"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-forest-700 group-hover:text-gold-600 transition-colors">
+                  <span className="font-semibold text-forest-700 group-hover:text-gold-700 transition-colors">
                     {crop.crop}
                   </span>
                   <span
@@ -198,7 +198,7 @@ export default async function CountySoilPage({ params }: PageProps) {
                     {s}
                   </span>
                 </div>
-                <div className="text-xs text-soil-400">
+                <div className="text-xs text-soil-500">
                   {crop.pref_texture} · KES {crop.price_per_kg}/kg
                 </div>
               </Link>
@@ -212,7 +212,7 @@ export default async function CountySoilPage({ params }: PageProps) {
             <h2 className="font-display text-xl font-bold text-forest-700 mb-2">
               Wards in {county.county}
             </h2>
-            <p className="text-sm text-soil-400 mb-5">
+            <p className="text-sm text-soil-500 mb-5">
               {wards.length} wards across {subcounties.length} sub-counties — tap to expand
             </p>
             <CollapsibleWards
@@ -242,7 +242,7 @@ export default async function CountySoilPage({ params }: PageProps) {
                       <span className="font-medium text-forest-700">
                         {n.county}
                       </span>
-                      <span className="text-xs text-soil-400 ml-2">
+                      <span className="text-xs text-soil-500 ml-2">
                         {n.zone}
                       </span>
                     </div>
@@ -271,10 +271,10 @@ export default async function CountySoilPage({ params }: PageProps) {
                       <div className="font-medium text-forest-700 text-sm">
                         {d.name}
                       </div>
-                      <div className="text-xs text-soil-400 mt-0.5">{d.town}</div>
+                      <div className="text-xs text-soil-500 mt-0.5">{d.town}</div>
                     </div>
                     {d.rating && (
-                      <span className="flex items-center gap-0.5 text-xs font-semibold text-gold-600 shrink-0">
+                      <span className="flex items-center gap-0.5 text-xs font-semibold text-gold-700 shrink-0">
                         ⭐ {d.rating}
                       </span>
                     )}
@@ -283,18 +283,18 @@ export default async function CountySoilPage({ params }: PageProps) {
                 {dealers.length > 4 && (
                   <Link
                     href={`/dealers/${slug}`}
-                    className="text-sm text-gold-600 hover:text-gold-700 font-medium"
+                    className="text-sm text-gold-700 hover:text-gold-700 font-medium"
                   >
                     View all {dealers.length} dealers →
                   </Link>
                 )}
               </div>
             ) : (
-              <p className="text-sm text-soil-400">
+              <p className="text-sm text-soil-500">
                 No dealers listed yet.{" "}
                 <Link
                   href={`/dealers/${slug}`}
-                  className="text-gold-600 hover:underline"
+                  className="text-gold-700 hover:underline"
                 >
                   View nearby options →
                 </Link>

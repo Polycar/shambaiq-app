@@ -89,12 +89,12 @@ export default function DealerLoginPage() {
     <div className="min-h-[70vh] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="w-16 h-16 bg-gold-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          {forgotStep !== "none" ? <KeyRound size={32} className="text-gold-600" /> : <Store size={32} className="text-gold-600" />}
+          {forgotStep !== "none" ? <KeyRound size={32} className="text-gold-700" /> : <Store size={32} className="text-gold-700" />}
         </div>
         <h1 className="font-display text-2xl font-bold text-forest-700 text-center mb-1">
           {forgotStep === "none" ? "Dealer Portal" : forgotStep === "done" ? "Password Updated!" : "Reset Password"}
         </h1>
-        <p className="text-soil-400 text-center text-sm mb-8">
+        <p className="text-soil-500 text-center text-sm mb-8">
           {forgotStep === "none" ? "Log in to manage your agrovet listing"
             : forgotStep === "request" ? "Enter your email to receive a reset code"
             : forgotStep === "otp" ? "Enter the code sent to your email"
@@ -121,7 +121,7 @@ export default function DealerLoginPage() {
               {loading ? <><Loader2 size={18} className="animate-spin" /> Signing in...</> : "Sign In"}
             </button>
             <button type="button" onClick={() => { setForgotStep("request"); setForgotId(email); setForgotMsg(""); }}
-              className="w-full text-center text-sm font-semibold text-soil-400 hover:text-gold-600 transition-colors">
+              className="w-full text-center text-sm font-semibold text-soil-500 hover:text-gold-700 transition-colors">
               Forgot Password?
             </button>
           </div>
@@ -145,7 +145,7 @@ export default function DealerLoginPage() {
               {forgotLoading ? <><Loader2 size={16} className="animate-spin" /> Sending...</> : "Send Reset Code"}
             </button>
             <button onClick={() => setForgotStep("none")}
-              className="w-full flex items-center justify-center gap-1 text-sm text-soil-400 hover:text-forest-700 transition-colors">
+              className="w-full flex items-center justify-center gap-1 text-sm text-soil-500 hover:text-forest-700 transition-colors">
               <ChevronLeft size={14} /> Back to login
             </button>
           </div>
@@ -175,7 +175,7 @@ export default function DealerLoginPage() {
               {forgotLoading ? <><Loader2 size={16} className="animate-spin" /> Resetting...</> : "Reset Password"}
             </button>
             <button onClick={() => { setForgotStep("request"); setForgotMsg(""); }}
-              className="w-full text-sm text-center text-soil-400 hover:text-gold-600 transition-colors">Resend code</button>
+              className="w-full text-sm text-center text-soil-500 hover:text-gold-700 transition-colors">Resend code</button>
           </div>
         )}
 
@@ -193,7 +193,7 @@ export default function DealerLoginPage() {
         {forgotStep === "none" && (
           <p className="text-xs text-soil-300 text-center mt-6">
             Don&apos;t have a dealer account?{" "}
-            <a href="/dealers/apply" className="text-gold-500 hover:text-gold-600 font-semibold">Apply here</a>
+            <a href="/dealers/apply" className="text-gold-500 hover:text-gold-700 font-semibold">Apply here</a>
           </p>
         )}
       </div>

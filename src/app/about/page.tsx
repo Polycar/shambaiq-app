@@ -138,7 +138,7 @@ export default function AboutPage() {
               <h1 className="text-3xl font-display font-bold text-forest-900 mb-1">
                 Polycarp Andabwa
               </h1>
-              <p className="text-gold-600 font-semibold mb-3">
+              <p className="text-gold-700 font-semibold mb-3">
                 Agricultural Environmental Engineer · EASA Drone Pilot · Founder, ShambaIQ
               </p>
               <p className="text-soil-600 leading-relaxed max-w-2xl">
@@ -179,7 +179,7 @@ export default function AboutPage() {
                   </span>
                   <div>
                     <p className="font-semibold text-forest-800 text-sm">{c.label}</p>
-                    <p className="text-xs text-soil-400 mt-0.5">
+                    <p className="text-xs text-soil-500 mt-0.5">
                       {c.org} · {c.year}
                     </p>
                   </div>

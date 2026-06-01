@@ -38,13 +38,13 @@ export default function OfflinePage() {
         Try Again
       </button>
       {cacheLoaded && cachedPages.length === 0 && (
-        <p className="text-xs text-soil-400 max-w-xs">
+        <p className="text-xs text-soil-500 max-w-xs">
           Visit soil reports and crop pages while online to save them for offline use.
         </p>
       )}
       {cachedPages.length > 0 && (
         <div className="w-full max-w-xs text-left">
-          <p className="text-xs font-semibold text-soil-400 uppercase tracking-wide mb-3">Available offline</p>
+          <p className="text-xs font-semibold text-soil-500 uppercase tracking-wide mb-3">Available offline</p>
           <ul className="space-y-2">
             {cachedPages.map((path) => (
               <li key={path}>
@@ -60,7 +60,7 @@ export default function OfflinePage() {
           </ul>
         </div>
       )}
-      <Link href="/" className="mt-8 text-xs text-soil-400 underline">
+      <Link href="/" className="mt-8 text-xs text-soil-500 underline">
         Back to home
       </Link>
     </div>

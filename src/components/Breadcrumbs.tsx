@@ -40,7 +40,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <>
       <JsonLd schemas={jsonLd} />
-      <nav aria-label="breadcrumb" className="text-sm text-soil-400 mb-6">
+      <nav aria-label="breadcrumb" className="text-sm text-soil-500 mb-6">
         <ol
           itemScope
           itemType="https://schema.org/BreadcrumbList"
@@ -73,7 +73,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
                   <Link
                     href={item.url}
                     itemProp="item"
-                    className="hover:text-gold-600 transition-colors duration-150"
+                    className="hover:text-gold-700 transition-colors duration-150"
                   >
                     <span itemProp="name">{item.name}</span>
                   </Link>

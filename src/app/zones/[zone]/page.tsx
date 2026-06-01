@@ -71,7 +71,7 @@ export default async function ZonePage({ params }: PageProps) {
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         {zone}
       </h1>
-      <p className="text-soil-400 mb-10">
+      <p className="text-soil-500 mb-10">
         {counties.length} counties in this agroecological zone
       </p>
 
@@ -89,10 +89,10 @@ export default async function ZonePage({ params }: PageProps) {
                   className="flex items-center justify-between p-4 rounded-lg border border-cream-200 hover:border-gold-400 transition-all group"
                 >
                   <div>
-                    <span className="font-semibold text-forest-700 group-hover:text-gold-600 transition-colors">
+                    <span className="font-semibold text-forest-700 group-hover:text-gold-700 transition-colors">
                       {c.county}
                     </span>
-                    <span className="block text-xs text-soil-400">
+                    <span className="block text-xs text-soil-500">
                       pH {c.pH} · N {c.nitrogen} g/kg
                     </span>
                   </div>
@@ -124,7 +124,7 @@ export default async function ZonePage({ params }: PageProps) {
                   className="flex items-center justify-between p-2 rounded hover:bg-cream-100 text-sm transition-colors"
                 >
                   <span className="font-medium text-forest-700">{c.crop}</span>
-                  <span className="text-xs font-bold text-gold-600">
+                  <span className="text-xs font-bold text-gold-700">
                     Avg {c.avg}
                   </span>
                 </Link>

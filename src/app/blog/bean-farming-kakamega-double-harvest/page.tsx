@@ -78,17 +78,17 @@ export default function BeanKakamegaPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
                 <Link href="/soil/kakamega" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kakamega County</Link>
                 <Link href="/crops/beans" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Beans</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Precision Bean Cultivation in Kakamega: <span className="text-gold-600">Double Your Harvests</span>
+                Precision Bean Cultivation in Kakamega: <span className="text-gold-700">Double Your Harvests</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Beans are Kenya's second-most-important food crop and a critical protein source for Western Kenya households. In Kakamega County, they are also one of the most systematically under-managed crops — most farmers harvest 3 to 5 bags per acre when the same farm under precision management is capable of 10 to 14 bags. The gap is not irrigation, not rainfall, not seed price. It is three decisions made at planting: inoculating seed with Rhizobium, applying phosphorus at the correct low rate, and planting certified virus-free seed. Get all three right and Kakamega's leached acidic soils become highly productive bean land at minimal input cost.
               </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-400 pb-6 border-b border-cream-300">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact />
                 <span className="text-soil-300 hidden sm:block">·</span>
                 <time dateTime={POST.datePublished}>{new Date(POST.datePublished).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}</time>
@@ -140,13 +140,13 @@ export default function BeanKakamegaPage() {
                         <td className="px-4 py-3 text-soil-600">{v}</td>
                         <td className="px-4 py-3 text-soil-500">{o}</td>
                         <td className="px-4 py-3 font-medium text-sm">{s}</td>
-                        <td className="px-4 py-3 text-xs text-soil-400">{a}</td>
+                        <td className="px-4 py-3 text-xs text-soil-500">{a}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Source: ShambaIQ precision soil mapping, Kakamega County average. <Link href="/app?county=kakamega&crop=beans" className="text-gold-600 hover:underline">Get your farm-specific bean suitability score here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Source: ShambaIQ precision soil mapping, Kakamega County average. <Link href="/app?county=kakamega&crop=beans" className="text-gold-700 hover:underline">Get your farm-specific bean suitability score here.</Link></p>
             </section>
 
             <section>
@@ -186,16 +186,16 @@ export default function BeanKakamegaPage() {
                 ].map((v) => (
                   <div key={v.variety} className="bg-white border border-cream-300 rounded-xl p-4">
                     <h3 className="font-semibold text-forest-800 mb-1">{v.variety}</h3>
-                    <p className="text-xs text-gold-600 font-medium mb-3">{v.type}</p>
+                    <p className="text-xs text-gold-700 font-medium mb-3">{v.type}</p>
                     <div className="space-y-1.5 text-sm mb-3">
                       {[["Maturity", v.maturity], ["Expected yield", v.yield]].map(([label, val]) => (
                         <div key={label as string} className="flex justify-between gap-2">
-                          <span className="text-soil-400">{label}</span>
+                          <span className="text-soil-500">{label}</span>
                           <span className="font-medium text-forest-700 text-right">{val}</span>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-soil-400 border-t border-cream-200 pt-2">{v.notes}</p>
+                    <p className="text-xs text-soil-500 border-t border-cream-200 pt-2">{v.notes}</p>
                   </div>
                 ))}
               </div>
@@ -275,7 +275,7 @@ export default function BeanKakamegaPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-soil-400 mb-4">Lime cost only applies to soils below pH 5.5 and amortises over 3 to 4 seasons. Find <Link href="/dealers/kakamega" className="text-gold-600 hover:underline">Kakamega agrovets stocking Rhizobium inoculant here.</Link></p>
+              <p className="text-xs text-soil-500 mb-4">Lime cost only applies to soils below pH 5.5 and amortises over 3 to 4 seasons. Find <Link href="/dealers/kakamega" className="text-gold-700 hover:underline">Kakamega agrovets stocking Rhizobium inoculant here.</Link></p>
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
@@ -286,7 +286,7 @@ export default function BeanKakamegaPage() {
             </div>
 
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8" aria-label="Related county and crop pages">
-              <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
                   { href: "/soil/kakamega", label: "Kakamega County Soil Report" },
@@ -325,19 +325,19 @@ export default function BeanKakamegaPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">Kakamega Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kakamega Quick Facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Western Highlands"], ["Altitude", "1,400 – 1,900 m"], ["Avg Rainfall", "1,500 – 1,900 mm/yr"], ["Dominant Soil", "Leached ferralitic"], ["Avg Soil pH", "4.8 – 5.5"], ["N Fixation", "Yes — with Rhizobium"], ["P Status", "Deficient"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
-                      <span className="text-soil-400">{k}</span>
+                      <span className="text-soil-500">{k}</span>
                       <span className="font-medium text-forest-700 text-right text-xs">{v}</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/soil/kakamega" className="mt-4 block text-center text-xs font-semibold text-gold-600 hover:text-gold-700 transition-colors">Full Kakamega Soil Report →</Link>
+                <Link href="/soil/kakamega" className="mt-4 block text-center text-xs font-semibold text-gold-700 hover:text-gold-700 transition-colors">Full Kakamega Soil Report →</Link>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Neighbouring Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
                   {[{ slug: "bungoma", name: "Bungoma" }, { slug: "vihiga", name: "Vihiga" }, { slug: "nandi", name: "Nandi" }, { slug: "siaya", name: "Siaya" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

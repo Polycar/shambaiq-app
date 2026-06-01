@@ -147,12 +147,12 @@ export default function YieldsPage() {
       <div className={identified ? "max-w-5xl mx-auto px-4 py-6" : "max-w-lg mx-auto px-4 py-6"}>
         {!identified ? (
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-300">
-            <p className="text-sm text-soil-400 mb-4">
+            <p className="text-sm text-soil-500 mb-4">
               Enter your farm name or phone number to track your yields over time.
             </p>
             <div className="flex gap-2">
               <div className="relative flex-1">
-                <Phone size={16} className="absolute left-3 top-3.5 text-soil-400" />
+                <Phone size={16} className="absolute left-3 top-3.5 text-soil-500" />
                 <input
                   type="text"
                   value={farmerId}
@@ -181,7 +181,7 @@ export default function YieldsPage() {
                 </h2>
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <label className="block">
-                    <span className="text-xs font-semibold text-soil-400">Crop</span>
+                    <span className="text-xs font-semibold text-soil-500">Crop</span>
                     <select
                       value={logCrop}
                       onChange={(e) => setLogCrop(e.target.value)}
@@ -193,7 +193,7 @@ export default function YieldsPage() {
                     </select>
                   </label>
                   <label className="block">
-                    <span className="text-xs font-semibold text-soil-400">Season</span>
+                    <span className="text-xs font-semibold text-soil-500">Season</span>
                     <select
                       value={logSeason}
                       onChange={(e) => setLogSeason(e.target.value)}
@@ -206,7 +206,7 @@ export default function YieldsPage() {
                   </label>
                 </div>
                 <label className="block mb-4">
-                  <span className="text-xs font-semibold text-soil-400">
+                  <span className="text-xs font-semibold text-soil-500">
                     Yield (Bags/Acre)
                   </span>
                   <input
@@ -256,7 +256,7 @@ export default function YieldsPage() {
                       <div className="space-y-2 mb-3">
                         {sorted.map((r, i) => (
                           <div key={i} className="flex items-center gap-3">
-                            <span className="text-xs text-soil-400 w-28 shrink-0 truncate">
+                            <span className="text-xs text-soil-500 w-28 shrink-0 truncate">
                               {r.season}
                             </span>
                             <div className="flex-1 h-6 bg-cream-100 rounded-lg overflow-hidden">
@@ -277,7 +277,7 @@ export default function YieldsPage() {
                       {sorted.length > 1 && (
                         <p
                           className={`text-sm font-semibold ${
-                            growth > 0 ? "text-green-600" : growth < 0 ? "text-red-600" : "text-soil-400"
+                            growth > 0 ? "text-green-600" : growth < 0 ? "text-red-600" : "text-soil-500"
                           }`}
                         >
                           {growth > 0
@@ -293,7 +293,7 @@ export default function YieldsPage() {
               ) : (
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-300 text-center">
                   <BarChart3 size={40} className="mx-auto text-cream-400 mb-3" />
-                  <p className="text-soil-400 text-sm">
+                  <p className="text-soil-500 text-sm">
                     No harvest data yet. Log your first harvest above!
                   </p>
                 </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   MapPin,
   Sprout,
@@ -21,10 +22,11 @@ import {
   computeSoilHealthScore,
   getWards,
 } from "@/lib/data";
-import PersonalizedBanner from "@/components/PersonalizedBanner";
-import PersonalizedSection from "@/components/PersonalizedSection";
-import HeroRightColumn from "@/components/HeroRightColumn";
-import OnboardingModal from "@/components/OnboardingModal";
+
+const PersonalizedBanner = dynamic(() => import("@/components/PersonalizedBanner"), { ssr: false });
+const PersonalizedSection = dynamic(() => import("@/components/PersonalizedSection"), { ssr: false });
+const HeroRightColumn = dynamic(() => import("@/components/HeroRightColumn"), { ssr: false });
+const OnboardingModal = dynamic(() => import("@/components/OnboardingModal"), { ssr: false });
 
 
 export default function HomePage() {
@@ -72,13 +74,13 @@ export default function HomePage() {
             {/* ── Left column: copy + CTAs + stats ── */}
             <div>
               {/* Badge */}
-              <div className="fade-up inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-sm font-medium mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gold-500/15 border border-gold-500/25 rounded-full text-gold-300 text-sm font-medium mb-8">
                 <Satellite size={14} strokeWidth={2} />
                 Powered by 30m precision satellite data
               </div>
 
               {/* Headline */}
-              <h1 className="fade-up fade-up-delay-1 font-display text-[2.75rem] md:text-7xl font-bold text-cream-100 leading-[1.08] mb-6 tracking-tight">
+              <h1 className="font-display text-[2.75rem] md:text-7xl font-bold text-cream-100 leading-[1.08] mb-6 tracking-tight">
                 Know your soil.
                 <br />
                 <span className="text-gold-400">Grow with precision.</span>

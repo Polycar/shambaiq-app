@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 
 export default function GlobalError({
   error,
@@ -10,8 +11,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Surface to your error monitoring (Sentry, etc.) if you add it later
-    console.error(error);
+    Sentry.captureException(error);
   }, [error]);
 
   const isNetworkError =

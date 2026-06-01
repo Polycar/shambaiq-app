@@ -141,7 +141,7 @@ export default function AboutPage() {
               <p className="text-gold-700 font-semibold mb-3">
                 Agricultural Environmental Engineer · EASA Drone Pilot · Founder, ShambaIQ
               </p>
-              <p className="text-soil-600 leading-relaxed max-w-2xl">
+              <p className="text-soil-500 leading-relaxed max-w-2xl">
                 I built ShambaIQ because precision soil data existed at farm-level resolution
                 across all of Kenya — but no tool made it usable for a farmer on a basic
                 smartphone or an extension officer in the field without a lab. ShambaIQ closes
@@ -211,14 +211,14 @@ export default function AboutPage() {
             <h2 className="text-xl font-display font-bold text-forest-800 mb-4">
               About ShambaIQ
             </h2>
-            <p className="text-soil-600 leading-relaxed mb-4">
+            <p className="text-soil-500 leading-relaxed mb-4">
               ShambaIQ is a precision soil intelligence platform covering all 47 Kenyan counties.
               It provides science-based Soil Quality Index scores, crop-specific fertilizer
               recommendations with bag-per-acre budgets, and agronomic guidance in both English
               and Kiswahili — built on high-resolution satellite soil prediction models and
               validated against field data.
             </p>
-            <p className="text-soil-600 leading-relaxed mb-5">
+            <p className="text-soil-500 leading-relaxed mb-5">
               The blog applies the same rigour to content: every article is grounded in real
               soil nutrient values for the county being discussed, certified variety data, and
               agronomic advice specific to Kenyan farming systems — not generic content recycled

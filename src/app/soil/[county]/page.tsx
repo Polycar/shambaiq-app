@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!county) return {};
   return {
     title: `${county.county} County Soil Health Report 2026 — pH, Nitrogen, Phosphorus`,
-    description: `${county.county} soil analysis: pH ${county.pH}, Nitrogen ${county.nitrogen} g/kg, Phosphorus ${county.phosphorus} mg/kg. Get precision fertilizer recommendations for 25 crops. Free soil data from satellite soil mapping.`,
+    description: `${county.county} soil analysis: pH ${county.pH}, Nitrogen ${county.nitrogen} g/kg, Phosphorus ${county.phosphorus} mg/kg. Get precision fertilizer recommendations for 40 crops. Free soil data from satellite soil mapping.`,
     openGraph: {
       title: `${county.county} County Soil Report`,
       description: `pH ${county.pH} · N ${county.nitrogen} g/kg · P ${county.phosphorus} mg/kg`,
@@ -313,7 +313,7 @@ export default async function CountySoilPage({ params }: PageProps) {
           </h2>
           <p className="text-cream-400 mb-6 max-w-lg mx-auto">
             Our recommendation engine matches {county.county}&apos;s exact soil
-            data against 25 crops for a full fertilizer plan.
+            data against 40 crops for a full fertilizer plan.
           </p>
           <Link
             href={`/app?county=${encodeURIComponent(county.county)}`}

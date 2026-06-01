@@ -34,13 +34,13 @@ const SDGs = [
     description:
       "When farmers know their soil's exact nutrient gaps, they can target interventions precisely. A farmer in Nakuru with pH 6.28 and adequate phosphorus doesn't need DAP — they need CAN for nitrogen top dressing. This targeted approach increases yield by 20–40% compared to blanket fertilizer application, producing more food from the same land.",
     metrics: [
-      { label: "Crops with precision recommendations", value: "25" },
+      { label: "Crops with precision recommendations", value: "40" },
       { label: "Counties with complete soil profiles", value: "47" },
       { label: "Wards with precision data", value: "1,450+" },
     ],
     links: [
       { text: "Complete maize farming guide", href: "/blog/complete-maize-farming-guide-kenya" },
-      { text: "Fertilizer rates for 25 crops", href: "/blog/how-much-fertilizer-per-acre-kenya-calculator" },
+      { text: "Fertilizer rates for 40 crops", href: "/blog/how-much-fertilizer-per-acre-kenya-calculator" },
     ],
   },
   {

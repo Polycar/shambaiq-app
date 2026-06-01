@@ -15,7 +15,7 @@ const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.shambaiq.com"),
   title: { default: "ShambaIQ — Precision Agriculture for Every Kenyan Farmer", template: "%s | ShambaIQ" },
-  description: "Free soil analysis and fertilizer recommendations for all 47 Kenyan counties, 25 crops. Powered by 30m precision satellite data.",
+  description: "Free soil analysis and fertilizer recommendations for all 47 Kenyan counties, 40 crops. Powered by 30m precision satellite data.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

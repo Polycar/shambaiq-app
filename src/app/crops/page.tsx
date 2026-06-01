@@ -7,9 +7,9 @@ import { ArrowRight } from "lucide-react";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Crop Farming Guides — 25 Crops, Soil Requirements, Fertilizer",
+  title: "Crop Farming Guides — 40 Crops, Soil Requirements, Fertilizer",
   description:
-    "Complete farming guides for 25 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
+    "Complete farming guides for 40 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
   alternates: { canonical: "https://shambaiq.com/crops" },
 };
 

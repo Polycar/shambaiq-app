@@ -465,9 +465,9 @@ export const ALL_POSTS: BlogPost[] = [
   {
     slug: "how-much-fertilizer-per-acre-kenya-calculator",
     title: "How Much Fertilizer Per Acre? A Kenya Crop-by-Crop Calculator",
-    metaTitle: "Fertilizer Per Acre Kenya — 25 Crops Calculator | ShambaIQ",
+    metaTitle: "Fertilizer Per Acre Kenya — 40 Crops Calculator | ShambaIQ",
     metaDescription:
-      "Exact fertilizer quantities per acre for 25 Kenyan crops. DAP bags at planting, CAN top-dressing rates, KES cost at subsidised and commercial prices. Stop guessing.",
+      "Exact fertilizer quantities per acre for 40 Kenyan crops. DAP bags at planting, CAN top-dressing rates, KES cost at subsidised and commercial prices. Stop guessing.",
     focusKeyword: "how many bags fertilizer per acre Kenya",
     secondaryKeywords: ["DAP per acre Kenya", "CAN per acre Kenya", "fertilizer calculator Kenya", "fertilizer cost per acre"],
     kiswahiliKeywords: ["mbolea kwa ekari Kenya", "hesabu ya mbolea"],

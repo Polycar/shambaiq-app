@@ -203,7 +203,7 @@ export default function HomePage() {
           <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8">
             {([
               { step: "01", title: "Select your location", desc: "Choose your county and ward. We use 30m precision satellite data to check the exact soil health of your local farm area.", icon: MapPin },
-              { step: "02", title: "Pick your crop", desc: "25 crops analyzed against your soil\u2019s pH, nitrogen, phosphorus, and potassium. Each scored for suitability.", icon: Wheat },
+              { step: "02", title: "Pick your crop", desc: "40 crops analyzed against your soil\u2019s pH, nitrogen, phosphorus, and potassium. Each scored for suitability.", icon: Wheat },
               { step: "03", title: "Get your plan", desc: "Fertilizer type, bags per acre, timing, budget, and nearest agrovet. Actionable advice you can use today.", icon: ClipboardCheck },
             ] as const).map((s) => {
               const Icon = s.icon;
@@ -291,7 +291,7 @@ export default function HomePage() {
       {/* ─── CROPS MARQUEE ─────────────────────────────────── */}
       <section className="py-16 md:py-24 bg-forest-700 overflow-hidden relative grain">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 md:mb-12">
-          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-cream-100 mb-3 text-center leading-tight">25 Crops Supported</h2>
+          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-cream-100 mb-3 text-center leading-tight">40 Crops Supported</h2>
           <p className="text-center text-cream-400 text-lg">Every crop matched to your county&apos;s soil</p>
         </div>
 
@@ -310,7 +310,7 @@ export default function HomePage() {
 
         <div className="mt-10 md:mt-12 text-center relative z-20">
           <Link href="/crops" className="inline-flex items-center gap-2 px-7 py-3 rounded-xl border border-gold-500/40 text-gold-400 text-sm font-semibold hover:bg-gold-500 hover:text-white transition-all">
-            View All 25 Crops <ArrowRight size={14} />
+            View All 40 Crops <ArrowRight size={14} />
           </Link>
         </div>
       </section>

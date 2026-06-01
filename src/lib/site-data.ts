@@ -75,7 +75,7 @@ export const ALL_COUNTIES: County[] = [
   { slug: "west-pokot", name: "West Pokot", zone: "Rift Valley", zoneSlug: "rift-valley", region: "Rift Valley" },
 ];
 
-// ── 25 Crops ──────────────────────────────────────────────────────────────
+// ── 40 Crops ──────────────────────────────────────────────────────────────
 
 export const ALL_CROPS: Crop[] = [
   { slug: "maize", name: "Maize", category: "Cereals" },

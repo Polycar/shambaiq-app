@@ -120,6 +120,17 @@ export interface RecommendResult {
   companion_crop?: string;
   intercrop_audit?: IntercropAudit | null;
   matches?: CropMatch[];
+  disease_alerts?: DiseaseAlert[];
+}
+
+export interface DiseaseAlert {
+  condition_en: string;
+  condition_sw: string;
+  severity: string;
+  symptoms_en: string;
+  symptoms_sw: string;
+  prevention_en: string;
+  prevention_sw: string;
 }
 
 export interface CropMatch {

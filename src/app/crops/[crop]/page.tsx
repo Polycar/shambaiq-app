@@ -47,6 +47,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${crop.crop} Farming Guide — Kenya`,
       images: [`/api/og/crop/${slug}`],
     },
+    alternates: { canonical: `https://shambaiq.com/crops/${slug}` },
   };
 }
 

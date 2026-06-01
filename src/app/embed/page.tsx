@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     "soil data iframe",
     "shambaiq widget builder",
   ].join(", "),
+  alternates: { canonical: "https://shambaiq.com/embed" },
 };
 
 export default function EmbedWidgetBuilderPage() {

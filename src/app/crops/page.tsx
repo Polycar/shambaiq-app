@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Crop Farming Guides — 25 Crops, Soil Requirements, Fertilizer",
   description:
     "Complete farming guides for 25 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
+  alternates: { canonical: "https://shambaiq.com/crops" },
 };
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";

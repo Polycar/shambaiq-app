@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Agroecological Zones of Kenya — Soil & Farming Regions",
   description:
     "Explore Kenya's 7 agroecological zones. Compare soil health, suitable crops, and farming conditions across Central Highlands, Rift Valley, Lake Victoria Basin and more.",
+  alternates: { canonical: "https://shambaiq.com/zones" },
 };
 
 export default function ZonesPage() {

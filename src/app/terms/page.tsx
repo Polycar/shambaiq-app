@@ -4,6 +4,7 @@ import { FileText } from "lucide-react";
 export const metadata = {
   title: "Terms of Service | ShambaIQ",
   description: "Terms and conditions for using ShambaIQ's farm planning, plant diagnosis, and agronomist services.",
+  alternates: { canonical: "https://shambaiq.com/terms" },
 };
 
 const EFFECTIVE_DATE = "28 May 2026";

@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${county.county} Soil Health Status Widget`,
     description: `Embeddable live soil health metrics for ${county.county} County.`,
+    alternates: { canonical: `https://shambaiq.com/soil/${slug}` },
   };
 }
 

@@ -4,6 +4,7 @@ import { Shield } from "lucide-react";
 export const metadata = {
   title: "Privacy Policy | ShambaIQ",
   description: "How ShambaIQ collects, uses, and protects your personal and farm data.",
+  alternates: { canonical: "https://shambaiq.com/privacy" },
 };
 
 const EFFECTIVE_DATE = "28 May 2026";

@@ -39,6 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${ward.ward} Ward Soil Report — ${county.county} County`,
     description: `Precision soil analysis for ${ward.ward} ward in ${ward.subcounty} sub-county, ${county.county}. GPS coordinates: ${ward.latitude.toFixed(4)}, ${ward.longitude.toFixed(4)}. 30m precision satellite soil data.`,
+    alternates: { canonical: `https://shambaiq.com/soil/${countySlug}/ward/${wardSlug}` },
   };
 }
 

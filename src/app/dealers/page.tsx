@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Agrovet Directory — Find Farm Input Dealers in Kenya",
   description:
     "Find verified agrovet dealers in all 47 Kenyan counties. Search for fertilizer, seeds, and pesticide suppliers near you.",
+  alternates: { canonical: "https://shambaiq.com/dealers" },
 };
 
 export default function DealersPage() {

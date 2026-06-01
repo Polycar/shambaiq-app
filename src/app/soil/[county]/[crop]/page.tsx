@@ -47,6 +47,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${crop.crop} in ${county.county} — ${score} Suitability`,
     },
+    alternates: { canonical: `https://shambaiq.com/soil/${cSlug}/${crSlug}` },
   };
 }
 

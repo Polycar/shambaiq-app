@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${zone} — Soil Health & Farming Guide`,
     description: `${zone} agroecological zone covers ${counties.length} Kenyan counties: ${counties.map((c) => c.county).join(", ")}. Explore soil data and crop recommendations.`,
+    alternates: { canonical: `https://shambaiq.com/zones/${slug}` },
   };
 }
 

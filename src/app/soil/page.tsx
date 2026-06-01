@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Soil Reports for All 47 Kenyan Counties",
   description:
     "Free soil health reports for every Kenyan county. pH, nitrogen, phosphorus, potassium data from satellite soil mapping. Find the best soil for your crops.",
+  alternates: { canonical: "https://shambaiq.com/soil" },
 };
 
 export default function SoilDirectoryPage() {

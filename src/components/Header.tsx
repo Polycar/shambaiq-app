@@ -10,6 +10,7 @@ const mainNavLinks = [
   { href: "/doctor", label: "Plant Doctor" },
   { href: "/agronomy", label: "Ask Agronomist" },
   { href: "/soil", label: "Soil Data" },
+  { href: "/blog", label: "Blog" },
 ];
 
 // All links shown in mobile hamburger
@@ -20,6 +21,7 @@ const mobileNavLinks = [
   { href: "/soil", label: "Soil Data" },
   { href: "/yields", label: "My Yields" },
   { href: "/dealers", label: "Dealers" },
+  { href: "/blog", label: "Blog" },
   { href: "/profile", label: "My Profile" },
   { href: "/dealers/apply", label: "Dealer Signup", cta: true },
 ];

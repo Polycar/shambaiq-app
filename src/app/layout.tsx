@@ -56,6 +56,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="ShambaIQ" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
+        {/* Preconnect to origins needed early so the browser opens sockets in parallel */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://api.shambaiq.com" />
+        <link rel="dns-prefetch" href="https://api.shambaiq.com" />
       </head>
       <body className="min-h-screen flex flex-col antialiased">
         <Header isLoggedIn={isLoggedIn} userName={userName} />
@@ -64,8 +69,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MobileNav />
         <WhatsAppWidget />
         <PWAInstaller />
+        <GoogleAnalytics gaId="G-7X2WCN7KJ7" />
       </body>
-      <GoogleAnalytics gaId="G-7X2WCN7KJ7" />
     </html>
   );
 }

@@ -299,7 +299,7 @@ export default function ImpactPage() {
           
           <div className="flex flex-wrap gap-4 justify-center relative z-10">
             <a
-              href="mailto:andabwa0@gmail.com"
+              href="mailto:info@shambaiq.com"
               className="px-8 py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-extrabold rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-gold-600/20 hover:-translate-y-0.5"
             >
               Get in Touch →

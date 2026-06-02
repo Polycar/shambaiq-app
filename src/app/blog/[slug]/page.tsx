@@ -8,7 +8,7 @@ import RelatedPosts from "@/components/RelatedPosts";
 import JsonLd from "@/components/JsonLd";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
-const SITE_URL = "https://www.shambaiq.com";
+const SITE_URL = "https://shambaiq.com";
 
 const STATIC_SLUGS = [
   // ── New Descriptive Slugs ──

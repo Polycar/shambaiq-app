@@ -8,7 +8,7 @@ export default function SoilEmbedCard({ countyName, countySlug }: { countyName: 
   const [copied, setCopied] = useState(false);
 
   const embedCode = useMemo(() => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "https://www.shambaiq.com";
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://shambaiq.com";
     return `<iframe src="${origin}/embed/county/${countySlug}" width="100%" height="320" style="border:none;border-radius:16px;box-shadow:0 4px 16px rgba(0, 0, 0, 0.05);background:#FAF8F5;" title="${countyName} County Soil Health Report by ShambaIQ"></iframe>`;
   }, [countySlug, countyName]);
 

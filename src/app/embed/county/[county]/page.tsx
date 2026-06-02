@@ -94,7 +94,7 @@ export default async function CountyEmbedPage({ params }: PageProps) {
       {/* Footer Dofollow Backlink Link juice */}
       <div className="border-t border-cream-200 pt-3 flex items-center justify-between text-[11px]">
         <Link
-          href={`https://www.shambaiq.com/soil/${slug}`}
+          href={`https://shambaiq.com/soil/${slug}`}
           target="_blank"
           rel="noopener"
           className="text-gold-700 hover:text-gold-500 font-bold flex items-center gap-0.5 transition-colors"
@@ -104,7 +104,7 @@ export default async function CountyEmbedPage({ params }: PageProps) {
         <span className="text-soil-500">
           Powered by{" "}
           <Link
-            href={`https://www.shambaiq.com/soil/${slug}`}
+            href={`https://shambaiq.com/soil/${slug}`}
             target="_blank"
             rel="noopener"
             className="text-forest-700 hover:underline font-bold"

@@ -3,7 +3,7 @@ import { BASE_URL } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Shamba Mshauri — AI Agronomist Chat | ShambaIQ",
-  description: "Ask Kenya's AI agronomist anything — crop diseases, fertilizer doses, soil problems, pest identification. Free bilingual (English & Swahili) advice for all 47 counties.",
+  description: "Ask Kenya's AI agronomist about crop diseases, fertilizer doses, soil problems, and pest control. Free bilingual advice for all 47 counties.",
   alternates: { canonical: `${BASE_URL}/agronomy` },
   openGraph: {
     title: "Shamba Mshauri — Kenya's AI Agronomist",

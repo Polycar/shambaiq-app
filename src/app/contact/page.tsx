@@ -6,7 +6,7 @@ import { BASE_URL } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Contact ShambaIQ — Get Farming Support & Partnership Enquiries",
-  description: "Reach ShambaIQ via WhatsApp, email, or our contact form. We support Kenyan farmers with soil data, fertilizer advice, and precision agriculture tools. Open to partnerships and agribusiness enquiries.",
+  description: "Contact ShambaIQ via WhatsApp, email, or our form. Farming support, soil data, fertilizer advice — and open to agribusiness partnership enquiries.",
   alternates: { canonical: `${BASE_URL}/contact` },
   openGraph: {
     title: "Contact ShambaIQ",

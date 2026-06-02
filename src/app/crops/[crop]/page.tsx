@@ -13,7 +13,7 @@ import {
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
-import { BASE_URL, ORGANIZATION } from "@/lib/schema";
+import { BASE_URL, ORGANIZATION, makeHowToSchema } from "@/lib/schema";
 
 export const revalidate = 0;
 
@@ -56,14 +56,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${crop.crop} Farming in Kenya — Soil Requirements, Best Counties, Fertilizer Guide`,
     description: `${crop.crop} farming in Kenya: soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, top counties, certified seed varieties, and fertilizer budget.`,
-    alternates: { canonical: `https://shambaiq.com/crops/${slug}` },
+    alternates: { canonical: `${BASE_URL}/crops/${slug}` },
     openGraph: {
       title: `${crop.crop} Farming Guide — Kenya`,
       description: `Optimal soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, best counties, and fertilizer budget for ${crop.crop} in Kenya.`,
-      url: `https://shambaiq.com/crops/${slug}`,
-      images: [{ url: `/api/og/crop/${slug}`, width: 1200, height: 630, alt: `${crop.crop} Farming Guide Kenya` }],
+      url: `${BASE_URL}/crops/${slug}`,
+      images: [{ url: `${BASE_URL}/api/og/crop/${slug}`, width: 1200, height: 630, alt: `${crop.crop} Farming Guide Kenya` }],
     },
-    twitter: { card: "summary_large_image", title: `${crop.crop} Farming Guide — Kenya`, description: `Soil requirements, best counties, and fertilizer budget for ${crop.crop} farming in Kenya.`, images: [`/api/og/crop/${slug}`] },
+    twitter: { card: "summary_large_image" as const, title: `${crop.crop} Farming Guide — Kenya`, description: `Soil requirements, best counties, and fertilizer budget for ${crop.crop} farming in Kenya.`, images: [`${BASE_URL}/api/og/crop/${slug}`] },
   };
 }
 
@@ -104,6 +104,17 @@ export default async function CropPage({ params }: PageProps) {
     publisher: { "@id": `${BASE_URL}/#organization` },
     author: { "@id": `${BASE_URL}/about#author` },
   };
+  const howToSchema = makeHowToSchema({
+    name: `How to Grow ${crop.crop} in Kenya`,
+    description: `Step-by-step guide to growing ${crop.crop} in Kenya, including soil preparation, planting calendar, fertilizer application, and expected yields.`,
+    steps: [
+      { name: "Prepare the soil", text: `Ensure soil pH is between ${crop.ph_min} and ${crop.ph_max}. Preferred texture: ${crop.pref_texture}. Apply lime if pH is below ${crop.ph_min}.` },
+      { name: "Plant seeds", text: calendars.length > 0 ? `Plant ${crop.crop} during ${calendars.map((c) => `${c.season} (${c.month1}–${c.month3})`).join(" or ")}.` : `Select certified ${crop.crop} seed varieties suited to your altitude zone.` },
+      { name: "Apply basal fertilizer", text: `${crop.crop} requires ${crop.n_need} nitrogen, ${crop.p_need} phosphorus, and ${crop.k_need} potassium. Apply a balanced basal fertilizer at planting.` },
+      ...(topDress ? [{ name: "Top-dress the crop", text: `At ${topDress.timing}, apply ${topDress.bags_per_acre} bag(s) per acre of ${topDress.product}. ${topDress.instruction}` }] : []),
+      { name: "Monitor and harvest", text: `Expected yield is ${crop.yield_per_acre.toLocaleString()} kg/acre. Market price is approximately KES ${crop.price_per_kg}/kg.` },
+    ],
+  });
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -116,7 +127,7 @@ export default async function CropPage({ params }: PageProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <JsonLd schemas={[cropSchema, breadcrumbSchema, ORGANIZATION]} />
+      <JsonLd schemas={[cropSchema, howToSchema, breadcrumbSchema, ORGANIZATION]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },

@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   description:
     "Explore Kenya's 7 agroecological zones. Compare soil health, suitable crops, and farming conditions across Central Highlands, Rift Valley, Lake Victoria Basin and more.",
   alternates: { canonical: "https://shambaiq.com/zones" },
+  openGraph: {
+    title: "Kenya's Agroecological Zones — Soil & Farming Regions",
+    description: "Compare soil health, crop suitability, and farming conditions across Central Highlands, Rift Valley, Lake Basin, and 4 more Kenyan zones.",
+    url: "https://shambaiq.com/zones",
+    images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "Kenya Agroecological Zones" }],
+  },
+  twitter: { card: "summary_large_image", title: "Kenya's Agroecological Zones", description: "Soil health and crop suitability across Kenya's 7 agroecological zones.", images: ["https://shambaiq.com/api/og"] },
 };
 
 export default function ZonesPage() {

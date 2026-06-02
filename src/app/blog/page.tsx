@@ -7,6 +7,14 @@ export const metadata: Metadata = {
   title: "Farming Guides & Soil Reports — Kenya Agriculture Blog",
   description:
     "Data-driven farming guides for Kenya. County soil rankings, crop guides, fertilizer comparisons, and seasonal advice based on 30m precision satellite soil data.",
+  alternates: { canonical: "https://shambaiq.com/blog" },
+  openGraph: {
+    title: "ShambaIQ Farming Guides — Kenya Agriculture Blog",
+    description: "Data-driven farming guides: soil rankings, crop guides, fertilizer comparisons, and seasonal advice for Kenyan smallholder farmers.",
+    url: "https://shambaiq.com/blog",
+    images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "ShambaIQ Kenya Farming Blog" }],
+  },
+  twitter: { card: "summary_large_image", title: "ShambaIQ Farming Guides", description: "Data-driven farming guides for Kenya — soil rankings, crop guides, fertilizer comparisons.", images: ["https://shambaiq.com/api/og"] },
 };
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";

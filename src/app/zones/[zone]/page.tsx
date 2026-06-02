@@ -9,6 +9,8 @@ import {
   slugify,
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ zone: string }>;
@@ -25,9 +27,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!zone) return {};
   const counties = getCountiesByZone(zone);
   return {
-    title: `${zone} — Soil Health & Farming Guide`,
-    description: `${zone} agroecological zone covers ${counties.length} Kenyan counties: ${counties.map((c) => c.county).join(", ")}. Explore soil data and crop recommendations.`,
+    title: `${zone} — Soil Health & Farming Guide | ShambaIQ`,
+    description: `${zone} agroecological zone covers ${counties.length} Kenyan counties: ${counties.map((c) => c.county).join(", ")}. Explore soil data, crop suitability, and precision fertilizer recommendations.`,
     alternates: { canonical: `https://shambaiq.com/zones/${slug}` },
+    openGraph: {
+      title: `${zone} — Kenya Agroecological Zone Guide`,
+      description: `Soil health data and crop recommendations for ${counties.length} counties in the ${zone} zone.`,
+      url: `https://shambaiq.com/zones/${slug}`,
+      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `${zone} Agroecological Zone Kenya` }],
+    },
+    twitter: { card: "summary_large_image", title: `${zone} — Farming Guide`, description: `Soil health and crop recommendations for all ${counties.length} counties in ${zone}.`, images: ["https://shambaiq.com/api/og"] },
   };
 }
 
@@ -58,8 +67,27 @@ export default async function ZonePage({ params }: PageProps) {
     .sort((a, b) => b.avg - a.avg)
     .slice(0, 10);
 
+  const placeSchema = {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    name: `${zone} — Kenya Agroecological Zone`,
+    description: `${zone} agroecological zone in Kenya, covering ${counties.length} counties.`,
+    url: `${BASE_URL}/zones/${slug}`,
+    containedInPlace: { "@type": "Country", name: "Kenya", identifier: "KE" },
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Zones", item: `${BASE_URL}/zones` },
+      { "@type": "ListItem", position: 3, name: zone, item: `${BASE_URL}/zones/${slug}` },
+    ],
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <JsonLd schemas={[placeSchema, breadcrumbSchema, ORGANIZATION]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },

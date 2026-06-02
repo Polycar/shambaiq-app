@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   description:
     "Find verified agrovet dealers in all 47 Kenyan counties. Search for fertilizer, seeds, and pesticide suppliers near you.",
   alternates: { canonical: "https://shambaiq.com/dealers" },
+  openGraph: {
+    title: "Kenya Agrovet Directory — Dealers in All 47 Counties",
+    description: "Find verified fertilizer, seed, and pesticide dealers near you across all 47 Kenyan counties.",
+    url: "https://shambaiq.com/dealers",
+    images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "Kenya Agrovet Dealer Directory" }],
+  },
+  twitter: { card: "summary_large_image", title: "Kenya Agrovet Directory", description: "Find verified agrovet dealers in all 47 Kenyan counties — fertilizer, seeds, and pesticides.", images: ["https://shambaiq.com/api/og"] },
 };
 
 export default function DealersPage() {

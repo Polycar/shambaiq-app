@@ -25,6 +25,12 @@ export const metadata: Metadata = {
     ],
     siteName: "ShambaIQ",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Polycarp Andabwa — Founder, ShambaIQ",
+    description: "Agricultural Environmental Engineer, GIS & Remote Sensing specialist, EASA Licensed Drone Pilot, and founder of ShambaIQ.",
+    images: [`${BASE_URL}/images/polycarp-andabwa-shambaiq.jpg`],
+  },
   robots: { index: true, follow: true },
 };
 

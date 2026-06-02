@@ -11,6 +11,13 @@ export const metadata: Metadata = {
   description:
     "Complete farming guides for over 40 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
   alternates: { canonical: "https://shambaiq.com/crops" },
+  openGraph: {
+    title: "Crop Farming Guides — 40+ Kenyan Crops",
+    description: "Soil pH, nitrogen needs, best counties, certified seed varieties, and fertilizer budgets for over 40 Kenyan crops.",
+    url: "https://shambaiq.com/crops",
+    images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "Kenya Crop Farming Guides" }],
+  },
+  twitter: { card: "summary_large_image", title: "Crop Farming Guides — 40+ Kenyan Crops", description: "Soil requirements, best counties, and fertilizer budgets for over 40 crops in Kenya.", images: ["https://shambaiq.com/api/og"] },
 };
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";

@@ -3,8 +3,10 @@ import { FileText } from "lucide-react";
 
 export const metadata = {
   title: "Terms of Service | ShambaIQ",
-  description: "Terms and conditions for using ShambaIQ's farm planning, plant diagnosis, and agronomist services.",
+  description: "Terms and conditions for using ShambaIQ's farm planning, plant diagnosis, and AI agronomist services. Read before using our platform.",
   alternates: { canonical: "https://shambaiq.com/terms" },
+  openGraph: { title: "Terms of Service | ShambaIQ", description: "Terms and conditions for using ShambaIQ's farm planning, plant diagnosis, and agronomist services.", url: "https://shambaiq.com/terms" },
+  twitter: { card: "summary", title: "Terms of Service | ShambaIQ", description: "Terms and conditions for using ShambaIQ." },
 };
 
 const EFFECTIVE_DATE = "28 May 2026";

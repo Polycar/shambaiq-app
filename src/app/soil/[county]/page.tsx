@@ -33,14 +33,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${county.county} County Soil Health Report 2026 — pH, Nitrogen, Phosphorus`,
     description: `${county.county} soil analysis: pH ${county.pH}, Nitrogen ${county.nitrogen} g/kg, Phosphorus ${county.phosphorus} mg/kg. Get precision fertilizer recommendations for over 40 crops. Free soil data from satellite soil mapping.`,
+    alternates: { canonical: `https://shambaiq.com/soil/${slug}` },
     openGraph: {
       title: `${county.county} County Soil Report`,
       description: `pH ${county.pH} · N ${county.nitrogen} g/kg · P ${county.phosphorus} mg/kg`,
-      images: [`/api/og/county/${slug}`],
+      url: `https://shambaiq.com/soil/${slug}`,
+      images: [{ url: `/api/og/county/${slug}`, width: 1200, height: 630, alt: `${county.county} County Soil Report` }],
     },
-    alternates: {
-      canonical: `https://www.shambaiq.com/soil/${slug}`,
-    },
+    twitter: { card: "summary_large_image", title: `${county.county} Soil Report`, description: `pH ${county.pH} · Nitrogen ${county.nitrogen} g/kg · Phosphorus ${county.phosphorus} mg/kg`, images: [`/api/og/county/${slug}`] },
   };
 }
 

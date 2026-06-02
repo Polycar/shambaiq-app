@@ -21,6 +21,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `Agrovets in ${county.county} County — ${dealers.length} Farm Input Dealers`,
     description: `Find ${dealers.length} verified agrovet dealers in ${county.county} County. Fertilizer, seeds, and pesticide suppliers with stock lists and contact info.`,
     alternates: { canonical: `https://shambaiq.com/dealers/${slug}` },
+    openGraph: {
+      title: `${dealers.length} Agrovets in ${county.county} County`,
+      description: `Verified fertilizer, seed, and pesticide dealers in ${county.county} County, Kenya.`,
+      url: `https://shambaiq.com/dealers/${slug}`,
+      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `Agrovet dealers in ${county.county} Kenya` }],
+    },
+    twitter: { card: "summary_large_image", title: `Agrovets in ${county.county} County`, description: `Find ${dealers.length} verified farm input dealers in ${county.county} County.`, images: ["https://shambaiq.com/api/og"] },
   };
 }
 

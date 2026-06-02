@@ -9,6 +9,13 @@ export const metadata: Metadata = {
   description:
     "Free soil health reports for every Kenyan county. pH, nitrogen, phosphorus, potassium data from satellite soil mapping. Find the best soil for your crops.",
   alternates: { canonical: "https://shambaiq.com/soil" },
+  openGraph: {
+    title: "Kenya County Soil Reports — All 47 Counties",
+    description: "Free satellite-powered soil health data: pH, nitrogen, phosphorus, and potassium for every Kenyan county.",
+    url: "https://shambaiq.com/soil",
+    images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "Kenya Soil Health Reports" }],
+  },
+  twitter: { card: "summary_large_image", title: "Kenya County Soil Reports", description: "Satellite soil data for all 47 Kenyan counties — pH, N, P, K and crop suitability.", images: ["https://shambaiq.com/api/og"] },
 };
 
 export default function SoilDirectoryPage() {

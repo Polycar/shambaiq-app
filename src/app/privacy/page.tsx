@@ -3,8 +3,10 @@ import { Shield } from "lucide-react";
 
 export const metadata = {
   title: "Privacy Policy | ShambaIQ",
-  description: "How ShambaIQ collects, uses, and protects your personal and farm data.",
+  description: "How ShambaIQ collects, uses, and protects your personal and farm data. We never sell your data — it is used only to improve your farming recommendations.",
   alternates: { canonical: "https://shambaiq.com/privacy" },
+  openGraph: { title: "Privacy Policy | ShambaIQ", description: "How ShambaIQ collects, uses, and protects your personal and farm data.", url: "https://shambaiq.com/privacy" },
+  twitter: { card: "summary", title: "Privacy Policy | ShambaIQ", description: "How ShambaIQ handles your personal and farm data." },
 };
 
 const EFFECTIVE_DATE = "28 May 2026";

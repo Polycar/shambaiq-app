@@ -12,6 +12,8 @@ import {
   slugify,
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const revalidate = 0;
 
@@ -54,11 +56,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${crop.crop} Farming in Kenya — Soil Requirements, Best Counties, Fertilizer Guide`,
     description: `Complete ${crop.crop} farming guide: optimal soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, best counties ranked by soil suitability. Certified seed varieties and fertilizer budget.`,
+    alternates: { canonical: `https://shambaiq.com/crops/${slug}` },
     openGraph: {
       title: `${crop.crop} Farming Guide — Kenya`,
-      images: [`/api/og/crop/${slug}`],
+      description: `Optimal soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, best counties, and fertilizer budget for ${crop.crop} in Kenya.`,
+      url: `https://shambaiq.com/crops/${slug}`,
+      images: [{ url: `/api/og/crop/${slug}`, width: 1200, height: 630, alt: `${crop.crop} Farming Guide Kenya` }],
     },
-    alternates: { canonical: `https://shambaiq.com/crops/${slug}` },
+    twitter: { card: "summary_large_image", title: `${crop.crop} Farming Guide — Kenya`, description: `Soil requirements, best counties, and fertilizer budget for ${crop.crop} farming in Kenya.`, images: [`/api/og/crop/${slug}`] },
   };
 }
 
@@ -88,8 +93,30 @@ export default async function CropPage({ params }: PageProps) {
   const prevCrop = currentIdx > 0 ? allCrops[currentIdx - 1] : null;
   const nextCrop = currentIdx < allCrops.length - 1 ? allCrops[currentIdx + 1] : null;
 
+  const cropSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: `${crop.crop} Farming in Kenya — Soil Requirements, Best Counties, Fertilizer Guide`,
+    description: `Complete ${crop.crop} farming guide: optimal soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, best counties, seed varieties, and fertilizer budget.`,
+    url: `${BASE_URL}/crops/${slug}`,
+    inLanguage: "en-KE",
+    about: { "@type": "Thing", name: crop.crop, description: `${crop.crop} crop farming in Kenya` },
+    publisher: { "@id": `${BASE_URL}/#organization` },
+    author: { "@id": `${BASE_URL}/about#author` },
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Crop Guides", item: `${BASE_URL}/crops` },
+      { "@type": "ListItem", position: 3, name: crop.crop, item: `${BASE_URL}/crops/${slug}` },
+    ],
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <JsonLd schemas={[cropSchema, breadcrumbSchema, ORGANIZATION]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },

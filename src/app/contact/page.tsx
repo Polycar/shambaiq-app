@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Mail, MessageCircle, Phone, MapPin, Send } from "lucide-react";
+import { BASE_URL } from "@/lib/schema";
+
+export const metadata: Metadata = {
+  title: "Contact ShambaIQ — Get Farming Support & Partnership Enquiries",
+  description: "Reach ShambaIQ via WhatsApp, email, or our contact form. We support Kenyan farmers with soil data, fertilizer advice, and precision agriculture tools. Open to partnerships and agribusiness enquiries.",
+  alternates: { canonical: `${BASE_URL}/contact` },
+  openGraph: {
+    title: "Contact ShambaIQ",
+    description: "Reach Kenya's precision soil intelligence platform. Get farming support or discuss partnership opportunities.",
+    url: `${BASE_URL}/contact`,
+    images: [{ url: `${BASE_URL}/api/og`, width: 1200, height: 630, alt: "Contact ShambaIQ" }],
+  },
+  twitter: { card: "summary_large_image", title: "Contact ShambaIQ", description: "Reach Kenya's precision soil intelligence platform for farming support or partnerships.", images: [`${BASE_URL}/api/og`] },
+};
 
 export default function ContactPage() {
   return (

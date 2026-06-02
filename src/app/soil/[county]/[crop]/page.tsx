@@ -18,6 +18,8 @@ import {
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScoreRing from "@/components/ScoreRing";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 const getYieldUnit = (cropName: string) => {
   const c = cropName.toLowerCase();
@@ -54,11 +56,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const score = scoreCropForCounty(county, crop);
   return {
     title: `Growing ${crop.crop} in ${county.county} — Soil Analysis, Fertilizer Plan, Budget`,
-    description: `${county.county} soil scores ${score} for ${crop.crop}. Get fertilizer recommendations, seed varieties, planting calendar, and budget estimates. Based on 30m precision satellite soil data.`,
-    openGraph: {
-      title: `${crop.crop} in ${county.county} — ${score} Suitability`,
-    },
+    description: `${county.county} County scores ${score}/100 for ${crop.crop}. Precision fertilizer rates, seed varieties, planting calendar, and per-acre budget. Satellite soil data.`,
     alternates: { canonical: `https://shambaiq.com/soil/${cSlug}/${crSlug}` },
+    openGraph: {
+      title: `${crop.crop} in ${county.county} — ${score}/100 Suitability Score`,
+      description: `Soil match analysis, fertilizer plan, and seed varieties for ${crop.crop} in ${county.county} County.`,
+      url: `https://shambaiq.com/soil/${cSlug}/${crSlug}`,
+      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `${crop.crop} farming in ${county.county} County` }],
+    },
+    twitter: { card: "summary_large_image", title: `${crop.crop} in ${county.county} — ${score}/100 Suitability`, description: `Soil analysis and fertilizer plan for ${crop.crop} in ${county.county} County, Kenya.`, images: ["https://shambaiq.com/api/og"] },
   };
 }
 
@@ -82,8 +88,51 @@ export default async function CountyCropPage({ params }: PageProps) {
   const dapPrice = prices.find((p) => p.fertilizer === "DAP");
   const canPrice = prices.find((p) => p.fertilizer === "CAN");
 
+  const phOk = county.pH >= crop.ph_min && county.pH <= crop.ph_max;
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `Is ${county.county} good for growing ${crop.crop}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${county.county} County scores ${score}/100 for ${crop.crop} suitability. The county has soil pH ${county.pH} (optimal range ${crop.ph_min}–${crop.ph_max}), nitrogen ${county.nitrogen} g/kg, and phosphorus ${county.phosphorus} mg/kg. ${score >= 70 ? `This is a strong match for ${crop.crop}.` : score >= 50 ? `${crop.crop} can be grown with targeted soil management.` : `Significant soil amendments are recommended before planting ${crop.crop}.`}`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What fertilizer should I use for ${crop.crop} in ${county.county}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Fertilizer for ${crop.crop} in ${county.county} should address the county's soil profile: pH ${county.pH}${!phOk ? ` (lime is recommended to reach the target ${crop.ph_min}–${crop.ph_max})` : ""}, nitrogen ${county.nitrogen} g/kg, and phosphorus ${county.phosphorus} mg/kg. Use ShambaIQ's free tool for a precise bag-per-acre plan at shambaiq.com/app.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What is the soil pH for ${crop.crop} in ${county.county}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${county.county} County has soil pH ${county.pH}. ${crop.crop} requires pH ${crop.ph_min}–${crop.ph_max}. The soil is ${phOk ? "within the optimal pH range for this crop" : "outside the optimal range and may require lime or sulfur amendment"}.`,
+        },
+      },
+    ],
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Soil Reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 3, name: `${county.county} County`, item: `${BASE_URL}/soil/${cSlug}` },
+      { "@type": "ListItem", position: 4, name: crop.crop, item: `${BASE_URL}/soil/${cSlug}/${crSlug}` },
+    ],
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <JsonLd schemas={[faqSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },

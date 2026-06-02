@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCountySoils, getCountyBySlug, getDealersByCounty } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ county: string }>;
@@ -38,30 +40,30 @@ export default async function DealerCountyPage({ params }: PageProps) {
 
   const dealers = getDealersByCounty(county.county);
 
-  const schemaItems = dealers.map((d) => ({
+  const dealerGraph = dealers.length > 0 ? {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: d.name,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: d.town,
-      addressRegion: county.county,
-      addressCountry: "KE",
-    },
-    ...(d.lat && d.lon
-      ? { geo: { "@type": "GeoCoordinates", latitude: d.lat, longitude: d.lon } }
-      : {}),
-    ...(d.phone ? { telephone: d.phone } : {}),
-  }));
+    "@graph": dealers.map((d) => ({
+      "@type": "LocalBusiness",
+      "@id": `${BASE_URL}/dealers/${slug}#${d.name.replace(/\s+/g, "-").toLowerCase()}`,
+      name: d.name,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: d.town,
+        addressRegion: county.county,
+        addressCountry: "KE",
+      },
+      areaServed: { "@type": "AdministrativeArea", name: `${county.county} County, Kenya` },
+      ...(d.lat && d.lon
+        ? { geo: { "@type": "GeoCoordinates", latitude: d.lat, longitude: d.lon } }
+        : {}),
+      ...(d.phone ? { telephone: d.phone } : {}),
+      ...(d.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: d.rating, bestRating: 5, worstRating: 1 } } : {}),
+    })),
+  } : null;
 
   return (
     <>
-      {schemaItems.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaItems) }}
-        />
-      )}
+      {dealerGraph && <JsonLd schemas={[dealerGraph]} />}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Breadcrumbs

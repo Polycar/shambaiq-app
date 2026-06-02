@@ -13,6 +13,8 @@ import {
   API_BASE,
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ county: string; ward: string }>;
@@ -38,8 +40,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${ward.ward} Ward Soil Report — ${county.county} County`,
-    description: `Precision soil analysis for ${ward.ward} ward in ${ward.subcounty} sub-county, ${county.county}. GPS coordinates: ${ward.latitude.toFixed(4)}, ${ward.longitude.toFixed(4)}. 30m precision satellite soil data.`,
+    description: `Precision soil data for ${ward.ward} ward, ${ward.subcounty} Sub-County, ${county.county}. pH, nitrogen, phosphorus, and potassium from 30m satellite mapping.`,
     alternates: { canonical: `https://shambaiq.com/soil/${countySlug}/ward/${wardSlug}` },
+    openGraph: {
+      title: `${ward.ward} Ward — Soil Report | ${county.county}`,
+      description: `Satellite soil data for ${ward.ward} ward in ${county.county} County. pH, nutrient levels, and top crop recommendations.`,
+      url: `https://shambaiq.com/soil/${countySlug}/ward/${wardSlug}`,
+      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `${ward.ward} Ward Soil Report, ${county.county} County` }],
+    },
+    twitter: { card: "summary_large_image", title: `${ward.ward} Ward Soil Report`, description: `Soil pH, nutrients, and crop suitability for ${ward.ward} ward in ${county.county} County.`, images: ["https://shambaiq.com/api/og"] },
   };
 }
 
@@ -76,8 +85,32 @@ export default async function WardPage({ params }: PageProps) {
   const soilP = precisionData?.["Extractable Phosphorus (mg/kg)"] ?? county.phosphorus;
   const soilK = precisionData?.["Extractable Potassium (mg/kg)"] ?? county.potassium;
 
+  const placeSchema = {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    name: `${ward.ward} Ward, ${ward.subcounty}, ${county.county}`,
+    description: `${ward.ward} ward in ${ward.subcounty} sub-county, ${county.county} County, Kenya. Soil pH ${soilPh.toFixed(1)}, nitrogen ${soilN.toFixed(2)} g/kg.`,
+    geo: { "@type": "GeoCoordinates", latitude: ward.latitude, longitude: ward.longitude },
+    containedInPlace: {
+      "@type": "AdministrativeArea",
+      name: `${county.county} County, Kenya`,
+      url: `${BASE_URL}/soil/${countySlug}`,
+    },
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Soil Reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 3, name: `${county.county} County`, item: `${BASE_URL}/soil/${countySlug}` },
+      { "@type": "ListItem", position: 4, name: `${ward.ward} Ward`, item: `${BASE_URL}/soil/${countySlug}/ward/${wardSlug}` },
+    ],
+  };
+
   return (
     <div className="bg-cream-100 min-h-screen">
+      <JsonLd schemas={[placeSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
           { label: "Soil Reports", href: "/soil" },

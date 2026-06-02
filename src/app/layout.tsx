@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import PWAInstaller from "@/components/PWAInstaller";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 import { cookies } from "next/headers";
 import "./globals.css";
 
@@ -69,7 +69,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MobileNav />
         <WhatsAppWidget />
         <PWAInstaller />
-        <GoogleAnalytics gaId="G-7X2WCN7KJ7" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-7X2WCN7KJ7" strategy="lazyOnload" />
+        <Script id="ga-init" strategy="lazyOnload">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-7X2WCN7KJ7');`}</Script>
       </body>
     </html>
   );

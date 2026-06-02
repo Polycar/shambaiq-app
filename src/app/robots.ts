@@ -14,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://www.shambaiq.com/sitemap.xml",
-    host: "https://www.shambaiq.com",
+    sitemap: "https://shambaiq.com/sitemap.xml",
+    host: "https://shambaiq.com",
   };
 }

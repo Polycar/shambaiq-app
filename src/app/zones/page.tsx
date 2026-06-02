@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { getZones, getCountiesByZone, computeSoilHealthScore, slugify } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Agroecological Zones of Kenya — Soil & Farming Regions",
@@ -19,8 +21,24 @@ export const metadata: Metadata = {
 export default function ZonesPage() {
   const zones = getZones();
 
+  const zonesListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Kenya's Agroecological Zones",
+    description: "Kenya's 7 agroecological zones covering all 47 counties.",
+    url: `${BASE_URL}/zones`,
+    numberOfItems: zones.length,
+    itemListElement: zones.map((z, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: z,
+      url: `${BASE_URL}/zones/${slugify(z)}`,
+    })),
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <JsonLd schemas={[zonesListSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Agroecological Zones" }]} />
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         Agroecological Zones of Kenya

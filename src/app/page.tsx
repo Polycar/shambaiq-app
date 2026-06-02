@@ -27,6 +27,8 @@ import {
   PersonalizedSection,
   HeroRightColumn,
 } from "@/components/ClientIslands";
+import JsonLd from "@/components/JsonLd";
+import { WEBSITE_SCHEMA, ORGANIZATION, BASE_URL } from "@/lib/schema";
 
 
 export default function HomePage() {
@@ -45,6 +47,11 @@ export default function HomePage() {
 
   return (
     <>
+      <JsonLd schemas={[
+        { "@context": "https://schema.org", ...WEBSITE_SCHEMA },
+        { "@context": "https://schema.org", ...ORGANIZATION },
+      ]} />
+
       {/* ─── FIRST-TIME ONBOARDING (guests only) ─── */}
       <OnboardingModal />
 

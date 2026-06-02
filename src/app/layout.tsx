@@ -13,7 +13,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-displa
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.shambaiq.com"),
+  metadataBase: new URL("https://shambaiq.com"),
   title: { default: "ShambaIQ — Precision Agriculture for Every Kenyan Farmer", template: "%s | ShambaIQ" },
   description: "Satellite-powered soil intelligence for Kenya's smallholder farmers. Science-based fertilizer plans, soil health scores, and crop recommendations for all 47 counties.",
   icons: {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
   verification: { google: "hDkSRs8CVliEOaxCe1Odg6JKByTt7natiI-1DM4GHWo" },
-  alternates: { canonical: "https://www.shambaiq.com" },
+  alternates: { canonical: "https://shambaiq.com" },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

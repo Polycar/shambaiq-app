@@ -3,7 +3,7 @@ import { ALL_POSTS } from "@/lib/blog-data";
 import { ALL_COUNTIES, ALL_CROPS, ALL_ZONES } from "@/lib/site-data";
 import { getWards, slugify } from "@/lib/data";
 
-const BASE = "https://www.shambaiq.com";
+const BASE = "https://shambaiq.com";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -18,6 +18,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/zones`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/dealers`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/about`, lastModified: now, changeFrequency: "yearly", priority: 0.7 },
+    { url: `${BASE}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
+    { url: `${BASE}/partners`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE}/impact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE}/dealers/apply`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
     { url: `${BASE}/api`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/embed`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },

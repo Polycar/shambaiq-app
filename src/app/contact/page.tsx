@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Mail, MessageCircle, Phone, MapPin, Send } from "lucide-react";
-import { BASE_URL } from "@/lib/schema";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Contact ShambaIQ — Get Farming Support & Partnership Enquiries",
@@ -17,9 +18,39 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: "Contact ShambaIQ", description: "Reach Kenya's precision soil intelligence platform for farming support or partnerships.", images: [`${BASE_URL}/api/og`] },
 };
 
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${BASE_URL}/#organization`,
+  name: "ShambaIQ",
+  url: BASE_URL,
+  logo: { "@type": "ImageObject", url: `${BASE_URL}/images/shambaiq-logo.png` },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Nairobi",
+    addressCountry: "KE",
+  },
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      telephone: "+254748042633",
+      availableLanguage: ["English", "Swahili"],
+      contactOption: "TollFree",
+    },
+    {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      email: "info@shambaiq.com",
+      availableLanguage: ["English"],
+    },
+  ],
+};
+
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-cream-50 flex flex-col">
+      <JsonLd schemas={[contactSchema]} />
       <Header />
       
       <main className="flex-1">

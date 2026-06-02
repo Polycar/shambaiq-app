@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { getCountySoils, computeSoilHealthScore, getZones } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { ArrowRight, Layers } from "lucide-react";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Soil Reports for All 47 Kenyan Counties",
@@ -35,8 +37,26 @@ export default function SoilDirectoryPage() {
 
   const total = counties.length;
 
+  const soilListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Kenya County Soil Reports",
+    description: "Free soil health reports for every Kenyan county. pH, nitrogen, phosphorus, potassium data from satellite soil mapping.",
+    url: `${BASE_URL}/soil`,
+    numberOfItems: counties.length,
+    itemListElement: counties
+      .sort((a, b) => a.county.localeCompare(b.county))
+      .map((c, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: `${c.county} County Soil Report`,
+        url: `${BASE_URL}/soil/${c.slug}`,
+      })),
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <JsonLd schemas={[soilListSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },

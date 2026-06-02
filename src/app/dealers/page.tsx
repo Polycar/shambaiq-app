@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { getCountySoils, getDealersByCounty } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Agrovet Directory — Find Farm Input Dealers in Kenya",
@@ -20,8 +22,26 @@ export const metadata: Metadata = {
 export default function DealersPage() {
   const counties = getCountySoils();
 
+  const dealerListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Kenya Agrovet Dealer Directory",
+    description: "Find verified agrovet dealers — fertilizer, seeds, and pesticides — across all 47 Kenyan counties.",
+    url: `${BASE_URL}/dealers`,
+    numberOfItems: counties.length,
+    itemListElement: counties
+      .sort((a, b) => a.county.localeCompare(b.county))
+      .map((c, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: `${c.county} County Agrovets`,
+        url: `${BASE_URL}/dealers/${c.slug}`,
+      })),
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <JsonLd schemas={[dealerListSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Agrovet Directory" }]} />
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         Agrovet Directory

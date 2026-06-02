@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { getCrops } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { ArrowRight } from "lucide-react";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const revalidate = 0;
 
@@ -112,8 +114,24 @@ export default async function CropsDirectoryPage() {
 
   const categoryOrder = ["Cereals", "Legumes", "Root & Tuber Crops", "Vegetables", "Cash Crops", "Fruits & Trees", "Other"];
 
+  const cropListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Crop Farming Guides — Kenya",
+    description: "Complete farming guides for over 40 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
+    url: `${BASE_URL}/crops`,
+    numberOfItems: merged.length,
+    itemListElement: merged.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: `${c.crop} Farming Guide`,
+      url: `${BASE_URL}/crops/${c.slug}`,
+    })),
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <JsonLd schemas={[cropListSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Crop Guides" }]} />
 
       <div className="mb-10 md:mb-14">

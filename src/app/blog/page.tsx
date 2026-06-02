@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Farming Guides & Soil Reports — Kenya Agriculture Blog",
@@ -182,8 +184,26 @@ export default async function BlogPage() {
 
   const allPosts = [...staticPosts, ...mappedDynamic];
 
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${BASE_URL}/blog#blog`,
+    name: "ShambaIQ Farming Blog",
+    description: "Data-driven farming guides for Kenya. County soil rankings, crop guides, fertilizer comparisons, and seasonal advice based on 30m precision satellite soil data.",
+    url: `${BASE_URL}/blog`,
+    inLanguage: "en-KE",
+    publisher: { "@type": "Organization", "@id": `${BASE_URL}/#organization` },
+    blogPost: staticPosts.map((p) => ({
+      "@type": "BlogPosting",
+      headline: p.title,
+      url: `${BASE_URL}/blog/${p.slug}`,
+      description: p.excerpt,
+    })),
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <JsonLd schemas={[blogSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
 
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">

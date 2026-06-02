@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     "shambaiq widget builder",
   ].join(", "),
   alternates: { canonical: "https://shambaiq.com/embed" },
+  openGraph: {
+    title: "Free Soil Health Widget Builder — ShambaIQ",
+    description: "Embed precision soil health data for all 47 Kenyan counties on your website. Copy-paste iframe code generator.",
+    url: "https://shambaiq.com/embed",
+    images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "ShambaIQ Embeddable Soil Widget" }],
+  },
+  twitter: { card: "summary_large_image", title: "Free Soil Data Widget Builder", description: "Embed county soil health data on any website — simple iframe for all 47 Kenyan counties.", images: ["https://shambaiq.com/api/og"] },
 };
 
 export default function EmbedWidgetBuilderPage() {

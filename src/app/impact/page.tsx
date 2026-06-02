@@ -138,7 +138,7 @@ export default function ImpactPage() {
             </span>
           </h1>
           
-          <p className="text-soil-400 text-lg leading-relaxed max-w-2xl mx-auto font-medium">
+          <p className="text-soil-500 text-lg leading-relaxed max-w-2xl mx-auto font-medium">
             ShambaIQ contributes to 5 UN Sustainable Development Goals by making
             high-resolution satellite soil data free and accessible to every Kenyan farmer.
           </p>
@@ -179,7 +179,7 @@ export default function ImpactPage() {
                   <Icon size={22} style={{ color: s.color }} />
                 </div>
                 <div className="font-display text-3xl font-extrabold text-forest-700 tracking-tight">{s.value}</div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-soil-400 mt-1.5">{s.label}</div>
+                <div className="text-[11px] font-bold uppercase tracking-wider text-soil-500 mt-1.5">{s.label}</div>
               </div>
             );
           })}
@@ -221,7 +221,7 @@ export default function ImpactPage() {
                   </h3>
 
                   {/* Body Text */}
-                  <p className="text-soil-400 leading-relaxed font-medium mb-6 text-sm md:text-[15px]">
+                  <p className="text-soil-500 leading-relaxed font-medium mb-6 text-sm md:text-[15px]">
                     {sdg.description}
                   </p>
 
@@ -233,7 +233,7 @@ export default function ImpactPage() {
                         className="bg-cream-50/60 backdrop-blur-sm rounded-2xl p-5 border border-cream-200/80 hover:bg-cream-100/50 hover:scale-[1.02] transition-all duration-300"
                       >
                         <div className="font-display text-2xl font-extrabold text-forest-700 tracking-tight">{m.value}</div>
-                        <div className="text-[11px] font-bold text-soil-400 mt-1">{m.label}</div>
+                        <div className="text-[11px] font-bold text-soil-500 mt-1">{m.label}</div>
                       </div>
                     ))}
                   </div>
@@ -247,7 +247,7 @@ export default function ImpactPage() {
                         className="text-xs font-bold px-4 py-2.5 rounded-xl border border-cream-300 text-forest-800 bg-white hover:bg-gold-500 hover:text-white hover:border-gold-500 hover:shadow-sm transition-all duration-300 flex items-center gap-1.5"
                       >
                         {link.text} 
-                        <span className="font-light text-soil-400 group-hover:text-white">→</span>
+                        <span className="font-light text-soil-500 group-hover:text-white">→</span>
                       </Link>
                     ))}
                   </div>
@@ -261,7 +261,7 @@ export default function ImpactPage() {
         <section className="mt-20 bg-cream-100/60 backdrop-blur-sm rounded-3xl p-8 md:p-10 border border-cream-200">
           <div className="text-center mb-8">
             <h2 className="font-display text-3xl font-extrabold text-forest-700 tracking-tight mb-3">Our data sources</h2>
-            <p className="text-soil-400 max-w-xl mx-auto font-medium text-sm leading-relaxed">
+            <p className="text-soil-500 max-w-xl mx-auto font-medium text-sm leading-relaxed">
               ShambaIQ is entirely built on open, peer-reviewed geospatial and meteorological datasets — not proprietary data locked behind high paywalls.
             </p>
           </div>
@@ -277,7 +277,7 @@ export default function ImpactPage() {
                 className="bg-white/80 rounded-2xl p-6 border border-cream-200 hover:shadow-md hover:scale-[1.01] transition-all duration-300"
               >
                 <div className="font-display font-extrabold text-forest-700 mb-2.5 text-base">{source.title}</div>
-                <p className="text-xs text-soil-400 leading-relaxed font-medium">{source.desc}</p>
+                <p className="text-xs text-soil-500 leading-relaxed font-medium">{source.desc}</p>
               </div>
             ))}
           </div>

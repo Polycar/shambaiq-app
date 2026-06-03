@@ -139,9 +139,13 @@ export default async function CropPage({ params }: PageProps) {
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
         {crop.crop} farming guide — Kenya
       </h1>
-      <p className="text-soil-500 mb-10">
+      <p className="text-soil-500 mb-6">
         Soil requirements, top counties, seed varieties, fertilizer plan &amp;
         economics
+      </p>
+      <p className="text-sm text-soil-500 leading-relaxed max-w-3xl mb-10">
+        Interested in starting or scaling {crop.crop.toLowerCase()} farming in Kenya? 
+        This comprehensive guide maps out the optimal soil requirements (such as target pH ranges), the most suitable counties for growing {crop.crop.toLowerCase()}, certified seed varieties, seasonal fertilizer guidelines, and a detailed per-acre production budget to set you up for a successful harvest.
       </p>
 
       <div className="grid lg:grid-cols-3 gap-6">

@@ -152,6 +152,11 @@ export default async function CountyCropPage({ params }: PageProps) {
             Soil suitability analysis based on {county.county}&apos;s nutrient
             profile
           </p>
+          <p className="text-sm text-soil-500 leading-relaxed max-w-3xl mt-4">
+            Thinking about growing {crop.crop.toLowerCase()} in {county.county} county? 
+            Based on precision satellite soil data, this page analyzes your local soil suitability for {crop.crop.toLowerCase()} farming. 
+            Explore our tailored fertilizer recommendations, seed varieties, optimal planting calendar, and a detailed per-acre production budget designed to help you maximize yields.
+          </p>
         </div>
         <ScoreRing score={score} label="Suitability score" />
       </div>

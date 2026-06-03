@@ -5,7 +5,7 @@ import { rateLimit, clientIp } from '@/lib/rate-limit';
 export const runtime = 'nodejs';
 
 const BACKEND = process.env.NEXT_PUBLIC_API_URL || 'https://api.shambaiq.com';
-const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
+const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 interface FarmerContext {
   name: string | null;

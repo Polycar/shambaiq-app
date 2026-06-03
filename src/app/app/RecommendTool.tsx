@@ -633,7 +633,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         setCompanionSeeds(null);
       }
 
-      // Query AI crop matcher with precise soil properties
+      // Query AI crop matcher — fetch weather first so it feeds into crop scoring
       if (res.county_data) {
         const soilPayload = {
           pH: res.county_data.pH,
@@ -644,33 +644,36 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           texture: res.county_data.Texture || "Loam"
         };
 
-        fetch("/api/agronomy/match-crops", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            county: resolvedCounty,
-            acres,
-            soil: soilPayload,
-            lat,
-            lon
-          })
-        })
-        .then(r => r.json())
-        .then((data) => {
-          if (data.matches) {
-            setCropMatches(data.matches);
-          }
-        })
-        .catch((e) => console.error("Failed to fetch precise crop matches:", e));
-      }
+        const month = new Date().getMonth() + 1;
+        const season = month >= 3 && month <= 5 ? "Long Rains (March–May)"
+          : month >= 10 && month <= 12 ? "Short Rains (October–December)"
+          : month >= 6 && month <= 9 ? "Long Dry Season (June–September)"
+          : "Short Dry Season (December–February)";
+        const countyInfo = counties.find((c) => c.county.toLowerCase() === resolvedCounty.toLowerCase());
+        const zone = countyInfo?.zone || "";
 
-      // Fire weather in background — prefer coordinate-based weather
-      if (lat && lon) {
-        getWeather(lat, lon).then(setWeather).catch(() => {
-          getWeatherByCounty(resolvedCounty).then(setWeather).catch(() => {});
-        });
-      } else {
-        getWeatherByCounty(resolvedCounty).then(setWeather).catch(() => {});
+        const weatherFetch = (lat && lon)
+          ? getWeather(lat, lon).catch(() => getWeatherByCounty(resolvedCounty).catch(() => null))
+          : getWeatherByCounty(resolvedCounty).catch(() => null);
+
+        weatherFetch
+          .then((weatherData) => {
+            if (weatherData) setWeather(weatherData);
+            const weatherSummary = weatherData ? {
+              summary: weatherData.summary,
+              avg_temp_max: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_max, 0) / weatherData.forecast.length),
+              avg_temp_min: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_min, 0) / weatherData.forecast.length),
+              total_rain_7d: Math.round(weatherData.forecast.reduce((s, d) => s + d.rain_mm, 0)),
+            } : null;
+            return fetch("/api/agronomy/match-crops", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
+            });
+          })
+          .then(r => r.json())
+          .then((data) => { if (data.matches) setCropMatches(data.matches); })
+          .catch((e) => console.error("Failed to fetch precise crop matches:", e));
       }
     } catch {
       // Railway backend failed — fall back to Gemini AI agronomic advice
@@ -699,28 +702,39 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             nitrogen: countyData.nitrogen,
             phosphorus: countyData.phosphorus,
             potassium: countyData.potassium,
-            organic_carbon: 18.0, // baseline estimate
+            organic_carbon: 18.0,
             texture: "Loam"
           } : null;
 
-          fetch("/api/agronomy/match-crops", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              county: resolvedCounty,
-              acres,
-              soil: soilPayload,
-              lat,
-              lon
+          const month = new Date().getMonth() + 1;
+          const season = month >= 3 && month <= 5 ? "Long Rains (March–May)"
+            : month >= 10 && month <= 12 ? "Short Rains (October–December)"
+            : month >= 6 && month <= 9 ? "Long Dry Season (June–September)"
+            : "Short Dry Season (December–February)";
+          const zone = countyData?.zone || "";
+
+          const weatherFetch = (lat && lon)
+            ? getWeather(lat, lon).catch(() => getWeatherByCounty(resolvedCounty).catch(() => null))
+            : getWeatherByCounty(resolvedCounty).catch(() => null);
+
+          weatherFetch
+            .then((weatherData) => {
+              if (weatherData) setWeather(weatherData);
+              const weatherSummary = weatherData ? {
+                summary: weatherData.summary,
+                avg_temp_max: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_max, 0) / weatherData.forecast.length),
+                avg_temp_min: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_min, 0) / weatherData.forecast.length),
+                total_rain_7d: Math.round(weatherData.forecast.reduce((s, d) => s + d.rain_mm, 0)),
+              } : null;
+              return fetch("/api/agronomy/match-crops", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
+              });
             })
-          })
-          .then(r => r.json())
-          .then((data) => {
-            if (data.matches) {
-              setCropMatches(data.matches);
-            }
-          })
-          .catch((e) => console.error("Failed to fetch precise matches in fallback flow:", e));
+            .then(r => r.json())
+            .then((data) => { if (data.matches) setCropMatches(data.matches); })
+            .catch((e) => console.error("Failed to fetch precise matches in fallback flow:", e));
         } else {
           setError(lang === "en" ? "Unable to get advice — please try again." : "Imeshindwa kupata ushauri — jaribu tena.");
         }

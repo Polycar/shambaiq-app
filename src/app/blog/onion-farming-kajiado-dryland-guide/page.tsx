@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion Farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What fertilizer should I use for onions in Kajiado?", answer: "Kajiado's alkaline soils above pH 7.5 require ammonium sulfate rather than urea or CAN as the nitrogen source, because ammonium sulfate acidifies the soil slightly with every application, gradually correcting the alkalinity that blocks zinc and iron uptake. At planting apply NPK 17:17:17 at 50 kg per acre. Top-dress with ammonium sulfate at 50 kg per acre at three weeks and again at six weeks. Avoid DAP on highly alkaline soils — it raises pH further. Get a farm-specific plan at shambaiq.com/app?county=kajiado&crop=onion." },
@@ -71,7 +71,7 @@ export default function OnionKajiadoPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion Farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />

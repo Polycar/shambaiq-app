@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Cheapest way fix acidic soil", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Cheapest Way Fix Acidic Soil", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "Coming soon", answer: "This section is being updated with detailed FAQ content." },
@@ -36,7 +36,7 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Cheapest way fix acidic soil", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Cheapest Way Fix Acidic Soil", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />

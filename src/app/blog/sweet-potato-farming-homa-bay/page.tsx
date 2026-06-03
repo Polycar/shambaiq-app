@@ -225,7 +225,7 @@ export default function SweetPotatoHomaBayPage() {
             { name: "Home", url: BASE_URL },
             { name: "Blog", url: `${BASE_URL}/blog` },
             { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
-            { name: "Sweet potato farming Homa Bay", url: `${BASE_URL}/blog/${POST.slug}` },
+            { name: "Sweet Potato Farming Homa Bay", url: `${BASE_URL}/blog/${POST.slug}` },
           ]}
         />
 

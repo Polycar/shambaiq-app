@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic soil restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic Soil Restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is the best cover crop for Machakos dryland soils?", answer: "Pigeon peas are the single best cover crop for Machakos dryland conditions. They are drought-tolerant to 600 mm annual rainfall, fix 40 to 80 kg of atmospheric nitrogen per acre per season, produce deep tap roots that break compacted alfisol hardpan, add significant organic matter through leaf litter, and produce an edible grain that provides income. Cowpeas are the second-best choice — faster-growing than pigeon peas and better suited to the shortest planting windows during unreliable short rains. Get a Machakos-specific rotation plan at shambaiq.com/app?county=machakos." },
@@ -66,7 +66,7 @@ export default function OrganicSoilMachakosPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic soil restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic Soil Restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean Farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What fertilizer should I use for beans in Kakamega?", answer: "Beans in Kakamega's leached acidic soils need phosphorus at planting but should not receive nitrogen fertilizer. Apply rock phosphate or DAP at 25 to 30 kg per acre directly into the planting furrow. Do not add CAN, urea, or any nitrogen — beans fix their own nitrogen through Rhizobium bacteria in root nodules. Adding nitrogen fertilizer suppresses nodule formation and wastes money while reducing the natural N-fixation that makes beans so valuable in a rotation. With Rhizobium inoculant and rock phosphate, Kakamega bean farmers can produce 8 to 12 bags per acre with virtually zero nitrogen cost. Get a farm-specific plan at shambaiq.com/app?county=kakamega&crop=beans." },
@@ -69,7 +69,7 @@ export default function BeanKakamegaPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean Farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />

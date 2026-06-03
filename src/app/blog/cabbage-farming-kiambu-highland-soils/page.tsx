@@ -27,7 +27,7 @@ const breadcrumbSchema = makeBreadcrumbSchema([
   { name: "Home", url: BASE_URL },
   { name: "Blog", url: `${BASE_URL}/blog` },
   { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
-  { name: "Cabbage farming in Kiambu", url: `${BASE_URL}/blog/${POST.slug}` },
+  { name: "Cabbage Farming in Kiambu", url: `${BASE_URL}/blog/${POST.slug}` },
 ]);
 
 const faqSchema = makeFAQSchema([
@@ -131,7 +131,7 @@ export default function CabbageKiambuPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Cabbage farming in Kiambu", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Cabbage Farming in Kiambu", url: `${BASE_URL}/blog/${POST.slug}` }]} />
 
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">

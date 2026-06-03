@@ -54,7 +54,7 @@ export async function GET(
           {[
             { label: "pH Range", value: `${crop.ph_min}–${crop.ph_max}` },
             { label: "Yield", value: `${crop.yield_per_acre.toLocaleString()} kg/acre` },
-            { label: "Nitrogen Need", value: crop.n_need },
+            { label: "Nitrogen need", value: crop.n_need },
             { label: "Soil", value: crop.pref_texture },
           ].map((n) => (
             <div key={n.label} style={{ display: "flex", flexDirection: "column" }}>

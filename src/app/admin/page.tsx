@@ -537,7 +537,7 @@ export default function AdminDashboard() {
   const tabs: { key: Tab; label: string; icon: any; badge?: number }[] = [
     { key: "stats", label: "Overview", icon: BarChart3 },
     { key: "b2b", label: "B2B Hub", icon: BarChart3 },
-    { key: "crops", label: "Crop Economics", icon: Wheat },
+    { key: "crops", label: "Crop economics", icon: Wheat },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
@@ -565,9 +565,9 @@ export default function AdminDashboard() {
             { l: "Fields", v: summary.total_fields },
             { l: "Recommendations", v: summary.total_recommendations },
             { l: "Yields", v: summary.total_yields },
-            { l: "Pending Dealers", v: summary.pending_dealers },
-            { l: "Approved Dealers", v: summary.approved_dealers },
-            { l: "Flagged Yields", v: summary.flagged_yields },
+            { l: "Pending dealers", v: summary.pending_dealers },
+            { l: "Approved dealers", v: summary.approved_dealers },
+            { l: "Flagged yields", v: summary.flagged_yields },
           ].map(s => (
             <div key={s.l} className="bg-white rounded-lg p-3 border border-cream-300 text-center">
               <div className="font-display text-xl font-bold text-forest-700">{s.v}</div>
@@ -1071,19 +1071,19 @@ export default function AdminDashboard() {
               const linkSuggestions: { keyword: string; text: string; link: string }[] = [];
               
               if (lowerContent.includes("maize") && !lowerContent.includes("/crops/maize")) {
-                linkSuggestions.push({ keyword: "maize", text: "Maize Farming Guide", link: "/crops/maize" });
+                linkSuggestions.push({ keyword: "maize", text: "Maize farming guide", link: "/crops/maize" });
               }
               if (lowerContent.includes("potato") && !lowerContent.includes("/crops/potato")) {
-                linkSuggestions.push({ keyword: "potato", text: "Potato Farming Guide", link: "/crops/potato" });
+                linkSuggestions.push({ keyword: "potato", text: "Potato farming guide", link: "/crops/potato" });
               }
               if (lowerContent.includes("tomato") && !lowerContent.includes("/crops/tomato")) {
-                linkSuggestions.push({ keyword: "tomato", text: "Tomato Farming Guide", link: "/crops/tomato" });
+                linkSuggestions.push({ keyword: "tomato", text: "Tomato farming guide", link: "/crops/tomato" });
               }
               if (lowerContent.includes("nakuru") && !lowerContent.includes("/soil/nakuru")) {
-                linkSuggestions.push({ keyword: "nakuru", text: "Nakuru Soil Report", link: "/soil/nakuru" });
+                linkSuggestions.push({ keyword: "nakuru", text: "Nakuru soil report", link: "/soil/nakuru" });
               }
               if (lowerContent.includes("meru") && !lowerContent.includes("/soil/meru")) {
-                linkSuggestions.push({ keyword: "meru", text: "Meru Soil Report", link: "/soil/meru" });
+                linkSuggestions.push({ keyword: "meru", text: "Meru soil report", link: "/soil/meru" });
               }
               if (lowerContent.includes("uasin") && !lowerContent.includes("/soil/uasin-gishu")) {
                 linkSuggestions.push({ keyword: "uasin", text: "Uasin Gishu Soil Report", link: "/soil/uasin-gishu" });
@@ -1127,7 +1127,7 @@ export default function AdminDashboard() {
                   <div className="lg:col-span-2 bg-white rounded-2xl border border-cream-300 p-6 shadow-sm">
                     <div className="flex justify-between items-center mb-6 pb-4 border-b border-cream-100">
                       <div>
-                        <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
+                        <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit post" : "Create new post"}</h2>
                         <p className="text-xs text-soil-500">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
                       </div>
                       <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setFocusKeyword(""); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
@@ -1152,7 +1152,7 @@ export default function AdminDashboard() {
                             onChange={e => setBlogForm({ ...blogForm, category: e.target.value })} 
                             className="w-full px-4 py-3 border border-cream-300 rounded-xl bg-white text-forest-700 focus:outline-none focus:border-gold-400"
                           >
-                            {["Guide", "Data Report", "Soil Science", "Fertilizer", "Seasonal", "News"].map(c => <option key={c}>{c}</option>)}
+                            {["Guide", "Data report", "Soil science", "Fertilizer", "Seasonal", "News"].map(c => <option key={c}>{c}</option>)}
                           </select>
                         </div>
                         
@@ -1314,7 +1314,7 @@ export default function AdminDashboard() {
                       <div className="flex gap-3 pt-2">
                         <button onClick={saveBlogPost} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors shadow-sm">
                           {blogSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
-                          {editing ? "Update Post" : "Create Post"}
+                          {editing ? "Update post" : "Create post"}
                         </button>
                         {editing && blogForm.status === "draft" && (
                           <button onClick={async () => {
@@ -1378,7 +1378,7 @@ export default function AdminDashboard() {
                           <span className="font-display text-3xl font-extrabold text-forest-700">{score}<span className="text-sm font-normal text-soil-300">/100</span></span>
                         </div>
                         <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${scoreColor}`}>
-                          {score >= 80 ? "Excellent" : score >= 50 ? "Good" : "Needs Work"}
+                          {score >= 80 ? "Excellent" : score >= 50 ? "Good" : "Needs work"}
                         </span>
                       </div>
 
@@ -1414,7 +1414,7 @@ export default function AdminDashboard() {
                         </div>
                         {/* Blue Google link title */}
                         <a href="#" className="font-sans text-[#1a0dab] hover:underline font-normal text-[17px] leading-tight block truncate">
-                          {blogForm.title || "Post Title Preview"}
+                          {blogForm.title || "Post title preview"}
                         </a>
                         {/* Snippet Description */}
                         <p className="text-xs text-soil-500 font-sans leading-relaxed line-clamp-2">

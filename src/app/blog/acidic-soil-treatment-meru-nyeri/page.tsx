@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic soil treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic Soil Treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is the soil pH in Meru and Nyeri counties?", answer: "Meru County's volcanic highland soils commonly range from pH 4.5 to 5.5 across the upper slopes of Mount Kenya. Nyeri County is similar, with pH 4.8 to 5.6 across the Aberdare footzones and Kieni areas. Both counties contain pockets below pH 4.5 where aluminium toxicity severely limits crop production. ShambaIQ's precision mapping shows your exact farm pH at shambaiq.com/app?county=meru." },
@@ -68,7 +68,7 @@ export default function AcidicSoilMeruNyeriPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic soil treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic Soil Treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />

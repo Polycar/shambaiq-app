@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why your soil is acidic Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why Your Soil Is Acidic Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
 const faqSchema = makeFAQSchema([
   { question: "What causes soil acidity in Kenya?", answer: "Three mechanisms combine: volcanic parent material weathers to inherently acidic clay minerals across highland Kenya; heavy rainfall (900 to 1,800 mm per year) leaches calcium, magnesium, and potassium from topsoil leaving hydrogen and aluminium dominant; and nitrogen fertilizers like urea and CAN acidify soil with each application through the nitrification process. Most Kenyan highland soils experience all three simultaneously." },
   { question: "How do I know if my soil is acidic?", answer: "Use ShambaIQ precision mapping at shambaiq.com for your farm-specific pH reading. Without a test, field indicators suggesting pH below 5.5 include: stunted yellowing maize despite fertilizer application, plants that respond poorly to CAN top-dressing, and short stubby root systems with brown tips when you pull plants. These symptoms indicate aluminium toxicity caused by low pH." },
@@ -58,7 +58,7 @@ export default function WhySoilAcidicPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why your soil is acidic", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why Your Soil Is Acidic", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />

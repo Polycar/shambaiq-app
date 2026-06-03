@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete maize farming guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "How many bags of maize can I get per acre in Kenya?", answer: "With optimal soil pH (6.0–6.8), correct fertilizer application (1 bag DAP at planting + 1 bag CAN top-dress), a certified hybrid variety suited to your altitude, and adequate rainfall or irrigation, Kenyan farmers in highland counties achieve 25 to 35 bags of 90 kg per acre. In highland zones with good management and two seasons, 30 bags per acre is a realistic target. In ASAL zones with drought-tolerant varieties and good management, 12 to 20 bags per acre is achievable. Average Kenyan smallholder maize yield is currently 8 to 12 bags per acre — most of the gap is explained by soil pH, wrong variety, and fertilizer timing errors that ShambaIQ can identify for your specific farm." },
@@ -67,7 +67,7 @@ export default function CompleteMaizeGuidePage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete maize farming guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />

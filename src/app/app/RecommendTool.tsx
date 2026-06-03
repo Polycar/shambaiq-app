@@ -629,8 +629,18 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary }),
         });
+        if (!matchRes.ok) {
+          const errData = await matchRes.json().catch(() => ({}));
+          throw new Error((errData as any).error || `Crop matching failed (${matchRes.status})`);
+        }
         const matchData = await matchRes.json();
-        if (matchData.matches) setCropMatches(matchData.matches);
+        if (matchData.matches && matchData.matches.length > 0) {
+          setCropMatches(matchData.matches);
+        } else {
+          setError(lang === "en"
+            ? "No crop recommendations found. Please try again in a moment."
+            : "Hakuna mapendekezo ya mazao yaliyopatikana. Jaribu tena baadaye.");
+        }
         return;
       }
 
@@ -710,9 +720,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
             });
           })
-          .then(r => r.json())
-          .then((data) => { if (data.matches) setCropMatches(data.matches); })
-          .catch((e) => console.error("Failed to fetch precise crop matches:", e));
+          .then(r => {
+            if (!r.ok) throw new Error(`match-crops ${r.status}`);
+            return r.json();
+          })
+          .then((data) => { if (data.matches && data.matches.length > 0) setCropMatches(data.matches); })
+          .catch((e) => console.error("Failed to fetch crop matches:", e));
       }
     } catch {
       // Railway backend failed — fall back to Gemini AI agronomic advice
@@ -771,9 +784,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
               });
             })
-            .then(r => r.json())
-            .then((data) => { if (data.matches) setCropMatches(data.matches); })
-            .catch((e) => console.error("Failed to fetch precise matches in fallback flow:", e));
+            .then(r => {
+              if (!r.ok) throw new Error(`match-crops ${r.status}`);
+              return r.json();
+            })
+            .then((data) => { if (data.matches && data.matches.length > 0) setCropMatches(data.matches); })
+            .catch((e) => console.error("Failed to fetch crop matches in fallback flow:", e));
         } else {
           setError(lang === "en" ? "Unable to get advice — please try again." : "Imeshindwa kupata ushauri — jaribu tena.");
         }
@@ -2103,7 +2119,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         )}
 
         {/* Item 14 (mobile): Empty state visible on all devices */}
-        {!loading && !result && !geminiAdvice && (
+        {!loading && !result && !geminiAdvice && !cropMatches?.length && (
           <div className="flex flex-col items-center justify-center min-h-[200px] lg:min-h-[400px] text-center px-8 rounded-2xl border-2 border-dashed border-cream-300 bg-cream-50">
             <div className="w-16 h-16 rounded-2xl bg-forest-700/8 flex items-center justify-center mb-4">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2d5a27" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

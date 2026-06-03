@@ -400,6 +400,7 @@ function openPrintReport(result: any, acres: number, lang: string) {
       </table>
     </div>` : "";
 
+  const seedsHtml = (result.seeds && result.seeds.length > 0) ? `
     <div class="section">
       <div class="section-title">Certified seed varieties — ${result.crop}</div>
       <table class="tbl">

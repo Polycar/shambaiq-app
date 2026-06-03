@@ -53,25 +53,25 @@ const breadcrumbSchema = {
 
 const CREDENTIALS = [
   {
-    label: "MSc Agricultural Environmental Engineering",
+    label: "MSc agricultural environmental engineering",
     org: "University of Debrecen, Hungary",
     year: "2026",
     type: "degree",
   },
   {
-    label: "Bachelor of Business Administration",
-    org: "Accounting · Finance · HR Management · Marketing",
+    label: "Bachelor of business administration",
+    org: "Accounting · finance · HR management · marketing",
     year: "—",
     type: "degree",
   },
   {
-    label: "SEO Expert Certification",
+    label: "SEO expert certification",
     org: "Coursera",
     year: "2023",
     type: "certificate",
   },
   {
-    label: "EASA Licensed Drone Pilot",
+    label: "EASA licensed drone pilot",
     org: "European Union Aviation Safety Agency",
     year: "Active",
     type: "license",
@@ -80,27 +80,27 @@ const CREDENTIALS = [
 
 const SKILLS = [
   {
-    area: "Soil Science",
+    area: "Soil science",
     detail:
       "MSc Thesis: AI-assisted Geostatistical and stochastic mapping of heavy metal contamination in urban soils, Debrecen Hungary, 493 samples, seven parameters, using IDW, Kriging, and Sequential Gaussian Simulation. Deep understanding of soil chemistry, nutrient cycling, and agronomic interpretation. Built an interactive WebGIS Dashboard to monitor hotspots, uncertainty, and probability of exceedance.",
   },
   {
-    area: "GIS and Remote Sensing",
+    area: "GIS and remote sensing",
     detail:
       "Geospatial analysis of soil and environmental data at county and farm scale. Proficient in spatial interpolation, raster analysis, and satellite-derived land use interpretation across Kenyan agroecological zones.",
   },
   {
-    area: "Environmental Impact Assessment",
+    area: "Environmental impact assessment",
     detail:
       "Trained in EIA frameworks, baseline data collection, stakeholder engagement, and mitigation planning. Familiar with Kenya NEMA regulatory standards and EU environmental assessment directives.",
   },
   {
-    area: "Environmental Monitoring",
+    area: "Environmental monitoring",
     detail:
       "Field and laboratory monitoring of soil, water, and atmospheric parameters. Experience with heavy metal analysis, soil nutrient profiling, and environmental quality reporting.",
   },
   {
-    area: "Precision Agriculture",
+    area: "Precision agriculture",
     detail:
       "Built ShambaIQ — a precision soil intelligence platform providing science-based soil quality scores and crop-specific fertilizer recommendations for all 47 Kenyan counties using high-resolution satellite soil data.",
   },
@@ -110,12 +110,12 @@ const SKILLS = [
       "Understanding of watershed dynamics, soil water retention, and drainage design relevant to dryland and irrigated farming systems across Kenya's diverse agroecological zones.",
   },
   {
-    area: "EASA Licensed Drone Pilot",
+    area: "EASA licensed drone pilot",
     detail:
       "Licenced to operate UAVs for aerial surveying, crop scouting, and environmental monitoring under EASA regulations. Enables field-level data collection beyond what satellite resolution provides.",
   },
   {
-    area: "Search Engine Optimisation",
+    area: "Search engine optimisation",
     detail:
       "Coursera SEO Expert Certified. Designed the full ShambaIQ SEO architecture: 1,380+ auto-generated pages, complete structured data stack (BreadcrumbList, Article, FAQPage, HowTo, HowTo, Person, Organization), Kiswahili content strategy, and a zero-budget backlink outreach plan.",
   },
@@ -149,7 +149,7 @@ export default function AboutPage() {
                 Polycarp Andabwa
               </h1>
               <p className="text-gold-700 font-semibold mb-3">
-                Agricultural Environmental Engineer · EASA Drone Pilot · Founder, ShambaIQ
+                Agricultural environmental engineer · EASA drone pilot · founder, ShambaIQ
               </p>
               <p className="text-soil-500 leading-relaxed max-w-2xl">
                 I built ShambaIQ because precision soil data existed at farm-level resolution

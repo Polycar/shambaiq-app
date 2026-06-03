@@ -55,7 +55,7 @@ const TOC_ITEMS: TOCItem[] = [
   { id: "kakamega-bean-potential", label: "Why Kakamega beans are an underperforming asset", level: 2 },
   { id: "soil-data", label: "Kakamega soil data for beans", level: 2 },
   { id: "rhizobium", label: "Rhizobium inoculant — free nitrogen from the air", level: 2 },
-  { id: "varieties", label: "Certified bean varieties for western Kenya", level: 2 },
+  { id: "varieties", label: "Certified bean varieties for Western Kenya", level: 2 },
   { id: "fertilizer", label: "Phosphorus-only fertilizer programme", level: 2 },
   { id: "disease", label: "Bean common mosaic virus management", level: 2 },
   { id: "howto", label: "Step-by-step growing guide", level: 2 },
@@ -177,7 +177,7 @@ export default function BeanKakamegaPage() {
             </section>
 
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified bean varieties for western Kenya</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified bean varieties for Western Kenya</h2>
               <div className="grid sm:grid-cols-2 gap-4 mb-5">
                 {[
                   { variety: "Kenya Mavuno", type: "Climbing bush", maturity: "70 – 80 days", yield: "10 – 14 bags/acre", notes: "KEPHIS-certified. Excellent angular leaf spot resistance — the primary foliar disease in Kakamega's humid conditions. High protein content preferred by Nairobi dry bean processors." },

@@ -279,7 +279,7 @@ export default function AcidicSoilMeruNyeriPage() {
                   { href: "/soil/meru/maize", label: "Maize in Meru — after liming" },
                   { href: "/blog/why-your-soil-is-acidic-kenya", label: "Why your soil is acidic — Kenya guide" },
                   { href: "/dealers/meru", label: "Agrovets in Meru county" },
-                  { href: "/zones/central-highlands", label: "Central highlands zone" },
+                  { href: "/zones/central-highlands", label: "Central Highlands zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -324,7 +324,7 @@ export default function AcidicSoilMeruNyeriPage() {
               <div className="bg-white border border-cream-300 rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Related Counties</p>
                 <div className="space-y-1.5">
-                  {[{ slug: "nyeri", name: "Nyeri" }, { slug: "kirinyaga", name: "Kirinyaga" }, { slug: "tharaka-nithi", name: "Tharaka nithi" }, { slug: "embu", name: "Embu" }].map(({ slug, name }) => (
+                  {[{ slug: "nyeri", name: "Nyeri" }, { slug: "kirinyaga", name: "Kirinyaga" }, { slug: "tharaka-nithi", name: "Tharaka Nithi" }, { slug: "embu", name: "Embu" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">
                       <span>{name} County</span><span className="text-gold-500 text-xs">→</span>
                     </Link>

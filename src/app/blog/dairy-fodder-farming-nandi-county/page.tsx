@@ -296,7 +296,7 @@ export default function DairyFodderNandiPage() {
                   { href: "/soil/nandi", label: "Nandi county soil report" },
                   { href: "/crops/napier-grass", label: "Napier grass crop guide" },
                   { href: "/soil/nandi/maize", label: "Silage maize in Nandi" },
-                  { href: "/soil/uasin-gishu", label: "Uasin gishu — neighbouring county" },
+                  { href: "/soil/uasin-gishu", label: "Uasin Gishu — neighbouring county" },
                   { href: "/dealers/nandi", label: "Agrovets in Nandi county" },
                   { href: "/zones/western-highlands", label: "Western highlands zone" },
                 ].map(({ href, label }) => (
@@ -343,7 +343,7 @@ export default function DairyFodderNandiPage() {
               <div className="bg-white border border-cream-300 rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
-                  {[{ slug: "uasin-gishu", name: "Uasin gishu" }, { slug: "kakamega", name: "Kakamega" }, { slug: "kericho", name: "Kericho" }, { slug: "elgeyo-marakwet", name: "Elgeyo marakwet" }].map(({ slug, name }) => (
+                  {[{ slug: "uasin-gishu", name: "Uasin Gishu" }, { slug: "kakamega", name: "Kakamega" }, { slug: "kericho", name: "Kericho" }, { slug: "elgeyo-marakwet", name: "Elgeyo marakwet" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">
                       <span>{name} County</span><span className="text-gold-500 text-xs">→</span>
                     </Link>

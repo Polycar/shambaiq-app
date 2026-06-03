@@ -188,7 +188,7 @@ export default async function BlogPage() {
     "@context": "https://schema.org",
     "@type": "Blog",
     "@id": `${BASE_URL}/blog#blog`,
-    name: "ShambaIQ Farming Blog",
+    name: "ShambaIQ farming blog",
     description: "Data-driven farming guides for Kenya. County soil rankings, crop guides, fertilizer comparisons, and seasonal advice based on 30m precision satellite soil data.",
     url: `${BASE_URL}/blog`,
     inLanguage: "en-KE",
@@ -207,7 +207,7 @@ export default async function BlogPage() {
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
 
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
-        ShambaIQ Blog
+        ShambaIQ blog
       </h1>
       <p className="text-soil-500 mb-10 max-w-2xl">
         Data-driven farming guides, county soil reports, and seasonal advice. Every article uses real 30m precision satellite soil data covering all 47 Kenyan counties.

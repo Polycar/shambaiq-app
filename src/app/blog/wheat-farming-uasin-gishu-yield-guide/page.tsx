@@ -27,7 +27,7 @@ const breadcrumbSchema = makeBreadcrumbSchema([
   { name: "Home", url: BASE_URL },
   { name: "Blog", url: `${BASE_URL}/blog` },
   { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
-  { name: "Wheat farming in uasin gishu", url: `${BASE_URL}/blog/${POST.slug}` },
+  { name: "Wheat farming in Uasin Gishu", url: `${BASE_URL}/blog/${POST.slug}` },
 ]);
 
 const faqSchema = makeFAQSchema([
@@ -58,7 +58,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to grow wheat in uasin gishu county — precision fertilizer and disease management guide",
+  name: "How to grow wheat in Uasin Gishu county — precision fertilizer and disease management guide",
   description: "A data-driven step-by-step guide to growing high-yield wheat on the Uasin Gishu plateau, covering soil preparation, phosphorus fertilization, tillering management, and rust control.",
   totalTime: "P130D",
   estimatedCost: { currency: "KES", value: "18000–24000 per acre" },
@@ -85,7 +85,7 @@ const howToSchema = makeHowToSchema({
       text: "Plough to 20 cm depth at least two weeks before planting to break up the clay loam structure. Wheat requires a finer seedbed than maize — clods larger than 2 cm prevent seed-to-soil contact and result in patchy emergence. If tractor-ploughed, harrow twice to achieve a crumbly, fine surface. On the Eldoret plateau where compaction from machinery is common, sub-soil if hardpan is detected at 15 to 20 cm depth.",
     },
     {
-      name: "Apply DAP at 1.5 bags per acre in the seed furrow",
+      name: "Apply DAP at 1.5 Bags per acre in the seed furrow",
       text: "Apply DAP at 75 kg per acre (1.5 x 50 kg bags) directly into the seed furrow at a depth of 5 to 7 cm, covered with 2 to 3 cm of soil before placing seed. The higher DAP rate than standard maize recommendations reflects Uasin Gishu's specific phosphorus deficiency. Never reduce this to one bag to save cost — phosphorus at planting is the single highest-return investment in Uasin Gishu wheat and cannot be compensated by later top-dressing.",
     },
     {
@@ -112,12 +112,12 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "uasin-gishu-wheat", label: "Why uasin gishu dominates Kenya's wheat belt", level: 2 },
+  { id: "uasin-gishu-wheat", label: "Why Uasin Gishu dominates Kenya's wheat belt", level: 2 },
   { id: "soil-data", label: "Soil data — the phosphorus deficiency problem", level: 2 },
   { id: "varieties", label: "Certified wheat varieties for the plateau", level: 2 },
   { id: "fertilizer", label: "Phosphorus-first fertilizer programme", level: 2 },
   { id: "disease", label: "Rust disease management", level: 2 },
-  { id: "planting-calendar", label: "Planting calendar for uasin gishu", level: 2 },
+  { id: "planting-calendar", label: "Planting calendar for Uasin Gishu", level: 2 },
   { id: "howto", label: "Step-by-step growing guide", level: 2 },
   { id: "budget", label: "Cost and revenue budget per acre", level: 2 },
   { id: "faq", label: "Frequently asked questions", level: 2 },
@@ -129,7 +129,7 @@ export default function WheatUasinGishuPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Wheat farming in uasin gishu", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Wheat farming in Uasin Gishu", url: `${BASE_URL}/blog/${POST.slug}` }]} />
 
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
@@ -145,7 +145,7 @@ export default function WheatUasinGishuPage() {
                 <Link href="/crops/wheat" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Wheat</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Wheat farming in uasin gishu:{" "}
+                Wheat farming in Uasin Gishu:{" "}
                 <span className="text-gold-700">Data-driven yield maximization on the Eldoret plateau</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
@@ -166,7 +166,7 @@ export default function WheatUasinGishuPage() {
             </figure>
 
             <section>
-              <h2 id="uasin-gishu-wheat" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why uasin gishu dominates Kenya's wheat belt</h2>
+              <h2 id="uasin-gishu-wheat" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Uasin Gishu dominates Kenya's wheat belt</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya imports approximately 80 percent of its wheat consumption, making domestic wheat production both a food security priority and a significant commercial opportunity. Uasin Gishu — centred on Eldoret at 2,100 metres above sea level — accounts for over 40 percent of Kenya's domestic wheat harvest, making it the single most important wheat-producing county in the country.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -190,7 +190,7 @@ export default function WheatUasinGishuPage() {
                 <table className="w-full text-sm">
                   <caption className="sr-only">Uasin Gishu County soil nutrient values versus wheat requirements</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Nutrient", "Uasin gishu average", "Wheat optimum", "Status", "Implication"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Nutrient", "Uasin Gishu average", "Wheat optimum", "Status", "Implication"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -223,7 +223,7 @@ export default function WheatUasinGishuPage() {
             </section>
 
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified wheat varieties for the uasin gishu plateau</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified wheat varieties for the Uasin Gishu plateau</h2>
               <p className="text-soil-600 leading-relaxed mb-5">KEPHIS certifies three primary wheat varieties for the Uasin Gishu altitude band. All three are bred specifically for the East African highland environment and carry resistance profiles suited to the rust pressure common on the plateau.</p>
               <div className="grid sm:grid-cols-3 gap-4 mb-5">
                 {[
@@ -248,7 +248,7 @@ export default function WheatUasinGishuPage() {
             </section>
 
             <section>
-              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Phosphorus-first fertilizer programme for uasin gishu wheat</h2>
+              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Phosphorus-first fertilizer programme for Uasin Gishu wheat</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Wheat has a narrower fertilization window than maize. Phosphorus must be in the seed zone at germination — it cannot be remedied after emergence. Nitrogen must be delivered precisely at tillering — too early it leaches before the crop can use it, too late the tiller number is already fixed. The two-stage programme below maps to these biological windows.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
@@ -276,7 +276,7 @@ export default function WheatUasinGishuPage() {
             </section>
 
             <section>
-              <h2 id="disease" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Rust disease management on the uasin gishu plateau</h2>
+              <h2 id="disease" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Rust disease management on the Uasin Gishu plateau</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Rust diseases are the primary biological constraint on wheat yields in Uasin Gishu. Stem rust (Puccinia graminis Ug99 race) and stripe rust (Puccinia striiformis) both thrive in the plateau's cool, humid long rains conditions. A severe rust epidemic can destroy 50 to 80 percent of yield in an unprotected field within three weeks of initial infection. Management requires two simultaneous lines of defence.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
@@ -296,7 +296,7 @@ export default function WheatUasinGishuPage() {
             </section>
 
             <section>
-              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting calendar for uasin gishu</h2>
+              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting calendar for Uasin Gishu</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-6">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Wheat planting calendar for Uasin Gishu County Kenya 2026</caption>
@@ -326,7 +326,7 @@ export default function WheatUasinGishuPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing wheat in uasin gishu county</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing wheat in Uasin Gishu county</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -341,7 +341,7 @@ export default function WheatUasinGishuPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and revenue budget per acre — uasin gishu wheat 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and revenue budget per acre — Uasin Gishu wheat 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Wheat production cost and revenue per acre Uasin Gishu County Kenya 2026</caption>
@@ -396,12 +396,12 @@ export default function WheatUasinGishuPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/uasin-gishu", label: "Uasin gishu county soil report" },
+                  { href: "/soil/uasin-gishu", label: "Uasin Gishu county soil report" },
                   { href: "/crops/wheat", label: "Wheat crop guide — all counties" },
-                  { href: "/blog/nakuru-vs-uasin-gishu-best-county-wheat", label: "Nakuru vs uasin gishu — wheat comparison" },
-                  { href: "/soil/uasin-gishu/maize", label: "Maize in uasin gishu — rotation crop" },
-                  { href: "/dealers/uasin-gishu", label: "Agrovets in uasin gishu county" },
-                  { href: "/zones/rift-valley", label: "Rift valley agroecological zone" },
+                  { href: "/blog/nakuru-vs-uasin-gishu-best-county-wheat", label: "Nakuru vs Uasin Gishu — wheat comparison" },
+                  { href: "/soil/uasin-gishu/maize", label: "Maize in Uasin Gishu — rotation crop" },
+                  { href: "/dealers/uasin-gishu", label: "Agrovets in Uasin Gishu county" },
+                  { href: "/zones/rift-valley", label: "Rift Valley agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -448,7 +448,7 @@ export default function WheatUasinGishuPage() {
               <div className="bg-white border border-cream-300 rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
-                  {[{ slug: "trans-nzoia", name: "Trans nzoia" }, { slug: "nandi", name: "Nandi" }, { slug: "elgeyo-marakwet", name: "Elgeyo marakwet" }, { slug: "baringo", name: "Baringo" }].map(({ slug, name }) => (
+                  {[{ slug: "trans-nzoia", name: "Trans Nzoia" }, { slug: "nandi", name: "Nandi" }, { slug: "elgeyo-marakwet", name: "Elgeyo marakwet" }, { slug: "baringo", name: "Baringo" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">
                       <span>{name} County</span>
                       <span className="text-gold-500 text-xs">→</span>

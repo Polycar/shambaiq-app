@@ -69,7 +69,7 @@ export default function WhySoilAcidicPage() {
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
                 Why your soil is acidic in Kenya:
-                <span className="text-gold-700">3 causes and how to fix them</span>
+                <span className="text-gold-700">3 Causes and how to fix them</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Soil acidity is Kenya's most widespread and most under-diagnosed crop yield problem. Across the Central Highlands, Western Kenya, and the Mount Kenya counties, more than 60 percent of agricultural land has soil pH below 5.5 — a threshold where aluminium becomes toxic, phosphorus locks out, and nitrogen fertilizer efficiency drops by 30 to 50 percent. Most farmers know their soil is poor but not why, or what specifically to do about it. This guide explains the three causes and three solutions for Kenya's specific context.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
@@ -219,7 +219,7 @@ export default function WhySoilAcidicPage() {
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8">
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
-                {[{ href: "/blog/acidic-soil-treatment-meru-nyeri", label: "Acidic soil treatment — Meru & Nyeri" }, { href: "/blog/cheapest-way-fix-acidic-soil-kenya", label: "Cheapest way to fix acidic soil" }, { href: "/blog/dap-vs-can-vs-npk-fertilizer-guide-kenya", label: "DAP vs CAN vs NPK guide" }, { href: "/blog/kenya-county-soil-rankings-2026", label: "Kenya county soil rankings 2026" }, { href: "/zones/central-highlands", label: "Central highlands zone" }, { href: "/app", label: "Check your farm's pH now" }].map(({ href, label }) => (
+                {[{ href: "/blog/acidic-soil-treatment-meru-nyeri", label: "Acidic soil treatment — Meru & Nyeri" }, { href: "/blog/cheapest-way-fix-acidic-soil-kenya", label: "Cheapest way to fix acidic soil" }, { href: "/blog/dap-vs-can-vs-npk-fertilizer-guide-kenya", label: "DAP vs CAN vs NPK guide" }, { href: "/blog/kenya-county-soil-rankings-2026", label: "Kenya county soil rankings 2026" }, { href: "/zones/central-highlands", label: "Central Highlands zone" }, { href: "/app", label: "Check your farm's pH now" }].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
               </div>

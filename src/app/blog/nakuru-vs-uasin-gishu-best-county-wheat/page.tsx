@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs uasin gishu wheat", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs Uasin Gishu wheat", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "Coming soon", answer: "This section is being updated with detailed FAQ content." },
@@ -36,7 +36,7 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs uasin gishu wheat", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs Uasin Gishu wheat", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
@@ -45,7 +45,7 @@ export default function Page() {
                 <Link href="/blog?category=comparisons" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Comparisons</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Nakuru vs uasin gishu:
+                Nakuru vs Uasin Gishu:
                 <span className="text-gold-700">Which is Kenya's best wheat county?</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Nakuru and Uasin Gishu produce over 70 percent of Kenya's wheat. Both offer excellent highland conditions but differ in altitude distribution, disease pressure, and market infrastructure. ShambaIQ's precision soil mapping reveals where each county has the advantage.</p>
@@ -64,12 +64,12 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="soil-comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil data: Nakuru vs uasin gishu</h2>
+              <h2 id="soil-comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil data: Nakuru vs Uasin Gishu</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Soil comparison Nakuru versus Uasin Gishu for wheat production Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Parameter", "Nakuru", "Uasin gishu", "Wheat optimum"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Parameter", "Nakuru", "Uasin Gishu", "Wheat optimum"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Altitude range", "1,800\u20132,200 m", "1,800\u20132,400 m", "> 1,800 m"], ["Soil pH", "5.8\u20136.8", "5.5\u20136.5", "6.0\u20137.0"], ["Phosphorus (mg/kg)", "10\u201320", "8\u201318", "> 15"], ["Nitrogen (g/kg)", "1.4\u20132.2", "1.5\u20132.4", "> 1.5"], ["Organic Carbon (%)", "1.8\u20132.8", "2.0\u20133.2", "> 2.0"], ["Annual Rainfall", "800\u20131,000 mm", "900\u20131,200 mm", "700\u20131,000 mm"], ["Humidity", "Moderate\u2013High", "Moderate", "Low preferred"], ["Stem rust risk", "Moderate\u2013High", "Moderate", "Variety dependent"]].map(([p, nak, ug, opt], i) => (

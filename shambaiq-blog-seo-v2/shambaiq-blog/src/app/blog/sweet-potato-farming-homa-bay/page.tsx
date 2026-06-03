@@ -107,7 +107,7 @@ const articleSchema = makeArticleSchema({
 const breadcrumbSchema = makeBreadcrumbSchema([
   { name: "Home", url: BASE_URL },
   { name: "Blog", url: `${BASE_URL}/blog` },
-  { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
+  { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
   { name: POST.title, url: `${BASE_URL}/blog/${POST.slug}` },
 ]);
 
@@ -235,8 +235,8 @@ export default function SweetPotatoHomaBayPage() {
           items={[
             { name: "Home", url: BASE_URL },
             { name: "Blog", url: `${BASE_URL}/blog` },
-            { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
-            { name: "Sweet Potato Farming Homa Bay", url: `${BASE_URL}/blog/${POST.slug}` },
+            { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
+            { name: "Sweet potato farming Homa Bay", url: `${BASE_URL}/blog/${POST.slug}` },
           ]}
         />
 
@@ -280,7 +280,7 @@ export default function SweetPotatoHomaBayPage() {
                 className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4"
               >
                 Sweet potato farming in Homa Bay:{" "}
-                <span className="text-gold-600">the complete Lake Victoria shore guide</span>
+                <span className="text-gold-600">The complete Lake Victoria shore guide</span>
               </h1>
 
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
@@ -496,7 +496,7 @@ export default function SweetPotatoHomaBayPage() {
                 </table>
               </div>
 
-              <h3 className="text-lg font-semibold text-forest-800 mb-3">Application Schedule</h3>
+              <h3 className="text-lg font-semibold text-forest-800 mb-3">Application schedule</h3>
               <div className="space-y-3 mb-6">
                 {[
                   { time: "At planting (Day 0)", action: "Apply Mavuno Sweet Potato at 50 kg/acre into the ridge. Incorporate organic compost at 2 tonnes/acre if available." },
@@ -532,7 +532,7 @@ export default function SweetPotatoHomaBayPage() {
                 {[
                   { name: "Kabode", flesh: "Orange", dry: "28–32%", yield: "10–14 t/acre", notes: "High beta-carotene. Drought-tolerant. Best for nutrition programmes." },
                   { name: "SPK004 (Vita)", flesh: "Orange", dry: "25–28%", yield: "8–12 t/acre", notes: "Sweetest flavour. Preferred for fresh Kisumu market." },
-                  { name: "Kakamega Farmer Choice", flesh: "Cream/orange", dry: "26–30%", yield: "9–13 t/acre", notes: "Adapted to Western Kenya humidity. Good storability." },
+                  { name: "Kakamega farmer choice", flesh: "Cream/orange", dry: "26–30%", yield: "9–13 t/acre", notes: "Adapted to Western Kenya humidity. Good storability." },
                   { name: "White Star", flesh: "White", dry: "32–36%", yield: "8–11 t/acre", notes: "High dry matter. Chips and crisps market. Lower beta-carotene." },
                 ].map((v) => (
                   <div key={v.name} className="bg-white border border-cream-300 rounded-xl p-4">
@@ -701,7 +701,7 @@ export default function SweetPotatoHomaBayPage() {
                       <td className="px-4 py-3 font-bold">~KES 12,400</td>
                     </tr>
                     <tr className="bg-gold-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected Revenue (10 t/acre @ KES 20/kg)</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected revenue (10 t/acre @ KES 20/kg)</td>
                       <td className="px-4 py-3 font-bold text-gold-800">KES 200,000</td>
                     </tr>
                   </tbody>
@@ -743,12 +743,12 @@ export default function SweetPotatoHomaBayPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/homa-bay", label: "Homa Bay County Soil Report" },
-                  { href: "/crops/sweet-potato", label: "Sweet Potato Crop Guide (All Counties)" },
-                  { href: "/soil/homa-bay/maize", label: "Maize in Homa Bay — Compare Rotation" },
-                  { href: "/soil/homa-bay/beans", label: "Beans in Homa Bay — Rotation Crop 3" },
-                  { href: "/dealers/homa-bay", label: "Agrovets in Homa Bay County" },
-                  { href: "/zones/lake-victoria-basin", label: "Lake Victoria Basin Agroecological Zone" },
+                  { href: "/soil/homa-bay", label: "Homa Bay county soil report" },
+                  { href: "/crops/sweet-potato", label: "Sweet potato crop guide (all counties)" },
+                  { href: "/soil/homa-bay/maize", label: "Maize in Homa Bay — compare rotation" },
+                  { href: "/soil/homa-bay/beans", label: "Beans in Homa Bay — rotation crop 3" },
+                  { href: "/dealers/homa-bay", label: "Agrovets in Homa Bay county" },
+                  { href: "/zones/lake-victoria-basin", label: "Lake Victoria Basin agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link
                     key={href}
@@ -764,9 +764,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── FAQ Section ── */}
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">
-                Frequently Asked Questions
-              </h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map(
                   (item: { name: string; acceptedAnswer: { text: string } }, i: number) => (

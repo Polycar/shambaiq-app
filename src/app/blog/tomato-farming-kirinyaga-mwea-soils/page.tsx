@@ -113,7 +113,7 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "kirinyaga-tomato", label: "Why Kirinyaga is central Kenya's tomato hub", level: 2 },
+  { id: "kirinyaga-tomato", label: "Why Kirinyaga is Central Kenya's tomato hub", level: 2 },
   { id: "black-cotton", label: "Black cotton soils — understanding the challenge", level: 2 },
   { id: "blossom-end-rot", label: "Blossom end rot — the calcium problem explained", level: 2 },
   { id: "soil-data", label: "Kirinyaga soil data for tomatoes", level: 2 },
@@ -168,7 +168,7 @@ export default function TomatoKirinyagaPage() {
             </figure>
 
             <section>
-              <h2 id="kirinyaga-tomato" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kirinyaga is central Kenya's tomato hub</h2>
+              <h2 id="kirinyaga-tomato" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kirinyaga is Central Kenya's tomato hub</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya's tomato production is concentrated in a handful of counties, and Kirinyaga — specifically the Mwea irrigation scheme — plays an outsized role in supplying Nairobi's wholesale markets year-round. Three structural factors explain this concentration.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -441,7 +441,7 @@ export default function TomatoKirinyagaPage() {
                   { href: "/soil/kirinyaga/beans", label: "Beans in Kirinyaga — rotation crop" },
                   { href: "/soil/murang-a/tomato", label: "Tomato in muranga — compare" },
                   { href: "/dealers/kirinyaga", label: "Agrovets in Kirinyaga county" },
-                  { href: "/zones/central-highlands", label: "Central highlands agroecological zone" },
+                  { href: "/zones/central-highlands", label: "Central Highlands agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}

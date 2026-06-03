@@ -251,7 +251,7 @@ export default function SemiAridKenyaPage() {
                 <table className="w-full text-sm">
                   <caption className="sr-only">Drip irrigation economics for smallholder farms in semi-arid Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "0.25 acre system", "0.5 acre system", "1 acre system"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "0.25 Acre system", "0.5 Acre system", "1 Acre system"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[

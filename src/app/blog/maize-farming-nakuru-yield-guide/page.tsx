@@ -345,7 +345,7 @@ export default function MaizeNakuruPage() {
                   { href: "/soil/nakuru/beans", label: "Beans in Nakuru — rotation crop" },
                   { href: "/soil/nakuru/wheat", label: "Wheat in Nakuru — compare yields" },
                   { href: "/dealers/nakuru", label: "Agrovets in Nakuru county" },
-                  { href: "/zones/rift-valley", label: "Rift valley agroecological zone" },
+                  { href: "/zones/rift-valley", label: "Rift Valley agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}

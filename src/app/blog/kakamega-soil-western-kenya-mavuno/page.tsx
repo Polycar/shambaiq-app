@@ -54,7 +54,7 @@ export default function Page() {
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
                 Kakamega soil guide:
-                <span className="text-gold-700">Mavuno fertilizer vs DAP — which wins on western Kenya soils?</span>
+                <span className="text-gold-700">Mavuno fertilizer vs DAP — which wins on Western Kenya soils?</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Mavuno is Kenya's most popular compound fertilizer brand — formulations developed specifically for East African soils. In Kakamega County's phosphorus-deficient, slightly acidic soils, the question of Mavuno vs DAP is one of the most common decisions smallholder farmers face. The answer depends on your specific soil nutrient profile. This guide uses ShambaIQ's precision data for Kakamega to show exactly when each product wins.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">

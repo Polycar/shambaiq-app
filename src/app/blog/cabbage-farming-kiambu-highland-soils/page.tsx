@@ -457,7 +457,7 @@ export default function CabbageKiambuPage() {
                   { href: "/soil/kiambu/kale", label: "Kale (sukuma wiki) in Kiambu" },
                   { href: "/soil/murang-a/cabbage", label: "Cabbage in muranga — compare" },
                   { href: "/dealers/kiambu", label: "Agrovets in Kiambu county" },
-                  { href: "/zones/central-highlands", label: "Central highlands agroecological zone" },
+                  { href: "/zones/central-highlands", label: "Central Highlands agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}

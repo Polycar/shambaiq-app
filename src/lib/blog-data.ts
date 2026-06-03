@@ -142,7 +142,7 @@ export const ALL_POSTS: BlogPost[] = [
 
   {
     slug: "maize-farming-nakuru-yield-guide",
-    title: "Nakuru County maize guide: maximize yields this season",
+    title: "Nakuru county maize guide: maximize yields this season",
     metaTitle: "Maize Farming in Nakuru — Fertilizer, Soil, Yields | ShambaIQ",
     metaDescription:
       "Nakuru maize farming guide: pH 6.0–6.8 loam soils in Rongai, Njoro, Molo. Basal NPK 23:21:0 or DAP + CAN top-dressing plan, certified varieties, and KES budget per acre.",

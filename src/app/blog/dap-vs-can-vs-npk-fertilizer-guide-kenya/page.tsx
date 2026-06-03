@@ -97,7 +97,7 @@ export default function Page() {
                 <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                   <h3 className="font-semibold text-green-800 text-sm mb-2">Use DAP when:</h3>
                   <div className="space-y-1 text-xs text-green-700">
-                    {["Soil pH is 5.5 to 7.0 (acidic to neutral)", "Soil phosphorus is below 15 mg/kg", "Planting maize, wheat, potato, or vegetables", "You need the most P per shilling spent"].map((t) => <p key={t} className="flex gap-2"><span>✓</span>{t}</p>)}
+                    {["Soil pH is 5.5 To 7.0 (Acidic to neutral)", "Soil phosphorus is below 15 mg/kg", "Planting maize, wheat, potato, or vegetables", "You need the most P per shilling spent"].map((t) => <p key={t} className="flex gap-2"><span>✓</span>{t}</p>)}
                   </div>
                 </div>
                 <div className="bg-red-50 border border-red-200 rounded-xl p-4">

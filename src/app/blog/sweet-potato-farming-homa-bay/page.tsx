@@ -134,7 +134,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to grow sweet potatoes in homa bay — step-by-step guide",
+  name: "How to grow sweet potatoes in Homa Bay — step-by-step guide",
   description:
     "A science-backed planting guide for orange-fleshed sweet potatoes on Homa Bay's sandy-loam Lake Victoria soils using ShambaIQ precision data nutrient data.",
   totalTime: "P90D",
@@ -186,12 +186,12 @@ const howToSchema = makeHowToSchema({
 // ── 3. Table of Contents ──────────────────────────────────────────────────────
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "why-homa-bay", label: "Why homa bay is ideal for sweet potatoes", level: 2 },
-  { id: "soil-data", label: "Homa bay soil data (ShambaIQ precision data)", level: 2 },
+  { id: "why-homa-bay", label: "Why Homa Bay is ideal for sweet potatoes", level: 2 },
+  { id: "soil-data", label: "Homa Bay soil data (ShambaIQ precision data)", level: 2 },
   { id: "nitrogen-mistake", label: "The nitrogen mistake halving your yields", level: 2 },
   { id: "fertilizer-guide", label: "Fertilizer guide: what to use and when", level: 2 },
-  { id: "varieties", label: "Best certified varieties for western Kenya", level: 2 },
-  { id: "planting-calendar", label: "Planting calendar for homa bay", level: 2 },
+  { id: "varieties", label: "Best certified varieties for Western Kenya", level: 2 },
+  { id: "planting-calendar", label: "Planting calendar for Homa Bay", level: 2 },
   { id: "rotation", label: "Maize–sweet potato rotation strategy", level: 2 },
   { id: "howto", label: "Step-by-step growing guide", level: 2 },
   { id: "budget", label: "Budget: KES cost per acre", level: 2 },
@@ -225,7 +225,7 @@ export default function SweetPotatoHomaBayPage() {
             { name: "Home", url: BASE_URL },
             { name: "Blog", url: `${BASE_URL}/blog` },
             { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
-            { name: "Sweet potato farming homa bay", url: `${BASE_URL}/blog/${POST.slug}` },
+            { name: "Sweet potato farming Homa Bay", url: `${BASE_URL}/blog/${POST.slug}` },
           ]}
         />
 
@@ -267,8 +267,8 @@ export default function SweetPotatoHomaBayPage() {
                 itemProp="headline"
                 className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4"
               >
-                Sweet potato farming in homa bay:{" "}
-                <span className="text-gold-700">The complete lake victoria shore guide</span>
+                Sweet potato farming in Homa Bay:{" "}
+                <span className="text-gold-700">The complete Lake Victoria shore guide</span>
               </h1>
 
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
@@ -313,7 +313,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 1: Why Homa Bay ── */}
             <section>
-              <h2 id="why-homa-bay" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why homa bay is one of kenya&rsquo;s best sweet potato counties</h2>
+              <h2 id="why-homa-bay" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Homa Bay is one of Kenya&rsquo;s best sweet potato counties</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Kenya produces over <strong>900,000 tonnes of sweet potatoes annually</strong>, making
                 it the third-largest crop by volume after maize and beans. But production is
@@ -351,7 +351,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 2: Soil Data ── */}
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Homa bay soil data — what ShambaIQ precision data satellite mapping shows</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Homa Bay soil data — what ShambaIQ precision data satellite mapping shows</h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 ShambaIQ pulls soil nutrient data from{" "}
                 <Link href="/about" className="text-gold-700 hover:underline">
@@ -367,7 +367,7 @@ export default function SweetPotatoHomaBayPage() {
                   <caption className="sr-only">Homa Bay County Average Soil Nutrient Values from ShambaIQ precision data</caption>
                   <thead className="bg-forest-700 text-white">
                     <tr>
-                      {["Nutrient", "Homa bay value", "Sweet potato optimum", "Status"].map((h) => (
+                      {["Nutrient", "Homa Bay value", "Sweet potato optimum", "Status"].map((h) => (
                         <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
                       ))}
                     </tr>
@@ -407,7 +407,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 3: The Nitrogen Mistake ── */}
             <section>
-              <h2 id="nitrogen-mistake" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">The nitrogen mistake that&rsquo;s halving yields across homa bay</h2>
+              <h2 id="nitrogen-mistake" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">The nitrogen mistake that&rsquo;s halving yields across Homa Bay</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Walk through any sweet potato farm in Nyanza and you&rsquo;ll see the same
                 pattern: <strong>lush, dark-green, sprawling vines</strong> — and disappointingly
@@ -451,7 +451,7 @@ export default function SweetPotatoHomaBayPage() {
                   <caption className="sr-only">Fertilizer comparison for sweet potato farming in Homa Bay Kenya</caption>
                   <thead className="bg-forest-700 text-white">
                     <tr>
-                      {["Fertilizer", "N-p-k", "Use for sweet potato?", "Why"].map((h) => (
+                      {["Fertilizer", "N-P-K", "Use for sweet potato?", "Why"].map((h) => (
                         <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
                       ))}
                     </tr>
@@ -494,7 +494,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 5: Varieties ── */}
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best certified sweet potato varieties for western Kenya</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best certified sweet potato varieties for Western Kenya</h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 Only plant{" "}
                 <Link href="https://www.kephis.org" className="text-gold-700 hover:underline" rel="noopener noreferrer" target="_blank">
@@ -511,7 +511,7 @@ export default function SweetPotatoHomaBayPage() {
                   { name: "Kabode", flesh: "Orange", dry: "28–32%", yield: "10–14 t/acre", notes: "High beta-carotene. Drought-tolerant. Best for nutrition programmes." },
                   { name: "SPK004 (Vita)", flesh: "Orange", dry: "25–28%", yield: "8–12 t/acre", notes: "Sweetest flavour. Preferred for fresh Kisumu market." },
                   { name: "Kakamega farmer choice", flesh: "Cream/orange", dry: "26–30%", yield: "9–13 t/acre", notes: "Adapted to Western Kenya humidity. Good storability." },
-                  { name: "White star", flesh: "White", dry: "32–36%", yield: "8–11 t/acre", notes: "High dry matter. Chips and crisps market. Lower beta-carotene." },
+                  { name: "White Star", flesh: "White", dry: "32–36%", yield: "8–11 t/acre", notes: "High dry matter. Chips and crisps market. Lower beta-carotene." },
                 ].map((v) => (
                   <div key={v.name} className="bg-white border border-cream-300 rounded-xl p-4">
                     <h3 className="font-semibold text-forest-800 mb-2">{v.name}</h3>
@@ -535,7 +535,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 6: Planting Calendar ── */}
             <section>
-              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting calendar for homa bay</h2>
+              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting calendar for Homa Bay</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-6">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Sweet potato planting calendar for Homa Bay County Kenya</caption>
@@ -568,7 +568,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 7: Rotation ── */}
             <section>
-              <h2 id="rotation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Maize–sweet potato rotation: the smartest sequence for homa bay</h2>
+              <h2 id="rotation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Maize–sweet potato rotation: the smartest sequence for Homa Bay</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Continuous maize on Homa Bay soils progressively depletes nitrogen and organic
                 carbon while allowing striga (<em>Striga hermonthica</em>) weed buildup — the
@@ -611,7 +611,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 8: HowTo Steps ── */}
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: how to grow sweet potatoes in homa bay</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: how to grow sweet potatoes in Homa Bay</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li
@@ -639,7 +639,7 @@ export default function SweetPotatoHomaBayPage() {
 
             {/* ── SECTION 9: Budget ── */}
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Budget: total KES cost per acre in homa bay</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Budget: total KES cost per acre in Homa Bay</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Sweet potato production cost per acre in Homa Bay Kenya 2026</caption>
@@ -713,12 +713,12 @@ export default function SweetPotatoHomaBayPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/homa-bay", label: "Homa bay county soil report" },
+                  { href: "/soil/homa-bay", label: "Homa Bay county soil report" },
                   { href: "/crops/sweet-potato", label: "Sweet potato crop guide (all counties)" },
-                  { href: "/soil/homa-bay/maize", label: "Maize in homa bay — compare rotation" },
-                  { href: "/soil/homa-bay/beans", label: "Beans in homa bay — rotation crop 3" },
-                  { href: "/dealers/homa-bay", label: "Agrovets in homa bay county" },
-                  { href: "/zones/lake-victoria-basin", label: "Lake victoria basin agroecological zone" },
+                  { href: "/soil/homa-bay/maize", label: "Maize in Homa Bay — compare rotation" },
+                  { href: "/soil/homa-bay/beans", label: "Beans in Homa Bay — rotation crop 3" },
+                  { href: "/dealers/homa-bay", label: "Agrovets in Homa Bay county" },
+                  { href: "/zones/lake-victoria-basin", label: "Lake Victoria Basin agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link
                     key={href}

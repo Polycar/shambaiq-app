@@ -130,8 +130,11 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
           ],
           generationConfig: {
             temperature: 0.2,
-            maxOutputTokens: 1500,
+            maxOutputTokens: 4096,
             responseMimeType: 'application/json',
+            thinkingConfig: {
+              thinkingBudget: 0,
+            },
           },
         }),
       }

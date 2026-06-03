@@ -83,7 +83,13 @@ Respond ONLY with a raw JSON object in exactly this format (no markdown, no back
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.2, maxOutputTokens: 600 },
+          generationConfig: {
+            temperature: 0.2,
+            maxOutputTokens: 4096,
+            thinkingConfig: {
+              thinkingBudget: 0,
+            },
+          },
         }),
       }
     );

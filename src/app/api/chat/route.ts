@@ -333,7 +333,13 @@ ${farmerBlock ? '\n' + farmerBlock : ''}`;
           systemInstruction: { parts: [{ text: systemInstruction }] },
           contents,
           tools: [{ functionDeclarations: TOOL_DECLARATIONS }],
-          generationConfig: { temperature: 0.3, maxOutputTokens: 1500 },
+           generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 4096,
+            thinkingConfig: {
+              thinkingBudget: 0,
+            },
+          },
         }),
       });
 

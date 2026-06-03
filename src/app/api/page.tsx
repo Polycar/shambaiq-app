@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 import { ArrowRight, Code, Cpu, Database, Globe, Key, Terminal } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -15,11 +17,66 @@ export const metadata: Metadata = {
     "shambaiq developer",
     "farming data endpoint",
   ].join(", "),
+  alternates: { canonical: `${BASE_URL}/api` },
+  openGraph: {
+    title: "ShambaIQ Open Soil & Crop API — Free for Developers",
+    description: "Free REST API for Kenya soil health data. pH, N, P, K, and crop suitability for all 47 counties. No authentication required.",
+    url: `${BASE_URL}/api`,
+    images: [{ url: `${BASE_URL}/api/og`, width: 1200, height: 630, alt: "ShambaIQ Developer API Documentation" }],
+  },
+  twitter: { card: "summary_large_image", title: "ShambaIQ Free Soil & Crop API", description: "Free REST API for Kenya soil data and crop suitability. No auth, no rate limits. Build for smallholder farmers.", images: [`${BASE_URL}/api/og`] },
+  robots: { index: true, follow: true },
 };
 
 export default function ApiDocsPage() {
+  const apiSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: "ShambaIQ Open Soil & Crop API Documentation",
+    description: "Free REST API for hyper-local Kenya soil health data (pH, N, P, K) and crop suitability scoring across all 47 counties.",
+    url: `${BASE_URL}/api`,
+    inLanguage: "en-KE",
+    about: { "@type": "Thing", name: "Agricultural Data API", description: "REST API for Kenya soil and crop data" },
+    publisher: { "@id": `${BASE_URL}/#organization` },
+  };
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Is the ShambaIQ API free to use?",
+        acceptedAnswer: { "@type": "Answer", text: "Yes. The ShambaIQ API is completely free with no API key required. There are no rate limits for public use, allowing you to start building immediately." },
+      },
+      {
+        "@type": "Question",
+        name: "What data does the ShambaIQ soil API return?",
+        acceptedAnswer: { "@type": "Answer", text: "The /county/{county_slug}/soil endpoint returns pH, Total Nitrogen (g/kg), Extractable Phosphorus (mg/kg), Extractable Potassium (mg/kg), and Organic Carbon (g/kg) for any of Kenya's 47 counties, derived from 30m-resolution satellite data." },
+      },
+      {
+        "@type": "Question",
+        name: "How do I get fertilizer recommendations from the API?",
+        acceptedAnswer: { "@type": "Answer", text: "POST to /recommend with a JSON body containing county, crop, current_fertilizer, farm_size_acres, lang, and price_mode. The API returns tailored basal and top-dressing bag quantities, a budget breakdown, and a soil health score." },
+      },
+      {
+        "@type": "Question",
+        name: "Which crops does the ShambaIQ crop suitability API support?",
+        acceptedAnswer: { "@type": "Answer", text: "The API calculates suitability indices for over 25 major Kenyan crops including Maize, Beans, Tea, Coffee, Wheat, Potatoes, Sugarcane, Sorghum, and more, based on regional soil chemistry models." },
+      },
+    ],
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Developer API", item: `${BASE_URL}/api` },
+    ],
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <JsonLd schemas={[apiSchema, faqSchema, breadcrumbSchema, ORGANIZATION]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },

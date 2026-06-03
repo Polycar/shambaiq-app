@@ -4,7 +4,7 @@ import { rateLimit, clientIp } from '@/lib/rate-limit';
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
-  const rl = rateLimit(`match-crops:${clientIp(request)}`, 10, 15 * 60 * 1000);
+  const rl = await rateLimit(`match-crops:${clientIp(request)}`, 10, 15 * 60 * 1000);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many requests. Please wait a few minutes before trying again.' },

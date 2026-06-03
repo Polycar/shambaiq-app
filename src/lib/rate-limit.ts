@@ -1,16 +1,55 @@
-// Sliding-window in-memory rate limiter.
-// Per-instance on Vercel serverless — stops casual and automated abuse.
-// For distributed enforcement across many instances, swap the store for Upstash Redis.
+// Distributed rate limiter using Upstash Redis (HTTP-based, safe for Vercel serverless).
+// Falls back to a module-level in-memory Map when UPSTASH_REDIS_REST_URL is not set,
+// so local dev and preview deployments work without any extra config.
 
-interface Entry {
-  timestamps: number[];
+import { Redis } from '@upstash/redis';
+
+export interface RateLimitResult {
+  allowed: boolean;
+  remaining: number;
+  retryAfterSecs: number;
 }
 
-const store = new Map<string, Entry>();
+// ── Upstash path ──────────────────────────────────────────────────────────────
 
-// Periodically purge stale keys to prevent unbounded memory growth.
-// Runs at most once per 10 minutes per module instance.
+let redis: Redis | null = null;
+if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  });
+}
+
+async function redisRateLimit(
+  key: string,
+  limit: number,
+  windowMs: number
+): Promise<RateLimitResult> {
+  const r = redis!;
+  const windowSecs = Math.ceil(windowMs / 1000);
+  const redisKey = `rl:${key}`;
+
+  // INCR is atomic — safe under concurrent Vercel instances
+  const count = await r.incr(redisKey);
+  if (count === 1) {
+    // First request in this window — set TTL
+    await r.expire(redisKey, windowSecs);
+  }
+
+  if (count > limit) {
+    const ttl = await r.ttl(redisKey);
+    return { allowed: false, remaining: 0, retryAfterSecs: Math.max(ttl, 1) };
+  }
+
+  return { allowed: true, remaining: limit - count, retryAfterSecs: 0 };
+}
+
+// ── In-memory fallback ────────────────────────────────────────────────────────
+
+interface Entry { timestamps: number[] }
+const store = new Map<string, Entry>();
 let lastCleanup = 0;
+
 function maybeCleanup(windowMs: number) {
   const now = Date.now();
   if (now - lastCleanup < 10 * 60 * 1000) return;
@@ -21,27 +60,15 @@ function maybeCleanup(windowMs: number) {
   }
 }
 
-export interface RateLimitResult {
-  allowed: boolean;
-  remaining: number;
-  retryAfterSecs: number;
-}
-
-export function rateLimit(
-  key: string,
-  limit: number,
-  windowMs: number
-): RateLimitResult {
+function memoryRateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
   maybeCleanup(windowMs);
   const now = Date.now();
   const cutoff = now - windowMs;
   const entry = store.get(key) ?? { timestamps: [] };
-
   entry.timestamps = entry.timestamps.filter(t => t > cutoff);
 
   if (entry.timestamps.length >= limit) {
-    const oldest = entry.timestamps[0];
-    const retryAfterSecs = Math.ceil((oldest + windowMs - now) / 1000);
+    const retryAfterSecs = Math.ceil((entry.timestamps[0] + windowMs - now) / 1000);
     store.set(key, entry);
     return { allowed: false, remaining: 0, retryAfterSecs };
   }
@@ -49,6 +76,17 @@ export function rateLimit(
   entry.timestamps.push(now);
   store.set(key, entry);
   return { allowed: true, remaining: limit - entry.timestamps.length, retryAfterSecs: 0 };
+}
+
+// ── Public API ────────────────────────────────────────────────────────────────
+
+export async function rateLimit(
+  key: string,
+  limit: number,
+  windowMs: number
+): Promise<RateLimitResult> {
+  if (redis) return redisRateLimit(key, limit, windowMs);
+  return memoryRateLimit(key, limit, windowMs);
 }
 
 export function clientIp(request: Request): string {

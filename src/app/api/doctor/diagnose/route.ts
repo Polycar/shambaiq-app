@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   }
 
   const sessionKey = sessionPhone || token || clientIp(request);
-  const rl = rateLimit(`diagnose:${sessionKey}`, 10, 60 * 60 * 1000);
+  const rl = await rateLimit(`diagnose:${sessionKey}`, 10, 60 * 60 * 1000);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Diagnosis limit reached. You can scan up to 10 plants per hour.' },

@@ -4,7 +4,7 @@ import { rateLimit, clientIp } from '@/lib/rate-limit';
 export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
-  const rl = rateLimit(`doctor-test:${clientIp(request)}`, 5, 60 * 1000);
+  const rl = await rateLimit(`doctor-test:${clientIp(request)}`, 5, 60 * 1000);
   if (!rl.allowed) {
     return NextResponse.json({ error: 'Too many requests.' }, { status: 429 });
   }

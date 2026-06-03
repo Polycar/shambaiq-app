@@ -218,7 +218,7 @@ export async function POST(request: Request) {
   }
 
   const sessionKey = sessionData.phone || sessionData.token || clientIp(request);
-  const rl = rateLimit(`chat:${sessionKey}`, 30, 60 * 60 * 1000);
+  const rl = await rateLimit(`chat:${sessionKey}`, 30, 60 * 60 * 1000);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'You have sent too many messages this hour. Please try again later.' },

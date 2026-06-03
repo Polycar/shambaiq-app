@@ -20,7 +20,7 @@ async function logSoilReport(token: string, payload: object) {
 }
 
 export async function POST(request: Request) {
-  const rl = rateLimit(`agronomy:${clientIp(request)}`, 15, 15 * 60 * 1000);
+  const rl = await rateLimit(`agronomy:${clientIp(request)}`, 15, 15 * 60 * 1000);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many requests. Please wait a few minutes before trying again.' },

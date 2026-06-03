@@ -2212,30 +2212,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 {lang === "en" ? "Share & Download" : "Shiriki na Pakua"}
               </h3>
               <button
-<<<<<<< Updated upstream
                 onClick={() => openPrintReport(result, acres, lang)}
-=======
-                onClick={() => {
-                  const el = resultRef.current;
-                  if (!el) return;
-                  const noprint = el.querySelectorAll('[data-noprint]');
-                  noprint.forEach(n => (n as HTMLElement).style.display = 'none');
-                  const style = document.createElement('style');
-                  style.textContent = `
-                    @media print {
-                      body * { visibility: hidden; }
-                      #shambaiq-results, #shambaiq-results * { visibility: visible; }
-                      #shambaiq-results { position: absolute; left: 0; top: 0; width: 100%; }
-                      /* FIX: Override the inline absolute position to allow pagination */
-                      #shambaiq-results { position: relative !important; left: auto !important; top: auto !important; margin: 0 !important; padding: 0 !important; }
-                    }
-                  `;
-                  document.head.appendChild(style);
-                  window.print();
-                  style.remove();
-                  noprint.forEach(n => (n as HTMLElement).style.display = '');
-                }}
->>>>>>> Stashed changes
                 className="block w-full py-3 rounded-xl text-center font-bold text-cream-100 text-sm cursor-pointer bg-forest-700 hover:bg-forest-600 transition-colors"
               >
                 {lang === "en" ? "Download PDF Report" : "Pakua Ripoti ya PDF"}

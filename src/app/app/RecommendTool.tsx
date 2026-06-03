@@ -427,6 +427,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
   // Crop Matches state
   const [cropMatches, setCropMatches] = useState<CropMatch[] | null>(null);
   const [companionSeeds, setCompanionSeeds] = useState<any[] | null>(null);
+  const [cropUnknown, setCropUnknown] = useState(false);
 
   // Item 3: Read URL params to pre-fill form
   const searchParams = useSearchParams();
@@ -572,7 +573,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     if (locMode === "region" && !county) {
       errors.county = true;
     }
-    if (!crop) {
+    if (!crop && !cropUnknown) {
       errors.crop = true;
     }
     if (Object.keys(errors).length > 0) {
@@ -595,6 +596,44 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     const resolvedCounty = county || "Nairobi";
 
     try {
+      // "I don't know yet" path — skip fertilizer analysis, go straight to crop matches
+      if (cropUnknown) {
+        const countyData = counties.find((c) => c.county.toLowerCase() === resolvedCounty.toLowerCase());
+        const soilPayload = countyData ? {
+          pH: countyData.pH,
+          nitrogen: countyData.nitrogen,
+          phosphorus: countyData.phosphorus,
+          potassium: countyData.potassium,
+          organic_carbon: (countyData as any).organic_carbon ?? 18.0,
+          texture: "Loam",
+        } : null;
+        const month = new Date().getMonth() + 1;
+        const season = month >= 3 && month <= 5 ? "Long Rains (March–May)"
+          : month >= 10 && month <= 12 ? "Short Rains (October–December)"
+          : month >= 6 && month <= 9 ? "Long Dry Season (June–September)"
+          : "Short Dry Season (December–February)";
+        const zone = countyData?.zone || "";
+        const weatherFetch = (lat && lon)
+          ? getWeather(lat, lon).catch(() => getWeatherByCounty(resolvedCounty).catch(() => null))
+          : getWeatherByCounty(resolvedCounty).catch(() => null);
+        const weatherData = await weatherFetch;
+        if (weatherData) setWeather(weatherData);
+        const weatherSummary = weatherData ? {
+          summary: weatherData.summary,
+          avg_temp_max: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_max, 0) / weatherData.forecast.length),
+          avg_temp_min: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_min, 0) / weatherData.forecast.length),
+          total_rain_7d: Math.round(weatherData.forecast.reduce((s, d) => s + d.rain_mm, 0)),
+        } : null;
+        const matchRes = await fetch("/api/agronomy/match-crops", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary }),
+        });
+        const matchData = await matchRes.json();
+        if (matchData.matches) setCropMatches(matchData.matches);
+        return;
+      }
+
       const overrides = labMode
         ? {
             pH: labPH,
@@ -633,7 +672,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         setCompanionSeeds(null);
       }
 
-      // Query AI crop matcher with precise soil properties
+      // Query AI crop matcher — fetch weather first so it feeds into crop scoring
       if (res.county_data) {
         const soilPayload = {
           pH: res.county_data.pH,
@@ -644,33 +683,36 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           texture: res.county_data.Texture || "Loam"
         };
 
-        fetch("/api/agronomy/match-crops", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            county: resolvedCounty,
-            acres,
-            soil: soilPayload,
-            lat,
-            lon
-          })
-        })
-        .then(r => r.json())
-        .then((data) => {
-          if (data.matches) {
-            setCropMatches(data.matches);
-          }
-        })
-        .catch((e) => console.error("Failed to fetch precise crop matches:", e));
-      }
+        const month = new Date().getMonth() + 1;
+        const season = month >= 3 && month <= 5 ? "Long Rains (March–May)"
+          : month >= 10 && month <= 12 ? "Short Rains (October–December)"
+          : month >= 6 && month <= 9 ? "Long Dry Season (June–September)"
+          : "Short Dry Season (December–February)";
+        const countyInfo = counties.find((c) => c.county.toLowerCase() === resolvedCounty.toLowerCase());
+        const zone = countyInfo?.zone || "";
 
-      // Fire weather in background — prefer coordinate-based weather
-      if (lat && lon) {
-        getWeather(lat, lon).then(setWeather).catch(() => {
-          getWeatherByCounty(resolvedCounty).then(setWeather).catch(() => {});
-        });
-      } else {
-        getWeatherByCounty(resolvedCounty).then(setWeather).catch(() => {});
+        const weatherFetch = (lat && lon)
+          ? getWeather(lat, lon).catch(() => getWeatherByCounty(resolvedCounty).catch(() => null))
+          : getWeatherByCounty(resolvedCounty).catch(() => null);
+
+        weatherFetch
+          .then((weatherData) => {
+            if (weatherData) setWeather(weatherData);
+            const weatherSummary = weatherData ? {
+              summary: weatherData.summary,
+              avg_temp_max: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_max, 0) / weatherData.forecast.length),
+              avg_temp_min: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_min, 0) / weatherData.forecast.length),
+              total_rain_7d: Math.round(weatherData.forecast.reduce((s, d) => s + d.rain_mm, 0)),
+            } : null;
+            return fetch("/api/agronomy/match-crops", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
+            });
+          })
+          .then(r => r.json())
+          .then((data) => { if (data.matches) setCropMatches(data.matches); })
+          .catch((e) => console.error("Failed to fetch precise crop matches:", e));
       }
     } catch {
       // Railway backend failed — fall back to Gemini AI agronomic advice
@@ -699,28 +741,39 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             nitrogen: countyData.nitrogen,
             phosphorus: countyData.phosphorus,
             potassium: countyData.potassium,
-            organic_carbon: 18.0, // baseline estimate
+            organic_carbon: 18.0,
             texture: "Loam"
           } : null;
 
-          fetch("/api/agronomy/match-crops", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              county: resolvedCounty,
-              acres,
-              soil: soilPayload,
-              lat,
-              lon
+          const month = new Date().getMonth() + 1;
+          const season = month >= 3 && month <= 5 ? "Long Rains (March–May)"
+            : month >= 10 && month <= 12 ? "Short Rains (October–December)"
+            : month >= 6 && month <= 9 ? "Long Dry Season (June–September)"
+            : "Short Dry Season (December–February)";
+          const zone = countyData?.zone || "";
+
+          const weatherFetch = (lat && lon)
+            ? getWeather(lat, lon).catch(() => getWeatherByCounty(resolvedCounty).catch(() => null))
+            : getWeatherByCounty(resolvedCounty).catch(() => null);
+
+          weatherFetch
+            .then((weatherData) => {
+              if (weatherData) setWeather(weatherData);
+              const weatherSummary = weatherData ? {
+                summary: weatherData.summary,
+                avg_temp_max: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_max, 0) / weatherData.forecast.length),
+                avg_temp_min: Math.round(weatherData.forecast.reduce((s, d) => s + d.temp_min, 0) / weatherData.forecast.length),
+                total_rain_7d: Math.round(weatherData.forecast.reduce((s, d) => s + d.rain_mm, 0)),
+              } : null;
+              return fetch("/api/agronomy/match-crops", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
+              });
             })
-          })
-          .then(r => r.json())
-          .then((data) => {
-            if (data.matches) {
-              setCropMatches(data.matches);
-            }
-          })
-          .catch((e) => console.error("Failed to fetch precise matches in fallback flow:", e));
+            .then(r => r.json())
+            .then((data) => { if (data.matches) setCropMatches(data.matches); })
+            .catch((e) => console.error("Failed to fetch precise matches in fallback flow:", e));
         } else {
           setError(lang === "en" ? "Unable to get advice — please try again." : "Imeshindwa kupata ushauri — jaribu tena.");
         }
@@ -738,7 +791,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
-  }, [county, crop, companionCrop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
+  }, [county, crop, cropUnknown, companionCrop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
 
   // WhatsApp share
   const whatsappUrl = useMemo(() => {
@@ -972,9 +1025,27 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 {t("form_crop", lang)} {crop && <span className="text-xs bg-forest-100 text-forest-700 px-2 py-0.5 rounded-full font-bold ml-1">{crop}</span>}
               </label>
             </div>
+            {/* "I don't know yet" option */}
+            <button
+              type="button"
+              onClick={() => {
+                setCropUnknown(true);
+                setCrop("");
+                setValErrors(prev => ({ ...prev, crop: false }));
+              }}
+              className={`w-full text-left px-4 py-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer flex justify-between items-center mb-2 ${
+                cropUnknown
+                  ? "bg-gold-600 border-gold-600 text-white shadow-sm"
+                  : "bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100"
+              }`}
+            >
+              <span>{lang === "en" ? "I don't know yet — show me what fits my soil" : "Sijui bado — nionyeshe kinachofaa udongo wangu"}</span>
+              {cropUnknown && <span className="text-xs font-bold">✓</span>}
+            </button>
+
             <input
               type="text"
-              placeholder={lang === "en" ? "Search crops..." : "Tafuta mazao..."}
+              placeholder={lang === "en" ? "Or search a specific crop..." : "Au tafuta zao maalum..."}
               value={cropSearch}
               onChange={(e) => setCropSearch(e.target.value)}
               className="w-full mb-1.5 rounded-lg border border-cream-300 bg-cream-50 px-2.5 py-1.5 text-xs text-forest-800 focus:border-forest-600 outline-none transition-colors"
@@ -984,13 +1055,14 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             }`}>
               {filteredCrops.length > 0 ? (
                 filteredCrops.map((c) => {
-                  const isSelected = crop === c.crop;
+                  const isSelected = !cropUnknown && crop === c.crop;
                   return (
                     <button
                       key={c.slug}
                       type="button"
                       onClick={() => {
                         setCrop(c.crop);
+                        setCropUnknown(false);
                         const u = CROP_UNITS[c.crop];
                         setYieldVal(u ? u.def : null);
                         setValErrors(prev => ({ ...prev, crop: false }));
@@ -1196,7 +1268,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           {/* Submit */}
           <button
             onClick={handleSubmit}
-            disabled={loading || (locMode === "region" && !county) || !crop}
+            disabled={loading || (locMode === "region" && !county) || (!crop && !cropUnknown)}
             className={`w-full py-3.5 rounded-xl font-bold text-white text-base transition-all flex items-center justify-center gap-2 shadow-md ${
               loading
                 ? "bg-soil-400 cursor-not-allowed"
@@ -1249,6 +1321,80 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               <div className="skeleton h-3 w-4/5" />
               <div className="skeleton h-3 w-3/5" />
             </div>
+          </div>
+        )}
+
+        {/* ── CROP UNKNOWN RESULT — shown when farmer selects "I don't know yet" ── */}
+        {!result && !geminiAdvice && !loading && cropMatches && cropMatches.length > 0 && (
+          <div ref={resultRef} id="shambaiq-results" className="space-y-4 pb-10 fade-up">
+            <div className="rounded-2xl bg-forest-700 text-cream-100 px-5 py-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gold-300 mb-1">
+                {lang === "en" ? "AI Crop Match — Based on Your Soil, Season & Weather" : "Ulinganisho wa Mazao — Udongo, Msimu & Hali ya Hewa"}
+              </p>
+              <h2 className="font-display text-lg font-bold leading-snug">
+                {lang === "en"
+                  ? `Top crops for ${county || "your area"} right now`
+                  : `Mazao bora kwa ${county || "eneo lako"} sasa hivi`}
+              </h2>
+              {weather && (
+                <p className="text-xs text-cream-300 mt-1">{weather.summary}</p>
+              )}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {cropMatches.map((cm, idx) => {
+                const score = Math.round(cm.match_score);
+                const isExcellent = score >= 85;
+                const isVeryGood = score >= 70 && score < 85;
+                const isGood = score >= 45 && score < 70;
+                const gradientClass = isExcellent ? "from-green-400 to-emerald-600" : isVeryGood ? "from-cyan-400 to-blue-600" : isGood ? "from-amber-400 to-orange-600" : "from-red-400 to-rose-600";
+                const barColor = isExcellent ? "bg-emerald-500" : isVeryGood ? "bg-blue-500" : isGood ? "bg-amber-500" : "bg-red-500";
+                const badgeClass = isExcellent ? "bg-green-50 text-green-700 border-green-200" : isVeryGood ? "bg-blue-50 text-blue-700 border-blue-200" : isGood ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-red-50 text-red-700 border-red-200";
+                const reasonText = lang === "en" ? ((cm as any).reason || `Suitability: ${cm.label}.`) : ((cm as any).reason_sw || `Ubora: ${cm.label}.`);
+                return (
+                  <div key={idx} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div className={`absolute top-0 right-0 h-full w-1.5 bg-gradient-to-b ${gradientClass}`} />
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h4 className="font-bold text-gray-800 text-base">{CROP_EMOJIS[cm.crop] || "🌱"} {cm.crop}</h4>
+                        <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>{cm.label}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-gray-400 font-medium">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
+                        <span className={`font-bold ${isExcellent ? "text-emerald-600" : isVeryGood ? "text-blue-600" : isGood ? "text-amber-600" : "text-red-600"}`}>{score}%</span>
+                      </div>
+                      <div className="w-full bg-gray-100 rounded-full h-1.5 mb-3">
+                        <div className={`${barColor} h-1.5 rounded-full`} style={{ width: `${score}%` }} />
+                      </div>
+                      <p className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border border-gray-100/50 mb-3">{reasonText}</p>
+                    </div>
+                    <div className="space-y-2 mt-auto">
+                      {cm.gross_income > 0 && (
+                        <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+                          <span className="text-gray-400 font-medium">{lang === "en" ? "Est. Gross Income" : "Makadirio ya Mapato"}</span>
+                          <span className="font-extrabold text-forest-700">KES {cm.gross_income.toLocaleString()}/acre</span>
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCrop(cm.crop);
+                          setCropUnknown(false);
+                          const u = CROP_UNITS[cm.crop];
+                          if (u) setYieldVal(u.def);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                        className="w-full py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white text-xs font-bold transition-colors"
+                      >
+                        {lang === "en" ? `Get full plan for ${cm.crop}` : `Pata mpango wa ${cm.crop}`}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-center text-xs text-gray-400 pb-4">
+              {lang === "en" ? "Click any crop above to get fertilizer quantities, costs, and a planting timeline." : "Bofya zao lolote hapo juu kupata kiasi cha mbolea, gharama, na ratiba ya kupanda."}
+            </p>
           </div>
         )}
 
@@ -1317,6 +1463,57 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M5 15l7-7 7 7"/></svg>
               {lang === "en" ? "Change inputs" : "Badilisha maingizo"}
             </button>
+
+            {/* Best Matching Crops — shown at top for all farmers */}
+            {cropMatches && cropMatches.length > 0 && (
+              <div className="rounded-2xl border border-cream-200 bg-white p-5 shadow-sm">
+                <h3 className="font-display font-bold text-base text-forest-700 mb-1 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+                  {lang === "en" ? "Best Crops for Your Soil & Season" : "Mazao Bora kwa Udongo na Msimu Wako"}
+                </h3>
+                <p className="text-xs text-soil-500 mb-4">
+                  {lang === "en" ? "Ranked by soil chemistry, texture, current season, and income potential." : "Imepangwa kwa kemikali ya udongo, umbile, msimu wa sasa, na uwezo wa mapato."}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {cropMatches.map((cm, idx) => {
+                    const score = Math.round(cm.match_score);
+                    const isExcellent = score >= 85;
+                    const isVeryGood = score >= 70 && score < 85;
+                    const isGood = score >= 45 && score < 70;
+                    const gradientClass = isExcellent ? "from-green-400 to-emerald-600" : isVeryGood ? "from-cyan-400 to-blue-600" : isGood ? "from-amber-400 to-orange-600" : "from-red-400 to-rose-600";
+                    const barColor = isExcellent ? "bg-emerald-500" : isVeryGood ? "bg-blue-500" : isGood ? "bg-amber-500" : "bg-red-500";
+                    const badgeClass = isExcellent ? "bg-green-50 text-green-700 border-green-200" : isVeryGood ? "bg-blue-50 text-blue-700 border-blue-200" : isGood ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-red-50 text-red-700 border-red-200";
+                    const reasonText = lang === "en" ? ((cm as any).reason || `Suitability: ${cm.label}.`) : ((cm as any).reason_sw || `Ubora: ${cm.label}.`);
+                    const isCurrentCrop = result?.crop && cm.crop.toLowerCase() === result.crop.toLowerCase();
+                    return (
+                      <div key={idx} className={`border rounded-xl p-3.5 relative overflow-hidden flex flex-col gap-2 ${isCurrentCrop ? "border-forest-500 bg-forest-50" : "border-gray-100 bg-white"}`}>
+                        <div className={`absolute top-0 right-0 h-full w-1 bg-gradient-to-b ${gradientClass}`} />
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-bold text-gray-800 text-sm">{CROP_EMOJIS[cm.crop] || "🌱"} {cm.crop} {isCurrentCrop && <span className="text-[10px] text-forest-600 font-bold">← your choice</span>}</h4>
+                          <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>{cm.label}</span>
+                        </div>
+                        <div>
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-gray-400">{lang === "en" ? "Match" : "Ulinganifu"}</span>
+                            <span className={`font-bold ${isExcellent ? "text-emerald-600" : isVeryGood ? "text-blue-600" : isGood ? "text-amber-600" : "text-red-600"}`}>{score}%</span>
+                          </div>
+                          <div className="w-full bg-gray-100 rounded-full h-1.5">
+                            <div className={`${barColor} h-1.5 rounded-full`} style={{ width: `${score}%` }} />
+                          </div>
+                        </div>
+                        <p className="text-xs text-gray-500 leading-relaxed">{reasonText}</p>
+                        {cm.gross_income > 0 && (
+                          <div className="flex items-center justify-between text-xs pt-1.5 border-t border-gray-100">
+                            <span className="text-gray-400">{lang === "en" ? "Est. Income" : "Mapato"}</span>
+                            <span className="font-extrabold text-forest-700">KES {cm.gross_income.toLocaleString()}/acre</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Item 9: Score with plain-language explanation */}
             <div className="rounded-2xl border border-cream-300 bg-white p-6 text-center shadow-sm">
@@ -1891,88 +2088,6 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </div>
             )}
 
-            {/* Best Matching Crops for Your Soil */}
-            {cropMatches && cropMatches.length > 0 && (
-              <div className="mt-8 mb-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                  </svg>
-                  {lang === "en" ? "Best Matching Crops for Your Soil" : "Mazao Yanayofaa Zaidi kwa Udongo Wako"}
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {cropMatches.map((cm, idx) => {
-                    const score = Math.round(cm.match_score);
-                    const isExcellent = score >= 85;
-                    const isVeryGood = score >= 70 && score < 85;
-                    const isGood = score >= 45 && score < 70;
-                    
-                    const gradientClass = isExcellent 
-                      ? "from-green-400 to-emerald-600" 
-                      : isVeryGood 
-                        ? "from-cyan-400 to-blue-600" 
-                        : isGood 
-                          ? "from-amber-400 to-orange-600" 
-                          : "from-red-400 to-rose-600";
-                          
-                    const barColor = isExcellent 
-                      ? "bg-emerald-500" 
-                      : isVeryGood 
-                        ? "bg-blue-500" 
-                        : isGood 
-                          ? "bg-amber-500" 
-                          : "bg-red-500";
-
-                    const badgeClass = isExcellent
-                      ? "bg-green-50 text-green-700 border-green-200"
-                      : isVeryGood
-                        ? "bg-blue-50 text-blue-700 border-blue-200"
-                        : isGood
-                          ? "bg-amber-50 text-amber-700 border-amber-200"
-                          : "bg-red-50 text-red-700 border-red-200";
-
-                    const reasonText = lang === "en" 
-                      ? ((cm as any).reason || `Highly compatible with your soil's properties (Suitability: ${cm.label}).`)
-                      : ((cm as any).reason_sw || `Inafaa sana kwa mali ya udongo wako (Ubora: ${cm.label}).`);
-
-                    return (
-                      <div key={idx} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between">
-                        <div className={`absolute top-0 right-0 h-full w-1.5 bg-gradient-to-b ${gradientClass}`}></div>
-                        <div>
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <h4 className="font-bold text-gray-800 text-base capitalize">{cm.crop}</h4>
-                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>
-                              {cm.label}
-                            </span>
-                          </div>
-                          
-                          <div className="mt-1 flex items-center justify-between text-xs">
-                            <span className="text-gray-400 font-medium">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
-                            <span className={`font-bold ${isExcellent ? "text-emerald-600" : isVeryGood ? "text-blue-600" : isGood ? "text-amber-600" : "text-red-600"}`}>{score}%</span>
-                          </div>
-                          
-                          <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1 mb-3">
-                            <div className={`${barColor} h-1.5 rounded-full transition-all`} style={{ width: `${score}%` }}></div>
-                          </div>
-                          
-                          <p className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border border-gray-100/50 mb-3">
-                            {reasonText}
-                          </p>
-                        </div>
-                        
-                        {cm.gross_income > 0 && (
-                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs mt-auto">
-                            <span className="text-gray-400 font-medium">{lang === "en" ? "Est. Gross Income" : "Makadirio ya Mapato"}</span>
-                            <span className="font-extrabold text-forest-700">KES {cm.gross_income.toLocaleString()}/acre</span>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
             {/* Footer attribution */}
             <p className="text-center text-xs text-gray-400 pb-6">
               ISRIC / iSDAsoil Precision | Kenyan Agronomic Baselines | ShambaIQ
@@ -1996,7 +2111,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </svg>
             </div>
             <p className="font-display text-lg font-bold text-forest-700 mb-2">{lang === "en" ? "Your results will appear here" : "Matokeo yako yataonekana hapa"}</p>
-            <p className="text-sm text-soil-500 max-w-xs">{lang === "en" ? "Select your county, crop, and farm size \u2014 then get your free soil analysis and fertilizer plan." : "Chagua kaunti yako, zao, na ukubwa wa shamba \u2014 kisha pata uchambuzi wako wa udongo bila malipo."}</p>
+            <p className="text-sm text-soil-500 max-w-xs">{lang === "en" ? "Select your county and a crop \u2014 or choose \"I don't know yet\" to discover what fits your soil best." : "Chagua kaunti yako na zao \u2014 au chagua \"Sijui bado\" kugundua kinachofaa udongo wako."}</p>
           </div>
         )}
 

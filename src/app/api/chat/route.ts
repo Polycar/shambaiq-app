@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -214,6 +215,15 @@ export async function POST(request: Request) {
     }
   } catch {
     return NextResponse.json({ error: 'Unauthorized: Invalid session format' }, { status: 401 });
+  }
+
+  const sessionKey = sessionData.phone || sessionData.token || clientIp(request);
+  const rl = await rateLimit(`chat:${sessionKey}`, 30, 60 * 60 * 1000);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'You have sent too many messages this hour. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfterSecs) } }
+    );
   }
 
   const apiKey = process.env.GEMINI_API_KEY;

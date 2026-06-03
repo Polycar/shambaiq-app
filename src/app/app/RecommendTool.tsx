@@ -825,7 +825,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     const lines = [
       `ShambaIQ Precision Report: ${result.county}`,
       `Primary Crop: ${result.crop}`,
-      `Soil Health Score: ${result.health_score}`,
+      `Soil health score: ${result.health_score}`,
       "",
       ...result.budget.breakdown.map((l) => `${clean(l)}`),
       `Total Budget Estimate: KES ${result.budget.total_budget.toLocaleString()}`,
@@ -1024,7 +1024,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   </select>
                   {ward && selectedWard && (
                     <p className="mt-1 text-xs text-green-700 font-semibold">
-                      Ward Locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
+                      Ward locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
                     </p>
                   )}
                 </div>
@@ -1036,7 +1036,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           {resolvedCoords && (
             <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700 flex items-center gap-2">
               <span className="font-semibold">
-                {lang === "en" ? "iSDA Precision Active" : "Usahihi wa iSDA Umeamilishwa"}
+                {lang === "en" ? "iSDA precision active" : "Usahihi wa iSDA Umeamilishwa"}
               </span>
               <span className="text-green-500">—</span>
               <span>{resolvedCoords.source} ({resolvedCoords.lat.toFixed(4)}, {resolvedCoords.lon.toFixed(4)})</span>
@@ -1395,7 +1395,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     <div className="space-y-2 mt-auto">
                       {cm.gross_income > 0 && (
                         <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                          <span className="text-gray-400 font-medium">{lang === "en" ? "Est. Gross Income" : "Makadirio ya Mapato"}</span>
+                          <span className="text-gray-400 font-medium">{lang === "en" ? "Est. gross income" : "Makadirio ya Mapato"}</span>
                           <span className="font-extrabold text-forest-700">KES {cm.gross_income.toLocaleString()}/acre</span>
                         </div>
                       )}
@@ -1495,7 +1495,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               <div className="rounded-2xl border border-cream-200 bg-white p-5 shadow-sm">
                 <h3 className="font-display font-bold text-base text-forest-700 mb-1 flex items-center gap-2">
                   <svg className="w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
-                  {lang === "en" ? "Best Crops for Your Soil & Season" : "Mazao Bora kwa Udongo na Msimu Wako"}
+                  {lang === "en" ? "Best crops for your soil & season" : "Mazao Bora kwa Udongo na Msimu Wako"}
                 </h3>
                 <p className="text-xs text-soil-500 mb-4">
                   {lang === "en" ? "Ranked by soil chemistry, texture, current season, and income potential." : "Imepangwa kwa kemikali ya udongo, umbile, msimu wa sasa, na uwezo wa mapato."}
@@ -2057,7 +2057,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 }`}
               >
                 {agrLoading
-                  ? (lang === "en" ? "Searching Agrovets..." : "Inatafuta Agroveti...")
+                  ? (lang === "en" ? "Searching agrovets..." : "Inatafuta Agroveti...")
                   : agrShown
                     ? (lang === "en" ? "Hide agrovets" : "Ficha Agroveti")
                     : t("dealers_find", lang)}

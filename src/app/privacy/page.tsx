@@ -144,7 +144,7 @@ export default function PrivacyPage() {
 
           <div className="border-t border-cream-200 pt-6 mt-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center">
             <Link href="/terms" className="text-sm text-forest-600 font-semibold hover:text-forest-800 transition-colors">
-              Read our Terms of Service →
+              Read our terms of service →
             </Link>
             <Link href="/" className="text-sm text-soil-500 hover:text-soil-600 transition-colors">
               ← Back to ShambaIQ

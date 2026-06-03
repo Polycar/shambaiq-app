@@ -102,7 +102,7 @@ export default async function CountySoilPage({ params }: PageProps) {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Soil Reports", href: "/soil" },
+            { label: "Soil reports", href: "/soil" },
             { label: county.zone, href: `/zones/${slugify(county.zone)}` },
             { label: `${county.county} County` },
           ]}
@@ -128,7 +128,7 @@ export default async function CountySoilPage({ params }: PageProps) {
         {/* Nutrient breakdown */}
         <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-6">
-            Nutrient Breakdown
+            Nutrient breakdown
           </h2>
           <div className="space-y-5">
             <NutrientBar
@@ -139,28 +139,28 @@ export default async function CountySoilPage({ params }: PageProps) {
               max={10}
             />
             <NutrientBar
-              label="Total Nitrogen"
+              label="Total nitrogen"
               value={county.nitrogen}
               unit="g/kg"
               type="nitrogen"
               max={2.5}
             />
             <NutrientBar
-              label="Extractable Phosphorus"
+              label="Extractable phosphorus"
               value={county.phosphorus}
               unit="mg/kg"
               type="phosphorus"
               max={50}
             />
             <NutrientBar
-              label="Extractable Potassium"
+              label="Extractable potassium"
               value={county.potassium}
               unit="mg/kg"
               type="potassium"
               max={500}
             />
             <NutrientBar
-              label="Organic Carbon"
+              label="Organic carbon"
               value={county.organicCarbon}
               unit="g/kg"
               type="oc"
@@ -172,7 +172,7 @@ export default async function CountySoilPage({ params }: PageProps) {
         {/* Best crops */}
         <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-2">
-            Best Crops for {county.county}
+            Best crops for {county.county}
           </h2>
           <p className="text-sm text-soil-500 mb-6">
             Scored against {county.county}&apos;s soil nutrients
@@ -227,7 +227,7 @@ export default async function CountySoilPage({ params }: PageProps) {
           {/* Neighbors */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Neighboring Counties
+              Neighboring counties
             </h2>
             <div className="space-y-3">
               {neighbors.map((n) => {
@@ -319,7 +319,7 @@ export default async function CountySoilPage({ params }: PageProps) {
             href={`/app?county=${encodeURIComponent(county.county)}`}
             className="inline-block px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors"
           >
-            Get Free Advice →
+            Get free advice →
           </Link>
         </section>
       </div>

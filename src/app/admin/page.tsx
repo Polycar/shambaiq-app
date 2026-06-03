@@ -524,7 +524,7 @@ export default function AdminDashboard() {
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="w-14 h-14 bg-forest-700/10 rounded-xl flex items-center justify-center mx-auto mb-6"><Lock size={28} className="text-forest-700" /></div>
-        <h1 className="font-display text-2xl font-bold text-forest-700 text-center mb-2">Admin Dashboard</h1>
+        <h1 className="font-display text-2xl font-bold text-forest-700 text-center mb-2">Admin dashboard</h1>
         <p className="text-soil-500 text-center text-sm mb-8">Enter your officer access code</p>
         <input type="password" placeholder="Access code" value={code} onChange={e => setCode(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 mb-4" />
         {authErr && <p className="text-sm text-red-600 mb-4 text-center">Invalid access code</p>}
@@ -550,7 +550,7 @@ export default function AdminDashboard() {
     <>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold text-forest-700">Admin Dashboard</h1>
+        <h1 className="font-display text-2xl font-bold text-forest-700">Admin dashboard</h1>
         <div className="flex gap-2">
           <button onClick={() => fetchTab(tab)} className="flex items-center gap-2 px-4 py-2 text-sm text-soil-500 hover:text-forest-700 border border-cream-300 rounded-lg hover:border-gold-400 transition-colors"><RefreshCw size={14} /> Refresh</button>
           <button onClick={() => { localStorage.removeItem("shambaiq_admin_code"); setAuth(false); setCode(""); }} className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 rounded-lg transition-colors"><X size={14} /> Sign Out</button>
@@ -598,15 +598,15 @@ export default function AdminDashboard() {
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl p-6 border border-cream-300">
-              <h3 className="font-display font-bold text-forest-700 mb-4">Soil Health Issues</h3>
+              <h3 className="font-display font-bold text-forest-700 mb-4">Soil health issues</h3>
               {Object.entries(stats.soil_health || {}).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-500 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
-              <h3 className="font-display font-bold text-forest-700 mb-4">Top Counties</h3>
+              <h3 className="font-display font-bold text-forest-700 mb-4">Top counties</h3>
               {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-500">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
-              <h3 className="font-display font-bold text-forest-700 mb-4">Top Crops</h3>
+              <h3 className="font-display font-bold text-forest-700 mb-4">Top crops</h3>
               {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-500">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
@@ -626,7 +626,7 @@ export default function AdminDashboard() {
           <div className="bg-gradient-to-br from-forest-700 to-forest-800 rounded-2xl p-6 text-white">
             <div className="flex items-center gap-3 mb-2">
               <BarChart3 size={22} className="text-gold-300" />
-              <h2 className="font-display text-xl font-bold">ShambaIQ B2B Data Engine</h2>
+              <h2 className="font-display text-xl font-bold">ShambaIQ B2B data engine</h2>
             </div>
             <p className="text-forest-200 text-sm leading-relaxed">
               Download structured datasets for NGOs, county governments, SACCOs, agri-extensions, and input dealers.
@@ -638,7 +638,7 @@ export default function AdminDashboard() {
             {[
               {
                 key: "ngo",
-                title: "NGO / Dev Partner Report",
+                title: "NGO / dev partner report",
                 description: "Farmer reach, county coverage, crop focus, flagged yield issues, and current market prices. Perfect for impact reporting.",
                 icon: Users,
                 color: "text-blue-600",
@@ -648,7 +648,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "county",
-                title: "County Distribution",
+                title: "County distribution",
                 description: "Farmer counts per county with percentage share. Useful for county extension offices and targeting underserved areas.",
                 icon: MapPin,
                 color: "text-emerald-600",
@@ -658,7 +658,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "crop",
-                title: "Crop Distribution",
+                title: "Crop distribution",
                 description: "Which crops farmers are growing, ranked by adoption. Useful for seed companies and agri-input dealers.",
                 icon: Wheat,
                 color: "text-amber-600",
@@ -668,7 +668,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "dealer",
-                title: "Dealer Gap Analysis",
+                title: "Dealer gap analysis",
                 description: "Counties with farmers but no approved dealer — shows where input supply is weakest and where to open next.",
                 icon: Store,
                 color: "text-purple-600",
@@ -678,7 +678,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "sacco",
-                title: "SACCO / Credit Partner",
+                title: "SACCO / credit partner",
                 description: "County-level creditworthiness proxy, farmer counts, and yield activity. For SACCOs designing agri-loan products.",
                 icon: TrendingUp,
                 color: "text-rose-600",
@@ -688,7 +688,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "full",
-                title: "Full Yield Dataset",
+                title: "Full yield dataset",
                 description: "All yield records with county, crop, yield t/ha, flags, and notes. For research partners and agri-extension services.",
                 icon: FileText,
                 color: "text-soil-600",
@@ -774,7 +774,7 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-xl border border-cream-200 p-5">
             <div className="flex flex-wrap items-center gap-3 mb-2">
               <div className="flex-1">
-                <h3 className="font-semibold text-forest-700">Crop Economics ({cropPrices.length})</h3>
+                <h3 className="font-semibold text-forest-700">Crop economics ({cropPrices.length})</h3>
                 <p className="text-xs text-soil-500 mt-0.5">Click any row to edit. Changes go live on the website immediately.</p>
               </div>
               <button

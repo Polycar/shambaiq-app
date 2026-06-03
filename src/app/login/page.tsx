@@ -169,8 +169,8 @@ export default function FarmerLogin() {
         </div>
         <h1 className="font-display text-3xl md:text-4xl font-bold text-cream-100 mb-2">
           {forgotStep === "none"
-            ? (mode === "login" ? "Welcome Back" : "Start Your Journey")
-            : forgotStep === "done" ? "Password Reset!" : "Reset Password"
+            ? (mode === "login" ? "Welcome back" : "Start your journey")
+            : forgotStep === "done" ? "Password reset!" : "Reset password"
           }
         </h1>
         <p className="text-cream-400/80 text-sm max-w-[300px] mx-auto leading-relaxed">
@@ -191,7 +191,7 @@ export default function FarmerLogin() {
               {forgotStep === "request" && (
                 <>
                   <div>
-                    <label className="text-sm font-bold text-forest-800 mb-2 block">Phone Number or Email</label>
+                    <label className="text-sm font-bold text-forest-800 mb-2 block">Phone number or email</label>
                     <div className="relative">
                       <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-soil-300" />
                       <input
@@ -212,7 +212,7 @@ export default function FarmerLogin() {
                   <button onClick={handleForgotRequest} disabled={forgotLoading}
                     className="w-full bg-gold-500 hover:bg-gold-400 disabled:opacity-70 text-white font-bold py-4 rounded-2xl shadow-lg shadow-gold-500/20 transition-all flex items-center justify-center gap-2">
                     {forgotLoading && <Loader2 size={18} className="animate-spin" />}
-                    Send Reset Code
+                    Send reset code
                   </button>
                 </>
               )}
@@ -220,7 +220,7 @@ export default function FarmerLogin() {
               {forgotStep === "otp" && (
                 <>
                   <div>
-                    <label className="text-sm font-bold text-forest-800 mb-2 block">6-Digit Reset Code</label>
+                    <label className="text-sm font-bold text-forest-800 mb-2 block">6-digit reset code</label>
                     <input
                       type="text"
                       value={forgotOtp}
@@ -231,7 +231,7 @@ export default function FarmerLogin() {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-bold text-forest-800 mb-2 block">New Password</label>
+                    <label className="text-sm font-bold text-forest-800 mb-2 block">New password</label>
                     <div className="relative">
                       <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-soil-300" />
                       <input type="password" value={forgotPw} onChange={e => setForgotPw(e.target.value)}
@@ -242,7 +242,7 @@ export default function FarmerLogin() {
                   <button onClick={handleForgotReset} disabled={forgotLoading}
                     className="w-full bg-gold-500 hover:bg-gold-400 disabled:opacity-70 text-white font-bold py-4 rounded-2xl shadow-lg shadow-gold-500/20 transition-all flex items-center justify-center gap-2">
                     {forgotLoading && <Loader2 size={18} className="animate-spin" />}
-                    Reset Password
+                    Reset password
                   </button>
                   <button onClick={() => { setForgotStep("request"); setForgotMsg(""); }}
                     className="w-full text-center text-sm font-semibold text-soil-500 hover:text-gold-700 py-2 transition-colors">
@@ -258,7 +258,7 @@ export default function FarmerLogin() {
                   <p className="text-soil-500 text-sm">You can now log in with your new password.</p>
                   <button onClick={() => { resetForgot(); setMode("login"); }}
                     className="w-full bg-gold-500 hover:bg-gold-400 text-white font-bold py-4 rounded-2xl shadow-lg shadow-gold-500/20 transition-all">
-                    Back to Login
+                    Back to login
                   </button>
                 </div>
               )}
@@ -290,7 +290,7 @@ export default function FarmerLogin() {
               <form className="space-y-5" onSubmit={handleSubmit}>
                 {mode === "register" && (
                   <div>
-                    <label className="text-sm font-bold text-forest-800 mb-2 block">Full Name</label>
+                    <label className="text-sm font-bold text-forest-800 mb-2 block">Full name</label>
                     <div className="relative">
                       <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-soil-300" />
                       <input type="text" value={name} onChange={e => setName(e.target.value)}
@@ -300,7 +300,7 @@ export default function FarmerLogin() {
                 )}
 
                 <div>
-                  <label className="text-sm font-bold text-forest-800 mb-2 block">Phone Number</label>
+                  <label className="text-sm font-bold text-forest-800 mb-2 block">Phone number</label>
                   <div className="relative">
                     <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-soil-300" />
                     <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
@@ -338,14 +338,14 @@ export default function FarmerLogin() {
                 <button type="submit" disabled={loading}
                   className="w-full bg-gold-500 hover:bg-gold-400 disabled:opacity-70 active:scale-[0.98] text-white font-bold py-4 rounded-2xl shadow-lg shadow-gold-500/20 transition-all flex items-center justify-center gap-2 text-base">
                   {loading && <Loader2 size={18} className="animate-spin" />}
-                  {mode === "login" ? "Log In" : "Create Account"}
+                  {mode === "login" ? "Log in" : "Create account"}
                 </button>
 
                 {mode === "login" && (
                   <button type="button"
                     onClick={() => { setForgotStep("request"); setForgotId(phone); setForgotMsg(""); }}
                     className="w-full text-center text-sm font-semibold text-soil-500 hover:text-gold-700 py-2 transition-colors">
-                    Forgot Password?
+                    Forgot password?
                   </button>
                 )}
               </form>

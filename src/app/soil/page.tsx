@@ -60,14 +60,14 @@ export default function SoilDirectoryPage() {
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Soil Reports" },
+          { label: "Soil reports" },
         ]}
       />
 
       {/* Header */}
       <div className="mb-10 md:mb-14">
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-3 leading-tight">
-          Kenya County Soil Reports
+          Kenya county soil reports
         </h1>
         <p className="text-soil-500 max-w-2xl text-lg leading-relaxed">
           Explore soil health data for all {total} Kenyan counties. Each report

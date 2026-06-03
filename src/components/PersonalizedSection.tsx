@@ -166,7 +166,7 @@ export default function PersonalizedSection() {
 
           {/* ── Recommended action ── */}
           <div className="bg-white rounded-2xl p-5 border border-forest-600/20 shadow-sm border-l-4 border-l-forest-600">
-            <p className="text-xs font-semibold text-forest-600 uppercase tracking-wider mb-2">Recommended Action</p>
+            <p className="text-xs font-semibold text-forest-600 uppercase tracking-wider mb-2">Recommended action</p>
             <p className="text-sm text-forest-700 font-medium leading-relaxed mb-3">{action}</p>
             <Link
               href="/app"
@@ -183,7 +183,7 @@ export default function PersonalizedSection() {
                 <Stethoscope size={20} className="text-red-500" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">Last Diagnosis</p>
+                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">Last diagnosis</p>
                 <p className="text-sm font-semibold text-forest-700 leading-tight truncate">{lastDx.condition}</p>
                 {lastDx.crop && <p className="text-xs text-soil-500 mt-0.5">{lastDx.crop}</p>}
                 <Link href="/doctor" className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 mt-2 transition-colors">
@@ -197,10 +197,10 @@ export default function PersonalizedSection() {
                 <TrendingUp size={20} className="text-blue-500" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">Track Your Yields</p>
+                <p className="text-xs font-semibold text-soil-500 uppercase tracking-wider mb-1">Track your yields</p>
                 <p className="text-xs text-soil-500 leading-relaxed mb-2">Log your harvest season by season to see progress.</p>
                 <Link href="/yields" className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
-                  My Yields <ArrowRight size={11} />
+                  My yields <ArrowRight size={11} />
                 </Link>
               </div>
             </div>

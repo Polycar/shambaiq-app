@@ -199,7 +199,7 @@ export default function TermsPage() {
 
           <div className="border-t border-cream-200 pt-6 mt-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center">
             <Link href="/privacy" className="text-sm text-forest-600 font-semibold hover:text-forest-800 transition-colors">
-              Read our Privacy Policy →
+              Read our privacy policy →
             </Link>
             <Link href="/" className="text-sm text-soil-500 hover:text-soil-600 transition-colors">
               ← Back to ShambaIQ

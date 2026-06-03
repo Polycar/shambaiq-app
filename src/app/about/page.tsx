@@ -164,7 +164,7 @@ export default function AboutPage() {
           {/* ── Credentials ── */}
           <section className="mb-10">
             <h2 className="text-xl font-display font-bold text-forest-800 mb-5">
-              Credentials & Qualifications
+              Credentials & qualifications
             </h2>
             <div className="space-y-3">
               {CREDENTIALS.map((c) => (
@@ -201,7 +201,7 @@ export default function AboutPage() {
           {/* ── Skills ── */}
           <section className="mb-10">
             <h2 className="text-xl font-display font-bold text-forest-800 mb-5">
-              Areas of Expertise
+              Areas of expertise
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {SKILLS.map((s) => (
@@ -239,13 +239,13 @@ export default function AboutPage() {
                 href="/app"
                 className="bg-forest-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-forest-800 transition-colors"
               >
-                Try ShambaIQ Tool
+                Try ShambaIQ tool
               </Link>
               <Link
                 href="/blog"
                 className="border border-forest-300 text-forest-700 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-forest-50 transition-colors"
               >
-                Read the Blog
+                Read the blog
               </Link>
               <Link
                 href="https://www.linkedin.com/in/polycarp-a-a7174916b/"

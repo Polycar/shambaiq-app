@@ -102,7 +102,7 @@ export default async function WardPage({ params }: PageProps) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Soil Reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 2, name: "Soil reports", item: `${BASE_URL}/soil` },
       { "@type": "ListItem", position: 3, name: `${county.county} County`, item: `${BASE_URL}/soil/${countySlug}` },
       { "@type": "ListItem", position: 4, name: `${ward.ward} Ward`, item: `${BASE_URL}/soil/${countySlug}/ward/${wardSlug}` },
     ],
@@ -113,7 +113,7 @@ export default async function WardPage({ params }: PageProps) {
       <JsonLd schemas={[placeSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
-          { label: "Soil Reports", href: "/soil" },
+          { label: "Soil reports", href: "/soil" },
           { label: county.county, href: `/soil/${county.slug}` },
           { label: `${ward.ward} Ward` },
         ]}
@@ -139,17 +139,17 @@ export default async function WardPage({ params }: PageProps) {
               href={`/app?county=${encodeURIComponent(county.county)}`}
               className="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-lg text-sm transition-colors"
             >
-              Get Advice →
+              Get advice →
             </Link>
           </div>
 
           {precisionData ? (
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-              🎯 Ward-Level Precision Data (30m satellite)
+              🎯 Ward-level precision data (30m satellite)
             </div>
           ) : (
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold">
-              📊 County-Level Averages (precision data loading)
+              📊 County-level averages (precision data loading)
             </div>
           )}
         </div>
@@ -179,7 +179,7 @@ export default async function WardPage({ params }: PageProps) {
         {/* Top crops for this ward */}
         <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-4">
-            Best Crops for {ward.ward}
+            Best crops for {ward.ward}
           </h2>
           <div className="space-y-3">
             {topCrops.map(({ crop, score }, i) => (
@@ -206,7 +206,7 @@ export default async function WardPage({ params }: PageProps) {
         {/* Other wards in this sub-county */}
         <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
           <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-            Other Wards in {ward.subcounty}
+            Other wards in {ward.subcounty}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {subcountyWards

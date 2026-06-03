@@ -136,7 +136,7 @@ export default async function CountyCropPage({ params }: PageProps) {
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Soil Reports", href: "/soil" },
+          { label: "Soil reports", href: "/soil" },
           { label: county.county, href: `/soil/${county.slug}` },
           { label: crop.crop },
         ]}
@@ -162,7 +162,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {/* Soil match */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Soil Match Analysis
+              Soil match analysis
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -261,7 +261,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {calendars.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Planting Calendar
+                Planting calendar
               </h2>
               {calendars.map((cal) => (
                 <div key={cal.season} className="mb-4 last:mb-0">
@@ -296,7 +296,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {topDress && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Top Dressing Guide
+                Top dressing guide
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="bg-cream-50 rounded-lg p-4 border border-cream-200">
@@ -333,7 +333,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {seeds.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Recommended Seed Varieties
+                Recommended seed varieties
               </h2>
               <div className="space-y-3">
                 {seeds.map((s, i) => (
@@ -404,7 +404,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {/* Fertilizer prices */}
           <div className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Fertilizer Prices
+              Fertilizer prices
             </h2>
             <div className="space-y-2">
               {prices.slice(0, 5).map((p) => (
@@ -454,7 +454,7 @@ export default async function CountyCropPage({ params }: PageProps) {
                 href={`/app?county=${encodeURIComponent(county.county)}&crop=${encodeURIComponent(crop.crop)}`}
                 className="block mt-4 text-center px-4 py-2.5 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-lg text-sm transition-colors"
               >
-                Get Full Advice →
+                Get full advice →
               </Link>
             </div>
           </div>

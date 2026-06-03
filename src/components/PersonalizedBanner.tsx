@@ -20,10 +20,10 @@ function getCookieSession(): { name?: string; token?: string } | null {
 }
 
 const QUICK_LINKS = [
-  { href: "/app", label: "Farm Plan" },
+  { href: "/app", label: "Farm plan" },
   { href: "/doctor", label: "Plant Doctor" },
-  { href: "/agronomy", label: "Ask Agronomist" },
-  { href: "/yields", label: "My Yields" },
+  { href: "/agronomy", label: "Ask agronomist" },
+  { href: "/yields", label: "My yields" },
 ];
 
 export default function PersonalizedBanner() {
@@ -67,7 +67,7 @@ export default function PersonalizedBanner() {
             href="/profile"
             className="ml-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-gold-400 border border-gold-400/30 hover:border-gold-400/60 hover:bg-gold-400/10 transition-colors flex items-center gap-1"
           >
-            My Profile <ArrowRight size={11} />
+            My profile <ArrowRight size={11} />
           </Link>
         </div>
       </div>

@@ -54,16 +54,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const crop = getCropBySlug(slug);
   if (!crop) return {};
   return {
-    title: `${crop.crop} Farming in Kenya — Soil Requirements, Best Counties, Fertilizer Guide`,
+    title: `${crop.crop} farming in Kenya — soil requirements, best counties, fertilizer guide`,
     description: `${crop.crop} farming in Kenya: soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, top counties, certified seed varieties, and fertilizer budget.`,
     alternates: { canonical: `${BASE_URL}/crops/${slug}` },
     openGraph: {
-      title: `${crop.crop} Farming Guide — Kenya`,
+      title: `${crop.crop} farming guide — Kenya`,
       description: `Optimal soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, best counties, and fertilizer budget for ${crop.crop} in Kenya.`,
       url: `${BASE_URL}/crops/${slug}`,
       images: [{ url: `${BASE_URL}/api/og/crop/${slug}`, width: 1200, height: 630, alt: `${crop.crop} Farming Guide Kenya` }],
     },
-    twitter: { card: "summary_large_image" as const, title: `${crop.crop} Farming Guide — Kenya`, description: `Soil requirements, best counties, and fertilizer budget for ${crop.crop} farming in Kenya.`, images: [`${BASE_URL}/api/og/crop/${slug}`] },
+    twitter: { card: "summary_large_image" as const, title: `${crop.crop} farming guide — Kenya`, description: `Soil requirements, best counties, and fertilizer budget for ${crop.crop} farming in Kenya.`, images: [`${BASE_URL}/api/og/crop/${slug}`] },
   };
 }
 
@@ -96,7 +96,7 @@ export default async function CropPage({ params }: PageProps) {
   const cropSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    headline: `${crop.crop} Farming in Kenya — Soil Requirements, Best Counties, Fertilizer Guide`,
+    headline: `${crop.crop} farming in Kenya — soil requirements, best counties, fertilizer guide`,
     description: `Complete ${crop.crop} farming guide: optimal soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, best counties, seed varieties, and fertilizer budget.`,
     url: `${BASE_URL}/crops/${slug}`,
     inLanguage: "en-KE",
@@ -120,7 +120,7 @@ export default async function CropPage({ params }: PageProps) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Crop Guides", item: `${BASE_URL}/crops` },
+      { "@type": "ListItem", position: 2, name: "Crop guides", item: `${BASE_URL}/crops` },
       { "@type": "ListItem", position: 3, name: crop.crop, item: `${BASE_URL}/crops/${slug}` },
     ],
   };
@@ -131,13 +131,13 @@ export default async function CropPage({ params }: PageProps) {
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Crop Guides", href: "/crops" },
+          { label: "Crop guides", href: "/crops" },
           { label: crop.crop },
         ]}
       />
 
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
-        {crop.crop} Farming Guide — Kenya
+        {crop.crop} farming guide — Kenya
       </h1>
       <p className="text-soil-500 mb-10">
         Soil requirements, top counties, seed varieties, fertilizer plan &amp;
@@ -149,11 +149,11 @@ export default async function CropPage({ params }: PageProps) {
           {/* Requirements */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Soil Requirements
+              Soil requirements
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: "pH Range", val: `${crop.ph_min}–${crop.ph_max}` },
+                { label: "pH range", val: `${crop.ph_min}–${crop.ph_max}` },
                 { label: "Nitrogen", val: crop.n_need },
                 { label: "Phosphorus", val: crop.p_need },
                 { label: "Potassium", val: crop.k_need },
@@ -180,7 +180,7 @@ export default async function CropPage({ params }: PageProps) {
           {/* Top counties */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Best Counties for {crop.crop}
+              Best counties for {crop.crop}
             </h2>
             <div className="space-y-2">
               {topCounties.map(({ county, score }, i) => (
@@ -217,7 +217,7 @@ export default async function CropPage({ params }: PageProps) {
           {/* Challenging counties */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Challenging Counties for {crop.crop}
+              Challenging counties for {crop.crop}
             </h2>
             <p className="text-sm text-soil-500 mb-4">
               These counties may need soil amendments for {crop.crop}
@@ -244,7 +244,7 @@ export default async function CropPage({ params }: PageProps) {
           {seeds.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Certified Seed Varieties
+                Certified seed varieties
               </h2>
               <div className="space-y-3">
                 {seeds.map((s, i) => (
@@ -279,7 +279,7 @@ export default async function CropPage({ params }: PageProps) {
           {calendars.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Planting Calendar
+                Planting calendar
               </h2>
               {calendars.map((cal) => (
                 <div key={cal.season} className="mb-4 last:mb-0">
@@ -343,7 +343,7 @@ export default async function CropPage({ params }: PageProps) {
           {topDress && (
             <div className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Top Dressing
+                Top dressing
               </h2>
               <div className="space-y-2 text-sm">
                 <div>
@@ -373,7 +373,7 @@ export default async function CropPage({ params }: PageProps) {
 
           <div className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Fertilizer Prices
+              Fertilizer prices
             </h2>
             <div className="space-y-2 text-sm">
               {prices.slice(0, 5).map((p) => (
@@ -392,7 +392,7 @@ export default async function CropPage({ params }: PageProps) {
             href={`/app?crop=${encodeURIComponent(crop.crop)}`}
             className="block text-center px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors"
           >
-            Check Your County for {crop.crop} →
+            Check your county for {crop.crop} →
           </Link>
         </div>
       </div>

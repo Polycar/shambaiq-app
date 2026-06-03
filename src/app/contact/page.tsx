@@ -78,7 +78,7 @@ export default function ContactPage() {
               <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform">
                 <MessageCircle size={24} />
               </div>
-              <h3 className="font-bold text-xl text-forest-900 mb-2">WhatsApp Us</h3>
+              <h3 className="font-bold text-xl text-forest-900 mb-2">WhatsApp us</h3>
               <p className="text-forest-600 text-sm mb-4">Fastest way to get agronomic support.</p>
               <span className="text-green-600 font-semibold">+254 748 042 633</span>
             </a>
@@ -90,7 +90,7 @@ export default function ContactPage() {
               <div className="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center text-gold-700 mb-6 group-hover:scale-110 transition-transform">
                 <Mail size={24} />
               </div>
-              <h3 className="font-bold text-xl text-forest-900 mb-2">Email Inquiries</h3>
+              <h3 className="font-bold text-xl text-forest-900 mb-2">Email inquiries</h3>
               <p className="text-forest-600 text-sm mb-4">For partnerships and detailed reports.</p>
               <span className="text-gold-700 font-semibold">info@shambaiq.com</span>
             </a>
@@ -99,7 +99,7 @@ export default function ContactPage() {
               <div className="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center text-forest-600 mb-6">
                 <MapPin size={24} />
               </div>
-              <h3 className="font-bold text-xl text-forest-900 mb-2">Our Location</h3>
+              <h3 className="font-bold text-xl text-forest-900 mb-2">Our location</h3>
               <p className="text-forest-600 text-sm mb-4">Serving all 47 counties across Kenya.</p>
               <span className="text-forest-600 font-semibold italic">Nairobi, Kenya 🇰🇪</span>
             </div>
@@ -112,7 +112,7 @@ export default function ContactPage() {
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-forest-700 mb-2">Full Name</label>
+                    <label className="block text-sm font-medium text-forest-700 mb-2">Full name</label>
                     <input 
                       type="text" 
                       className="w-full px-4 py-3 rounded-xl border border-cream-200 focus:border-forest-500 focus:ring-2 focus:ring-forest-200 outline-none transition-all"
@@ -120,7 +120,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-forest-700 mb-2">Phone Number</label>
+                    <label className="block text-sm font-medium text-forest-700 mb-2">Phone number</label>
                     <input 
                       type="tel" 
                       className="w-full px-4 py-3 rounded-xl border border-cream-200 focus:border-forest-500 focus:ring-2 focus:ring-forest-200 outline-none transition-all"
@@ -129,7 +129,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-forest-700 mb-2">Email Address</label>
+                  <label className="block text-sm font-medium text-forest-700 mb-2">Email address</label>
                   <input 
                     type="email" 
                     className="w-full px-4 py-3 rounded-xl border border-cream-200 focus:border-forest-500 focus:ring-2 focus:ring-forest-200 outline-none transition-all"
@@ -139,10 +139,10 @@ export default function ContactPage() {
                 <div>
                   <label className="block text-sm font-medium text-forest-700 mb-2">Subject</label>
                   <select className="w-full px-4 py-3 rounded-xl border border-cream-200 focus:border-forest-500 focus:ring-2 focus:ring-forest-200 outline-none transition-all appearance-none">
-                    <option>General Inquiry</option>
-                    <option>Soil Report Help</option>
-                    <option>Partnership Interest</option>
-                    <option>Technical Issue</option>
+                    <option>General inquiry</option>
+                    <option>Soil report help</option>
+                    <option>Partnership interest</option>
+                    <option>Technical issue</option>
                   </select>
                 </div>
                 <div>
@@ -157,7 +157,7 @@ export default function ContactPage() {
                   type="submit"
                   className="w-full py-4 bg-forest-700 hover:bg-forest-800 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-forest-200 flex items-center justify-center gap-2 group"
                 >
-                  Send Message <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  Send message <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </button>
               </form>
             </div>
@@ -165,13 +165,13 @@ export default function ContactPage() {
             {/* Content Side */}
             <div className="space-y-12 pt-8">
               <div>
-                <h3 className="text-gold-700 font-bold tracking-widest uppercase text-sm mb-4">Why Reach Out?</h3>
-                <h2 className="text-3xl font-bold text-forest-900 mb-6 leading-tight">We are building the future of Kenyan Agriculture.</h2>
+                <h3 className="text-gold-700 font-bold tracking-widest uppercase text-sm mb-4">Why reach out?</h3>
+                <h2 className="text-3xl font-bold text-forest-900 mb-6 leading-tight">We are building the future of Kenyan agriculture.</h2>
                 <div className="space-y-6">
                   {[
-                    { title: "Personalized Support", desc: "Our agronomists are available to help you interpret your precision soil data." },
-                    { title: "Custom Solutions", desc: "For large-scale farms, we provide tailored mapping and integration services." },
-                    { title: "Media & Inquiries", desc: "We love sharing our story and the impact we are making for Kenyan smallholders." }
+                    { title: "Personalized support", desc: "Our agronomists are available to help you interpret your precision soil data." },
+                    { title: "Custom solutions", desc: "For large-scale farms, we provide tailored mapping and integration services." },
+                    { title: "Media & inquiries", desc: "We love sharing our story and the impact we are making for Kenyan smallholders." }
                   ].map((item, idx) => (
                     <div key={idx} className="flex gap-4">
                       <div className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex-shrink-0 flex items-center justify-center text-xs font-bold mt-1">

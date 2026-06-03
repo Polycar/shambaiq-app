@@ -6,16 +6,16 @@ import JsonLd from "@/components/JsonLd";
 import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Agroecological Zones of Kenya — Soil & Farming Regions",
+  title: "Agroecological zones of Kenya — soil & farming regions",
   description: "Explore Kenya's 7 agroecological zones. Compare soil health and crop suitability across the Central Highlands, Rift Valley, Lake Basin, and more.",
   alternates: { canonical: "https://shambaiq.com/zones" },
   openGraph: {
-    title: "Kenya's Agroecological Zones — Soil & Farming Regions",
+    title: "Kenya's agroecological zones — soil & farming regions",
     description: "Compare soil health, crop suitability, and farming conditions across Central Highlands, Rift Valley, Lake Basin, and 4 more Kenyan zones.",
     url: "https://shambaiq.com/zones",
     images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "Kenya Agroecological Zones" }],
   },
-  twitter: { card: "summary_large_image", title: "Kenya's Agroecological Zones", description: "Soil health and crop suitability across Kenya's 7 agroecological zones.", images: ["https://shambaiq.com/api/og"] },
+  twitter: { card: "summary_large_image", title: "Kenya's agroecological zones", description: "Soil health and crop suitability across Kenya's 7 agroecological zones.", images: ["https://shambaiq.com/api/og"] },
 };
 
 export default function ZonesPage() {
@@ -24,7 +24,7 @@ export default function ZonesPage() {
   const zonesListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Kenya's Agroecological Zones",
+    name: "Kenya's agroecological zones",
     description: "Kenya's 7 agroecological zones covering all 47 counties.",
     url: `${BASE_URL}/zones`,
     numberOfItems: zones.length,
@@ -39,9 +39,9 @@ export default function ZonesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd schemas={[zonesListSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Agroecological Zones" }]} />
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Agroecological zones" }]} />
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
-        Agroecological Zones of Kenya
+        Agroecological zones of Kenya
       </h1>
       <p className="text-soil-500 mb-10 max-w-2xl">
         Kenya&apos;s 47 counties fall across distinct agroecological zones, each

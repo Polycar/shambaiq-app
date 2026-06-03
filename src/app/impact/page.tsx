@@ -9,7 +9,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 const SDGs = [
   {
     number: 1,
-    title: "No Poverty",
+    title: "No poverty",
     color: "#E5243B",
     icon: Heart,
     headline: "Reducing wasted input spend",
@@ -27,7 +27,7 @@ const SDGs = [
   },
   {
     number: 2,
-    title: "Zero Hunger",
+    title: "Zero hunger",
     color: "#DDA63A",
     icon: Wheat,
     headline: "Higher yields through soil intelligence",
@@ -45,7 +45,7 @@ const SDGs = [
   },
   {
     number: 5,
-    title: "Gender Equality",
+    title: "Gender equality",
     color: "#FF3A21",
     icon: Users,
     headline: "Removing barriers for women farmers",
@@ -63,7 +63,7 @@ const SDGs = [
   },
   {
     number: 13,
-    title: "Climate Action",
+    title: "Climate action",
     color: "#3F7E44",
     icon: Leaf,
     headline: "Data-driven climate-smart farming",
@@ -81,7 +81,7 @@ const SDGs = [
   },
   {
     number: 15,
-    title: "Life on Land",
+    title: "Life on land",
     color: "#56C02B",
     icon: TreePine,
     headline: "Monitoring soil health to prevent degradation",
@@ -127,7 +127,7 @@ export default function ImpactPage() {
         <div className="text-center mt-12 mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-forest-700/10 border border-forest-700/10 rounded-full text-forest-700 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
             <Globe size={14} className="text-gold-500" />
-            UN Sustainable Development Goals
+            UN sustainable development goals
           </div>
           
           <h1 className="font-display text-4xl md:text-6xl font-extrabold text-forest-800 tracking-tight leading-[1.1] mb-6">
@@ -302,13 +302,13 @@ export default function ImpactPage() {
               href="mailto:info@shambaiq.com"
               className="px-8 py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-extrabold rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-gold-600/20 hover:-translate-y-0.5"
             >
-              Get in Touch →
+              Get in touch →
             </a>
             <Link
               href="/app"
               className="px-8 py-3.5 bg-white/10 hover:bg-white/15 text-cream-200 font-bold rounded-xl transition-all duration-300 border border-white/20 hover:-translate-y-0.5"
             >
-              Try ShambaIQ Free
+              Try ShambaIQ free
             </Link>
           </div>
         </section>

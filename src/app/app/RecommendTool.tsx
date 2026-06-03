@@ -7,9 +7,9 @@ import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
 import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch, fetchSeeds } from "@/lib/api";
 
 const STOCK_LABEL: Record<string, string> = {
-  in_stock: "In Stock",
-  low_stock: "Running Low",
-  out_of_stock: "Out of Stock",
+  in_stock: "In stock",
+  low_stock: "Running low",
+  out_of_stock: "Out of stock",
 };
 const STOCK_COLOR: Record<string, string> = {
   in_stock: "text-green-700 font-semibold",
@@ -155,7 +155,7 @@ function AgrovetCard({ dealer, isFirst, lang }: { dealer: Dealer; isFirst: boole
     setExpanded(v => !v);
   };
 
-  const isVerified = dealer.source === "ShambaIQ Verified";
+  const isVerified = dealer.source === "ShambaIQ verified";
 
   return (
     <div
@@ -168,7 +168,7 @@ function AgrovetCard({ dealer, isFirst, lang }: { dealer: Dealer; isFirst: boole
             <p className="font-bold text-sm text-gray-800">{dealer.name}</p>
             {isVerified && (
               <span className="text-[10px] font-bold px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full">
-                ShambaIQ Verified
+                ShambaIQ verified
               </span>
             )}
           </div>

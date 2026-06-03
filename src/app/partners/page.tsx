@@ -25,7 +25,7 @@ export default function PartnersPage() {
     company: "",
     email: "",
     phone: "",
-    partnerType: "API Integration (B2B SaaS)",
+    partnerType: "API integration (B2B SaaS)",
     message: ""
   });
   const [submitted, setSubmitted] = useState(false);
@@ -76,7 +76,7 @@ export default function PartnersPage() {
       <section className="bg-forest-700 py-16 md:py-24 px-4 text-center grain relative">
         <div className="max-w-4xl mx-auto relative z-10">
           <span className="px-3 py-1 bg-gold-400/20 text-gold-300 text-xs font-semibold rounded-full uppercase tracking-wider">
-            B2B &amp; Govtech Solutions
+            B2B &amp; govtech solutions
           </span>
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-cream-100 mt-6 mb-6">
             Partner with <span className="text-gold-400">ShambaIQ</span>
@@ -94,7 +94,7 @@ export default function PartnersPage() {
             <div className="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center text-gold-700 mb-6">
               <Cpu size={24} />
             </div>
-            <h3 className="font-display font-bold text-xl text-forest-900 mb-3">1. B2B Precision API</h3>
+            <h3 className="font-display font-bold text-xl text-forest-900 mb-3">1. B2B precision API</h3>
             <p className="text-forest-600 text-sm leading-relaxed mb-4">
               Query our dynamic soil diagnostics and crop suitability matrix via a secure, sub-second JSON API. Ideal for powering WhatsApp bots, USSD channels, or credit-scoring models.
             </p>
@@ -105,7 +105,7 @@ export default function PartnersPage() {
             <div className="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center text-forest-600 mb-6">
               <Building2 size={24} />
             </div>
-            <h3 className="font-display font-bold text-xl text-forest-900 mb-3">2. White-Label Portals</h3>
+            <h3 className="font-display font-bold text-xl text-forest-900 mb-3">2. White-label portals</h3>
             <p className="text-forest-600 text-sm leading-relaxed mb-4">
               Get a co-branded subdomain portal (e.g. <i>coop.shambaiq.com</i>) complete with custom crop lists and local agrovets to support extension workers and county initiatives.
             </p>
@@ -116,7 +116,7 @@ export default function PartnersPage() {
             <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 mb-6">
               <TrendingUp size={24} />
             </div>
-            <h3 className="font-display font-bold text-xl text-forest-900 mb-3">3. Agrovet & Input Placements</h3>
+            <h3 className="font-display font-bold text-xl text-forest-900 mb-3">3. Agrovet &amp; input placements</h3>
             <p className="text-forest-600 text-sm leading-relaxed mb-4">
               Feature your premium seeds, fertilizers, or agrovet locations as the verified recommendation when farmers search their specific county soil conditions.
             </p>
@@ -133,7 +133,7 @@ export default function PartnersPage() {
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
                   <CheckCircle2 size={48} />
                 </div>
-                <h2 className="font-display text-2xl font-bold text-forest-900 mb-4">Inquiry Received Successfully</h2>
+                <h2 className="font-display text-2xl font-bold text-forest-900 mb-4">Inquiry received successfully</h2>
                 <p className="text-forest-600 text-sm max-w-md mx-auto mb-8">
                   Thank you for your interest in ShambaIQ. A member of our licensing team will contact you within 24 hours to schedule an introductory call.
                 </p>
@@ -144,19 +144,19 @@ export default function PartnersPage() {
                   onClick={() => setSubmitted(false)}
                   className="px-6 py-2 border border-forest-600 text-forest-700 font-semibold rounded-xl text-sm hover:bg-cream-50 transition-colors"
                 >
-                  Submit Another Inquiry
+                  Submit another inquiry
                 </button>
               </div>
             ) : (
               <>
-                <h2 className="font-display text-2xl font-bold text-forest-900 mb-2">Licensing Inquiry</h2>
+                <h2 className="font-display text-2xl font-bold text-forest-900 mb-2">Licensing inquiry</h2>
                 <p className="text-soil-500 text-sm mb-8">
                   Tell us about your organization and how you'd like to integrate our agronomic solutions.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Your Name</label>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Your name</label>
                       <input 
                         type="text" 
                         required
@@ -167,7 +167,7 @@ export default function PartnersPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Company / Organization</label>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Company / organization</label>
                       <input 
                         type="text" 
                         required
@@ -181,7 +181,7 @@ export default function PartnersPage() {
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Business Email</label>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Business email</label>
                       <input 
                         type="email" 
                         required
@@ -192,7 +192,7 @@ export default function PartnersPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Phone Number</label>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Phone number</label>
                       <input 
                         type="tel" 
                         required
@@ -205,22 +205,22 @@ export default function PartnersPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Partnership Focus</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Partnership focus</label>
                     <select 
                       value={formData.partnerType}
                       onChange={(e) => setFormData({...formData, partnerType: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-cream-200 focus:border-forest-500 focus:ring-2 focus:ring-forest-200 outline-none transition-all text-sm appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%234a5d4e%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:1.25rem] bg-[right_1rem_center] bg-no-repeat"
                     >
-                      <option>API Integration (B2B SaaS)</option>
-                      <option>White-Label Subdomain License</option>
-                      <option>Agrovet / Input Placement Sponsorship</option>
-                      <option>Custom Enterprise Integration</option>
-                      <option>Other / Advisory Support</option>
+                      <option>API integration (B2B SaaS)</option>
+                      <option>White-label subdomain license</option>
+                      <option>Agrovet / input placement sponsorship</option>
+                      <option>Custom enterprise integration</option>
+                      <option>Other / advisory support</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Integration or Placement Details</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-forest-700 mb-2">Integration or placement details</label>
                     <textarea 
                       rows={4}
                       required
@@ -242,7 +242,7 @@ export default function PartnersPage() {
                     disabled={isSubmitting}
                     className="w-full py-4 bg-forest-700 hover:bg-forest-800 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-forest-200 flex items-center justify-center gap-2 group disabled:opacity-75"
                   >
-                    {isSubmitting ? "Processing..." : "Submit Proposal"} 
+                    {isSubmitting ? "Processing..." : "Submit proposal"} 
                     {!isSubmitting && <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />}
                   </button>
                 </form>
@@ -253,7 +253,7 @@ export default function PartnersPage() {
           {/* Right Column: IP Security & Proof */}
           <div className="space-y-12">
             <div>
-              <span className="text-gold-700 font-bold tracking-widest uppercase text-xs block mb-3">IP Protection Framework</span>
+              <span className="text-gold-700 font-bold tracking-widest uppercase text-xs block mb-3">IP protection framework</span>
               <h2 className="font-display text-3xl font-bold text-forest-900 mb-6 leading-tight">
                 Partner with total peace of mind.
               </h2>
@@ -264,7 +264,7 @@ export default function PartnersPage() {
                     <ShieldCheck size={20} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-forest-900 mb-1">Standard Mutual NDA Policy</h4>
+                    <h4 className="font-bold text-forest-900 mb-1">Standard Mutual NDA policy</h4>
                     <p className="text-forest-600 text-sm leading-relaxed">
                       We require a fully signed Mutual Non-Disclosure Agreement before discussing any architectural details or integration pathways. Your data and our code remain strictly confidential.
                     </p>
@@ -276,7 +276,7 @@ export default function PartnersPage() {
                     <FileText size={20} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-forest-900 mb-1">Safe API Delivery</h4>
+                    <h4 className="font-bold text-forest-900 mb-1">Safe API delivery</h4>
                     <p className="text-forest-600 text-sm leading-relaxed">
                       All calculations take place inside our secure, proprietary cloud servers. Partners query endpoints and receive formatted JSON payloads, meaning our database algorithms are never exposed or cloned.
                     </p>
@@ -288,7 +288,7 @@ export default function PartnersPage() {
                     <Award size={20} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-forest-900 mb-1">Non-Exclusive Freedom</h4>
+                    <h4 className="font-bold text-forest-900 mb-1">Non-exclusive freedom</h4>
                     <p className="text-forest-600 text-sm leading-relaxed">
                       Our commercial agreements are structured on a non-exclusive basis, granting you complete liberty to work with multiple input networks, cooperatives, and county governments simultaneously.
                     </p>

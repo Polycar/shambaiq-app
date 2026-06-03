@@ -192,7 +192,7 @@ export default function OnboardingModal() {
               onClick={finish}
               className="flex-[2] py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-white font-bold text-sm transition-colors flex items-center justify-center gap-2"
             >
-              Get My Free Farm Plan <ArrowRight size={15} />
+              Get my free farm plan <ArrowRight size={15} />
             </button>
           )}
         </div>

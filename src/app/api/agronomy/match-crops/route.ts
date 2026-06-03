@@ -101,6 +101,9 @@ Respond ONLY with a raw JSON object containing a "matches" field which is a JSON
             temperature: 0.2,
             maxOutputTokens: 4096,
             responseMimeType: 'application/json',
+            thinkingConfig: {
+              thinkingBudget: 0,
+            },
           },
         }),
       }

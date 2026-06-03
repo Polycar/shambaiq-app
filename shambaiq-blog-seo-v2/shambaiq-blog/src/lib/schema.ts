@@ -28,7 +28,7 @@ export const AUTHOR_PERSON = {
   "@id": `${BASE_URL}/about#author`,
   name: "Polycarp Andabwa",
   url: `${BASE_URL}/about`,
-  jobTitle: "Agricultural Environmental Engineer & Founder, ShambaIQ",
+  jobTitle: "Agricultural environmental engineer & founder, ShambaIQ",
   worksFor: { "@id": `${BASE_URL}/#organization` },
   alumniOf: [
     {
@@ -41,7 +41,7 @@ export const AUTHOR_PERSON = {
   hasCredential: [
     {
       "@type": "EducationalOccupationalCredential",
-      name: "MSc Agricultural Environmental Engineering",
+      name: "MSc agricultural environmental engineering",
       credentialCategory: "degree",
       recognizedBy: {
         "@type": "CollegeOrUniversity",
@@ -50,18 +50,18 @@ export const AUTHOR_PERSON = {
     },
     {
       "@type": "EducationalOccupationalCredential",
-      name: "Bachelor of Business Administration",
+      name: "Bachelor of business administration",
       credentialCategory: "degree",
     },
     {
       "@type": "EducationalOccupationalCredential",
-      name: "SEO Expert Certification",
+      name: "SEO expert certification",
       credentialCategory: "certificate",
       recognizedBy: { "@type": "Organization", name: "Coursera" },
     },
     {
       "@type": "EducationalOccupationalCredential",
-      name: "EASA Licensed Drone Pilot",
+      name: "EASA licensed drone pilot",
       credentialCategory: "license",
       recognizedBy: {
         "@type": "Organization",
@@ -70,17 +70,17 @@ export const AUTHOR_PERSON = {
     },
   ],
   knowsAbout: [
-    "Soil Science",
-    "GIS and Remote Sensing",
-    "Geospatial Analysis",
-    "Environmental Impact Assessment",
-    "Environmental Monitoring",
-    "Precision Agriculture",
+    "Soil science",
+    "GIS and remote sensing",
+    "Geospatial analysis",
+    "Environmental impact assessment",
+    "Environmental monitoring",
+    "Precision agriculture",
     "Hydrology",
-    "Drone Surveying",
-    "Kenyan Farming Systems",
-    "Agricultural Engineering",
-    "Search Engine Optimisation",
+    "Drone surveying",
+    "Kenyan farming systems",
+    "Agricultural engineering",
+    "Search engine optimisation",
   ],
   sameAs: [
     "https://github.com/Polycat",
@@ -158,7 +158,7 @@ export function makeArticleSchema(p: ArticleSchemaProps) {
     isPartOf: {
       "@type": "Blog",
       "@id": `${BASE_URL}/blog#blog`,
-      name: "ShambaIQ Farming Blog",
+      name: "ShambaIQ farming blog",
       publisher: { "@id": `${BASE_URL}/#organization` },
     },
   };

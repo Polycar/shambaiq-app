@@ -6,7 +6,7 @@ interface RelatedPostsProps {
   heading?: string;
 }
 
-export default function RelatedPosts({ posts, heading = "Continue Reading" }: RelatedPostsProps) {
+export default function RelatedPosts({ posts, heading = "Continue reading" }: RelatedPostsProps) {
   if (!posts.length) return null;
 
   return (

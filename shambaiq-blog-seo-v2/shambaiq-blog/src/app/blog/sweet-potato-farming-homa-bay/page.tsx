@@ -145,7 +145,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Grow Sweet Potatoes in Homa Bay — Step-by-Step Guide",
+  name: "How to grow sweet potatoes in Homa Bay — step-by-step guide",
   description:
     "A science-backed planting guide for orange-fleshed sweet potatoes on Homa Bay's sandy-loam Lake Victoria soils using ShambaIQ precision data nutrient data.",
   totalTime: "P90D",
@@ -164,31 +164,31 @@ const howToSchema = makeHowToSchema({
   ],
   steps: [
     {
-      name: "Test Your Soil and Get a Nutrient Baseline",
+      name: "Test your soil and get a nutrient baseline",
       text: "Run your Homa Bay farm location through the ShambaIQ tool at shambaiq.com/app?county=homa-bay&crop=sweet-potato. This gives you precision satellite soil data for your exact location — pH, potassium, nitrogen, and phosphorus — so you know your exact fertilizer deficit before buying anything.",
     },
     {
-      name: "Prepare Land: Plough Deep and Build Ridges",
+      name: "Prepare land: plough deep and build ridges",
       text: "Sweet potato tubers need loose, aerated soil to expand. Plough to 30 cm depth. Form ridges 1 m apart and 30 cm high for good drainage and tuber room. On Homa Bay's sandy soils, ridges also reduce soil erosion during Lake Victoria rainfall events.",
     },
     {
-      name: "Apply Basal Fertilizer at Planting",
+      name: "Apply basal fertilizer at planting",
       text: "Apply Mavuno Sweet Potato at 50 kg per acre into the ridge at planting. Do NOT use DAP (too high in nitrogen and phosphorus relative to potassium). Do NOT use CAN or Urea at this stage. If your ShambaIQ result shows pH below 5.5, incorporate 300–500 kg agricultural lime per acre 2 weeks before planting.",
     },
     {
-      name: "Plant Certified Vine Cuttings",
+      name: "Plant certified vine cuttings",
       text: "Plant certified KEPHIS vine cuttings (15–20 cm) at 30 cm spacing on ridges. Bury at least 2 nodes. Plant at the onset of rains — March/April for long rains, October for short rains. Avoid planting during dry spells as vine establishment fails without moisture in sandy soils.",
     },
     {
-      name: "Weed at 2 and 6 Weeks — Then Let Vines Cover",
+      name: "Weed at 2 and 6 weeks — then let vines cover",
       text: "Weed thoroughly at 2 and 6 weeks after planting. After 6 weeks the vine canopy suppresses weeds naturally — do not disturb ridges after this point or you risk breaking developing tubers from the root system.",
     },
     {
-      name: "No Nitrogen Top-Dressing",
+      name: "No nitrogen top-dressing",
       text: "Do not apply CAN, Urea, or any nitrogen-rich top-dresser after planting. This is the single most common mistake in Homa Bay sweet potato production. Nitrogen pushes vine and leaf growth at the direct expense of tuber bulking. Your Mavuno basal fertilizer provides sufficient nutrients for the full season.",
     },
     {
-      name: "Harvest at 3–4 Months",
+      name: "Harvest at 3–4 months",
       text: "Harvest when vines begin yellowing and dying back (90–120 days). Check tuber size by gently digging one ridge first. Delay harvest past 120 days risks cracking and increased starch-to-sugar conversion which reduces market value. Target early-morning harvest to reduce field heat damage on the Lake Victoria lowlands.",
     },
   ],
@@ -197,16 +197,16 @@ const howToSchema = makeHowToSchema({
 // ── 3. Table of Contents ──────────────────────────────────────────────────────
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "why-homa-bay", label: "Why Homa Bay Is Ideal for Sweet Potatoes", level: 2 },
-  { id: "soil-data", label: "Homa Bay Soil Data (ShambaIQ precision data)", level: 2 },
-  { id: "nitrogen-mistake", label: "The Nitrogen Mistake Halving Your Yields", level: 2 },
-  { id: "fertilizer-guide", label: "Fertilizer Guide: What to Use and When", level: 2 },
-  { id: "varieties", label: "Best Certified Varieties for Western Kenya", level: 2 },
-  { id: "planting-calendar", label: "Planting Calendar for Homa Bay", level: 2 },
-  { id: "rotation", label: "Maize–Sweet Potato Rotation Strategy", level: 2 },
-  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
-  { id: "budget", label: "Budget: KES Cost Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "why-homa-bay", label: "Why Homa Bay is ideal for sweet potatoes", level: 2 },
+  { id: "soil-data", label: "Homa Bay soil data (ShambaIQ precision data)", level: 2 },
+  { id: "nitrogen-mistake", label: "The nitrogen mistake halving your yields", level: 2 },
+  { id: "fertilizer-guide", label: "Fertilizer guide: what to use and when", level: 2 },
+  { id: "varieties", label: "Best certified varieties for Western Kenya", level: 2 },
+  { id: "planting-calendar", label: "Planting calendar for Homa Bay", level: 2 },
+  { id: "rotation", label: "Maize–sweet potato rotation strategy", level: 2 },
+  { id: "howto", label: "Step-by-step growing guide", level: 2 },
+  { id: "budget", label: "Budget: KES cost per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 // ── 4. Page Component ─────────────────────────────────────────────────────────
@@ -258,7 +258,7 @@ export default function SweetPotatoHomaBayPage() {
                   href="/blog?category=county-farming-guides"
                   className="text-xs font-semibold uppercase tracking-widest text-gold-600 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors"
                 >
-                  County Farming Guides
+                  County farming guides
                 </Link>
                 <Link
                   href={`/soil/homa-bay`}
@@ -270,7 +270,7 @@ export default function SweetPotatoHomaBayPage() {
                   href={`/crops/sweet-potato`}
                   className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors"
                 >
-                  Sweet Potato
+                  Sweet potato
                 </Link>
               </div>
 
@@ -279,8 +279,8 @@ export default function SweetPotatoHomaBayPage() {
                 itemProp="headline"
                 className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4"
               >
-                Sweet Potato Farming in Homa Bay:{" "}
-                <span className="text-gold-600">The Complete Lake Victoria Shore Guide</span>
+                Sweet potato farming in Homa Bay:{" "}
+                <span className="text-gold-600">the complete Lake Victoria shore guide</span>
               </h1>
 
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
@@ -326,7 +326,7 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 1: Why Homa Bay ── */}
             <section>
               <h2 id="why-homa-bay" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                Why Homa Bay Is One of Kenya&rsquo;s Best Sweet Potato Counties
+                Why Homa Bay is one of Kenya&rsquo;s best sweet potato counties
               </h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Kenya produces over <strong>900,000 tonnes of sweet potatoes annually</strong>, making
@@ -366,7 +366,7 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 2: Soil Data ── */}
             <section>
               <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                Homa Bay Soil Data — What ShambaIQ precision data Satellite Mapping Shows
+                Homa Bay soil data — what ShambaIQ precision data satellite mapping shows
               </h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 ShambaIQ pulls soil nutrient data from{" "}
@@ -383,7 +383,7 @@ export default function SweetPotatoHomaBayPage() {
                   <caption className="sr-only">Homa Bay County Average Soil Nutrient Values from ShambaIQ precision data</caption>
                   <thead className="bg-forest-700 text-white">
                     <tr>
-                      {["Nutrient", "Homa Bay Value", "Sweet Potato Optimum", "Status"].map((h) => (
+                      {["Nutrient", "Homa Bay value", "Sweet potato optimum", "Status"].map((h) => (
                         <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
                       ))}
                     </tr>
@@ -424,7 +424,7 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 3: The Nitrogen Mistake ── */}
             <section>
               <h2 id="nitrogen-mistake" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                The Nitrogen Mistake That&rsquo;s Halving Yields Across Homa Bay
+                The nitrogen mistake that&rsquo;s halving yields across Homa Bay
               </h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Walk through any sweet potato farm in Nyanza and you&rsquo;ll see the same
@@ -462,7 +462,7 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 4: Fertilizer Guide ── */}
             <section>
               <h2 id="fertilizer-guide" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                Fertilizer Guide: What to Use, When, and How Much
+                Fertilizer guide: what to use, when, and how much
               </h2>
 
               {/* Fertilizer comparison table */}
@@ -471,7 +471,7 @@ export default function SweetPotatoHomaBayPage() {
                   <caption className="sr-only">Fertilizer comparison for sweet potato farming in Homa Bay Kenya</caption>
                   <thead className="bg-forest-700 text-white">
                     <tr>
-                      {["Fertilizer", "N-P-K", "Use for Sweet Potato?", "Why"].map((h) => (
+                      {["Fertilizer", "N-P-K", "Use for sweet potato?", "Why"].map((h) => (
                         <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
                       ))}
                     </tr>
@@ -515,7 +515,7 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 5: Varieties ── */}
             <section>
               <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                Best Certified Sweet Potato Varieties for Western Kenya
+                Best certified sweet potato varieties for Western Kenya
               </h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 Only plant{" "}
@@ -558,14 +558,14 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 6: Planting Calendar ── */}
             <section>
               <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                Planting Calendar for Homa Bay
+                Planting calendar for Homa Bay
               </h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-6">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Sweet potato planting calendar for Homa Bay County Kenya</caption>
                   <thead className="bg-cream-200">
                     <tr>
-                      {["Season", "Plant", "Weed / Establish", "Harvest", "Notes"].map((h) => (
+                      {["Season", "Plant", "Weed / establish", "Harvest", "Notes"].map((h) => (
                         <th key={h} className="px-4 py-3 text-left font-semibold text-xs text-forest-800 uppercase tracking-wide">{h}</th>
                       ))}
                     </tr>
@@ -593,7 +593,7 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 7: Rotation ── */}
             <section>
               <h2 id="rotation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                Maize–Sweet Potato Rotation: The Smartest Sequence for Homa Bay
+                Maize–sweet potato rotation: the smartest sequence for Homa Bay
               </h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Continuous maize on Homa Bay soils progressively depletes nitrogen and organic
@@ -603,7 +603,7 @@ export default function SweetPotatoHomaBayPage() {
                 their vine residues add organic matter back to the soil.
               </p>
               <div className="bg-forest-50 border border-forest-200 rounded-xl p-5 mb-6">
-                <p className="text-sm font-bold text-forest-800 mb-3">ShambaIQ Recommended 3-Season Rotation for Homa Bay</p>
+                <p className="text-sm font-bold text-forest-800 mb-3">ShambaIQ recommended 3-season rotation for Homa Bay</p>
                 <div className="flex items-center gap-3 flex-wrap">
                   {[
                     { season: "Season 1", crop: "Maize + Beans", note: "Long rains. DAP + CAN." },
@@ -638,7 +638,7 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 8: HowTo Steps ── */}
             <section>
               <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">
-                Step-by-Step: How to Grow Sweet Potatoes in Homa Bay
+                Step-by-step: how to grow sweet potatoes in Homa Bay
               </h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
@@ -668,14 +668,14 @@ export default function SweetPotatoHomaBayPage() {
             {/* ── SECTION 9: Budget ── */}
             <section>
               <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">
-                Budget: Total KES Cost Per Acre in Homa Bay
+                Budget: total KES cost per acre in Homa Bay
               </h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Sweet potato production cost per acre in Homa Bay Kenya 2026</caption>
                   <thead className="bg-forest-700 text-white">
                     <tr>
-                      {["Item", "Qty", "Unit Cost (KES)", "Total (KES)"].map((h) => (
+                      {["Item", "Qty", "Unit cost (KES)", "Total (KES)"].map((h) => (
                         <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
                       ))}
                     </tr>
@@ -810,7 +810,7 @@ export default function SweetPotatoHomaBayPage() {
               {/* Quick county facts */}
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-3">
-                  Homa Bay Quick Facts
+                  Homa Bay quick facts
                 </p>
                 <div className="space-y-2 text-sm">
                   {[
@@ -838,7 +838,7 @@ export default function SweetPotatoHomaBayPage() {
               {/* Neighboring counties */}
               <div className="bg-white border border-cream-300 rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-soil-400 mb-3">
-                  Neighbouring Counties
+                  Neighbouring counties
                 </p>
                 <div className="space-y-1.5">
                   {[
@@ -866,7 +866,7 @@ export default function SweetPotatoHomaBayPage() {
         {/* ── Related Posts ── */}
         <RelatedPosts
           posts={relatedPosts}
-          heading="More County Farming Guides"
+          heading="More county farming guides"
         />
 
       </div>

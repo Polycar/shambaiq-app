@@ -86,9 +86,6 @@ Respond ONLY with a raw JSON object in exactly this format (no markdown, no back
           generationConfig: {
             temperature: 0.2,
             maxOutputTokens: 4096,
-            thinkingConfig: {
-              thinkingBudget: 0,
-            },
           },
         }),
       }

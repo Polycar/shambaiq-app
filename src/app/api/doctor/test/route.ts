@@ -26,11 +26,9 @@ export async function GET(request: Request) {
         body: JSON.stringify({
           contents: [{ parts: [{ text: 'Return only this exact JSON, nothing else: {"condition":"Healthy","confidence":99}' }] }],
           generationConfig: {
-            maxOutputTokens: 100,
-            temperature: 0,
-            thinkingConfig: {
-              thinkingBudget: 0,
-            },
+            temperature: 0.2,
+            maxOutputTokens: 4096,
+            responseMimeType: 'application/json',
           },
         }),
       }

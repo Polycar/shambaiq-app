@@ -375,6 +375,163 @@ function DiseaseAlertsCard({ alerts, lang }: { alerts: any[]; lang: string }) {
   );
 }
 
+// ─── PDF Print Report ──────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function openPrintReport(result: any, acres: number, lang: string) {
+  const date = new Date().toLocaleDateString("en-KE", { day: "numeric", month: "long", year: "numeric" });
+  const cd = result.county_data || {};
+  const tl = result.timeline;
+
+  const soilRows = [
+    ["pH", cd["pH"] != null ? Number(cd["pH"]).toFixed(1) : "—", "5.5 – 7.0"],
+    ["Nitrogen (N)", cd["Total Nitrogen (g/kg)"] != null ? `${Number(cd["Total Nitrogen (g/kg)"]).toFixed(2)} g/kg` : "—", "> 1.5 g/kg"],
+    ["Phosphorus (P)", cd["Extractable Phosphorus (mg/kg)"] != null ? `${Number(cd["Extractable Phosphorus (mg/kg)"]).toFixed(1)} mg/kg` : "—", "> 25 mg/kg"],
+    ["Potassium (K)", cd["Extractable Potassium (mg/kg)"] != null ? `${Number(cd["Extractable Potassium (mg/kg)"]).toFixed(1)} mg/kg` : "—", "> 100 mg/kg"],
+    ["Organic carbon", cd["Organic Carbon (g/kg)"] != null ? `${Number(cd["Organic Carbon (g/kg)"]).toFixed(1)} g/kg` : "—", "> 10 g/kg"],
+    ["Texture", cd["Texture"] || "—", "Loam / clay loam ideal"],
+  ];
+
+  const timelineHtml = tl ? `
+    <div class="section">
+      <div class="section-title">Planting timeline — ${tl.season || ""}</div>
+      <table class="tbl">
+        <tr><th>${tl.label_1 || "Month 1"}</th><th>${tl.label_2 || "Month 2"}</th><th>${tl.label_3 || "Month 3"}</th></tr>
+        <tr><td>${clean(tl.month_1)}</td><td>${clean(tl.month_2)}</td><td>${clean(tl.month_3)}</td></tr>
+      </table>
+    </div>` : "";
+
+  const seedsHtml = (result.seeds && result.seeds.length > 0) ? `
+    <div class="section">
+      <div class="section-title">Certified seed varieties — ${result.crop}</div>
+      <table class="tbl">
+        <tr><th>Variety</th><th>Source</th><th>Zone</th><th>Maturity</th><th>Yield</th></tr>
+        ${result.seeds.map((s: any) => `<tr>
+          <td><strong>${s.Variety}</strong></td>
+          <td>${s.Supplier || s.Source || "—"}</td>
+          <td>${s.Altitude_Zone || "—"}</td>
+          <td>${s.Maturity_Days ? s.Maturity_Days + " days" : "—"}</td>
+          <td>${s.Yield_Bags_Per_Acre ? s.Yield_Bags_Per_Acre + " bags/acre" : "—"}</td>
+        </tr>`).join("")}
+      </table>
+    </div>` : "";
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>ShambaIQ — Farm precision report · ${result.crop} · ${result.county}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 10.5pt; color: #1a2e1c; background: #fff; }
+  .page { width: 180mm; margin: 0 auto; padding: 12mm 0; }
+
+  /* Header */
+  .header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid #2d5a30; padding-bottom: 8px; margin-bottom: 12px; }
+  .logo { font-size: 20pt; font-weight: 900; letter-spacing: -0.5px; color: #1a2e1c; }
+  .logo span { color: #c7931a; }
+  .logo-sub { font-size: 7.5pt; color: #5a7a5c; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+  .header-right { text-align: right; font-size: 8pt; color: #5a7a5c; line-height: 1.5; }
+
+  /* Hero band */
+  .hero { background: #2d5a30; color: #fff; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .hero-left h1 { font-size: 14pt; font-weight: 800; }
+  .hero-left p { font-size: 8.5pt; color: #b8d4b9; margin-top: 2px; }
+  .score-badge { text-align: center; background: rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 12px; }
+  .score-num { font-size: 22pt; font-weight: 900; color: #f5c842; line-height: 1; }
+  .score-label { font-size: 7pt; color: #b8d4b9; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* Budget band */
+  .budget-band { border: 1.5px solid #2d5a30; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .budget-total { font-size: 16pt; font-weight: 900; color: #2d5a30; }
+  .budget-label { font-size: 7.5pt; color: #5a7a5c; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .budget-lines { font-size: 9pt; color: #3d5c3f; line-height: 1.7; }
+
+  /* Sections */
+  .section { margin-bottom: 11px; }
+  .section-title { font-size: 7.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: #c7931a; margin-bottom: 6px; }
+
+  /* Tables */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 9pt; }
+  .tbl th { background: #f0f7f0; color: #2d5a30; font-weight: 700; padding: 5px 7px; text-align: left; border: 1px solid #dde8dd; }
+  .tbl td { padding: 5px 7px; border: 1px solid #dde8dd; color: #1a2e1c; vertical-align: top; }
+  .tbl tr:nth-child(even) td { background: #f8faf8; }
+
+  /* Confidence note */
+  .note { font-size: 8pt; color: #5a7a5c; margin-top: 3px; }
+
+  /* Footer */
+  .footer { border-top: 1px solid #dde8dd; margin-top: 14px; padding-top: 8px; display: flex; justify-content: space-between; font-size: 7.5pt; color: #8aaa8c; }
+
+  @page { size: A4; margin: 12mm 15mm; }
+  @media print {
+    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">Shamba<span>IQ</span></div>
+      <div class="logo-sub">Precision agriculture intelligence · Kenya</div>
+    </div>
+    <div class="header-right">
+      Farm precision report<br/>
+      ${result.county} County · ${acres} acre${acres !== 1 ? "s" : ""}<br/>
+      ${date}
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-left">
+      <h1>${result.crop}</h1>
+      <p>${clean(result.confidence)}</p>
+    </div>
+    <div class="score-badge">
+      <div class="score-num">${result.health_score}</div>
+      <div class="score-label">Soil health</div>
+    </div>
+  </div>
+
+  <div class="budget-band">
+    <div>
+      <div class="budget-label">Total fertilizer budget · ${acres} acre${acres !== 1 ? "s" : ""}</div>
+      <div class="budget-total">KES ${result.budget.total_budget.toLocaleString()}</div>
+    </div>
+    <div class="budget-lines">
+      ${result.budget.breakdown.map((l: string) => `• ${clean(l)}`).join("<br/>")}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Soil profile — ${result.county} County</div>
+    <table class="tbl">
+      <tr><th>Nutrient / property</th><th>Your reading</th><th>Optimal range</th></tr>
+      ${soilRows.map(([n, v, o]) => `<tr><td>${n}</td><td>${v}</td><td>${o}</td></tr>`).join("")}
+    </table>
+    <p class="note">${clean(result.data_source) || "Source: iSDA Africa precision soil data"}</p>
+  </div>
+
+  ${timelineHtml}
+  ${seedsHtml}
+
+  <div class="footer">
+    <span>shambaiq.com · info@shambaiq.com · WhatsApp: +254 748 042 633</span>
+    <span>Confidential · Generated ${date}</span>
+  </div>
+
+</div>
+<script>window.onload = function() { window.print(); };</script>
+</body>
+</html>`;
+
+  const w = window.open("", "_blank");
+  if (!w) return;
+  w.document.write(html);
+  w.document.close();
+}
+
 // ─── Component ─────────────────────────────────────────────────
 export default function RecommendTool({ counties, wards, crops, countyCoords, dealers }: Props) {
   const [lang, setLang] = useState<Lang>("en");
@@ -1992,24 +2149,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 {lang === "en" ? "Share & Download" : "Shiriki na Pakua"}
               </h3>
               <button
-                onClick={() => {
-                  const el = resultRef.current;
-                  if (!el) return;
-                  const noprint = el.querySelectorAll('[data-noprint]');
-                  noprint.forEach(n => (n as HTMLElement).style.display = 'none');
-                  const style = document.createElement('style');
-                  style.textContent = `
-                    @media print {
-                      body * { visibility: hidden; }
-                      #shambaiq-results, #shambaiq-results * { visibility: visible; }
-                      #shambaiq-results { position: absolute; left: 0; top: 0; width: 100%; }
-                    }
-                  `;
-                  document.head.appendChild(style);
-                  window.print();
-                  style.remove();
-                  noprint.forEach(n => (n as HTMLElement).style.display = '');
-                }}
+                onClick={() => openPrintReport(result, acres, lang)}
                 className="block w-full py-3 rounded-xl text-center font-bold text-cream-100 text-sm cursor-pointer bg-forest-700 hover:bg-forest-600 transition-colors"
               >
                 {lang === "en" ? "Download PDF Report" : "Pakua Ripoti ya PDF"}

@@ -69,8 +69,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MobileNav />
         <WhatsAppWidget />
         <PWAInstaller />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-7X2WCN7KJ7" strategy="lazyOnload" />
-        <Script id="ga-init" strategy="lazyOnload">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-7X2WCN7KJ7');`}</Script>
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <Script src="https://www.googletagmanager.com/gtag/js?id=G-7X2WCN7KJ7" strategy="lazyOnload" />
+            <Script id="ga-init" strategy="lazyOnload">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              if (window.location.hostname === 'shambaiq.com' || window.location.hostname === 'www.shambaiq.com') {
+                gtag('config', 'G-7X2WCN7KJ7');
+              }
+            `}</Script>
+          </>
+        )}
       </body>
     </html>
   );

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic Soil Treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic soil treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is the soil pH in Meru and Nyeri counties?", answer: "Meru County's volcanic highland soils commonly range from pH 4.5 to 5.5 across the upper slopes of Mount Kenya. Nyeri County is similar, with pH 4.8 to 5.6 across the Aberdare footzones and Kieni areas. Both counties contain pockets below pH 4.5 where aluminium toxicity severely limits crop production. ShambaIQ's precision mapping shows your exact farm pH at shambaiq.com/app?county=meru." },
@@ -34,7 +34,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Treat Acidic Soil in Meru and Nyeri Counties — Lime Application Guide",
+  name: "How to treat acidic soil in Meru and Nyeri counties — lime application guide",
   description: "A step-by-step guide to diagnosing, treating, and managing acidic volcanic soils in Meru and Nyeri counties for improved crop production.",
   totalTime: "P180D",
   estimatedCost: { currency: "KES", value: "8000–18000 per acre depending on acidity level" },
@@ -51,15 +51,15 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "why-meru-nyeri-acidic", label: "Why Meru and Nyeri Soils Are So Acidic", level: 2 },
-  { id: "aluminium-toxicity", label: "Aluminium Toxicity — The Hidden Yield Killer", level: 2 },
-  { id: "soil-data", label: "Soil pH Data Across Meru and Nyeri", level: 2 },
-  { id: "lime-types", label: "Dolomitic vs Calcitic Lime — Which to Use", level: 2 },
-  { id: "lime-rates", label: "Lime Application Rates by pH Level", level: 2 },
-  { id: "phosphorus-fixation", label: "Phosphorus Fixation at Low pH", level: 2 },
-  { id: "howto", label: "Step-by-Step Lime Treatment Guide", level: 2 },
-  { id: "cost", label: "Cost of Liming Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "why-meru-nyeri-acidic", label: "Why Meru and Nyeri soils are so acidic", level: 2 },
+  { id: "aluminium-toxicity", label: "Aluminium toxicity — the hidden yield killer", level: 2 },
+  { id: "soil-data", label: "Soil pH data across Meru and Nyeri", level: 2 },
+  { id: "lime-types", label: "Dolomitic vs calcitic lime — which to use", level: 2 },
+  { id: "lime-rates", label: "Lime application rates by pH level", level: 2 },
+  { id: "phosphorus-fixation", label: "Phosphorus fixation at low pH", level: 2 },
+  { id: "howto", label: "Step-by-step lime treatment guide", level: 2 },
+  { id: "cost", label: "Cost of liming per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function AcidicSoilMeruNyeriPage() {
@@ -68,7 +68,7 @@ export default function AcidicSoilMeruNyeriPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic Soil Treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Acidic soil treatment Meru Nyeri", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -77,12 +77,13 @@ export default function AcidicSoilMeruNyeriPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
+                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil health</Link>
                 <Link href="/soil/meru" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Meru County</Link>
                 <Link href="/soil/nyeri" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Nyeri County</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Acidic Soil Treatment: <span className="text-gold-700">Restoring Crop Vitality in Meru and Nyeri</span>
+                Acidic soil treatment:
+                <span className="text-gold-700">Restoring crop vitality in Meru and Nyeri</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 The volcanic highland soils of Meru and Nyeri counties are among the most naturally fertile in Kenya by total nutrient content. Yet large portions of both counties produce consistently poor yields of maize, beans, and vegetables — not because the nutrients are absent, but because soil pH below 5.0 locks them out entirely. Aluminium and manganese, soluble at low pH, accumulate to levels that poison root tips before they can absorb anything. Liming these soils is not a minor management tweak. It is the difference between farming and not farming productively.
@@ -102,7 +103,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </figure>
 
             <section>
-              <h2 id="why-meru-nyeri-acidic" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Meru and Nyeri Soils Are So Acidic</h2>
+              <h2 id="why-meru-nyeri-acidic" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Meru and Nyeri soils are so acidic</h2>
               <p className="text-soil-600 leading-relaxed mb-4">The acidity of Mount Kenya's highland soils has both geological and agronomic causes — and understanding both is necessary for managing it correctly.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -119,7 +120,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </section>
 
             <section>
-              <h2 id="aluminium-toxicity" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Aluminium Toxicity — The Hidden Yield Killer</h2>
+              <h2 id="aluminium-toxicity" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Aluminium toxicity — the hidden yield killer</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Below pH 5.0, aluminium becomes soluble in soil water and accumulates to concentrations that are directly toxic to plant roots. This aluminium toxicity is the primary mechanism through which strongly acidic Meru and Nyeri soils reduce yields — not nutrient deficiency itself, but physical destruction of the root system that would absorb nutrients.</p>
               <div className="bg-red-50 border-l-4 border-red-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-red-800 mb-2">What Aluminium Does to Plant Roots</p>
@@ -128,13 +129,13 @@ export default function AcidicSoilMeruNyeriPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil pH Data Across Meru and Nyeri</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil pH data across Meru and Nyeri</h2>
               <p className="text-soil-600 leading-relaxed mb-5">ShambaIQ's precision soil mapping shows significant pH variation within both counties, with the most severe acidity concentrated in the higher-altitude zones closest to Mount Kenya.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Soil pH ranges by sub-location in Meru and Nyeri counties Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Sub-location", "pH Range", "Aluminium Toxicity Risk", "Lime Requirement", "Priority"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Sub-location", "pH range", "Aluminium toxicity risk", "Lime requirement", "Priority"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -160,7 +161,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </section>
 
             <section>
-              <h2 id="lime-types" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Dolomitic vs Calcitic Lime — Which to Use in Meru and Nyeri</h2>
+              <h2 id="lime-types" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Dolomitic vs calcitic lime — which to use in Meru and Nyeri</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Both lime types neutralise soil acidity, but they have different nutrient profiles that matter specifically for Meru and Nyeri's leached volcanic soils.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
@@ -182,12 +183,12 @@ export default function AcidicSoilMeruNyeriPage() {
             </section>
 
             <section>
-              <h2 id="lime-rates" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Lime Application Rates by Soil pH</h2>
+              <h2 id="lime-rates" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Lime application rates by soil pH</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Dolomitic lime application rates for Meru and Nyeri soils by current pH</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Current pH", "Lime Rate (tonnes/acre)", "Cost at KES 700/50kg bag", "Apply Before Planting", "Target pH"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Current pH", "Lime rate (tonnes/acre)", "Cost at KES 700/50kg bag", "Apply before planting", "Target pH"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -211,7 +212,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </section>
 
             <section>
-              <h2 id="phosphorus-fixation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Phosphorus Fixation at Low pH — Why Your DAP Is Disappearing</h2>
+              <h2 id="phosphorus-fixation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Phosphorus fixation at low pH — why your DAP is disappearing</h2>
               <p className="text-soil-600 leading-relaxed mb-4">At pH below 5.5, iron and aluminium oxides — which dominate Meru and Nyeri's volcanic soils — react aggressively with phosphate ions to form insoluble compounds. A farmer applying one bag of DAP to an unlimed Meru soil at pH 4.8 may be wasting 60 to 80 percent of that phosphorus within days of application. The phosphorus is in the soil — it simply cannot be accessed by roots.</p>
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-amber-800 mb-2">The return on liming exceeds the return on fertilizer on acidic soils</p>
@@ -220,7 +221,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Treating Acidic Soil in Meru and Nyeri</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: treating acidic soil in Meru and Nyeri</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -235,12 +236,12 @@ export default function AcidicSoilMeruNyeriPage() {
             </section>
 
             <section>
-              <h2 id="cost" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost of Liming Per Acre in Meru and Nyeri 2026</h2>
+              <h2 id="cost" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost of liming per acre in Meru and Nyeri 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Liming cost versus yield benefit per acre in Meru and Nyeri counties Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Scenario", "Lime Cost", "Expected Maize Yield (bags/acre)", "Revenue at KES 3,500/bag", "Net Gain from Liming"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Scenario", "Lime cost", "Expected maize yield (bags/acre)", "Revenue at KES 3,500/bag", "Net gain from liming"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -273,12 +274,12 @@ export default function AcidicSoilMeruNyeriPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/meru", label: "Meru County Soil Report" },
-                  { href: "/soil/nyeri", label: "Nyeri County Soil Report" },
-                  { href: "/soil/meru/maize", label: "Maize in Meru — After Liming" },
-                  { href: "/blog/why-your-soil-is-acidic-kenya", label: "Why Your Soil Is Acidic — Kenya Guide" },
-                  { href: "/dealers/meru", label: "Agrovets in Meru County" },
-                  { href: "/zones/central-highlands", label: "Central Highlands Zone" },
+                  { href: "/soil/meru", label: "Meru county soil report" },
+                  { href: "/soil/nyeri", label: "Nyeri county soil report" },
+                  { href: "/soil/meru/maize", label: "Maize in Meru — after liming" },
+                  { href: "/blog/why-your-soil-is-acidic-kenya", label: "Why your soil is acidic — Kenya guide" },
+                  { href: "/dealers/meru", label: "Agrovets in Meru county" },
+                  { href: "/zones/central-highlands", label: "Central highlands zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -288,7 +289,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -309,7 +310,7 @@ export default function AcidicSoilMeruNyeriPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Meru Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Meru quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Central Highlands"], ["Altitude", "1,000 – 3,200 m"], ["Avg Rainfall", "900 – 1,400 mm/yr"], ["Soil Type", "Volcanic nitisol"], ["Avg Soil pH", "4.5 – 5.5"], ["Al Toxicity", "High above 1,800 m"], ["Priority", "Lime before anything"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -323,7 +324,7 @@ export default function AcidicSoilMeruNyeriPage() {
               <div className="bg-white border border-cream-300 rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Related Counties</p>
                 <div className="space-y-1.5">
-                  {[{ slug: "nyeri", name: "Nyeri" }, { slug: "kirinyaga", name: "Kirinyaga" }, { slug: "tharaka-nithi", name: "Tharaka Nithi" }, { slug: "embu", name: "Embu" }].map(({ slug, name }) => (
+                  {[{ slug: "nyeri", name: "Nyeri" }, { slug: "kirinyaga", name: "Kirinyaga" }, { slug: "tharaka-nithi", name: "Tharaka nithi" }, { slug: "embu", name: "Embu" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">
                       <span>{name} County</span><span className="text-gold-500 text-xs">→</span>
                     </Link>
@@ -333,7 +334,7 @@ export default function AcidicSoilMeruNyeriPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More Soil Health Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More soil health guides" />
       </div>
     </>
   );

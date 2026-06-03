@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic Soil Restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic soil restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is the best cover crop for Machakos dryland soils?", answer: "Pigeon peas are the single best cover crop for Machakos dryland conditions. They are drought-tolerant to 600 mm annual rainfall, fix 40 to 80 kg of atmospheric nitrogen per acre per season, produce deep tap roots that break compacted alfisol hardpan, add significant organic matter through leaf litter, and produce an edible grain that provides income. Cowpeas are the second-best choice — faster-growing than pigeon peas and better suited to the shortest planting windows during unreliable short rains. Get a Machakos-specific rotation plan at shambaiq.com/app?county=machakos." },
@@ -33,7 +33,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Build Soil Organic Matter in Machakos Dryland Farms",
+  name: "How to build soil organic matter in Machakos dryland farms",
   description: "A step-by-step guide to restoring organic carbon, improving moisture retention, and rebuilding soil health on Machakos alfisol soils using cover crops, compost, and conservation farming techniques.",
   totalTime: "P365D",
   estimatedCost: { currency: "KES", value: "5000–15000 per acre per season" },
@@ -50,14 +50,14 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "machakos-soil-crisis", label: "Machakos Soil Degradation — Understanding the Problem", level: 2 },
-  { id: "soil-data", label: "Machakos Soil Organic Carbon Data", level: 2 },
-  { id: "cover-crops", label: "Cover Crops — Pigeon Peas and Cowpeas", level: 2 },
-  { id: "water-harvesting", label: "Water Harvesting — Zai Pits and Tied Ridges", level: 2 },
-  { id: "composting", label: "On-Farm Composting Strategy", level: 2 },
-  { id: "drought-crops", label: "Drought-Tolerant Crop Selection", level: 2 },
-  { id: "howto", label: "Step-by-Step Restoration Guide", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "machakos-soil-crisis", label: "Machakos soil degradation — understanding the problem", level: 2 },
+  { id: "soil-data", label: "Machakos soil organic carbon data", level: 2 },
+  { id: "cover-crops", label: "Cover crops — pigeon peas and cowpeas", level: 2 },
+  { id: "water-harvesting", label: "Water harvesting — zai pits and tied ridges", level: 2 },
+  { id: "composting", label: "On-farm composting strategy", level: 2 },
+  { id: "drought-crops", label: "Drought-tolerant crop selection", level: 2 },
+  { id: "howto", label: "Step-by-step restoration guide", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function OrganicSoilMachakosPage() {
@@ -66,7 +66,7 @@ export default function OrganicSoilMachakosPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic Soil Restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Organic soil restoration Machakos", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -75,11 +75,12 @@ export default function OrganicSoilMachakosPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
+                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil health</Link>
                 <Link href="/soil/machakos" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Machakos County</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Building Soil Organic Matter in Machakos: <span className="text-gold-700">A Dryland Restoration Guide</span>
+                Building soil organic matter in Machakos:
+                <span className="text-gold-700">A dryland restoration guide</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Machakos County's alfisol soils were once highly productive under the traditional land management systems that built the famous Machakos terraces. Decades of continuous cropping, land fragmentation, and removal of organic matter have reduced soil organic carbon to below 1 percent across large areas — well below the 2 percent minimum needed for adequate water retention and nutrient cycling. The good news is that organic matter can be rebuilt, and in Machakos the tools — pigeon peas, zai pits, tied ridges, and on-farm composting — are inexpensive and proven.
@@ -99,7 +100,7 @@ export default function OrganicSoilMachakosPage() {
             </figure>
 
             <section>
-              <h2 id="machakos-soil-crisis" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Machakos Soil Degradation — Understanding the Problem</h2>
+              <h2 id="machakos-soil-crisis" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Machakos soil degradation — understanding the problem</h2>
               <p className="text-soil-600 leading-relaxed mb-4">ShambaIQ's precision soil mapping of Machakos County reveals that organic carbon across much of the county averages 0.6 to 1.2 percent — well below the 2 percent threshold that soil scientists use as the minimum for a functionally productive agricultural soil. At these levels the consequences are compounding and interconnected.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
@@ -117,12 +118,12 @@ export default function OrganicSoilMachakosPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Machakos Soil Organic Carbon Data</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Machakos soil organic carbon data</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Machakos County soil organic carbon and nutrient data from precision soil mapping</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Parameter", "Machakos Average", "Target for Good Farming", "Gap", "Primary Fix"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Parameter", "Machakos average", "Target for good farming", "Gap", "Primary fix"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -148,13 +149,13 @@ export default function OrganicSoilMachakosPage() {
             </section>
 
             <section>
-              <h2 id="cover-crops" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cover Crops — Why Pigeon Peas Are Machakos's Best Tool</h2>
+              <h2 id="cover-crops" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cover crops — why pigeon peas are Machakos's best tool</h2>
               <p className="text-soil-600 leading-relaxed mb-5">A single cover crop species does more for Machakos soil health than any combination of purchased inputs. Pigeon peas fix nitrogen, break hardpan, add organic matter, provide grain income, and tolerate the exact rainfall conditions that Machakos experiences.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Cover crop comparison for Machakos dryland conditions</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Cover Crop", "Drought Tolerance", "N Fixation (kg/acre)", "Hardpan Breaking", "Income Potential", "Best Use"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Cover crop", "Drought tolerance", "N fixation (kg/acre)", "Hardpan breaking", "Income potential", "Best use"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -178,7 +179,7 @@ export default function OrganicSoilMachakosPage() {
             </section>
 
             <section>
-              <h2 id="water-harvesting" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Water Harvesting — Zai Pits and Tied Ridges</h2>
+              <h2 id="water-harvesting" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Water harvesting — zai pits and tied ridges</h2>
               <p className="text-soil-600 leading-relaxed mb-5">In semi-arid Machakos, the primary limiting factor is not total rainfall but rainfall capture. Two low-cost technologies capture 40 to 70 percent more of each rainfall event for crop use.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
@@ -196,12 +197,12 @@ export default function OrganicSoilMachakosPage() {
             </section>
 
             <section>
-              <h2 id="drought-crops" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Drought-Tolerant Crop Selection for Machakos</h2>
+              <h2 id="drought-crops" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Drought-tolerant crop selection for Machakos</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Drought-tolerant crop rankings for Machakos County Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Crop", "Min Rainfall (mm)", "Season Length", "Market", "Reliability"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Crop", "Min rainfall (mm)", "Season length", "Market", "Reliability"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -226,7 +227,7 @@ export default function OrganicSoilMachakosPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Building Soil Organic Matter in Machakos</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: building soil organic matter in Machakos</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -251,12 +252,12 @@ export default function OrganicSoilMachakosPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/machakos", label: "Machakos County Soil Report" },
-                  { href: "/crops/pigeon-peas", label: "Pigeon Peas Crop Guide" },
-                  { href: "/blog/farming-semi-arid-kenya-machakos-makueni-kitui", label: "Semi-Arid Kenya Farming Guide" },
-                  { href: "/soil/makueni", label: "Makueni County — Compare" },
-                  { href: "/dealers/machakos", label: "Agrovets in Machakos County" },
-                  { href: "/zones/semi-arid", label: "Semi-Arid Zone Guide" },
+                  { href: "/soil/machakos", label: "Machakos county soil report" },
+                  { href: "/crops/pigeon-peas", label: "Pigeon peas crop guide" },
+                  { href: "/blog/farming-semi-arid-kenya-machakos-makueni-kitui", label: "Semi-arid Kenya farming guide" },
+                  { href: "/soil/makueni", label: "Makueni county — compare" },
+                  { href: "/dealers/machakos", label: "Agrovets in Machakos county" },
+                  { href: "/zones/semi-arid", label: "Semi-arid zone guide" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -266,7 +267,7 @@ export default function OrganicSoilMachakosPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -287,7 +288,7 @@ export default function OrganicSoilMachakosPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Machakos Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Machakos quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Semi-Arid"], ["Altitude", "1,000 – 1,800 m"], ["Avg Rainfall", "500 – 800 mm/yr"], ["Soil Type", "Alfisol"], ["Avg OC", "0.6 – 1.2%"], ["Hardpan", "Common at 20–35 cm"], ["Priority", "Organic matter first"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -311,7 +312,7 @@ export default function OrganicSoilMachakosPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More Soil Health Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More soil health guides" />
       </div>
     </>
   );

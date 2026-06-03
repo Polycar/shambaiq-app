@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer Guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "DAP vs CAN vs NPK", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "DAP vs CAN vs NPK", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is DAP fertilizer used for in Kenya?", answer: "DAP (18:46:0) is a basal fertilizer applied at planting to supply phosphorus for root development. Appropriate for most highland crops on acidic to neutral soils at 50 kg per acre. Not appropriate on alkaline soils above pH 7.5 where it raises pH further." },
@@ -31,12 +31,12 @@ const faqSchema = makeFAQSchema([
   { question: "How much fertilizer per acre of maize in Kenya?", answer: "Standard programme: 50 kg DAP (1 bag) at planting + 50 kg CAN (1 bag) at knee height. On soils below pH 5.5, add lime at least 3 weeks before planting. Total cost: approximately KES 7,700 per acre for basic DAP + CAN." },
 ]);
 const TOC_ITEMS: TOCItem[] = [
-  { id: "comparison", label: "Side-by-Side Comparison", level: 2 },
-  { id: "dap-detail", label: "DAP — When to Use and Avoid", level: 2 },
-  { id: "can-detail", label: "CAN — The Top-Dress Standard", level: 2 },
-  { id: "npk-detail", label: "NPK 17:17:17 — The Balanced Option", level: 2 },
-  { id: "by-crop", label: "Which Fertilizer for Which Crop", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "comparison", label: "Side-by-side comparison", level: 2 },
+  { id: "dap-detail", label: "DAP — when to use and avoid", level: 2 },
+  { id: "can-detail", label: "CAN — the top-dress standard", level: 2 },
+  { id: "npk-detail", label: "NPK 17:17:17 — the balanced option", level: 2 },
+  { id: "by-crop", label: "Which fertilizer for which crop", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function Page() {
@@ -45,15 +45,18 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer Guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "DAP vs CAN vs NPK", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "DAP vs CAN vs NPK", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=fertilizer-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Fertilizer Guides</Link>
+                <Link href="/blog?category=fertilizer-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Fertilizer guides</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">DAP vs CAN vs NPK Fertilizer: <span className="text-gold-700">Which Should You Use in Kenya?</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                DAP vs CAN vs NPK fertilizer:
+                <span className="text-gold-700">Which should you use in Kenya?</span>
+              </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Walk into any Kenyan agrovet and you face the same three products: DAP, CAN, and NPK 17:17:17. Most farmers buy what their neighbour uses without understanding what each product actually does in their specific soil. The wrong choice wastes money — applying DAP to alkaline Kajiado soil raises pH further and damages onion roots; applying CAN to beans suppresses nitrogen fixation that would have supplied nitrogen for free. This guide explains what each product does and when to use which.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
@@ -66,7 +69,7 @@ export default function Page() {
             </figure>
 
             <section>
-              <h2 id="comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Side-by-Side Comparison: DAP vs CAN vs NPK 17:17:17</h2>
+              <h2 id="comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Side-by-side comparison: DAP vs CAN vs NPK 17:17:17</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">DAP CAN NPK fertilizer comparison Kenya</caption>
@@ -88,7 +91,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="dap-detail" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">DAP — When to Use and When to Avoid</h2>
+              <h2 id="dap-detail" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">DAP — when to use and when to avoid</h2>
               <p className="text-soil-600 leading-relaxed mb-4">DAP (Di-Ammonium Phosphate, 18:46:0) is Kenya's most widely used basal fertilizer. Its high phosphorus content (46%) makes it the most cost-effective source of phosphorus for root development at planting. Apply in the furrow 5 cm below and 5 cm beside the seed — never in direct contact.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 <div className="bg-green-50 border border-green-200 rounded-xl p-4">
@@ -100,14 +103,14 @@ export default function Page() {
                 <div className="bg-red-50 border border-red-200 rounded-xl p-4">
                   <h3 className="font-semibold text-red-800 text-sm mb-2">Avoid DAP when:</h3>
                   <div className="space-y-1 text-xs text-red-700">
-                    {["Soil pH is above 7.5 (Kajiado, Narok, Baringo)", "Growing beans or other legumes", "Soil phosphorus is already above 20 mg/kg", "You need potassium — DAP has zero K"].map((t) => <p key={t} className="flex gap-2"><span>✗</span>{t}</p>)}
+                    {["Soil pH is above 7.5 (Kajiado, narok, Baringo)", "Growing beans or other legumes", "Soil phosphorus is already above 20 mg/kg", "You need potassium — DAP has zero K"].map((t) => <p key={t} className="flex gap-2"><span>✗</span>{t}</p>)}
                   </div>
                 </div>
               </div>
             </section>
 
             <section>
-              <h2 id="can-detail" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">CAN — The Top-Dress Nitrogen Source</h2>
+              <h2 id="can-detail" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">CAN — the top-dress nitrogen source</h2>
               <p className="text-soil-600 leading-relaxed mb-4">CAN (Calcium Ammonium Nitrate, 26% N) contains both ammonium and nitrate nitrogen. Nitrate is immediately plant-available while ammonium is absorbed more slowly — providing both immediate and sustained nitrogen supply. The 8% calcium content makes CAN the correct top-dress choice on calcium-deficient soils.</p>
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-amber-800 mb-2">CAN vs Urea: Why CAN is more reliable for smallholders</p>
@@ -116,18 +119,18 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="npk-detail" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">NPK 17:17:17 — The Balanced Option</h2>
+              <h2 id="npk-detail" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">NPK 17:17:17 — the balanced option</h2>
               <p className="text-soil-600 leading-relaxed mb-4">NPK 17:17:17 supplies nitrogen, phosphorus, and potassium in equal proportions. It is the correct choice when all three macronutrients are needed simultaneously — common for vegetables in early growth and on alkaline soils where DAP is inappropriate.</p>
               <p className="text-soil-600 leading-relaxed mb-4">The cost trade-off: NPK 17:17:17 at 50 kg per acre provides only 8.5 kg of phosphorus per acre — less than half of DAP's 23 kg. For crops with high phosphorus demand on phosphorus-deficient soils, DAP is more cost-effective. For crops needing balanced nutrition (onions, cabbages, tomatoes in establishment), NPK 17:17:17 eliminates the need for separate potassium application.</p>
             </section>
 
             <section>
-              <h2 id="by-crop" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Which Fertilizer for Which Crop</h2>
+              <h2 id="by-crop" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Which fertilizer for which crop</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Fertilizer recommendation by crop type in Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Crop", "At Planting", "Top-Dress", "Do NOT Use", "Why"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Crop", "At planting", "Top-dress", "Do not use", "Why"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Maize", "DAP 50 kg/acre", "CAN 50 kg/acre at knee height", "NPK (wasteful K)", "Maize needs high P at planting, high N at V6-V8"], ["Wheat", "DAP 75 kg/acre", "CAN 50 kg/acre at tillering", "Urea (volatilises)", "Wheat needs more P than maize for root mass"], ["Beans", "Rock phosphate 50 kg or DAP 25 kg", "NONE", "CAN, Urea, NPK", "Beans fix own N — external N suppresses nodules"], ["Onion (Kajiado)", "NPK 17:17:17 50 kg", "Ammonium sulfate 50 kg", "DAP (raises alkaline pH)", "Alkaline soils need acidifying N source"], ["Cabbage", "DAP 50 kg + NPK 25 kg", "CAN 50 kg at 3 and 6 weeks", "Urea alone (Ca deficiency)", "Heavy feeder needing balanced NPK + Ca from CAN"], ["Tomato", "DAP 50 kg", "CAN 50 kg at 2, 5, 8 weeks", "Excess N at fruiting", "Late N delays ripening and reduces shelf life"]].map(([crop, plant, top, dont, why], i) => (
@@ -154,12 +157,12 @@ export default function Page() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/blog/complete-maize-farming-guide-kenya", label: "Complete Maize Guide" },
-                  { href: "/blog/how-much-fertilizer-per-acre-kenya-calculator", label: "Fertilizer Calculator by Crop" },
-                  { href: "/blog/why-your-soil-is-acidic-kenya", label: "Why Your Soil Is Acidic" },
-                  { href: "/blog/kenya-county-soil-rankings-2026", label: "County Soil Rankings 2026" },
-                  { href: "/crops/maize", label: "Maize Crop Guide" },
-                  { href: "/app", label: "Get Farm-Specific Recommendation" },
+                  { href: "/blog/complete-maize-farming-guide-kenya", label: "Complete maize guide" },
+                  { href: "/blog/how-much-fertilizer-per-acre-kenya-calculator", label: "Fertilizer calculator by crop" },
+                  { href: "/blog/why-your-soil-is-acidic-kenya", label: "Why your soil is acidic" },
+                  { href: "/blog/kenya-county-soil-rankings-2026", label: "County soil rankings 2026" },
+                  { href: "/crops/maize", label: "Maize crop guide" },
+                  { href: "/app", label: "Get farm-specific recommendation" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
@@ -167,7 +170,7 @@ export default function Page() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -183,7 +186,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Best basal", "DAP for most crops"],
@@ -200,7 +203,7 @@ export default function Page() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="Related Guides" />
+        <RelatedPosts posts={relatedPosts} heading="Related guides" />
       </div>
     </>
   );

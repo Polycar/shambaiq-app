@@ -21,13 +21,13 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Diagnostic Guides", url: `${BASE_URL}/blog?category=diagnostic-guides` }, { name: "Yellow Maize Leaves Diagnosis", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Diagnostic guides", url: `${BASE_URL}/blog?category=diagnostic-guides` }, { name: "Yellow maize leaves diagnosis", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "Coming soon", answer: "This section is being updated with detailed FAQ content." },
 ]);
 const TOC_ITEMS: TOCItem[] = [
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function Page() {
@@ -36,15 +36,18 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Diagnostic Guides", url: `${BASE_URL}/blog?category=diagnostic-guides` }, { name: "Yellow Maize Leaves Diagnosis", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Diagnostic guides", url: `${BASE_URL}/blog?category=diagnostic-guides` }, { name: "Yellow maize leaves diagnosis", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=diagnostic-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Diagnostic Guides</Link>
+                <Link href="/blog?category=diagnostic-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Diagnostic guides</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Yellow Maize Leaves in Kenya: <span className="text-gold-700">Diagnosing Soil Deficiency vs Disease</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                Yellow maize leaves in Kenya:
+                <span className="text-gold-700">Diagnosing soil deficiency vs disease</span>
+              </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Yellow maize leaves are the most common distress signal from Kenyan farms, with at least eight distinct causes requiring completely different treatments. Applying CAN to yellow maize caused by aluminium toxicity wastes money. Applying lime to nitrogen deficiency misses the problem. This guide provides the precise diagnostic criteria for each cause.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
@@ -61,12 +64,12 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="diagnosis-table" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Visual Diagnosis Guide: 8 Causes of Yellow Maize Leaves</h2>
+              <h2 id="diagnosis-table" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Visual diagnosis guide: 8 causes of yellow maize leaves</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Yellow maize leaf diagnosis guide Kenya soil deficiency vs disease</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Cause", "Pattern", "Leaves Affected", "Other Signs", "Fix", "Response Time"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Cause", "Pattern", "Leaves affected", "Other signs", "Fix", "Response time"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Nitrogen deficiency", "V-shaped from tip to midrib", "Lower/older first", "Pale green overall", "CAN 50 kg/acre", "5\u20137 days"], ["Aluminium toxicity", "Uniform pale wash", "All leaves", "Stubby brown roots", "Lime \u2014 next season", "Next season"], ["Phosphorus deficiency", "Purple-red tint", "Lower leaves", "Cold soil, slow growth", "DAP at planting", "2\u20133 weeks"], ["Zinc deficiency", "Interveinal stripes", "Young/upper leaves", "Common pH > 7.5", "ZnSO4 foliar 2g/L", "7\u201310 days"], ["Sulfur deficiency", "Uniform pale yellow", "Youngest leaves", "No response to CAN", "AmSulfate foliar", "7\u201310 days"], ["Grey leaf spot", "Rectangular grey lesions", "Lower first", "Lesions between veins", "Propiconazole spray", "Stops spread"], ["Corn leaf blight", "Cigar-shaped tan lesions", "Upper canopy", "Cool humid conditions", "Mancozeb spray", "Stops spread"], ["Maize streak virus", "Bright yellow streaks", "All leaves", "Parallel to veins", "Remove plants \u2014 no cure", "N/A"]].map(([cause, pattern, leaves, signs, fix, time], i) => (
@@ -85,7 +88,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="n-vs-al" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Nitrogen Deficiency vs Aluminium Toxicity \u2014 The Critical Distinction</h2>
+              <h2 id="n-vs-al" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Nitrogen deficiency vs aluminium toxicity \u2014 the critical distinction</h2>
               <p className="text-soil-600 leading-relaxed mb-4">These two causes look similar from a distance but require opposite treatments. Getting the diagnosis wrong costs an entire season.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[{type: "Nitrogen deficiency", pattern: "V-shaped yellowing starting from leaf tips on LOWER leaves, spreading upward. Midrib stays slightly greener. Plant responds visibly to CAN within 5\u20137 days.", rootTest: "Roots are normal \u2014 white tips, branching pattern intact.", action: "Apply CAN 50 kg/acre immediately. Response is fast.", color: "bg-amber-50 border-amber-200"}, {type: "Aluminium toxicity (low pH)", pattern: "Uniform pale, washed-out yellowing across ALL leaves. Plants are stunted overall \u2014 shorter than normal with fewer leaves. Does NOT respond to CAN application.", rootTest: "Pull the plant \u2014 roots are short, stubby, thickened, with BROWN tips. This is the definitive diagnostic sign.", action: "Lime required. CAN will not help. Benefit comes next season after pH correction.", color: "bg-red-50 border-red-200"}].map((item) => (
@@ -112,8 +115,8 @@ export default function Page() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/app", label: "Check Your Farm Soil" },
-                  { href: "/blog", label: "All Blog Posts" },
+                  { href: "/app", label: "Check your farm soil" },
+                  { href: "/blog", label: "All blog posts" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
@@ -121,7 +124,7 @@ export default function Page() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -137,7 +140,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Most common cause", "N deficiency"],
@@ -154,7 +157,7 @@ export default function Page() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="Related Guides" />
+        <RelatedPosts posts={relatedPosts} heading="Related guides" />
       </div>
     </>
   );

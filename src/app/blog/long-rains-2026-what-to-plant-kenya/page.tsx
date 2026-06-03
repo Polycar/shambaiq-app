@@ -21,13 +21,13 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Seasonal Guides", url: `${BASE_URL}/blog?category=seasonal-guides` }, { name: "Long Rains 2026 Planting Guide", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Seasonal guides", url: `${BASE_URL}/blog?category=seasonal-guides` }, { name: "Long rains 2026 planting guide", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "Coming soon", answer: "This section is being updated with detailed FAQ content." },
 ]);
 const TOC_ITEMS: TOCItem[] = [
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function Page() {
@@ -36,15 +36,18 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Seasonal Guides", url: `${BASE_URL}/blog?category=seasonal-guides` }, { name: "Long Rains 2026 Planting Guide", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Seasonal guides", url: `${BASE_URL}/blog?category=seasonal-guides` }, { name: "Long rains 2026 planting guide", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=seasonal-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Seasonal Guides</Link>
+                <Link href="/blog?category=seasonal-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Seasonal guides</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Long Rains 2026 Kenya: <span className="text-gold-700">What to Plant by County and Agroecological Zone</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                Long rains 2026 Kenya:
+                <span className="text-gold-700">What to plant by county and agroecological zone</span>
+              </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Kenya's long rains (March–June 2026) are the primary planting window for over 70 percent of smallholder farmers. The decisions made in the first two weeks of March determine household food security and farm income for the next six months. This guide provides ShambaIQ's county-specific recommendations calibrated against soil data and historical rainfall patterns.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
@@ -61,12 +64,12 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="by-zone" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">What to Plant by Agroecological Zone \u2014 Long Rains 2026</h2>
+              <h2 id="by-zone" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">What to plant by agroecological zone \u2014 long rains 2026</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Long rains 2026 planting recommendations by zone Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Zone", "Counties", "Onset Window", "Primary Crops", "Intercrop Option"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Zone", "Counties", "Onset window", "Primary crops", "Intercrop option"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Highland (> 1,800m)", "Nyandarua, Nyeri upper, Meru upper", "Late March\u2013April", "Potato, Wheat, Maize (H614D)", "Beans after potato"], ["Upper Midland", "Nakuru, U. Gishu, Trans Nzoia", "Late March\u2013Early April", "Maize (DK8031), Wheat", "Maize + beans intercrop"], ["Midland (1,200\u20131,500m)", "Kakamega, Nandi, Kisii, Embu", "Early\u2013Mid April", "Maize (DK777), Beans, Tea", "Maize + beans intercrop"], ["Lower Midland", "Machakos, Makueni highland", "Mid March\u2013April", "Maize (DUMA 43), Sorghum", "Maize + cowpea"], ["Semi-Arid", "Kitui, Kajiado, Baringo lower", "When rains arrive", "Sorghum, Cowpeas, Green grams", "Sorghum + pigeon peas"], ["Coastal", "Kilifi, Kwale, Mombasa", "March 15\u201320", "Cassava, Cowpeas, Coconut", "Cassava + cowpea"]].map(([zone, counties, onset, crops, inter], i) => (
@@ -84,7 +87,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="prep-checklist" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Pre-Season Preparation Checklist</h2>
+              <h2 id="prep-checklist" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Pre-season preparation checklist</h2>
               <div className="space-y-3 mb-6">
                 {[{task: "Check soil pH with ShambaIQ \u2014 4 weeks before planting", why: "If liming is needed, it must be done 3\u20134 weeks before planting. Checking pH on planting day means it is too late for the current season."}, {task: "Buy certified seed from KEPHIS-registered agrovets", why: "Counterfeit seed is rampant before planting season. Buy from known dealers, check packaging hologram, and verify lot numbers against KEPHIS database."}, {task: "Apply lime if pH below 5.8 for maize or 5.5 for beans", why: "Lime incorporated 3\u20134 weeks before planting ensures pH correction has begun before seed goes in. Late lime application produces no benefit in the current season."}, {task: "Prepare zai pits or tied ridges in ASAL zones", why: "Water harvesting structures must be ready before rains arrive. Building them during the rains wastes the first critical rainfall events \u2014 often the most reliable of the season."}, {task: "Order Rhizobium inoculant if planting beans", why: "Inoculant has a limited shelf life and is often out of stock at peak planting time. Order in advance and store in a cool, dark place."}].map((item) => (
                   <div key={item.task} className="bg-white border border-cream-300 rounded-xl p-4">
@@ -106,8 +109,8 @@ export default function Page() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/app", label: "Check Your Farm Soil" },
-                  { href: "/blog", label: "All Blog Posts" },
+                  { href: "/app", label: "Check your farm soil" },
+                  { href: "/blog", label: "All blog posts" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
@@ -115,7 +118,7 @@ export default function Page() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -131,7 +134,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Onset (Coast)", "March 15–20"],
@@ -148,7 +151,7 @@ export default function Page() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="Related Guides" />
+        <RelatedPosts posts={relatedPosts} heading="Related guides" />
       </div>
     </>
   );

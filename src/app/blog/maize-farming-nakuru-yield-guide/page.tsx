@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: POST.image, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Maize Farming in Nakuru", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Maize farming in Nakuru", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is the best fertilizer for maize in Nakuru County?", answer: "Nakuru loam soils respond best to DAP or NPK 23:21:0 at one bag per acre at planting, followed by CAN at one bag per acre at knee height. Soils with phosphorus below 15 mg/kg need 1.5 bags of DAP at planting. Get a farm-specific plan at shambaiq.com/app?county=nakuru&crop=maize." },
@@ -34,7 +34,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Grow Maize in Nakuru County — Precision Fertilizer Guide",
+  name: "How to grow maize in Nakuru county — precision fertilizer guide",
   description: "Science-backed guide to planting and fertilizing maize on Nakuru County loam soils for maximum yield.",
   totalTime: "P120D",
   estimatedCost: { currency: "KES", value: "12000–16000 per acre" },
@@ -53,15 +53,15 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "nakuru-maize-advantage", label: "Why Nakuru Is Kenya's Maize Heartland", level: 2 },
-  { id: "soil-data", label: "Nakuru Soil Data for Maize", level: 2 },
-  { id: "variety-selection", label: "Certified Variety Selection by Sub-Location", level: 2 },
-  { id: "fertilizer-programme", label: "The Precision Fertilizer Programme", level: 2 },
-  { id: "planting-calendar", label: "Planting Calendar for Nakuru", level: 2 },
-  { id: "weed-pest-management", label: "Weed and Pest Management", level: 2 },
-  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
-  { id: "budget", label: "Full Cost and Revenue Budget Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "nakuru-maize-advantage", label: "Why Nakuru is Kenya's maize heartland", level: 2 },
+  { id: "soil-data", label: "Nakuru soil data for maize", level: 2 },
+  { id: "variety-selection", label: "Certified variety selection by sub-location", level: 2 },
+  { id: "fertilizer-programme", label: "The precision fertilizer programme", level: 2 },
+  { id: "planting-calendar", label: "Planting calendar for Nakuru", level: 2 },
+  { id: "weed-pest-management", label: "Weed and pest management", level: 2 },
+  { id: "howto", label: "Step-by-step growing guide", level: 2 },
+  { id: "budget", label: "Full cost and revenue budget per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function MaizeNakuruPage() {
@@ -70,7 +70,7 @@ export default function MaizeNakuruPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Maize Farming in Nakuru", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Maize farming in Nakuru", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -79,12 +79,13 @@ export default function MaizeNakuruPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County farming guides</Link>
                 <Link href="/soil/nakuru" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Nakuru County</Link>
                 <Link href="/crops/maize" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Maize</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Maize Farming in Nakuru County: <span className="text-gold-700">A Precision Guide to Maximum Yields</span>
+                Maize farming in Nakuru county:
+                <span className="text-gold-700">A precision guide to maximum yields</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Nakuru County sits at the heart of Kenya's maize belt. Its loam soils, reliable bimodal rainfall, and altitude range of 1,700 to 2,400 metres create near-ideal conditions for maize production. Yet the average smallholder here harvests barely half of what the same farm is capable of producing. The gap is not rainfall, not seed, not labour. It is precision: applying the right fertilizer, at the right amount, at the right time, based on what the soil actually contains.
@@ -104,7 +105,7 @@ export default function MaizeNakuruPage() {
             </figure>
 
             <section>
-              <h2 id="nakuru-maize-advantage" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Nakuru Is Kenya's Maize Heartland</h2>
+              <h2 id="nakuru-maize-advantage" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Nakuru is Kenya's maize heartland</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya produces approximately 3.6 million tonnes of maize annually, and the Rift Valley region — anchored by Nakuru — accounts for nearly a quarter of national output. Nakuru's position is not accidental. The county combines four structural advantages that few Kenyan counties can match simultaneously.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -122,13 +123,13 @@ export default function MaizeNakuruPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Nakuru Soil Data and What It Means for Maize</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Nakuru soil data and what it means for maize</h2>
               <p className="text-soil-600 leading-relaxed mb-5">ShambaIQ uses high-resolution satellite soil prediction models at 30-metre resolution to generate nutrient estimates at farm level across all 47 counties. Here is what the data shows for Nakuru, mapped against maize's agronomic requirements:</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Nakuru County soil nutrient values versus maize requirements</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Nutrient", "Nakuru Average", "Maize Optimum", "Status", "Implication"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Nutrient", "Nakuru average", "Maize optimum", "Status", "Implication"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -157,7 +158,7 @@ export default function MaizeNakuruPage() {
             </section>
 
             <section>
-              <h2 id="variety-selection" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified Variety Selection by Sub-Location</h2>
+              <h2 id="variety-selection" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified variety selection by sub-location</h2>
               <p className="text-soil-600 leading-relaxed mb-5">A certified hybrid on well-fertilized Nakuru soil consistently yields 25 to 35 bags per acre. The same soil with recycled seed yields 10 to 15 bags regardless of fertilizer input. The genetics set the ceiling — choose accordingly.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-5">
                 {[
@@ -184,13 +185,13 @@ export default function MaizeNakuruPage() {
             </section>
 
             <section>
-              <h2 id="fertilizer-programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">The Precision Fertilizer Programme for Nakuru Maize</h2>
+              <h2 id="fertilizer-programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">The precision fertilizer programme for Nakuru maize</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Nakuru soils need two fertilizer applications per season. The basal application at planting builds root architecture. The top-dressing at knee height drives rapid vegetative growth and grain fill. Skipping either application cuts yield by 30 to 45 percent.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Fertilizer programme for maize in Nakuru County Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Application", "Fertilizer", "Rate per Acre", "Timing", "Placement"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Application", "Fertilizer", "Rate per acre", "Timing", "Placement"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -217,12 +218,12 @@ export default function MaizeNakuruPage() {
             </section>
 
             <section>
-              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting Calendar for Nakuru County</h2>
+              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting calendar for Nakuru county</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-6">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Maize planting calendar for Nakuru County Kenya 2026</caption>
                   <thead className="bg-cream-200">
-                    <tr>{["Season", "Land Prep", "Plant", "Top-Dress", "Harvest", "Best Variety"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs text-forest-800 uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Season", "Land prep", "Plant", "Top-dress", "Harvest", "Best variety"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs text-forest-800 uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200 bg-white">
                     <tr>
@@ -247,7 +248,7 @@ export default function MaizeNakuruPage() {
             </section>
 
             <section>
-              <h2 id="weed-pest-management" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Weed and Pest Management in Nakuru Maize</h2>
+              <h2 id="weed-pest-management" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Weed and pest management in Nakuru maize</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Weed competition in the first six weeks after planting can reduce yields by 40 to 60 percent independent of fertilizer. On Nakuru's productive loam soils, weeds grow as aggressively as the crop. Three management windows matter.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -269,7 +270,7 @@ export default function MaizeNakuruPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Growing Maize in Nakuru County</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing maize in Nakuru county</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -284,12 +285,12 @@ export default function MaizeNakuruPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Full Cost and Revenue Budget Per Acre — Nakuru 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Full cost and revenue budget per acre — Nakuru 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Maize production cost and revenue per acre Nakuru County Kenya 2026</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "Qty", "Unit Cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "Qty", "Unit cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -315,11 +316,11 @@ export default function MaizeNakuruPage() {
                       <td className="px-4 py-3 font-bold">KES 17,200</td>
                     </tr>
                     <tr className="bg-gold-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected Revenue (30 bags x KES 3,500)</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected revenue (30 bags x KES 3,500)</td>
                       <td className="px-4 py-3 font-bold text-gold-800">KES 105,000</td>
                     </tr>
                     <tr className="bg-green-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net Margin</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net margin</td>
                       <td className="px-4 py-3 font-bold text-green-800">KES 87,800</td>
                     </tr>
                   </tbody>
@@ -339,12 +340,12 @@ export default function MaizeNakuruPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/nakuru", label: "Nakuru County Soil Report" },
-                  { href: "/crops/maize", label: "Maize Guide — All 47 Counties" },
-                  { href: "/soil/nakuru/beans", label: "Beans in Nakuru — Rotation Crop" },
-                  { href: "/soil/nakuru/wheat", label: "Wheat in Nakuru — Compare Yields" },
-                  { href: "/dealers/nakuru", label: "Agrovets in Nakuru County" },
-                  { href: "/zones/rift-valley", label: "Rift Valley Agroecological Zone" },
+                  { href: "/soil/nakuru", label: "Nakuru county soil report" },
+                  { href: "/crops/maize", label: "Maize guide — all 47 counties" },
+                  { href: "/soil/nakuru/beans", label: "Beans in Nakuru — rotation crop" },
+                  { href: "/soil/nakuru/wheat", label: "Wheat in Nakuru — compare yields" },
+                  { href: "/dealers/nakuru", label: "Agrovets in Nakuru county" },
+                  { href: "/zones/rift-valley", label: "Rift valley agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -354,7 +355,7 @@ export default function MaizeNakuruPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -377,7 +378,7 @@ export default function MaizeNakuruPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Nakuru Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Nakuru quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Rift Valley"], ["Altitude", "1,700 – 2,400 m"], ["Avg Rainfall", "800 – 1,200 mm/yr"], ["Dominant Soil", "Sandy clay loam"], ["Avg Soil pH", "6.0 – 6.8"], ["K Status", "Sufficient"], ["P Status", "Marginal to Good"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">

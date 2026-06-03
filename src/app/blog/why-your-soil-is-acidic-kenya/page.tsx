@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why Your Soil Is Acidic Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why your soil is acidic Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
 const faqSchema = makeFAQSchema([
   { question: "What causes soil acidity in Kenya?", answer: "Three mechanisms combine: volcanic parent material weathers to inherently acidic clay minerals across highland Kenya; heavy rainfall (900 to 1,800 mm per year) leaches calcium, magnesium, and potassium from topsoil leaving hydrogen and aluminium dominant; and nitrogen fertilizers like urea and CAN acidify soil with each application through the nitrification process. Most Kenyan highland soils experience all three simultaneously." },
   { question: "How do I know if my soil is acidic?", answer: "Use ShambaIQ precision mapping at shambaiq.com for your farm-specific pH reading. Without a test, field indicators suggesting pH below 5.5 include: stunted yellowing maize despite fertilizer application, plants that respond poorly to CAN top-dressing, and short stubby root systems with brown tips when you pull plants. These symptoms indicate aluminium toxicity caused by low pH." },
@@ -29,7 +29,7 @@ const faqSchema = makeFAQSchema([
   { question: "What pH should Kenya farm soil be?", answer: "For most Kenya food crops the target is pH 6.0 to 6.5. At this range aluminium is non-toxic, phosphorus availability is maximised, nitrogen cycling by microbes is optimal, and calcium and magnesium are available. Tea performs best at pH 4.5 to 5.5. Onions on Kajiado's alkaline soils perform well at pH 6.5 to 7.5. For maize, beans, vegetables, coffee, and potato, pH 6.0 to 6.5 is the universal starting point." },
 ]);
 const howToSchema = makeHowToSchema({
-  name: "How to Test and Correct Acidic Soil in Kenya",
+  name: "How to test and correct acidic soil in Kenya",
   description: "Step-by-step guide to identifying, testing, and correcting soil acidity on Kenyan farms using lime, wood ash, and organic matter.",
   totalTime: "P180D", estimatedCost: { currency: "KES", value: "7000–28000 per acre" },
   supply: ["Dolomitic agricultural lime", "Wood ash (supplementary)", "Compost or farmyard manure", "Soil pH meter or ShambaIQ data"],
@@ -43,14 +43,14 @@ const howToSchema = makeHowToSchema({
   ],
 });
 const TOC_ITEMS: TOCItem[] = [
-  { id: "cause-1-geology", label: "Cause 1: Volcanic Parent Material", level: 2 },
-  { id: "cause-2-leaching", label: "Cause 2: Rainfall Leaching", level: 2 },
-  { id: "cause-3-fertilizer", label: "Cause 3: Nitrogen Fertilizer Acidification", level: 2 },
-  { id: "county-ph-map", label: "Soil pH Across Kenya's Counties", level: 2 },
-  { id: "symptoms", label: "Recognising Acidity in the Field", level: 2 },
-  { id: "lime-programme", label: "The Lime Treatment Programme", level: 2 },
-  { id: "howto", label: "Step-by-Step Correction Guide", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "cause-1-geology", label: "Cause 1: volcanic parent material", level: 2 },
+  { id: "cause-2-leaching", label: "Cause 2: rainfall leaching", level: 2 },
+  { id: "cause-3-fertilizer", label: "Cause 3: nitrogen fertilizer acidification", level: 2 },
+  { id: "county-ph-map", label: "Soil pH across Kenya's counties", level: 2 },
+  { id: "symptoms", label: "Recognising acidity in the field", level: 2 },
+  { id: "lime-programme", label: "The lime treatment programme", level: 2 },
+  { id: "howto", label: "Step-by-step correction guide", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 export default function WhySoilAcidicPage() {
   const relatedPosts = getRelatedPosts(POST, 3);
@@ -58,16 +58,19 @@ export default function WhySoilAcidicPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why Your Soil Is Acidic", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil health", url: `${BASE_URL}/blog?category=soil-health` }, { name: "Why your soil is acidic", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Health</Link>
-                <span className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full">All Counties</span>
+                <Link href="/blog?category=soil-health" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil health</Link>
+                <span className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full">All counties</span>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Why Your Soil Is Acidic in Kenya: <span className="text-gold-700">3 Causes and How to Fix Them</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                Why your soil is acidic in Kenya:
+                <span className="text-gold-700">3 causes and how to fix them</span>
+              </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Soil acidity is Kenya's most widespread and most under-diagnosed crop yield problem. Across the Central Highlands, Western Kenya, and the Mount Kenya counties, more than 60 percent of agricultural land has soil pH below 5.5 — a threshold where aluminium becomes toxic, phosphorus locks out, and nitrogen fertilizer efficiency drops by 30 to 50 percent. Most farmers know their soil is poor but not why, or what specifically to do about it. This guide explains the three causes and three solutions for Kenya's specific context.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
@@ -80,19 +83,19 @@ export default function WhySoilAcidicPage() {
             </figure>
 
             <section>
-              <h2 id="cause-1-geology" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cause 1: Volcanic Parent Material</h2>
+              <h2 id="cause-1-geology" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cause 1: volcanic parent material</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya's highland agricultural counties — Kiambu, Murang'a, Nyeri, Meru, Kirinyaga, Embu, and the Aberdare footzones — sit on volcanic rocks from Mount Kenya and the Aberdare Range. These volcanic deposits weather over thousands of years to produce kandic clay minerals rich in iron and aluminium oxides. These minerals are inherently acidic — they create a naturally low pH baseline that predates any farming activity.</p>
               <p className="text-soil-600 leading-relaxed mb-4">The practical implication: even virgin forest soils in these counties typically have pH 5.0 to 5.5. The moment farming begins and the other two acidification processes start, pH drops below the 5.5 threshold where aluminium toxicity begins damaging crop roots. Counties like Kakamega, Bungoma, and Kisii in Western Kenya have similar geology from different volcanic periods with the same acidifying result.</p>
             </section>
 
             <section>
-              <h2 id="cause-2-leaching" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cause 2: Rainfall Leaching of Alkaline Cations</h2>
+              <h2 id="cause-2-leaching" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cause 2: rainfall leaching of alkaline cations</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya's highland and western counties receive 900 to 1,800 mm of annual rainfall. This water percolates through the soil profile, dissolving and carrying calcium (Ca2+), magnesium (Mg2+), and potassium (K+) — the alkaline cations that buffer soil against acidity — downward into the subsoil and groundwater. The longer a soil has been under high rainfall without replacement of these cations, the more acidic it becomes.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Annual rainfall and soil pH relationship across Kenyan counties</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["County", "Annual Rainfall (mm)", "Typical pH Range", "Leaching Severity"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["County", "Annual rainfall (mm)", "Typical pH range", "Leaching severity"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Kakamega", "1,500–1,900", "4.8–5.5", "Severe"], ["Kiambu", "900–1,200", "5.2–6.0", "Moderate–High"], ["Meru (upper)", "1,200–1,600", "4.5–5.5", "Severe"], ["Nyeri", "800–1,400", "4.8–5.8", "High"], ["Nakuru", "800–1,000", "5.8–6.8", "Low–Moderate"], ["Kajiado", "400–700", "7.5–8.5", "None — alkaline"]].map(([county, rain, ph, sev], i) => (
@@ -109,7 +112,7 @@ export default function WhySoilAcidicPage() {
             </section>
 
             <section>
-              <h2 id="cause-3-fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cause 3: Nitrogen Fertilizer Acidification</h2>
+              <h2 id="cause-3-fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cause 3: nitrogen fertilizer acidification</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Every kilogram of ammonium-based nitrogen fertilizer — CAN, urea, ammonium sulfate, DAP — adds to soil acidity through the nitrification process. Soil bacteria convert ammonium (NH4+) to nitrate (NO3−), releasing two hydrogen ions per molecule. At 50 kg of CAN per acre per season, soil pH drops by 0.1 to 0.2 units per season.</p>
               <div className="bg-red-50 border-l-4 border-red-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-red-800 mb-2">The cumulative effect most farmers miss</p>
@@ -119,7 +122,7 @@ export default function WhySoilAcidicPage() {
                 <table className="w-full text-sm">
                   <caption className="sr-only">Acidifying effect of common Kenyan fertilizers</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Fertilizer", "N Content", "Acidification Rate", "pH Drop per 10 Seasons", "Alternative"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Fertilizer", "N content", "Acidification rate", "pH drop per 10 seasons", "Alternative"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Urea", "46% N", "High", "1.5–2.5 units", "CAN (less acidifying per unit N)"], ["CAN", "26% N", "Moderate", "1.0–2.0 units", "Lime maintenance offsets"], ["Ammonium sulfate", "21% N", "Very High", "2.0–3.0 units", "Use only on alkaline soils"], ["DAP", "18% N, 46% P", "Moderate", "0.8–1.5 units", "Lime 3 weeks before DAP"]].map(([fert, n, rate, drop, alt], i) => (
@@ -137,7 +140,7 @@ export default function WhySoilAcidicPage() {
             </section>
 
             <section>
-              <h2 id="county-ph-map" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil pH Across Kenya's Agricultural Counties</h2>
+              <h2 id="county-ph-map" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil pH across Kenya's agricultural counties</h2>
               <p className="text-soil-600 leading-relaxed mb-5">ShambaIQ's precision soil mapping reveals that Kenya's soil acidity follows a clear geographic pattern driven by the three causes above: high-rainfall volcanic counties are most acidic, low-rainfall rift valley counties are neutral to alkaline, and semi-arid counties are alkaline.</p>
               <div className="grid sm:grid-cols-3 gap-3 mb-6">
                 {[
@@ -155,7 +158,7 @@ export default function WhySoilAcidicPage() {
             </section>
 
             <section>
-              <h2 id="symptoms" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Recognising Acidity in the Field — Without a Soil Test</h2>
+              <h2 id="symptoms" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Recognising acidity in the field — without a soil test</h2>
               <div className="space-y-3 mb-6">
                 {[
                   { symptom: "Maize stunted and pale despite CAN application", explanation: "The classic aluminium toxicity presentation. Roots are damaged before they can absorb the nitrogen you just applied. CAN goes into the soil and volatilises without uptake. More CAN does not help — only liming reverses this." },
@@ -172,12 +175,12 @@ export default function WhySoilAcidicPage() {
             </section>
 
             <section>
-              <h2 id="lime-programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">The Lime Treatment Programme</h2>
+              <h2 id="lime-programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">The lime treatment programme</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Lime application rates by starting soil pH for Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Starting pH", "Lime Rate (t/acre)", "Cost at KES 700/bag", "Apply Before Planting", "Target pH"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Starting pH", "Lime rate (t/acre)", "Cost at KES 700/bag", "Apply before planting", "Target pH"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Below 4.5", "2.5 tonnes (50 bags)", "KES 35,000", "6+ weeks", "5.8–6.2"], ["4.5–5.0", "2.0 tonnes (40 bags)", "KES 28,000", "6 weeks", "6.0–6.2"], ["5.0–5.5", "1.5 tonnes (30 bags)", "KES 21,000", "4 weeks", "6.0–6.5"], ["5.5–6.0", "0.75 tonnes (15 bags)", "KES 10,500", "3 weeks", "6.2–6.5"], ["Annual maintenance", "0.3–0.5 tonnes", "KES 4,200–7,000", "After harvest", "Maintain > 6.0"]].map(([ph, rate, cost, timing, target], i) => (
@@ -195,7 +198,7 @@ export default function WhySoilAcidicPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Testing and Correcting Acidic Soil</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: testing and correcting acidic soil</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -216,14 +219,14 @@ export default function WhySoilAcidicPage() {
             <aside className="bg-cream-100 border border-cream-300 rounded-xl p-5 mb-8">
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
-                {[{ href: "/blog/acidic-soil-treatment-meru-nyeri", label: "Acidic Soil Treatment — Meru & Nyeri" }, { href: "/blog/cheapest-way-fix-acidic-soil-kenya", label: "Cheapest Way to Fix Acidic Soil" }, { href: "/blog/dap-vs-can-vs-npk-fertilizer-guide-kenya", label: "DAP vs CAN vs NPK Guide" }, { href: "/blog/kenya-county-soil-rankings-2026", label: "Kenya County Soil Rankings 2026" }, { href: "/zones/central-highlands", label: "Central Highlands Zone" }, { href: "/app", label: "Check Your Farm's pH Now" }].map(({ href, label }) => (
+                {[{ href: "/blog/acidic-soil-treatment-meru-nyeri", label: "Acidic soil treatment — Meru & Nyeri" }, { href: "/blog/cheapest-way-fix-acidic-soil-kenya", label: "Cheapest way to fix acidic soil" }, { href: "/blog/dap-vs-can-vs-npk-fertilizer-guide-kenya", label: "DAP vs CAN vs NPK guide" }, { href: "/blog/kenya-county-soil-rankings-2026", label: "Kenya county soil rankings 2026" }, { href: "/zones/central-highlands", label: "Central highlands zone" }, { href: "/app", label: "Check your farm's pH now" }].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
               </div>
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -239,7 +242,7 @@ export default function WhySoilAcidicPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Acidity Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Acidity quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Affected area", "> 60% highland Kenya"], ["Critical pH", "Below 5.5"], ["Target pH", "6.0–6.5"], ["Main treatment", "Dolomitic lime"], ["Cost per acre", "KES 10,500–35,000"], ["Payback", "3–8x in first season"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2"><span className="text-soil-500">{k}</span><span className="font-medium text-forest-700 text-right text-xs">{v}</span></div>
@@ -249,7 +252,7 @@ export default function WhySoilAcidicPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More Soil Health Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More soil health guides" />
       </div>
     </>
   );

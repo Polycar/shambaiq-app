@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Regional Guides", url: `${BASE_URL}/blog?category=regional-guides` }, { name: "Semi-Arid Kenya Farming", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Regional guides", url: `${BASE_URL}/blog?category=regional-guides` }, { name: "Semi-arid Kenya farming", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What crops grow well in Machakos, Makueni, and Kitui?", answer: "The most reliable crops ranked by drought tolerance: sorghum (produces at 400 mm), cowpeas, pigeon peas, green grams, cassava, millet, and sweet potatoes. Maize is feasible with drought-tolerant varieties like DUMA 43 and conservation farming but fails in drought years. Onions under drip irrigation produce exceptional returns due to dry conditions favouring bulb curing. Get a county-specific crop plan at shambaiq.com." },
@@ -33,7 +33,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Farm Profitably in Semi-Arid Machakos, Makueni, and Kitui Counties",
+  name: "How to farm profitably in semi-arid Machakos, Makueni, and Kitui counties",
   description: "A step-by-step guide to precision dryland farming across Kenya's semi-arid lower eastern counties, covering water harvesting, crop selection, and soil organic matter restoration.",
   totalTime: "P365D",
   estimatedCost: { currency: "KES", value: "8000–20000 per acre depending on irrigation" },
@@ -50,15 +50,15 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "three-counties", label: "Three Counties, One Challenge — Different Solutions", level: 2 },
-  { id: "soil-comparison", label: "Soil Data Comparison: Machakos vs Makueni vs Kitui", level: 2 },
-  { id: "crop-selection", label: "Crop Selection by Rainfall Zone", level: 2 },
-  { id: "water-harvesting", label: "Water Harvesting — Zai Pits, Tied Ridges, Sand Dams", level: 2 },
-  { id: "fertilizer", label: "Fertilizer Strategy for Semi-Arid Soils", level: 2 },
-  { id: "irrigation", label: "Drip Irrigation for Smallholders", level: 2 },
-  { id: "howto", label: "Step-by-Step Dryland Farming Guide", level: 2 },
-  { id: "budget", label: "Cost Comparison: Rainfed vs Irrigated", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "three-counties", label: "Three counties, one challenge — different solutions", level: 2 },
+  { id: "soil-comparison", label: "Soil data comparison: Machakos vs Makueni vs Kitui", level: 2 },
+  { id: "crop-selection", label: "Crop selection by rainfall zone", level: 2 },
+  { id: "water-harvesting", label: "Water harvesting — zai pits, tied ridges, sand dams", level: 2 },
+  { id: "fertilizer", label: "Fertilizer strategy for semi-arid soils", level: 2 },
+  { id: "irrigation", label: "Drip irrigation for smallholders", level: 2 },
+  { id: "howto", label: "Step-by-step dryland farming guide", level: 2 },
+  { id: "budget", label: "Cost comparison: rainfed vs irrigated", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function SemiAridKenyaPage() {
@@ -67,7 +67,7 @@ export default function SemiAridKenyaPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Regional Guides", url: `${BASE_URL}/blog?category=regional-guides` }, { name: "Semi-Arid Kenya Farming", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Regional guides", url: `${BASE_URL}/blog?category=regional-guides` }, { name: "Semi-arid Kenya farming", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -76,13 +76,14 @@ export default function SemiAridKenyaPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=regional-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Regional Guides</Link>
+                <Link href="/blog?category=regional-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Regional guides</Link>
                 <Link href="/soil/machakos" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Machakos</Link>
                 <Link href="/soil/makueni" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Makueni</Link>
                 <Link href="/soil/kitui" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kitui</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Farming in Semi-Arid Kenya: <span className="text-gold-700">Precision Strategies for Machakos, Makueni, and Kitui</span>
+                Farming in semi-arid Kenya:
+                <span className="text-gold-700">Precision strategies for Machakos, Makueni, and Kitui</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Machakos, Makueni, and Kitui counties cover Kenya's largest contiguous dryland farming zone — over 36,000 square kilometres of alfisol soils receiving 400 to 800 mm of erratic annual rainfall. Conventional extension advice fails here because it was developed for highland conditions and assumes rainfall regularity that does not exist. Precision farming in semi-arid Kenya starts from a different premise: work with the rainfall that arrives rather than managing for the rainfall you hope for. These three counties share the same challenges — low organic carbon, phosphorus deficiency, and unpredictable moisture — but each has distinct sub-county variation that demands targeted rather than blanket recommendations.
@@ -102,7 +103,7 @@ export default function SemiAridKenyaPage() {
             </figure>
 
             <section>
-              <h2 id="three-counties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three Counties, One Challenge — Different Solutions</h2>
+              <h2 id="three-counties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three counties, one challenge — different solutions</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Machakos, Makueni, and Kitui share the lower eastern Kenya dryland belt but differ meaningfully in altitude, rainfall, and market access. Understanding these differences determines which precision strategies apply to your specific sub-county.</p>
               <div className="grid sm:grid-cols-3 gap-4 mb-6">
                 {[
@@ -127,12 +128,12 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <section>
-              <h2 id="soil-comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil Data Comparison: Machakos vs Makueni vs Kitui</h2>
+              <h2 id="soil-comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil data comparison: Machakos vs Makueni vs Kitui</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Soil nutrient comparison across Machakos Makueni and Kitui counties Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Parameter", "Machakos", "Makueni", "Kitui", "Crop Optimum"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Parameter", "Machakos", "Makueni", "Kitui", "Crop optimum"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -158,13 +159,13 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <section>
-              <h2 id="crop-selection" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Crop Selection by Rainfall Zone</h2>
+              <h2 id="crop-selection" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Crop selection by rainfall zone</h2>
               <p className="text-soil-600 leading-relaxed mb-5">The single most important precision decision in semi-arid farming is matching crop to rainfall — not applying more fertilizer to the wrong crop. This table ranks crops by minimum viable rainfall and expected return.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Drought tolerant crop selection for semi-arid Kenya by rainfall zone</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Crop", "Min Rainfall", "Season Length", "Yield/Acre", "Revenue/Acre", "Best County Zone"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Crop", "Min rainfall", "Season length", "Yield/acre", "Revenue/acre", "Best county zone"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -192,7 +193,7 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <section>
-              <h2 id="water-harvesting" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Water Harvesting — The Technology That Makes Semi-Arid Farming Viable</h2>
+              <h2 id="water-harvesting" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Water harvesting — the technology that makes semi-arid farming viable</h2>
               <p className="text-soil-600 leading-relaxed mb-5">In semi-arid Kenya, the limiting factor is not total annual rainfall — it is rainfall capture. Without water harvesting, 30 to 60 percent of every rainfall event runs off the surface and leaves the farm before roots can absorb it.</p>
               <div className="grid sm:grid-cols-3 gap-4 mb-6">
                 {[
@@ -212,13 +213,13 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <section>
-              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Fertilizer Strategy for Semi-Arid Soils</h2>
+              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Fertilizer strategy for semi-arid soils</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Fertilizer management in semi-arid conditions requires a fundamentally different approach from highland farming. The key principle: organic matter first, phosphorus second, nitrogen only when moisture is assured.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Fertilizer programme for semi-arid Machakos Makueni Kitui Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Input", "Rate/Acre", "When", "Why in Semi-Arid Context"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Input", "Rate/acre", "When", "Why in semi-arid context"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -244,13 +245,13 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <section>
-              <h2 id="irrigation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Drip Irrigation for Smallholders — Economics and Setup</h2>
+              <h2 id="irrigation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Drip irrigation for smallholders — economics and setup</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Where water is available — from sand dams, boreholes, farm ponds, or seasonal rivers — drip irrigation transforms semi-arid smallholder farming economics from subsistence to commercial.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Drip irrigation economics for smallholder farms in semi-arid Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "0.25 Acre System", "0.5 Acre System", "1 Acre System"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "0.25 acre system", "0.5 acre system", "1 acre system"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -275,7 +276,7 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Dryland Farming in Machakos, Makueni, and Kitui</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: dryland farming in Machakos, Makueni, and Kitui</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -290,11 +291,11 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost Comparison: Rainfed vs Irrigated Semi-Arid Farming Per Acre</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost comparison: rainfed vs irrigated semi-arid farming per acre</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["", "Rainfed Sorghum + Cowpea", "Drip-Irrigated Onion"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["", "Rainfed sorghum + cowpea", "Drip-irrigated onion"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -313,7 +314,7 @@ export default function SemiAridKenyaPage() {
                     ))}
                     <tr className="bg-forest-700 text-white"><td className="px-4 py-3 font-bold">Total Cost</td><td className="px-4 py-3 font-bold">KES 12,000</td><td className="px-4 py-3 font-bold">KES 57,000</td></tr>
                     <tr className="bg-gold-50"><td className="px-4 py-3 font-bold text-gold-800">Revenue</td><td className="px-4 py-3 font-bold text-gold-800">KES 56,000–109,000</td><td className="px-4 py-3 font-bold text-gold-800">KES 300,000–500,000</td></tr>
-                    <tr className="bg-green-50"><td className="px-4 py-3 font-bold text-green-800">Net Margin</td><td className="px-4 py-3 font-bold text-green-800">KES 44,000–97,000</td><td className="px-4 py-3 font-bold text-green-800">KES 243,000–443,000</td></tr>
+                    <tr className="bg-green-50"><td className="px-4 py-3 font-bold text-green-800">Net margin</td><td className="px-4 py-3 font-bold text-green-800">KES 44,000–97,000</td><td className="px-4 py-3 font-bold text-green-800">KES 243,000–443,000</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -331,12 +332,12 @@ export default function SemiAridKenyaPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/machakos", label: "Machakos County Soil Report" },
-                  { href: "/soil/makueni", label: "Makueni County Soil Report" },
-                  { href: "/soil/kitui", label: "Kitui County Soil Report" },
-                  { href: "/blog/organic-soil-restoration-machakos", label: "Machakos Organic Restoration Guide" },
-                  { href: "/zones/semi-arid", label: "Semi-Arid Zone Overview" },
-                  { href: "/dealers/machakos", label: "Agrovets in Machakos County" },
+                  { href: "/soil/machakos", label: "Machakos county soil report" },
+                  { href: "/soil/makueni", label: "Makueni county soil report" },
+                  { href: "/soil/kitui", label: "Kitui county soil report" },
+                  { href: "/blog/organic-soil-restoration-machakos", label: "Machakos organic restoration guide" },
+                  { href: "/zones/semi-arid", label: "Semi-arid zone overview" },
+                  { href: "/dealers/machakos", label: "Agrovets in Machakos county" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -346,7 +347,7 @@ export default function SemiAridKenyaPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -367,7 +368,7 @@ export default function SemiAridKenyaPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Region Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Region quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Semi-Arid / ASAL"], ["Area", "36,000+ km²"], ["Avg Rainfall", "400–900 mm/yr"], ["Soil Type", "Alfisol"], ["Avg OC", "0.4–1.4%"], ["Best Strategy", "Water harvest first"], ["Top Crop", "Sorghum + cowpeas"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -390,7 +391,7 @@ export default function SemiAridKenyaPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More Regional Farming Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More regional farming guides" />
       </div>
     </>
   );

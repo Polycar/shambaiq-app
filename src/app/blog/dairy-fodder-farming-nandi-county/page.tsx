@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Dairy Farming in Nandi", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Dairy farming in Nandi", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is the best fodder crop for dairy farming in Nandi County?", answer: "Napier grass (Pennisetum purpureum) is the most productive fodder crop for Nandi County's red clay loam soils and 1,400 to 1,800 mm annual rainfall. It yields 40 to 80 tonnes of fresh matter per acre per year under good management, provides year-round cutting every 6 to 8 weeks, and responds strongly to nitrogen top-dressing with CAN. Silage maize is the second-best option — it produces higher dry matter per acre than Napier in a single harvest and is easier to preserve for the dry season. Get a Nandi-specific fodder plan at shambaiq.com/app?county=nandi&crop=maize." },
@@ -33,7 +33,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Establish Napier Grass and Make Silage Maize in Nandi County",
+  name: "How to establish Napier grass and make silage maize in Nandi county",
   description: "A step-by-step guide to establishing high-yield Napier grass and silage maize for dairy farming on Nandi County's red clay loam soils.",
   totalTime: "P365D",
   estimatedCost: { currency: "KES", value: "18000–28000 per acre for Napier establishment" },
@@ -50,14 +50,14 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "nandi-dairy-opportunity", label: "Why Nandi Is a Natural Dairy County", level: 2 },
-  { id: "soil-data", label: "Nandi Soil Data for Fodder Crops", level: 2 },
-  { id: "napier-guide", label: "Napier Grass — Establishment and Management", level: 2 },
-  { id: "silage", label: "Silage Maize — Making and Feeding", level: 2 },
-  { id: "manure-value", label: "Boma Manure — The Hidden Fertilizer Asset", level: 2 },
-  { id: "howto", label: "Step-by-Step Fodder Guide", level: 2 },
-  { id: "budget", label: "Dairy Enterprise Budget Per Cow", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "nandi-dairy-opportunity", label: "Why Nandi is a natural dairy county", level: 2 },
+  { id: "soil-data", label: "Nandi soil data for fodder crops", level: 2 },
+  { id: "napier-guide", label: "Napier grass — establishment and management", level: 2 },
+  { id: "silage", label: "Silage maize — making and feeding", level: 2 },
+  { id: "manure-value", label: "Boma manure — the hidden fertilizer asset", level: 2 },
+  { id: "howto", label: "Step-by-step fodder guide", level: 2 },
+  { id: "budget", label: "Dairy enterprise budget per cow", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function DairyFodderNandiPage() {
@@ -66,7 +66,7 @@ export default function DairyFodderNandiPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Dairy Farming in Nandi", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Dairy farming in Nandi", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -75,12 +75,13 @@ export default function DairyFodderNandiPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County farming guides</Link>
                 <Link href="/soil/nandi" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Nandi County</Link>
                 <Link href="/crops/napier-grass" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Dairy / Fodder</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Dairy Farming in Nandi County: <span className="text-gold-700">Integrating Fodder Crops and Organic Manures</span>
+                Dairy farming in Nandi county:
+                <span className="text-gold-700">Integrating fodder crops and organic manures</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Nandi County's red clay loam soils and 1,400 to 1,800 mm annual rainfall create ideal conditions for year-round fodder production — the foundation of productive dairy farming. Yet most Nandi dairy farmers operate below 50 percent of their herd's genetic potential because they treat fodder as an afterthought to crop farming rather than as a precision agricultural system in its own right. Napier grass under-fertilized produces poor-quality forage. Silage made at the wrong moisture destroys its nutritional value before the dry season arrives. Boma manure composted correctly eliminates 40 percent of annual fertilizer costs. This guide covers all three.
@@ -100,7 +101,7 @@ export default function DairyFodderNandiPage() {
             </figure>
 
             <section>
-              <h2 id="nandi-dairy-opportunity" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Nandi Is a Natural Dairy County</h2>
+              <h2 id="nandi-dairy-opportunity" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Nandi is a natural dairy county</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Three structural conditions make Nandi County one of Kenya's highest-potential dairy zones outside the established Rift Valley dairy belt.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -117,12 +118,12 @@ export default function DairyFodderNandiPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Nandi Soil Data for Fodder Crops</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Nandi soil data for fodder crops</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Nandi County soil nutrient values versus Napier grass and silage maize requirements</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Nutrient", "Nandi Average", "Napier/Silage Optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Nutrient", "Nandi average", "Napier/silage optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -147,7 +148,7 @@ export default function DairyFodderNandiPage() {
             </section>
 
             <section>
-              <h2 id="napier-guide" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Napier Grass — Establishment and Management in Nandi</h2>
+              <h2 id="napier-guide" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Napier grass — establishment and management in Nandi</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Napier grass is a perennial crop that, once established, produces fodder for 10 to 15 years with annual replanting only when stand density drops. Getting establishment right is a decade-long investment.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -165,13 +166,13 @@ export default function DairyFodderNandiPage() {
             </section>
 
             <section>
-              <h2 id="silage" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Silage Maize — Dry Season Feed Security in Nandi</h2>
+              <h2 id="silage" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Silage maize — dry season feed security in Nandi</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Napier grass provides green fodder year-round, but dry season quality declines as growth slows. Silage maize, made during the long rains and stored, provides high-energy, consistent-quality feed that maintains milk production through the driest months.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Silage maize production stages and targets for Nandi County Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Stage", "Timing", "Target", "Why It Matters"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Stage", "Timing", "Target", "Why it matters"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -195,13 +196,13 @@ export default function DairyFodderNandiPage() {
             </section>
 
             <section>
-              <h2 id="manure-value" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Boma Manure — Quantifying the Fertilizer Asset</h2>
+              <h2 id="manure-value" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Boma manure — quantifying the fertilizer asset</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Most Nandi dairy farmers treat boma manure as a waste disposal problem rather than an asset. Correctly composted and applied, boma manure from two dairy cows can supply 40 to 50 percent of the nitrogen, phosphorus, and potassium needed for 1 acre of Napier grass — significantly reducing the CAN and DAP bill.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Boma manure nutrient value compared to chemical fertilizers</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Manure Source", "N (%)", "P2O5 (%)", "K2O (%)", "Equivalent fertilizer per tonne"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Manure source", "N (%)", "P2o5 (%)", "K2o (%)", "Equivalent fertilizer per tonne"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -224,7 +225,7 @@ export default function DairyFodderNandiPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Napier Establishment and Silage Making in Nandi</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: Napier establishment and silage making in Nandi</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -239,12 +240,12 @@ export default function DairyFodderNandiPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Dairy Enterprise Budget Per Cow — Nandi County 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Dairy enterprise budget per cow — Nandi county 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Dairy cow enterprise budget Nandi County Kenya 2026</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "Monthly Cost (KES)", "Annual Cost (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "Monthly cost (KES)", "Annual cost (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -271,7 +272,7 @@ export default function DairyFodderNandiPage() {
                       <td className="px-4 py-3 font-bold text-gold-800">KES 295,650</td>
                     </tr>
                     <tr className="bg-green-50">
-                      <td className="px-4 py-3 font-bold text-green-800">Net Margin Per Cow</td>
+                      <td className="px-4 py-3 font-bold text-green-800">Net margin Per Cow</td>
                       <td className="px-4 py-3 font-bold text-green-800">KES 16,200</td>
                       <td className="px-4 py-3 font-bold text-green-800">KES 198,450</td>
                     </tr>
@@ -292,12 +293,12 @@ export default function DairyFodderNandiPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/nandi", label: "Nandi County Soil Report" },
-                  { href: "/crops/napier-grass", label: "Napier Grass Crop Guide" },
-                  { href: "/soil/nandi/maize", label: "Silage Maize in Nandi" },
-                  { href: "/soil/uasin-gishu", label: "Uasin Gishu — Neighbouring County" },
-                  { href: "/dealers/nandi", label: "Agrovets in Nandi County" },
-                  { href: "/zones/western-highlands", label: "Western Highlands Zone" },
+                  { href: "/soil/nandi", label: "Nandi county soil report" },
+                  { href: "/crops/napier-grass", label: "Napier grass crop guide" },
+                  { href: "/soil/nandi/maize", label: "Silage maize in Nandi" },
+                  { href: "/soil/uasin-gishu", label: "Uasin gishu — neighbouring county" },
+                  { href: "/dealers/nandi", label: "Agrovets in Nandi county" },
+                  { href: "/zones/western-highlands", label: "Western highlands zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -307,7 +308,7 @@ export default function DairyFodderNandiPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -328,7 +329,7 @@ export default function DairyFodderNandiPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Nandi Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Nandi quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Western Highlands"], ["Altitude", "1,500 – 2,100 m"], ["Avg Rainfall", "1,400 – 1,800 mm/yr"], ["Dominant Soil", "Red clay loam"], ["Avg Soil pH", "5.2 – 6.0"], ["Best Fodder", "Napier + Silage Maize"], ["Dairy Processor", "New KCC / Brookside"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -342,7 +343,7 @@ export default function DairyFodderNandiPage() {
               <div className="bg-white border border-cream-300 rounded-xl p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Neighbouring Counties</p>
                 <div className="space-y-1.5">
-                  {[{ slug: "uasin-gishu", name: "Uasin Gishu" }, { slug: "kakamega", name: "Kakamega" }, { slug: "kericho", name: "Kericho" }, { slug: "elgeyo-marakwet", name: "Elgeyo Marakwet" }].map(({ slug, name }) => (
+                  {[{ slug: "uasin-gishu", name: "Uasin gishu" }, { slug: "kakamega", name: "Kakamega" }, { slug: "kericho", name: "Kericho" }, { slug: "elgeyo-marakwet", name: "Elgeyo marakwet" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">
                       <span>{name} County</span><span className="text-gold-500 text-xs">→</span>
                     </Link>
@@ -352,7 +353,7 @@ export default function DairyFodderNandiPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More County Farming Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More county farming guides" />
       </div>
     </>
   );

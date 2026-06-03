@@ -418,6 +418,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
+  const autoSubmitRef = useRef(false);
 
   // Agrovet state
   const [agrovets, setAgrovets] = useState<Dealer[]>([]);
@@ -808,6 +809,14 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
       }, 100);
     }
   }, [county, crop, cropUnknown, companionCrop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
+
+  // Auto-submit when "Get full plan" sets a crop
+  useEffect(() => {
+    if (autoSubmitRef.current) {
+      autoSubmitRef.current = false;
+      handleSubmit();
+    }
+  }, [crop, handleSubmit]);
 
   // WhatsApp share
   const whatsappUrl = useMemo(() => {
@@ -1371,7 +1380,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     <div className={`absolute top-0 right-0 h-full w-1.5 bg-gradient-to-b ${gradientClass}`} />
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-gray-800 text-base">{CROP_EMOJIS[cm.crop] || "🌱"} {cm.crop}</h4>
+                        <h4 className="font-bold text-gray-800 text-base">{cm.crop}</h4>
                         <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>{cm.label}</span>
                       </div>
                       <div className="flex items-center justify-between text-xs mb-1">
@@ -1393,6 +1402,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                       <button
                         type="button"
                         onClick={() => {
+                          autoSubmitRef.current = true;
                           setCrop(cm.crop);
                           setCropUnknown(false);
                           const u = CROP_UNITS[cm.crop];
@@ -1505,7 +1515,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                       <div key={idx} className={`border rounded-xl p-3.5 relative overflow-hidden flex flex-col gap-2 ${isCurrentCrop ? "border-forest-500 bg-forest-50" : "border-gray-100 bg-white"}`}>
                         <div className={`absolute top-0 right-0 h-full w-1 bg-gradient-to-b ${gradientClass}`} />
                         <div className="flex items-start justify-between gap-2">
-                          <h4 className="font-bold text-gray-800 text-sm">{CROP_EMOJIS[cm.crop] || "🌱"} {cm.crop} {isCurrentCrop && <span className="text-[10px] text-forest-600 font-bold">← your choice</span>}</h4>
+                          <h4 className="font-bold text-gray-800 text-sm">{cm.crop} {isCurrentCrop && <span className="text-[10px] text-forest-600 font-bold">← your choice</span>}</h4>
                           <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>{cm.label}</span>
                         </div>
                         <div>

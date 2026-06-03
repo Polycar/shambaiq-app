@@ -50,9 +50,15 @@ Analyze the following soil properties, farm specifications, and current growing 
 - Location: ${county} County, Kenya ${lat && lon ? `(Coordinates: ${lat}, ${lon})` : ''}
 - Farm Size: ${farmSize} acres
 ${soilContext}${seasonContext}
-Recommend the top 5 absolute best-suited crops that would thrive given this specific soil chemistry, texture, current season, and weather outlook.
-Factor in: (1) soil pH, NPK, organic carbon, and texture suitability; (2) whether the current season and rainfall pattern favour planting, growing, or harvesting this crop; (3) temperature suitability for germination and growth; (4) typical profitability at current Kenyan market prices.
-You are highly encouraged to suggest any highly profitable, viable Kenyan crops, including those outside standard staple databases (e.g., Hass Avocado, Tea, Coffee Robusta/Arabica, Macadamia, Pixie Oranges, Pyrethrum, Garlic, Arrowroot, Sunflower, Lucerne, Watermelon, etc.), provided they fit the soil and seasonal conditions.
+Recommend the top 5 absolute best-suited crops for this farm. You have NO restriction on which crops you may suggest — draw from the full global catalogue of crops that are grown or could be grown commercially in Kenya, including but not limited to: staple grains, legumes, root crops, vegetables, fruits, tree crops, spices, herbs, floriculture, industrial crops, fodder, and any high-value or emerging crops that fit. Do NOT limit yourself to a pre-set list.
+
+Factor in ALL of the following when scoring each crop:
+1. Soil fit — pH, NPK levels, organic carbon, and physical texture suitability
+2. Seasonal fit — whether the current season and 7-day rainfall/temperature outlook favour planting, active growth, or harvesting right now
+3. Agroecological zone fit — altitude, humidity regime, and zone-specific crop performance
+4. Economic fit — realistic gross income potential at current Kenyan farm-gate prices (2024–2026)
+
+If the soil, season, and zone are a strong match for a niche, specialist, or rarely-listed crop (e.g. Stevia, Chia, Dragon Fruit, French Beans for export, Artemisia, Moringa, Rosemary, Lavender, Macadamia, Bt Cotton, Jatropha, etc.) — suggest it. Accuracy and agronomic correctness matter more than familiarity.
 
 For each crop, you must calculate:
 1. A realistic "match_score" (an integer from 0 to 100) representing how well the crop fits all parameters including soil, season, and weather.

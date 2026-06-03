@@ -179,7 +179,7 @@ export default function HomePage() {
             {([
               { icon: Sprout, title: "Soil & crop advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using 30m satellite mapping.", href: "/app", color: "#16a34a" },
               { icon: BarChart3, title: "Yield tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
-              { icon: Camera, title: "Plant Doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
+              { icon: Camera, title: "Plant doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
               { icon: Store, title: "Find agrovets", desc: "Locate nearby input suppliers by county. Phone numbers, stock lists, and directions to your nearest dealer.", href: "/dealers", color: "#C8860A" },
             ] as const).map((card) => {
               const Icon = card.icon;

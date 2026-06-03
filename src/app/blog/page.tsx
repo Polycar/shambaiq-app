@@ -28,7 +28,7 @@ const staticPosts = [
     excerpt: "We analyzed satellite soil data for every Kenyan county. Here are the healthiest soils, the most challenging, and what it means for your farm.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Data Report",
+    category: "Data report",
   },
   {
     slug: "complete-maize-farming-guide-kenya",
@@ -36,7 +36,7 @@ const staticPosts = [
     excerpt: "Everything you need to grow maize in Kenya: soil requirements, best counties, certified seed varieties, fertilizer plans, and expected economics by region.",
     date: "May 2026",
     readTime: "10 min read",
-    category: "Crop Guide",
+    category: "Crop guide",
   },
   {
     slug: "why-soil-is-acidic-kenya",
@@ -44,7 +44,7 @@ const staticPosts = [
     excerpt: "Soil acidity locks nutrients away from your crops. We identify the 15 most acidic counties in Kenya and explain exactly how to fix it.",
     date: "May 2026",
     readTime: "7 min read",
-    category: "Soil Science",
+    category: "Soil science",
   },
   {
     slug: "dap-vs-can-vs-npk-fertilizer-guide",
@@ -60,7 +60,7 @@ const staticPosts = [
     excerpt: "Kakamega's acidic soil locks DAP phosphorus. Data shows Mavuno outperforms DAP in all 4 Western Kenya counties. Here's the science and the savings.",
     date: "May 2026",
     readTime: "7 min read",
-    category: "Soil Science",
+    category: "Soil science",
   },
   {
     slug: "farming-semi-arid-kenya-machakos-makueni-kitui",
@@ -68,7 +68,7 @@ const staticPosts = [
     excerpt: "These counties are dismissed as too dry — but their soil is surprisingly nutrient-rich. The challenge isn't fertility, it's water. Here's how to farm them.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "County Guide",
+    category: "County guide",
   },
   {
     slug: "nakuru-vs-uasin-gishu-best-county-wheat",
@@ -76,7 +76,7 @@ const staticPosts = [
     excerpt: "Kenya's two biggest wheat counties compared on soil chemistry, certified seed varieties, and farming economics. The satellite data picks a winner.",
     date: "May 2026",
     readTime: "7 min read",
-    category: "County Guide",
+    category: "County guide",
   },
   {
     slug: "how-much-fertilizer-per-acre-calculator",
@@ -92,7 +92,7 @@ const staticPosts = [
     excerpt: "Unlocking potato yields in Mt. Kenya's cold highlands. We analyze Meru and Nyeri soil chemistry, seed selection, and optimized fertilization systems.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Crop Guide",
+    category: "Crop guide",
   },
   {
     slug: "organic-soil-enrichment-kenya-soil-carbon",
@@ -100,7 +100,7 @@ const staticPosts = [
     excerpt: "Chemical fertilizers work best in carbon-rich soil. We explore how to restore your shamba's natural fertility using organic soil carbon conservation.",
     date: "May 2026",
     readTime: "7 min read",
-    category: "Soil Science",
+    category: "Soil science",
   },
   {
     slug: "tomato-farming-guide-kiambu-kirinyaga",
@@ -108,7 +108,7 @@ const staticPosts = [
     excerpt: "Commercial tomato cultivation under irrigation and greenhouse systems. We analyze Kirinyaga and Kiambu soils, calcium nutrition, and fertilizer selection.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Crop Guide",
+    category: "Crop guide",
   },
   {
     slug: "cabbage-farming-kiambu",
@@ -116,7 +116,7 @@ const staticPosts = [
     excerpt: "Grow heavier cabbages in Kiambu county. Learn Copenhagen and Gloria F1 cultivation, acidic soil management (pH 5.28), and lime-fertilizer applications.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Crop Guide",
+    category: "Crop guide",
   },
   {
     slug: "onion-farming-kajiado",
@@ -124,7 +124,7 @@ const staticPosts = [
     excerpt: "Master bulb onion farming in Kajiado county. Learn Red Coach F1 nursery setup, alkaline-neutral soil biology (pH 6.55), and sulfur fertilization.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Crop Guide",
+    category: "Crop guide",
   },
   {
     slug: "sweet-potato-farming-homa-bay",
@@ -132,7 +132,7 @@ const staticPosts = [
     excerpt: "Maximize sweet potato yields in Homa Bay county. Learn Orange-Fleshed Sweet Potato (OFSP) vine planting, acid-soil tolerance (pH 5.27), and potassium feeding.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Crop Guide",
+    category: "Crop guide",
   },
   {
     slug: "dairy-farming-nandi",
@@ -140,7 +140,7 @@ const staticPosts = [
     excerpt: "Boost milk production in Nandi county. Learn how soil chemistry (pH 6.17) fuels high-protein Napier, Boma Rhodes, and fodder maize cultivation.",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Dairy Guide",
+    category: "Dairy guide",
   },
   {
     slug: "bean-farming-kakamega",
@@ -148,7 +148,7 @@ const staticPosts = [
     excerpt: "Grow higher bean yields in Western Kenya. Learn Rosecoco and Chelalang management, Rhizobium inoculation, and acidic soil buffering (pH 5.63).",
     date: "May 2026",
     readTime: "8 min read",
-    category: "Crop Guide",
+    category: "Crop guide",
   },
 ];
 

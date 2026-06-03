@@ -21,7 +21,7 @@ function getCookieSession(): { name?: string; token?: string } | null {
 
 const QUICK_LINKS = [
   { href: "/app", label: "Farm plan" },
-  { href: "/doctor", label: "Plant Doctor" },
+  { href: "/doctor", label: "Plant doctor" },
   { href: "/agronomy", label: "Ask agronomist" },
   { href: "/yields", label: "My yields" },
 ];

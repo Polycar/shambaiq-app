@@ -467,7 +467,7 @@ export default function ProfilePage() {
                 </div>
                 {[
                   { href: "/app", icon: <BarChart3 size={16} className="text-forest-600" />, label: "Get soil report", desc: "Run analysis for your shamba" },
-                  { href: "/doctor", icon: <Stethoscope size={16} className="text-red-500" />, label: "Plant Doctor", desc: "Diagnose crop diseases with AI" },
+                  { href: "/doctor", icon: <Stethoscope size={16} className="text-red-500" />, label: "Plant doctor", desc: "Diagnose crop diseases with AI" },
                   { href: "/agronomy", icon: <Leaf size={16} className="text-gold-500" />, label: "Ask agronomist", desc: "Chat with Shamba Mshauri" },
                   { href: "/yields", icon: <BarChart3 size={16} className="text-forest-600" />, label: "My yield history", desc: "Track your harvests" },
                 ].map(a => (

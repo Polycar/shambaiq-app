@@ -880,7 +880,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
             >
-              {lang === "en" ? "Select Region" : "Chagua Eneo"}
+              {lang === "en" ? "Select region" : "Chagua Eneo"}
             </button>
             <button
               onClick={() => { setLocMode("gps"); if (!gpsLat) captureGPS(); }}
@@ -890,7 +890,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
             >
-              {lang === "en" ? "Check My Farm" : "Kagua Shamba Langu"}
+              {lang === "en" ? "Check my farm" : "Kagua Shamba Langu"}
             </button>
           </div>
 
@@ -1095,7 +1095,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               className="flex items-center justify-between w-full text-sm font-medium text-forest-600 py-2 cursor-pointer hover:text-forest-800 transition-colors"
             >
               <span>
-                {lang === "en" ? "Add Companion Crop" : "Ongeza Zao la Pili"}
+                {lang === "en" ? "Add companion crop" : "Ongeza Zao la Pili"}
                 {companionCrop && <span className="text-xs bg-forest-100 text-forest-700 px-2 py-0.5 rounded-full font-bold ml-2">{companionCrop}</span>}
               </span>
               <svg className={`w-4 h-4 transition-transform ${showCompanion ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -1210,7 +1210,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             </div>
             <div>
               <label htmlFor="price-mode-select" className="block text-sm font-medium text-forest-600 mb-1">
-                {lang === "en" ? "Price Basis" : "Msingi wa Bei"}
+                {lang === "en" ? "Price basis" : "Msingi wa Bei"}
               </label>
               <select
                 id="price-mode-select"
@@ -1359,7 +1359,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                         <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>{cm.label}</span>
                       </div>
                       <div className="flex items-center justify-between text-xs mb-1">
-                        <span className="text-gray-400 font-medium">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
+                        <span className="text-gray-400 font-medium">{lang === "en" ? "Match score" : "Ulinganifu"}</span>
                         <span className={`font-bold ${isExcellent ? "text-emerald-600" : isVeryGood ? "text-blue-600" : isGood ? "text-amber-600" : "text-red-600"}`}>{score}%</span>
                       </div>
                       <div className="w-full bg-gray-100 rounded-full h-1.5 mb-3">
@@ -1526,7 +1526,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </div>
               <p className="font-display text-xl font-bold text-forest-700">
                 {result.health_score >= 70
-                  ? (lang === "en" ? "Good Soil Health" : "Afya Nzuri ya Udongo")
+                  ? (lang === "en" ? "Good soil health" : "Afya Nzuri ya Udongo")
                   : result.health_score >= 40
                   ? (lang === "en" ? "Moderate — Needs Attention" : "Ya Wastani — Inahitaji Uangalifu")
                   : (lang === "en" ? "Poor — Action Required" : "Mbaya — Hatua Inahitajika")}
@@ -1780,7 +1780,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               <details className="rounded-2xl border p-5 bg-white shadow-sm border-cream-300">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="font-bold text-base flex items-center gap-2 text-forest-700">
-                    {lang === "en" ? "Intercrop Analysis" : "Uchambuzi wa Mazao Mchanganyiko"}
+                    {lang === "en" ? "Intercrop analysis" : "Uchambuzi wa Mazao Mchanganyiko"}
                   </h3>
                   <div className="flex items-center gap-2">
                     <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold text-white ${
@@ -1790,7 +1790,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     }`}>
                       {result.intercrop_audit.compatible
                         ? (lang === "en" ? "Compatible" : "Inaoana")
-                        : (lang === "en" ? "Not Compatible" : "Haiendani")}
+                        : (lang === "en" ? "Not compatible" : "Haiendani")}
                     </span>
                     <svg className="w-4 h-4 text-gray-400 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
                   </div>
@@ -1815,7 +1815,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   {/* N-fixation savings */}
                   {result.intercrop_audit.n_fixation && (
                     <div className="mt-4 rounded-xl border border-green-200 bg-green-50 px-3 py-2.5">
-                      <p className="text-xs font-semibold text-green-800 mb-1">{lang === "en" ? "Nitrogen Fixation Saving" : "Akiba ya Nitrojeni"}</p>
+                      <p className="text-xs font-semibold text-green-800 mb-1">{lang === "en" ? "Nitrogen fixation saving" : "Akiba ya Nitrojeni"}</p>
                       <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-green-800">
                         <span>{lang === "en" ? "Fixed N" : "Nitrojeni iliyonaswa"}</span>
                         <span className="font-bold">{result.intercrop_audit.n_fixation.fixed_kg_per_ha} kg/ha ({result.intercrop_audit.n_fixation.fixed_kg_per_acre} kg/acre)</span>
@@ -1832,7 +1832,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   {/* Layout */}
                   {result.intercrop_audit.layout && (
                     <div className="mt-4 rounded-xl border border-cream-200 bg-cream-50 px-3 py-2.5">
-                      <p className="text-xs font-semibold text-forest-700 mb-1.5">{lang === "en" ? "Planting Layout" : "Mpango wa Upandaji"}</p>
+                      <p className="text-xs font-semibold text-forest-700 mb-1.5">{lang === "en" ? "Planting layout" : "Mpango wa Upandaji"}</p>
                       <div className="space-y-1 text-xs text-forest-800">
                         <p><span className="font-semibold">{lang === "en" ? "Arrangement: " : "Mpangilio: "}</span>{result.intercrop_audit.layout.arrangement}</p>
                         <p><span className="font-semibold">{lang === "en" ? "Timing: " : "Wakati: "}</span>{result.intercrop_audit.layout.timing}</p>
@@ -1845,7 +1845,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   {result.intercrop_audit.economics && (
                     <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2.5">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs font-semibold text-blue-800">{lang === "en" ? "Income Comparison" : "Ulinganisho wa Mapato"}</p>
+                        <p className="text-xs font-semibold text-blue-800">{lang === "en" ? "Income comparison" : "Ulinganisho wa Mapato"}</p>
                         {result.intercrop_audit.economics.advantage_pct > 0 && (
                           <span className="bg-green-100 border border-green-200 rounded px-2 py-0.5 text-xs font-bold text-green-800">+{result.intercrop_audit.economics.advantage_pct}%</span>
                         )}
@@ -1912,7 +1912,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                         const desc = (day.description || "").toLowerCase();
                         let statusText = "Sunny";
                         if (desc.includes("thunder")) statusText = "Storm";
-                        else if (desc.includes("heavy rain") || desc.includes("violent")) statusText = "Heavy Rain";
+                        else if (desc.includes("heavy rain") || desc.includes("violent")) statusText = "Heavy rain";
                         else if (desc.includes("rain") || desc.includes("shower")) statusText = "Rainy";
                         else if (desc.includes("drizzle")) statusText = "Drizzle";
                         else if (desc.includes("overcast")) statusText = "Overcast";
@@ -2033,7 +2033,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 {agrLoading
                   ? (lang === "en" ? "Searching Agrovets..." : "Inatafuta Agroveti...")
                   : agrShown
-                    ? (lang === "en" ? "Hide Agrovets" : "Ficha Agroveti")
+                    ? (lang === "en" ? "Hide agrovets" : "Ficha Agroveti")
                     : t("dealers_find", lang)}
               </button>
             </div>
@@ -2058,7 +2058,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             {agrShown && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  {lang === "en" ? "Agrovets Near You" : "Agroveti Karibu Nawe"}
+                  {lang === "en" ? "Agrovets near you" : "Agroveti Karibu Nawe"}
                 </h3>
                 {agrovets.length > 0 ? (
                   <div className="space-y-2.5">

@@ -153,7 +153,7 @@ export default async function CountyCropPage({ params }: PageProps) {
             profile
           </p>
         </div>
-        <ScoreRing score={score} label="Suitability Score" />
+        <ScoreRing score={score} label="Suitability score" />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">

@@ -40,8 +40,8 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/crops/maize" className="hover:text-gold-400 transition-colors">Maize guide</Link></li>
               <li><Link href="/crops/beans" className="hover:text-gold-400 transition-colors">Beans guide</Link></li>
-              <li><Link href="/crops" className="hover:text-gold-400 transition-colors">All 40+ crops</Link></li>
-              <li><Link href="/zones" className="hover:text-gold-400 transition-colors">Agroecological zones</Link></li>
+              <li><Link href="/crops" className="hover:text-gold-400 transition-colors">All 40+ Crops</Link></li>
+              <li><Link href="/zones" className="hover:text-gold-400 transition-colors">Agroecological Zones</Link></li>
               <li><Link href="/dealers" className="hover:text-gold-400 transition-colors">Agrovet directory</Link></li>
               <li><Link href="/dealers/apply" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">Become a dealer →</Link></li>
               <li><Link href="/dealer/login" className="hover:text-gold-400 transition-colors">Dealer login</Link></li>

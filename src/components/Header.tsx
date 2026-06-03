@@ -7,7 +7,7 @@ import Logo from "./Logo";
 // Links shown in the desktop center nav
 const mainNavLinks = [
   { href: "/app", label: "Get farm plan" },
-  { href: "/doctor", label: "Plant Doctor" },
+  { href: "/doctor", label: "Plant doctor" },
   { href: "/agronomy", label: "Ask agronomist" },
   { href: "/soil", label: "Soil data" },
   { href: "/blog", label: "Blog" },
@@ -16,7 +16,7 @@ const mainNavLinks = [
 // All links shown in mobile hamburger
 const mobileNavLinks = [
   { href: "/app", label: "Get farm plan" },
-  { href: "/doctor", label: "Plant Doctor" },
+  { href: "/doctor", label: "Plant doctor" },
   { href: "/agronomy", label: "Ask agronomist" },
   { href: "/soil", label: "Soil data" },
   { href: "/yields", label: "My yields" },
@@ -154,7 +154,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
                   <div className="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center border-2 border-gold-400/40">
                     <span className="text-sm font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
                   </div>
-                  <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"} · view profile</span>
+                  <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"} · View profile</span>
                 </Link>
                 <button
                   onClick={() => { setOpen(false); handleLogout(); }}

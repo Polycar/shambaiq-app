@@ -1,7 +1,7 @@
 export default function ScoreRing({
   score,
   size = 160,
-  label = "Soil Health",
+  label = "Soil health",
 }: {
   score: number;
   size?: number;

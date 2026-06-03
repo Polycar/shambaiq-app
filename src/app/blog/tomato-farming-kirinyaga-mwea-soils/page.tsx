@@ -498,7 +498,7 @@ export default function TomatoKirinyagaPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More County Farming Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More county farming guides" />
       </div>
     </>
   );

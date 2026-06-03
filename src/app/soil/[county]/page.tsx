@@ -17,6 +17,8 @@ import ScoreRing from "@/components/ScoreRing";
 import NutrientBar from "@/components/NutrientBar";
 import CollapsibleWards from "@/components/CollapsibleWards";
 import SoilEmbedCard from "@/components/SoilEmbedCard";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ county: string }>;
@@ -80,23 +82,23 @@ export default async function CountySoilPage({ params }: PageProps) {
             .join(", ")}.`,
         },
       },
-      {
-        "@type": "Question",
-        name: `What fertilizer is recommended for ${county.county} County?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Fertilizer recommendations depend on the crop. Use ShambaIQ's recommendation tool for a personalized plan based on ${county.county}'s soil data.`,
-        },
-      },
+    ],
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Soil reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 3, name: county.zone, item: `${BASE_URL}/zones/${slugify(county.zone)}` },
+      { "@type": "ListItem", position: 4, name: `${county.county} County`, item: `${BASE_URL}/soil/${slug}` },
     ],
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd schemas={[faqSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Breadcrumbs

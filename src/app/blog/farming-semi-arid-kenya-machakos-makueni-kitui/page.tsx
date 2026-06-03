@@ -322,7 +322,7 @@ export default function SemiAridKenyaPage() {
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
-              <p className="text-sm font-semibold uppercase tracking-widest text-forest-300 mb-2">Free Precision Tool</p>
+              <p className="text-sm font-semibold uppercase tracking-widest text-forest-300 mb-2">Free precision tool</p>
               <h3 className="text-xl font-display font-bold mb-3">{POST.ctaText}</h3>
               <p className="text-forest-200 text-sm mb-5">ShambaIQ maps your specific sub-county's soil data and rainfall zone, then recommends the crops and inputs that match your conditions — not a county average. Free. No sign-up required.</p>
               <Link href={POST.ctaLink} className="inline-block bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold px-7 py-3 rounded-xl transition-colors">Open Semi-Arid Advisor</Link>
@@ -379,7 +379,7 @@ export default function SemiAridKenyaPage() {
                 </div>
               </div>
               <div className="bg-white border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">County Soil Reports</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">County soil reports</p>
                 <div className="space-y-1.5">
                   {[{ slug: "machakos", name: "Machakos" }, { slug: "makueni", name: "Makueni" }, { slug: "kitui", name: "Kitui" }, { slug: "kajiado", name: "Kajiado" }].map(({ slug, name }) => (
                     <Link key={slug} href={`/soil/${slug}`} className="flex justify-between items-center text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

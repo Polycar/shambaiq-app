@@ -121,7 +121,7 @@ export default function ImpactPage() {
       <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(circle_at_top,rgba(22,163,74,0.06),transparent_60%)] pointer-events-none -z-10" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Our Impact" }]} />
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Our impact" }]} />
 
         {/* Hero Banner Section */}
         <div className="text-center mt-12 mb-16">

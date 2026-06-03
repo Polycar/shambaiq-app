@@ -75,7 +75,7 @@ export default async function DealerCountyPage({ params }: PageProps) {
         />
 
         <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
-          Agrovets in {county.county} County
+          Agrovets in {county.county} county
         </h1>
         <p className="text-soil-500 mb-10">
           {dealers.length} farm input dealer{dealers.length !== 1 ? "s" : ""} found

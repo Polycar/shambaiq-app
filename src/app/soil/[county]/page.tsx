@@ -112,7 +112,7 @@ export default async function CountySoilPage({ params }: PageProps) {
         <div className="flex flex-col md:flex-row md:items-start gap-8 mb-12">
           <div className="flex-1">
             <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
-              {county.county} County Soil Health Report
+              {county.county} county soil health report
             </h1>
             <p className="text-soil-500 mb-1">
               <span className="font-medium">{county.zone}</span> agroecological

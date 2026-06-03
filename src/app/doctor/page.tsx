@@ -172,7 +172,7 @@ export default function DoctorPage() {
       <div className="bg-gradient-to-br from-red-700 to-red-800 text-center py-8 px-4">
         <div className="flex items-center justify-center gap-2 mb-1">
           <Stethoscope size={28} className="text-white" />
-          <h1 className="font-display text-2xl font-bold text-white">Plant Doctor</h1>
+          <h1 className="font-display text-2xl font-bold text-white">Plant doctor</h1>
         </div>
         <p className="text-red-200 text-sm">AI pest & disease diagnostics</p>
       </div>

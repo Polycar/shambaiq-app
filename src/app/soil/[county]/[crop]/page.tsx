@@ -124,7 +124,7 @@ export default async function CountyCropPage({ params }: PageProps) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Soil Reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 2, name: "Soil reports", item: `${BASE_URL}/soil` },
       { "@type": "ListItem", position: 3, name: `${county.county} County`, item: `${BASE_URL}/soil/${cSlug}` },
       { "@type": "ListItem", position: 4, name: crop.crop, item: `${BASE_URL}/soil/${cSlug}/${crSlug}` },
     ],
@@ -172,10 +172,10 @@ export default async function CountyCropPage({ params }: PageProps) {
                       Nutrient
                     </th>
                     <th className="text-right py-2 text-soil-500 font-medium">
-                      {county.county} Soil
+                      {county.county} soil
                     </th>
                     <th className="text-right py-2 text-soil-500 font-medium">
-                      {crop.crop} Needs
+                      {crop.crop} needs
                     </th>
                     <th className="text-right py-2 text-soil-500 font-medium">
                       Status

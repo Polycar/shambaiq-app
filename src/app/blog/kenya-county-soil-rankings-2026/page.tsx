@@ -219,10 +219,10 @@ export default function KenyaCountySoilRankingsPage() {
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
-              <p className="text-sm font-semibold uppercase tracking-widest text-forest-300 mb-2">Free Precision Tool</p>
+              <p className="text-sm font-semibold uppercase tracking-widest text-forest-300 mb-2">Free precision tool</p>
               <h3 className="text-xl font-display font-bold mb-3">{POST.ctaText}</h3>
               <p className="text-forest-200 text-sm mb-5">See your county's soil score and your farm's specific pH, nitrogen, phosphorus, potassium, and organic carbon values. Free, no sign-up required.</p>
-              <Link href={POST.ctaLink} className="inline-block bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold px-7 py-3 rounded-xl transition-colors">Check My County Soil Score</Link>
+              <Link href={POST.ctaLink} className="inline-block bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold px-7 py-3 rounded-xl transition-colors">Check my county soil score</Link>
             </div>
 
             <section id="faq" aria-labelledby="faq-heading">
@@ -247,7 +247,7 @@ export default function KenyaCountySoilRankingsPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Top 5 Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Top 5 counties</p>
                 <div className="space-y-2">
                   {TOP_COUNTIES.slice(0, 5).map((c) => (
                     <Link key={c.county} href={`/soil/${c.county.toLowerCase().replace(/'/g, "").replace(/ /g, "-")}`} className="flex items-center justify-between text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">

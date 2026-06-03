@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${ward.ward} Ward Soil Report — ${county.county} County`,
-    description: `Precision soil data for ${ward.ward} ward, ${ward.subcounty} Sub-County, ${county.county}. pH, nitrogen, phosphorus, and potassium from 30m satellite mapping.`,
+    description: `Precision soil data for ${ward.ward} ward, ${ward.subcounty} sub-county, ${county.county}. pH, nitrogen, phosphorus, and potassium from 30m satellite mapping.`,
     alternates: { canonical: `https://shambaiq.com/soil/${countySlug}/ward/${wardSlug}` },
     openGraph: {
       title: `${ward.ward} Ward — Soil Report | ${county.county}`,
@@ -115,7 +115,7 @@ export default async function WardPage({ params }: PageProps) {
         items={[
           { label: "Soil reports", href: "/soil" },
           { label: county.county, href: `/soil/${county.slug}` },
-          { label: `${ward.ward} Ward` },
+          { label: `${ward.ward} ward` },
         ]}
       />
 
@@ -125,10 +125,10 @@ export default async function WardPage({ params }: PageProps) {
           <div className="flex items-start justify-between">
             <div>
               <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700">
-                {ward.ward} Ward
+                {ward.ward} ward
               </h1>
               <p className="text-soil-500 mt-1">
-                {ward.subcounty} Sub-County · {county.county} County
+                {ward.subcounty} sub-county · {county.county} county
               </p>
               <p className="text-xs text-soil-500 mt-1 font-mono">
                 📍 {ward.latitude.toFixed(4)}°, {ward.longitude.toFixed(4)}°

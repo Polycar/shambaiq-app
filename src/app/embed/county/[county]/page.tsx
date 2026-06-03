@@ -68,7 +68,7 @@ export default async function CountyEmbedPage({ params }: PageProps) {
         {/* Core metrics list - 3 cols */}
         <div className="col-span-3 space-y-2">
           <div className="text-xs font-bold text-forest-700 uppercase tracking-wider mb-1">
-            {county.county} County Soil
+            {county.county} county soil
           </div>
           {nutrients.map((n) => {
             const rawVal = typeof n.val === "string" ? parseFloat(n.val) : n.val;

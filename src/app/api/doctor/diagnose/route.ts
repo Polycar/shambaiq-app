@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -39,14 +40,25 @@ export async function POST(request: Request) {
   }
 
   let token: string | undefined;
+  let sessionPhone: string | undefined;
   try {
     const sessionData = JSON.parse(decodeURIComponent(sessionCookie.value));
     if (!sessionData.phone && !sessionData.token) {
       return NextResponse.json({ error: 'Unauthorized: Invalid session' }, { status: 401 });
     }
     token = sessionData.token;
+    sessionPhone = sessionData.phone;
   } catch {
     return NextResponse.json({ error: 'Unauthorized: Invalid session format' }, { status: 401 });
+  }
+
+  const sessionKey = sessionPhone || token || clientIp(request);
+  const rl = rateLimit(`diagnose:${sessionKey}`, 10, 60 * 60 * 1000);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Diagnosis limit reached. You can scan up to 10 plants per hour.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfterSecs) } }
+    );
   }
 
   const apiKey = process.env.GEMINI_API_KEY;

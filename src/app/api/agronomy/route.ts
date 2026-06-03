@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -19,6 +20,14 @@ async function logSoilReport(token: string, payload: object) {
 }
 
 export async function POST(request: Request) {
+  const rl = rateLimit(`agronomy:${clientIp(request)}`, 15, 15 * 60 * 1000);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please wait a few minutes before trying again.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfterSecs) } }
+    );
+  }
+
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ error: 'Server misconfiguration: API key missing' }, { status: 503 });

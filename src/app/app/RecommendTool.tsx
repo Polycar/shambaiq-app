@@ -376,11 +376,13 @@ function DiseaseAlertsCard({ alerts, lang }: { alerts: any[]; lang: string }) {
 }
 
 // ─── PDF Print Report ──────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function openPrintReport(result: any, acres: number, lang: string) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function openPrintReport(result: any, countyFallback: string, acres: number, weather: any, agrovets: any[]) {
+  const county = result.county || countyFallback || "Kenya";
   const date = new Date().toLocaleDateString("en-KE", { day: "numeric", month: "long", year: "numeric" });
   const cd = result.county_data || {};
   const tl = result.timeline;
+  const esc = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   const soilRows = [
     ["pH", cd["pH"] != null ? Number(cd["pH"]).toFixed(1) : "—", "5.5 – 7.0"],
@@ -391,72 +393,88 @@ function openPrintReport(result: any, acres: number, lang: string) {
     ["Texture", cd["Texture"] || "—", "Loam / clay loam ideal"],
   ];
 
-  const timelineHtml = tl ? `
-    <div class="section">
-      <div class="section-title">Planting timeline — ${tl.season || ""}</div>
+  // Soil analysis advisory notes
+  const adviceHtml = (result.advice && result.advice.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">Soil analysis &amp; recommendations</div>
+      ${result.advice.map((item: string) => {
+        const t = clean(item);
+        const isErr = /Critical|Toxicity|too low/i.test(t);
+        const isWarn = /Deficiency|low|Low/i.test(t);
+        const cls = isErr ? "note-err" : isWarn ? "note-warn" : "note-ok";
+        return `<div class="advice ${cls}">${esc(t)}</div>`;
+      }).join("")}
+    </div>` : "";
+
+  // Fertilizer comparison
+  const comparisonHtml = result.comparison ? `
+    <div class="section avoid-break">
+      <div class="section-title">Fertilizer strategy</div>
       <table class="tbl">
-        <tr><th>${tl.label_1 || "Month 1"}</th><th>${tl.label_2 || "Month 2"}</th><th>${tl.label_3 || "Month 3"}</th></tr>
-        <tr><td>${clean(tl.month_1)}</td><td>${clean(tl.month_2)}</td><td>${clean(tl.month_3)}</td></tr>
+        <tr><th>Factor</th><th>Common practice</th><th>Recommended</th></tr>
+        <tr><td>Strategy</td><td>${esc(clean(result.comparison.current_flaw) || "—")}</td><td class="rec">${esc(clean(result.comparison.recommended) || "—")}</td></tr>
+        <tr><td>Outcome</td><td>${esc(clean(result.comparison.current_outcome) || "Variable")}</td><td class="rec">${esc(clean(result.comparison.impact) || "—")}</td></tr>
       </table>
+    </div>` : "";
+
+  const timelineHtml = tl ? `
+    <div class="section avoid-break">
+      <div class="section-title">Planting timeline — ${esc(tl.season || "")}</div>
+      <table class="tbl">
+        <tr><th>${esc(tl.label_1 || "Month 1")}</th><th>${esc(tl.label_2 || "Month 2")}</th><th>${esc(tl.label_3 || "Month 3")}</th></tr>
+        <tr><td>${esc(clean(tl.month_1))}</td><td>${esc(clean(tl.month_2))}</td><td>${esc(clean(tl.month_3))}</td></tr>
+      </table>
+    </div>` : "";
+
+  // 7-day weather
+  const weatherHtml = (weather && weather.forecast && weather.forecast.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">7-day weather outlook</div>
+      ${weather.summary ? `<p class="wsum">${esc(weather.summary)}${weather.advice ? " — " + esc(weather.advice) : ""}</p>` : ""}
+      <table class="tbl wx">
+        <tr>${weather.forecast.map((d: any) => `<th>${esc(new Date(d.date).toLocaleDateString("en-KE", { day: "numeric", month: "short" }))}</th>`).join("")}</tr>
+        <tr>${weather.forecast.map((d: any) => `<td>${d.temp_max != null ? Math.round(d.temp_max) + "° / " + Math.round(d.temp_min) + "°" : "—"}<br/><span class="rain">${d.rain_mm != null ? Math.round(d.rain_mm) + "mm" : ""}</span></td>`).join("")}</tr>
+      </table>
+    </div>` : "";
+
+  // Pest & disease risk alerts
+  const alertsHtml = (result.disease_alerts && result.disease_alerts.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">Pest &amp; disease risk alerts</div>
+      ${result.disease_alerts.map((a: any) => `
+        <div class="advice note-warn">
+          <strong>${esc(a.condition_en)} <span class="sev">${esc(a.severity || "Moderate")}</span></strong><br/>
+          <span class="alabel">Symptoms:</span> ${esc(a.symptoms_en || "")}<br/>
+          <span class="alabel">Prevention:</span> ${esc(a.prevention_en || "")}
+        </div>`).join("")}
     </div>` : "";
 
   const seedsHtml = (result.seeds && result.seeds.length > 0) ? `
-    <div class="section">
-      <div class="section-title">Certified seed varieties — ${result.crop}</div>
+    <div class="section avoid-break">
+      <div class="section-title">Certified seed varieties — ${esc(result.crop)}</div>
       <table class="tbl">
         <tr><th>Variety</th><th>Source</th><th>Zone</th><th>Maturity</th><th>Yield</th></tr>
         ${result.seeds.map((s: any) => `<tr>
-          <td><strong>${s.Variety}</strong></td>
-          <td>${s.Supplier || s.Source || "—"}</td>
-          <td>${s.Altitude_Zone || "—"}</td>
-          <td>${s.Maturity_Days ? s.Maturity_Days + " days" : "—"}</td>
-          <td>${s.Yield_Bags_Per_Acre ? s.Yield_Bags_Per_Acre + " bags/acre" : "—"}</td>
+          <td><strong>${esc(s.Variety)}</strong></td>
+          <td>${esc(s.Supplier || s.Source || "—")}</td>
+          <td>${esc(s.Altitude_Zone || "—")}</td>
+          <td>${s.Maturity_Days ? esc(s.Maturity_Days) + " days" : "—"}</td>
+          <td>${s.Yield_Bags_Per_Acre ? esc(s.Yield_Bags_Per_Acre) + " bags/acre" : "—"}</td>
         </tr>`).join("")}
       </table>
     </div>` : "";
 
-  const comparisonHtml = result.comparison ? `
-    <div class="section" style="page-break-inside: avoid;">
-      <div class="section-title">The Switch — Fertilizer Strategy</div>
+  // Nearby agrovets
+  const agrovetsHtml = (agrovets && agrovets.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">Nearby agrovets — where to buy inputs</div>
       <table class="tbl">
-        <tr><th>Feature</th><th>Current Habit</th><th style="color: #2d5a30;">Recommendation</th></tr>
-        <tr>
-          <td><strong>Strategy</strong></td>
-          <td style="color: #b91c1c;">${clean(result.comparison.current_flaw) || "—"}</td>
-          <td style="color: #2d5a30; font-weight: bold;">${clean(result.comparison.recommended) || "—"}</td>
-        </tr>
-        <tr>
-          <td><strong>Outcome</strong></td>
-          <td>${clean(result.comparison.current_outcome) || "—"}</td>
-          <td style="color: #2d5a30; font-weight: bold;">${clean(result.comparison.impact) || "—"}</td>
-        </tr>
-      </table>
-    </div>` : "";
-
-  const diseaseHtml = (result.disease_alerts && result.disease_alerts.length > 0) ? `
-    <div class="section" style="page-break-inside: avoid;">
-      <div class="section-title" style="color: #b91c1c;">Disease & Pest Alerts</div>
-      <table class="tbl">
-        <tr><th>Threat</th><th>Risk Level</th><th>Weather Trigger</th><th>Prevention</th></tr>
-        ${result.disease_alerts.map((d: any) => `<tr>
-          <td><strong>${clean(d.disease)}</strong></td>
-          <td style="color: #b91c1c; font-weight: bold;">${clean(d.risk_level)}</td>
-          <td>${clean(d.trigger)}</td>
-          <td>${clean(d.prevention)}</td>
-        </tr>`).join("")}
-      </table>
-    </div>` : "";
-
-  const intercropHtml = (result.intercrops && result.intercrops.length > 0) ? `
-    <div class="section" style="page-break-inside: avoid;">
-      <div class="section-title">Intercrop Analysis</div>
-      <table class="tbl">
-        <tr><th>Companion Crop</th><th>Compatibility</th><th>N-Fixation Savings</th><th>Benefits</th></tr>
-        ${result.intercrops.map((i: any) => `<tr>
-          <td><strong>${clean(i.companion_crop)}</strong></td>
-          <td>${i.compatibility_score}/10</td>
-          <td style="color: #2d5a30; font-weight: bold;">+${i.n_fixed_kg_per_acre} kg N/acre</td>
-          <td>${clean(i.benefits)}</td>
+        <tr><th>Name</th><th>Location</th><th>Phone</th><th>Distance</th></tr>
+        ${agrovets.slice(0, 10).map((d: any) => `<tr>
+          <td><strong>${esc(d.name)}</strong></td>
+          <td>${esc(d.physical_address || d.town || county)}</td>
+          <td>${esc(d.phone || "—")}</td>
+          <td>${d.distance != null ? esc(d.distance) + " km" : "—"}</td>
         </tr>`).join("")}
       </table>
     </div>` : "";
@@ -465,20 +483,18 @@ function openPrintReport(result: any, acres: number, lang: string) {
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<title>ShambaIQ — Farm precision report · ${result.crop} · ${result.county}</title>
+<title>ShambaIQ — Farm precision report · ${esc(result.crop)} · ${esc(county)}</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family: Arial, Helvetica, sans-serif; font-size: 10.5pt; color: #1a2e1c; background: #fff; }
   .page { width: 180mm; margin: 0 auto; padding: 12mm 0; }
 
-  /* Header */
   .header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid #2d5a30; padding-bottom: 8px; margin-bottom: 12px; }
   .logo { font-size: 20pt; font-weight: 900; letter-spacing: -0.5px; color: #1a2e1c; }
   .logo span { color: #c7931a; }
   .logo-sub { font-size: 7.5pt; color: #5a7a5c; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
   .header-right { text-align: right; font-size: 8pt; color: #5a7a5c; line-height: 1.5; }
 
-  /* Hero band */
   .hero { background: #2d5a30; color: #fff; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
   .hero-left h1 { font-size: 14pt; font-weight: 800; }
   .hero-left p { font-size: 8.5pt; color: #b8d4b9; margin-top: 2px; }
@@ -486,32 +502,35 @@ function openPrintReport(result: any, acres: number, lang: string) {
   .score-num { font-size: 22pt; font-weight: 900; color: #f5c842; line-height: 1; }
   .score-label { font-size: 7pt; color: #b8d4b9; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
-  /* Budget band */
   .budget-band { border: 1.5px solid #2d5a30; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
   .budget-total { font-size: 16pt; font-weight: 900; color: #2d5a30; }
   .budget-label { font-size: 7.5pt; color: #5a7a5c; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-  .budget-lines { font-size: 9pt; color: #3d5c3f; line-height: 1.7; }
+  .budget-lines { font-size: 9pt; color: #3d5c3f; line-height: 1.7; text-align: right; }
 
-  /* Sections */
-  .section { margin-bottom: 11px; page-break-inside: avoid; }
-  .section-title { font-size: 7.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: #c7931a; margin-bottom: 6px; }
+  .section { margin-bottom: 11px; }
+  .avoid-break { page-break-inside: avoid; }
+  .section-title { font-size: 7.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: #c7931a; margin-bottom: 6px; border-bottom: 1px solid #eee; padding-bottom: 3px; }
 
-  /* Tables */
   .tbl { width: 100%; border-collapse: collapse; font-size: 9pt; }
   .tbl th { background: #f0f7f0; color: #2d5a30; font-weight: 700; padding: 5px 7px; text-align: left; border: 1px solid #dde8dd; }
   .tbl td { padding: 5px 7px; border: 1px solid #dde8dd; color: #1a2e1c; vertical-align: top; }
   .tbl tr:nth-child(even) td { background: #f8faf8; }
+  .tbl .rec { color: #2d5a30; font-weight: 700; }
+  .tbl.wx th, .tbl.wx td { text-align: center; font-size: 8pt; padding: 4px 3px; }
+  .tbl.wx .rain { color: #2563eb; font-size: 7.5pt; }
 
-  /* Confidence note */
-  .note { font-size: 8pt; color: #5a7a5c; margin-top: 3px; }
+  .advice { font-size: 9pt; padding: 6px 9px; border-radius: 5px; margin-bottom: 5px; line-height: 1.45; border-left: 3px solid; }
+  .note-ok { background: #f0f9f0; border-color: #4caf50; }
+  .note-warn { background: #fffbeb; border-color: #f5c842; }
+  .note-err { background: #fef2f2; border-color: #dc2626; }
+  .advice .sev { font-size: 7pt; background: #f5c842; color: #1a2e1c; padding: 1px 6px; border-radius: 10px; font-weight: 700; }
+  .advice .alabel { font-weight: 700; color: #5a7a5c; }
+  .wsum { font-size: 9pt; color: #3d5c3f; margin-bottom: 6px; font-style: italic; }
 
-  /* Footer */
   .footer { border-top: 1px solid #dde8dd; margin-top: 14px; padding-top: 8px; display: flex; justify-content: space-between; font-size: 7.5pt; color: #8aaa8c; }
 
   @page { size: A4; margin: 12mm 15mm; }
-  @media print {
-    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  }
+  @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
 </style>
 </head>
 <body>
@@ -524,18 +543,18 @@ function openPrintReport(result: any, acres: number, lang: string) {
     </div>
     <div class="header-right">
       Farm precision report<br/>
-      ${result.county} County · ${acres} acre${acres !== 1 ? "s" : ""}<br/>
+      ${esc(county)} County · ${acres} acre${acres !== 1 ? "s" : ""}<br/>
       ${date}
     </div>
   </div>
 
   <div class="hero">
     <div class="hero-left">
-      <h1>${result.crop}</h1>
-      <p>${clean(result.confidence)}</p>
+      <h1>${esc(result.crop)}</h1>
+      <p>${esc(clean(result.confidence))}</p>
     </div>
     <div class="score-badge">
-      <div class="score-num">${result.health_score}</div>
+      <div class="score-num">${esc(result.health_score)}</div>
       <div class="score-label">Soil health</div>
     </div>
   </div>
@@ -546,24 +565,26 @@ function openPrintReport(result: any, acres: number, lang: string) {
       <div class="budget-total">KES ${result.budget.total_budget.toLocaleString()}</div>
     </div>
     <div class="budget-lines">
-      ${result.budget.breakdown.map((l: string) => `• ${clean(l)}`).join("<br/>")}
+      ${result.budget.breakdown.map((l: string) => `• ${esc(clean(l))}`).join("<br/>")}
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Soil profile — ${result.county} County</div>
+  <div class="section avoid-break">
+    <div class="section-title">Soil profile — ${esc(county)} County</div>
     <table class="tbl">
       <tr><th>Nutrient / property</th><th>Your reading</th><th>Optimal range</th></tr>
-      ${soilRows.map(([n, v, o]) => `<tr><td>${n}</td><td>${v}</td><td>${o}</td></tr>`).join("")}
+      ${soilRows.map(([n, v, o]) => `<tr><td>${esc(n)}</td><td>${esc(v)}</td><td>${esc(o)}</td></tr>`).join("")}
     </table>
-    <p class="note">${clean(result.data_source) || "Source: iSDA Africa precision soil data"}</p>
+    <p class="wsum">${esc(clean(result.data_source)) || "Source: iSDA Africa precision soil data"}</p>
   </div>
 
+  ${adviceHtml}
   ${comparisonHtml}
-  ${diseaseHtml}
   ${timelineHtml}
+  ${weatherHtml}
+  ${alertsHtml}
   ${seedsHtml}
-  ${intercropHtml}
+  ${agrovetsHtml}
 
   <div class="footer">
     <span>shambaiq.com · info@shambaiq.com · WhatsApp: +254 748 042 633</span>
@@ -580,6 +601,7 @@ function openPrintReport(result: any, acres: number, lang: string) {
   w.document.write(html);
   w.document.close();
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // ─── Component ─────────────────────────────────────────────────
 export default function RecommendTool({ counties, wards, crops, countyCoords, dealers }: Props) {
@@ -2212,7 +2234,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 {lang === "en" ? "Share & Download" : "Shiriki na Pakua"}
               </h3>
               <button
-                onClick={() => openPrintReport(result, acres, lang)}
+                onClick={() => openPrintReport(result, county, acres, weather, agrovets)}
                 className="block w-full py-3 rounded-xl text-center font-bold text-cream-100 text-sm cursor-pointer bg-forest-700 hover:bg-forest-600 transition-colors"
               >
                 {lang === "en" ? "Download PDF Report" : "Pakua Ripoti ya PDF"}

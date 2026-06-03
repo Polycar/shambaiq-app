@@ -39,17 +39,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Failed to fetch dynamic blog posts for sitemap:", e);
   }
 
+  const safeDate = (dateStr: string | null | undefined, fallback: string): string => {
+    if (!dateStr) return fallback;
+    try {
+      const d = new Date(dateStr);
+      return isNaN(d.getTime()) ? fallback : d.toISOString();
+    } catch {
+      return fallback;
+    }
+  };
+
   // ── 2. Dynamic Blog Pages (both static and backend API database posts) ──
   const staticBlogPages: MetadataRoute.Sitemap = ALL_POSTS.map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
-    lastModified: post.dateModified,
+    lastModified: safeDate(post.dateModified, now),
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));
 
   const dynamicBlogPages: MetadataRoute.Sitemap = dynamicPosts.map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
-    lastModified: post.published_at || now,
+    lastModified: safeDate(post.published_at, now),
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));

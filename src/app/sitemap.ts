@@ -13,6 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ── 1. Static Pages ────────────────────────────────────────────
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${BASE}/app`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/soil`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/crops`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/zones`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
@@ -23,9 +24,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/partners`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/impact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE}/dealers/apply`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
+    { url: `${BASE}/dealers/status`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE}/api`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/embed`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/doctor`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/yields`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/login`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${BASE}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${BASE}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   // Fetch dynamic blog posts from the API database

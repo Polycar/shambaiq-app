@@ -14,12 +14,12 @@ import {
   getTopDressing,
   getPrices,
   getCropCalendars,
-  slugify,
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScoreRing from "@/components/ScoreRing";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL, ORGANIZATION } from "@/lib/schema";
+import { countyCropNarrative, countyCropFAQSchema, makeSoilDatasetSchema } from "@/lib/seo-content";
 
 const getYieldUnit = (cropName: string) => {
   const c = cropName.toLowerCase();
@@ -62,9 +62,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${crop.crop} in ${county.county} — ${score}/100 Suitability Score`,
       description: `Soil match analysis, fertilizer plan, and seed varieties for ${crop.crop} in ${county.county} County.`,
       url: `https://shambaiq.com/soil/${cSlug}/${crSlug}`,
-      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `${crop.crop} farming in ${county.county} County` }],
+      images: [{ url: `${BASE_URL}/api/og/county/${cSlug}`, width: 1200, height: 630, alt: `${crop.crop} farming in ${county.county} County` }],
     },
-    twitter: { card: "summary_large_image", title: `${crop.crop} in ${county.county} — ${score}/100 Suitability`, description: `Soil analysis and fertilizer plan for ${crop.crop} in ${county.county} County, Kenya.`, images: ["https://shambaiq.com/api/og"] },
+    twitter: { card: "summary_large_image", title: `${crop.crop} in ${county.county} — ${score}/100 Suitability`, description: `Soil analysis and fertilizer plan for ${crop.crop} in ${county.county} County, Kenya.`, images: [`${BASE_URL}/api/og/county/${cSlug}`] },
   };
 }
 
@@ -85,40 +85,16 @@ export default async function CountyCropPage({ params }: PageProps) {
   );
 
   const estimatedRevenue = crop.price_per_kg * crop.yield_per_acre;
-  const dapPrice = prices.find((p) => p.fertilizer === "DAP");
-  const canPrice = prices.find((p) => p.fertilizer === "CAN");
 
-  const phOk = county.pH >= crop.ph_min && county.pH <= crop.ph_max;
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `Is ${county.county} good for growing ${crop.crop}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${county.county} County scores ${score}/100 for ${crop.crop} suitability. The county has soil pH ${county.pH} (optimal range ${crop.ph_min}–${crop.ph_max}), nitrogen ${county.nitrogen} g/kg, and phosphorus ${county.phosphorus} mg/kg. ${score >= 70 ? `This is a strong match for ${crop.crop}.` : score >= 50 ? `${crop.crop} can be grown with targeted soil management.` : `Significant soil amendments are recommended before planting ${crop.crop}.`}`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What fertilizer should I use for ${crop.crop} in ${county.county}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Fertilizer for ${crop.crop} in ${county.county} should address the county's soil profile: pH ${county.pH}${!phOk ? ` (lime is recommended to reach the target ${crop.ph_min}–${crop.ph_max})` : ""}, nitrogen ${county.nitrogen} g/kg, and phosphorus ${county.phosphorus} mg/kg. Use ShambaIQ's free tool for a precise bag-per-acre plan at shambaiq.com/app.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What is the soil pH for ${crop.crop} in ${county.county}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${county.county} County has soil pH ${county.pH}. ${crop.crop} requires pH ${crop.ph_min}–${crop.ph_max}. The soil is ${phOk ? "within the optimal pH range for this crop" : "outside the optimal range and may require lime or sulfur amendment"}.`,
-        },
-      },
-    ],
-  };
+  const narrative = countyCropNarrative(county, crop, score);
+  const faqSchema = countyCropFAQSchema(county, crop, score);
+  const datasetSchema = makeSoilDatasetSchema({
+    name: `${county.county} County soil profile for ${crop.crop}`,
+    description: `Soil chemistry for ${county.county} County, Kenya, assessed for ${crop.crop} suitability: pH ${county.pH}, nitrogen ${county.nitrogen} g/kg, phosphorus ${county.phosphorus} mg/kg, potassium ${county.potassium} mg/kg, organic carbon ${county.organicCarbon} g/kg.`,
+    url: `${BASE_URL}/soil/${cSlug}/${crSlug}`,
+    variables: ["Soil pH", "Total Nitrogen (g/kg)", "Extractable Phosphorus (mg/kg)", "Extractable Potassium (mg/kg)", "Organic Carbon (g/kg)"],
+    spatialName: `${county.county} County, Kenya`,
+  });
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -132,7 +108,7 @@ export default async function CountyCropPage({ params }: PageProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <JsonLd schemas={[faqSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
+      <JsonLd schemas={[faqSchema, datasetSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
@@ -153,9 +129,7 @@ export default async function CountyCropPage({ params }: PageProps) {
             profile
           </p>
           <p className="text-sm text-soil-500 leading-relaxed max-w-3xl mt-4">
-            Thinking about growing {crop.crop.toLowerCase()} in {county.county} county? 
-            Based on precision satellite soil data, this page analyzes your local soil suitability for {crop.crop.toLowerCase()} farming. 
-            Explore our tailored fertilizer recommendations, seed varieties, optimal planting calendar, and a detailed per-acre production budget designed to help you maximize yields.
+            {narrative}
           </p>
         </div>
         <ScoreRing score={score} label="Suitability score" />

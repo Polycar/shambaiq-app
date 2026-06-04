@@ -15,6 +15,7 @@ import {
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL, ORGANIZATION } from "@/lib/schema";
+import { wardNarrative, makeSoilDatasetSchema } from "@/lib/seo-content";
 
 interface PageProps {
   params: Promise<{ county: string; ward: string }>;
@@ -46,9 +47,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${ward.ward} Ward — Soil Report | ${county.county}`,
       description: `Satellite soil data for ${ward.ward} ward in ${county.county} County. pH, nutrient levels, and top crop recommendations.`,
       url: `https://shambaiq.com/soil/${countySlug}/ward/${wardSlug}`,
-      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `${ward.ward} Ward Soil Report, ${county.county} County` }],
+      images: [{ url: `${BASE_URL}/api/og/county/${countySlug}`, width: 1200, height: 630, alt: `${ward.ward} Ward Soil Report, ${county.county} County` }],
     },
-    twitter: { card: "summary_large_image", title: `${ward.ward} Ward Soil Report`, description: `Soil pH, nutrients, and crop suitability for ${ward.ward} ward in ${county.county} County.`, images: ["https://shambaiq.com/api/og"] },
+    twitter: { card: "summary_large_image", title: `${ward.ward} Ward Soil Report`, description: `Soil pH, nutrients, and crop suitability for ${ward.ward} ward in ${county.county} County.`, images: [`${BASE_URL}/api/og/county/${countySlug}`] },
   };
 }
 
@@ -85,6 +86,13 @@ export default async function WardPage({ params }: PageProps) {
   const soilP = precisionData?.["Extractable Phosphorus (mg/kg)"] ?? county.phosphorus;
   const soilK = precisionData?.["Extractable Potassium (mg/kg)"] ?? county.potassium;
 
+  const narrative = wardNarrative(
+    county,
+    ward,
+    { pH: soilPh, n: soilN, p: soilP, k: soilK },
+    topCrops,
+    !!precisionData,
+  );
   const placeSchema = {
     "@context": "https://schema.org",
     "@type": "Place",
@@ -97,6 +105,15 @@ export default async function WardPage({ params }: PageProps) {
       url: `${BASE_URL}/soil/${countySlug}`,
     },
   };
+  const datasetSchema = makeSoilDatasetSchema({
+    name: `${ward.ward} ward soil data, ${county.county} County`,
+    description: `Soil chemistry for ${ward.ward} ward, ${ward.subcounty} sub-county, ${county.county} County, Kenya: pH ${soilPh.toFixed(1)}, nitrogen ${soilN.toFixed(2)} g/kg, phosphorus ${soilP.toFixed(1)} mg/kg, potassium ${soilK.toFixed(1)} mg/kg${precisionData ? " (30 m satellite resolution)" : " (county-average estimate)"}.`,
+    url: `${BASE_URL}/soil/${countySlug}/ward/${wardSlug}`,
+    variables: ["Soil pH", "Total Nitrogen (g/kg)", "Extractable Phosphorus (mg/kg)", "Extractable Potassium (mg/kg)"],
+    spatialName: `${ward.ward} Ward, ${county.county} County, Kenya`,
+    lat: ward.latitude,
+    lon: ward.longitude,
+  });
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -110,7 +127,7 @@ export default async function WardPage({ params }: PageProps) {
 
   return (
     <div className="bg-cream-100 min-h-screen">
-      <JsonLd schemas={[placeSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
+      <JsonLd schemas={[placeSchema, datasetSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
           { label: "Soil reports", href: "/soil" },
@@ -152,6 +169,10 @@ export default async function WardPage({ params }: PageProps) {
               📊 County-level averages (precision data loading)
             </div>
           )}
+
+          <p className="text-sm text-soil-500 leading-relaxed max-w-3xl mt-4">
+            {narrative}
+          </p>
         </div>
 
         {/* Soil data grid */}

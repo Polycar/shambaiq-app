@@ -28,7 +28,7 @@ import {
   HeroRightColumn,
 } from "@/components/ClientIslands";
 import JsonLd from "@/components/JsonLd";
-import { WEBSITE_SCHEMA, ORGANIZATION, BASE_URL } from "@/lib/schema";
+import { siteGraphSchema } from "@/lib/seo-content";
 
 
 export default function HomePage() {
@@ -47,10 +47,7 @@ export default function HomePage() {
 
   return (
     <>
-      <JsonLd schemas={[
-        { "@context": "https://schema.org", ...WEBSITE_SCHEMA },
-        { "@context": "https://schema.org", ...ORGANIZATION },
-      ]} />
+      <JsonLd schemas={siteGraphSchema()} />
 
       {/* ─── FIRST-TIME ONBOARDING (guests only) ─── */}
       <OnboardingModal />

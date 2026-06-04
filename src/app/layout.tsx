@@ -28,7 +28,12 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "en_KE", siteName: "ShambaIQ", images: ["/api/og"] },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
-  verification: { google: "hDkSRs8CVliEOaxCe1Odg6JKByTt7natiI-1DM4GHWo" },
+  verification: {
+    google: "hDkSRs8CVliEOaxCe1Odg6JKByTt7natiI-1DM4GHWo",
+    other: {
+      "msvalidate.01": "CFE4E1D427C53F6706E04981E78574A9",
+    },
+  },
   alternates: { canonical: "https://shambaiq.com" },
 };
 

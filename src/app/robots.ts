@@ -7,9 +7,12 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         disallow: [
-          "/api/",       // Backend proxy routes
-          "/admin",      // Officer dashboard
-          "/profile",    // User auth pages
+          "/api/",        // Backend proxy routes
+          "/admin",       // Officer dashboard
+          "/profile",     // User auth pages
+          "/dealer/",     // Dealer dashboard and dealer login
+          "/agronomy",    // Agronomic AI chatbot
+          "/offline",     // Offline fallback page
           "/app/results", // Dynamic results — no SEO value
         ],
       },

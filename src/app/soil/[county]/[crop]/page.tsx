@@ -36,10 +36,24 @@ interface PageProps {
   params: Promise<{ county: string; crop: string }>;
 }
 
-// Generate top-10 combos at build; rest rendered on-demand (ISR)
+// Pre-build top 15 agricultural counties × top 10 most-searched crops = 150 combos.
+// The rest are rendered on first request (ISR). Priority list chosen by search demand
+// and agricultural output, not CSV order.
+const TOP_COUNTY_SLUGS = [
+  "nakuru", "kiambu", "trans-nzoia", "uasin-gishu", "kakamega",
+  "meru", "machakos", "nyeri", "bungoma", "kisii",
+  "nandi", "kericho", "laikipia", "kirinyaga", "murang-a",
+];
+const TOP_CROP_SLUGS = [
+  "maize", "beans", "potato", "tomato", "cabbage",
+  "kale", "avocado", "wheat", "onion", "sorghum",
+];
+
 export async function generateStaticParams() {
-  const counties = getCountySoils().slice(0, 5);
-  const crops = getCrops().slice(0, 2);
+  const allCounties = getCountySoils();
+  const allCrops = getCrops();
+  const counties = allCounties.filter((c) => TOP_COUNTY_SLUGS.includes(c.slug));
+  const crops = allCrops.filter((c) => TOP_CROP_SLUGS.includes(c.slug));
   return counties.flatMap((c) =>
     crops.map((cr) => ({ county: c.slug, crop: cr.slug }))
   );

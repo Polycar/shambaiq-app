@@ -64,7 +64,7 @@ export default async function WardPage({ params }: PageProps) {
   const topCrops = crops
     .map((c) => ({ crop: c, score: scoreCropForCounty(county, c) }))
     .sort((a, b) => b.score - a.score)
-    .slice(0, 5);
+    .slice(0, 8);
 
   // Attempt to fetch precision soil data from backend
   let precisionData: Record<string, number> | null = null;
@@ -189,7 +189,10 @@ export default async function WardPage({ params }: PageProps) {
                 className="flex items-center gap-4 py-2 border-b border-cream-200 last:border-0 hover:bg-cream-50 -mx-2 px-2 rounded transition-colors"
               >
                 <span className="text-lg font-bold text-soil-500 w-6">{i + 1}</span>
-                <span className="flex-1 font-semibold text-forest-700">{crop.crop}</span>
+                <span className="flex-1">
+                  <span className="font-semibold text-forest-700 block">{crop.crop}</span>
+                  <span className="text-xs text-soil-400">in {county.county}</span>
+                </span>
                 <span
                   className="px-3 py-1 rounded-full text-sm font-bold text-white"
                   style={{

@@ -176,6 +176,16 @@ export default async function WardPage({ params }: PageProps) {
           ))}
         </div>
 
+        {/* Soil suitability text section */}
+        <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm mb-8">
+          <h2 className="font-display text-lg font-bold text-forest-700 mb-3">
+            Soil mapping and farming in {ward.ward} Ward
+          </h2>
+          <p className="text-soil-500 text-sm leading-relaxed">
+            Local soil characteristics in <strong>{ward.ward} Ward</strong> (located within <strong>{ward.subcounty}</strong> sub-county, <strong>{county.county} County</strong>) play a vital role in determining agricultural productivity. The soil analysis indicates a pH of <strong>{soilPh.toFixed(1)}</strong>, paired with nitrogen levels of <strong>{soilN.toFixed(2)} g/kg</strong> and phosphorus levels of <strong>{soilP.toFixed(1)} mg/kg</strong>. For farmers in {ward.ward}, matching seed varieties to local climatic conditions and using fertilizer programs tailored to these exact satellite-measured soil properties is key to avoiding yield deficiencies and reducing fertilizer wastage.
+          </p>
+        </div>
+
         {/* Top crops for this ward */}
         <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-4">

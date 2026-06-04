@@ -127,6 +127,19 @@ export default async function CountySoilPage({ params }: PageProps) {
           <ScoreRing score={score} />
         </div>
 
+        {/* Soil suitability text section */}
+        <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8 prose max-w-none">
+          <h2 className="font-display text-xl font-bold text-forest-700 mb-4">
+            Soil suitability and agriculture in {county.county} County
+          </h2>
+          <p className="text-soil-500 text-sm leading-relaxed mb-4">
+            Understanding the local soil chemistry is essential for optimizing crop yields and selecting the right inputs in <strong>{county.county} County</strong>. Situated within the <strong>{county.zone}</strong> zone, this region features varied soil profiles that directly influence crop suitability. With a recorded average soil pH of <strong>{county.pH}</strong>, farming practices must adapt to balance acidity or alkalinity to ensure optimal plant nutrient availability.
+          </p>
+          <p className="text-soil-500 text-sm leading-relaxed">
+            The major soil type here ranges across different sub-counties, requiring tailored fertilizer applications. For crops in {county.county}, standard DAP or NPK inputs may need to be adjusted based on the nitrogen (recorded at <strong>{county.nitrogen} g/kg</strong>) and extractable phosphorus (recorded at <strong>{county.phosphorus} mg/kg</strong>) levels. In acidic regions, applying agricultural lime is recommended to raise soil pH before planting, unlocking bound nutrients and preventing common yield deficiencies.
+          </p>
+        </section>
+
         {/* Nutrient breakdown */}
         <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-6">

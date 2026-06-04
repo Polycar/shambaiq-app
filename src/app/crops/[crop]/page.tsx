@@ -181,6 +181,19 @@ export default async function CropPage({ params }: PageProps) {
             </div>
           </section>
 
+          {/* Soil and fertilizer optimization section */}
+          <section className="bg-white rounded-2xl p-6 border border-cream-300">
+            <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
+              Optimizing soil and fertilizers for {crop.crop} in Kenya
+            </h2>
+            <p className="text-soil-500 text-sm leading-relaxed mb-4">
+              To achieve maximum yields when farming <strong>{crop.crop.toLowerCase()} in Kenya</strong>, managing soil suitability is crucial. This crop performs best within a soil pH range of <strong>{crop.ph_min} to {crop.ph_max}</strong>. Soils that fall outside this range can lock out essential macro and micro-nutrients, leading to stunted growth or crop failure. For acidic soils, applying dolomitic or calcitic agricultural lime is recommended at least 30 days before planting to normalize acidity.
+            </p>
+            <p className="text-soil-500 text-sm leading-relaxed">
+              Fertilizer application should be calibrated based on the crop’s nutrient demands. {crop.crop} has a <strong>{crop.n_need}</strong> nitrogen requirement, <strong>{crop.p_need}</strong> phosphorus requirement, and <strong>{crop.k_need}</strong> potassium demand. Using certified seed varieties suited for your specific altitude and rainfall pattern, combined with a precise basal and top-dressing program (such as applying {topDress ? `${topDress.product} at ${topDress.timing}` : 'a balanced NPK compound'}), ensures high crop quality and protects your overall farm investment.
+            </p>
+          </section>
+
           {/* Top counties */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">

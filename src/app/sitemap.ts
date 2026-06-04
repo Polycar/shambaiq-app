@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/dealers/apply`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
     { url: `${BASE}/api`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/embed`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/doctor`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
   ];
 
   // Fetch dynamic blog posts from the API database

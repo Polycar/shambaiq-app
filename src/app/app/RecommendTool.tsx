@@ -129,6 +129,95 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
+function findMatchingCrop(suggestedName: string, cropList: { crop: string }[]): string {
+  if (!suggestedName) return "Maize";
+  const name = suggestedName.toLowerCase().trim();
+  
+  // 1. Direct match
+  const direct = cropList.find(c => c.crop.toLowerCase() === name);
+  if (direct) return direct.crop;
+  
+  // 2. Common aliases
+  const aliases: Record<string, string> = {
+    "potatoes": "Potato",
+    "tomatoes": "Tomato",
+    "onions": "Onion",
+    "bananas": "Banana",
+    "mangoes": "Mango",
+    "arrowroots": "Arrow Root",
+    "arrowroot": "Arrow Root",
+    "kale (sukuma)": "Kale (Sukuma Wiki)",
+    "beans (common)": "Beans",
+    "maize (corn)": "Maize",
+    "sorghum (milo)": "Sorghum",
+    "kale": "Kale (Sukuma Wiki)",
+    "sukuma wiki": "Kale (Sukuma Wiki)",
+    "green gram": "Green Grams",
+    "green grams": "Green Grams",
+    "cow peas": "Cowpeas",
+    "cowpea": "Cowpeas",
+    "soya beans": "Soybeans",
+    "soya": "Soybeans",
+    "pigeon pea": "Pigeon Peas",
+    "sweet potatoes": "Sweet Potato",
+    "finger millet": "Finger Millet",
+    "chilies": "Chilies",
+    "chilli": "Chilies",
+    "chillies": "Chilies",
+    "capsicums": "Capsicum",
+  };
+  
+  if (aliases[name]) {
+    const matched = cropList.find(c => c.crop.toLowerCase() === aliases[name].toLowerCase());
+    if (matched) return matched.crop;
+  }
+  
+  // 3. Substring match
+  for (const c of cropList) {
+    const cLow = c.crop.toLowerCase();
+    if (name.includes(cLow) || cLow.includes(name)) {
+      return c.crop;
+    }
+  }
+  
+  // 4. Special cases
+  if (name.includes("avocado")) return "Avocado";
+  if (name.includes("potato")) {
+    if (name.includes("sweet")) return "Sweet Potato";
+    return "Potato";
+  }
+  if (name.includes("coffee")) {
+    if (name.includes("robusta")) return "Coffee (Robusta)";
+    return "Coffee (Arabica)";
+  }
+  if (name.includes("rice")) {
+    if (name.includes("lowland") || name.includes("paddy")) return "Rice (Lowland/Paddy)";
+    return "Rice (Upland)";
+  }
+  if (name.includes("millet")) {
+    if (name.includes("finger")) return "Finger Millet";
+    return "Millet";
+  }
+  if (name.includes("kale") || name.includes("sukuma")) return "Kale (Sukuma Wiki)";
+  if (name.includes("bean")) {
+    if (name.includes("soya") || name.includes("soy")) return "Soybeans";
+    return "Beans";
+  }
+  if (name.includes("pea")) {
+    if (name.includes("cow")) return "Cowpeas";
+    if (name.includes("snow")) return "Snow Peas";
+    if (name.includes("pigeon")) return "Pigeon Peas";
+  }
+  
+  // Fallback: prefix match or return original
+  for (const c of cropList) {
+    if (c.crop.toLowerCase().startsWith(name.slice(0, 4))) {
+      return c.crop;
+    }
+  }
+  return suggestedName;
+}
+
 // ─── Agrovet card ──────────────────────────────────────────────
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
@@ -1631,10 +1720,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                         type="button"
                         onClick={() => {
                           autoSubmitRef.current = true;
-                          setCrop(cm.crop);
+                          const matchedCrop = findMatchingCrop(cm.crop, crops);
+                          setCrop(matchedCrop);
                           setCropUnknown(false);
-                          const u = CROP_UNITS[cm.crop];
-                          if (u) setYieldVal(u.def);
+                          const u = CROP_UNITS[matchedCrop];
+                          setYieldVal(u ? u.def : null);
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                         className="w-full py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white text-xs font-bold transition-colors"

@@ -88,7 +88,7 @@ export default function ApiDocsPage() {
       <div className="mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-700 font-semibold text-xs uppercase tracking-wider mb-4">
           <Cpu size={12} />
-          Open Agricultural Data
+          Open agricultural data
         </div>
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-4 leading-tight">
           ShambaIQ Open Soil & Crop API
@@ -106,7 +106,7 @@ export default function ApiDocsPage() {
           <div className="w-10 h-10 rounded-xl bg-forest-700/5 flex items-center justify-center mb-4">
             <Globe className="text-forest-600" size={20} />
           </div>
-          <h2 className="font-display text-lg font-bold text-forest-700 mb-2">Hyper-Local Soil Metrics</h2>
+          <h2 className="font-display text-lg font-bold text-forest-700 mb-2">Hyper-local soil metrics</h2>
           <p className="text-sm text-soil-500 leading-relaxed">
             Get instant pH, Total Nitrogen, Extractable Phosphorus, Potassium, and Organic Carbon values for all 47 counties.
           </p>
@@ -116,7 +116,7 @@ export default function ApiDocsPage() {
           <div className="w-10 h-10 rounded-xl bg-forest-700/5 flex items-center justify-center mb-4">
             <Terminal className="text-forest-600" size={20} />
           </div>
-          <h2 className="font-display text-lg font-bold text-forest-700 mb-2">Crop Suitability Scoring</h2>
+          <h2 className="font-display text-lg font-bold text-forest-700 mb-2">Crop suitability scoring</h2>
           <p className="text-sm text-soil-500 leading-relaxed">
             Calculate suitability indices for 25 major crops based on regional soil chemistry models and pH tolerances.
           </p>
@@ -126,7 +126,7 @@ export default function ApiDocsPage() {
           <div className="w-10 h-10 rounded-xl bg-forest-700/5 flex items-center justify-center mb-4">
             <Key className="text-forest-600" size={20} />
           </div>
-          <h2 className="font-display text-lg font-bold text-forest-700 mb-2">No API Key Required</h2>
+          <h2 className="font-display text-lg font-bold text-forest-700 mb-2">No API key required</h2>
           <p className="text-sm text-soil-500 leading-relaxed">
             Free tier requires no complex onboarding. Start building immediately with zero rate-limit friction for public use.
           </p>
@@ -140,7 +140,7 @@ export default function ApiDocsPage() {
           <section className="bg-forest-900 text-cream-100 rounded-2xl p-6 border border-forest-800">
             <h2 className="font-display text-lg font-bold text-white mb-2 flex items-center gap-2">
               <Database size={18} className="text-gold-400" />
-              API Base Endpoint URL
+              API base endpoint URL
             </h2>
             <code className="block bg-forest-950 px-4 py-2.5 rounded-lg text-gold-300 font-mono text-sm break-all">
               https://api.shambaiq.com/api/v1
@@ -156,19 +156,19 @@ export default function ApiDocsPage() {
               <span className="bg-green-100 text-green-700 text-xs font-extrabold px-2.5 py-1 rounded">GET</span>
               <h3 className="font-mono text-base font-bold text-forest-700 break-all">/county/{"{county_slug}"}/soil</h3>
             </div>
-            <h2 className="font-display text-xl font-bold text-forest-700 mb-3">Retrieve County Soil Profile</h2>
+            <h2 className="font-display text-xl font-bold text-forest-700 mb-3">Retrieve county soil profile</h2>
             <p className="text-soil-500 text-sm mb-6 leading-relaxed">
               Returns the aggregated 30m resolution satellite soil metrics for a given county. Replace{" "}
               <code className="bg-cream-100 text-forest-700 px-1 py-0.5 rounded font-mono text-xs">{"{county_slug}"}</code>{" "}
               with the lowercase county slug (e.g. <code className="bg-cream-100 text-forest-700 px-1 py-0.5 rounded font-mono text-xs">kakamega</code>).
             </p>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">Request Headers</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">Request headers</h3>
             <pre className="bg-cream-50 border border-cream-200 rounded-lg p-3 text-xs font-mono text-forest-700 mb-6">
               {"Content-Type: application/json"}
             </pre>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON Response Body</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON response body</h3>
             <pre className="bg-forest-950 text-gold-300 rounded-lg p-4 font-mono text-xs overflow-x-auto leading-relaxed">
 {`{
   "status": "success",
@@ -191,12 +191,12 @@ export default function ApiDocsPage() {
               <span className="bg-blue-100 text-blue-700 text-xs font-extrabold px-2.5 py-1 rounded">POST</span>
               <h3 className="font-mono text-base font-bold text-forest-700 break-all">/recommend</h3>
             </div>
-            <h2 className="font-display text-xl font-bold text-forest-700 mb-3">Generate Fertilizer Recommendation</h2>
+            <h2 className="font-display text-xl font-bold text-forest-700 mb-3">Generate fertilizer recommendation</h2>
             <p className="text-soil-500 text-sm mb-6 leading-relaxed">
               Provides precision fertilizer requirements (basal, top-dressing bag quantities) and soil health assessments tailored dynamically to the crop and soil parameters.
             </p>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON Request Body</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON request body</h3>
             <pre className="bg-forest-950 text-gold-300 rounded-lg p-4 font-mono text-xs overflow-x-auto leading-relaxed mb-6">
 {`{
   "county": "Kakamega",
@@ -208,7 +208,7 @@ export default function ApiDocsPage() {
 }`}
             </pre>
 
-            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON Response Body</h3>
+            <h3 className="text-xs uppercase tracking-wider text-soil-500 font-semibold mb-2">JSON response body</h3>
             <pre className="bg-forest-950 text-gold-300 rounded-lg p-4 font-mono text-xs overflow-x-auto leading-relaxed">
 {`{
   "county_data": {
@@ -242,7 +242,7 @@ export default function ApiDocsPage() {
           <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm sticky top-24">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4 flex items-center gap-2">
               <Code size={18} className="text-gold-500" />
-              Quick Integration Code
+              Quick integration code
             </h2>
 
             <div className="space-y-6">
@@ -288,7 +288,7 @@ print(response.json())`}
                 href="/soil"
                 className="inline-flex items-center gap-1 text-sm font-bold text-gold-700 hover:text-gold-500 transition-colors"
               >
-                Browse Soil Reports <ArrowRight size={14} />
+                Browse soil reports <ArrowRight size={14} />
               </Link>
             </div>
           </div>

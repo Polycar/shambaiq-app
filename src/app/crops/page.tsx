@@ -9,17 +9,17 @@ import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Crop Farming Guides — 40+ Crops, Soil Requirements, Fertilizer",
+  title: "Crop farming guides — 40+ crops, soil requirements, fertilizer",
   description:
     "Complete farming guides for over 40 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
   alternates: { canonical: "https://shambaiq.com/crops" },
   openGraph: {
-    title: "Crop Farming Guides — 40+ Kenyan Crops",
+    title: "Crop farming guides — 40+ Kenyan crops",
     description: "Soil pH, nitrogen needs, best counties, certified seed varieties, and fertilizer budgets for over 40 Kenyan crops.",
     url: "https://shambaiq.com/crops",
     images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "Kenya Crop Farming Guides" }],
   },
-  twitter: { card: "summary_large_image", title: "Crop Farming Guides — 40+ Kenyan Crops", description: "Soil requirements, best counties, and fertilizer budgets for over 40 crops in Kenya.", images: ["https://shambaiq.com/api/og"] },
+  twitter: { card: "summary_large_image", title: "Crop farming guides — 40+ Kenyan crops", description: "Soil requirements, best counties, and fertilizer budgets for over 40 crops in Kenya.", images: ["https://shambaiq.com/api/og"] },
 };
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
@@ -67,6 +67,13 @@ function categorize(crop: string): string {
   if (["Tomato", "Kale (Sukuma Wiki)", "Cabbage", "Spinach", "Carrot", "Capsicum", "Chilies", "Dhania", "Garlic", "Snow Peas"].includes(crop)) return "Vegetables";
   if (["Tea", "Coffee (Arabica)", "Cotton", "Pyrethrum", "Sisal", "Sunflower"].includes(crop)) return "Cash Crops";
   return "Fruits & Trees";
+}
+
+function formatCategory(cat: string): string {
+  if (cat === "Root & Tuber Crops") return "Root & tuber crops";
+  if (cat === "Cash Crops") return "Cash crops";
+  if (cat === "Fruits & Trees") return "Fruits & trees";
+  return cat;
 }
 
 export default async function CropsDirectoryPage() {
@@ -117,14 +124,14 @@ export default async function CropsDirectoryPage() {
   const cropListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Crop Farming Guides — Kenya",
+    name: "Crop farming guides — Kenya",
     description: "Complete farming guides for over 40 Kenyan crops. Soil pH requirements, nitrogen needs, best counties, seed varieties, and fertilizer recommendations.",
     url: `${BASE_URL}/crops`,
     numberOfItems: merged.length,
     itemListElement: merged.map((c, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: `${c.crop} Farming Guide`,
+      name: `${c.crop} farming guide`,
       url: `${BASE_URL}/crops/${c.slug}`,
     })),
   };
@@ -132,11 +139,11 @@ export default async function CropsDirectoryPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
       <JsonLd schemas={[cropListSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Crop Guides" }]} />
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Crop guides" }]} />
 
       <div className="mb-10 md:mb-14">
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-3 leading-tight">
-          Crop Farming Guides
+          Crop farming guides
         </h1>
         <p className="text-soil-500 max-w-2xl text-lg leading-relaxed">
           Detailed guides for {merged.length} crops grown in Kenya. Each guide includes soil
@@ -152,7 +159,7 @@ export default async function CropsDirectoryPage() {
           <section key={cat} className="mb-12">
             <div className="flex items-center gap-3 mb-6 pb-3 border-b border-cream-300">
               <span className="text-2xl">{meta.emoji}</span>
-              <h2 className="font-display text-xl font-bold text-forest-600">{cat}</h2>
+              <h2 className="font-display text-xl font-bold text-forest-600">{formatCategory(cat)}</h2>
               <span className="text-sm text-soil-500 ml-1">{catCrops.length} crops</span>
             </div>
 

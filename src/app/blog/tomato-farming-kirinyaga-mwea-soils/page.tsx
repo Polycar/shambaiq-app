@@ -26,7 +26,7 @@ const articleSchema = makeArticleSchema({ headline: POST.title, description: POS
 const breadcrumbSchema = makeBreadcrumbSchema([
   { name: "Home", url: BASE_URL },
   { name: "Blog", url: `${BASE_URL}/blog` },
-  { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
+  { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
   { name: "Tomato Farming in Kirinyaga", url: `${BASE_URL}/blog/${POST.slug}` },
 ]);
 
@@ -58,7 +58,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Grow Tomatoes in Kirinyaga County — Black Cotton Soil and Calcium Management Guide",
+  name: "How to grow tomatoes in Kirinyaga county — black cotton soil and calcium management guide",
   description: "A step-by-step guide to growing high-yield tomatoes on Kirinyaga's Mwea black cotton soils, covering calcium nutrition, blossom end rot prevention, drip irrigation, and late blight management.",
   totalTime: "P90D",
   estimatedCost: { currency: "KES", value: "120000–150000 per acre" },
@@ -113,16 +113,16 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "kirinyaga-tomato", label: "Why Kirinyaga Is Central Kenya's Tomato Hub", level: 2 },
-  { id: "black-cotton", label: "Black Cotton Soils — Understanding the Challenge", level: 2 },
-  { id: "blossom-end-rot", label: "Blossom End Rot — The Calcium Problem Explained", level: 2 },
-  { id: "soil-data", label: "Kirinyaga Soil Data for Tomatoes", level: 2 },
-  { id: "varieties", label: "Best Tomato Varieties for Mwea Conditions", level: 2 },
-  { id: "fertilizer", label: "Three-Stage Calcium Fertilizer Programme", level: 2 },
-  { id: "disease", label: "Late Blight and Virus Management", level: 2 },
-  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
-  { id: "budget", label: "Cost and Revenue Budget Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "kirinyaga-tomato", label: "Why Kirinyaga is Central Kenya's tomato hub", level: 2 },
+  { id: "black-cotton", label: "Black cotton soils — understanding the challenge", level: 2 },
+  { id: "blossom-end-rot", label: "Blossom end rot — the calcium problem explained", level: 2 },
+  { id: "soil-data", label: "Kirinyaga soil data for tomatoes", level: 2 },
+  { id: "varieties", label: "Best tomato varieties for Mwea conditions", level: 2 },
+  { id: "fertilizer", label: "Three-stage calcium fertilizer programme", level: 2 },
+  { id: "disease", label: "Late blight and virus management", level: 2 },
+  { id: "howto", label: "Step-by-step growing guide", level: 2 },
+  { id: "budget", label: "Cost and revenue budget per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function TomatoKirinyagaPage() {
@@ -131,7 +131,7 @@ export default function TomatoKirinyagaPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Tomato Farming in Kirinyaga", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Tomato Farming in Kirinyaga", url: `${BASE_URL}/blog/${POST.slug}` }]} />
 
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
@@ -142,13 +142,13 @@ export default function TomatoKirinyagaPage() {
 
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County farming guides</Link>
                 <Link href="/soil/kirinyaga" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kirinyaga County</Link>
                 <Link href="/crops/tomato" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Tomato</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Tomato Farming in Kirinyaga:{" "}
-                <span className="text-gold-700">Maximizing Yields on Mwea's Black Cotton Soils</span>
+                Tomato farming in Kirinyaga:{" "}
+                <span className="text-gold-700">Maximizing yields on Mwea's black cotton soils</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 The Mwea irrigation scheme in Kirinyaga County is one of Kenya's most productive agricultural zones — and one of its most technically demanding environments for tomato production. The same black cotton soils that retain irrigation water so efficiently also create two compounding problems that most Kirinyaga farmers have never been told to connect: calcium mobility blockage that causes blossom end rot, and root oxygen depletion that invites late blight. Solve both and Kirinyaga's tomato potential is exceptional. Ignore either and the season becomes a cycle of losses that feels like bad luck but is actually predictable soil chemistry.
@@ -168,7 +168,7 @@ export default function TomatoKirinyagaPage() {
             </figure>
 
             <section>
-              <h2 id="kirinyaga-tomato" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kirinyaga Is Central Kenya's Tomato Hub</h2>
+              <h2 id="kirinyaga-tomato" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kirinyaga is Central Kenya's tomato hub</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya's tomato production is concentrated in a handful of counties, and Kirinyaga — specifically the Mwea irrigation scheme — plays an outsized role in supplying Nairobi's wholesale markets year-round. Three structural factors explain this concentration.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -185,7 +185,7 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="black-cotton" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Black Cotton Soils — Understanding the Challenge</h2>
+              <h2 id="black-cotton" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Black cotton soils — understanding the challenge</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Black cotton soils — technically called vertisols — dominate the Mwea irrigation scheme and much of Kirinyaga's lowland area. They are visually impressive soils: dark, heavy, and rich in organic matter. But their physical behaviour under irrigation makes them one of the most demanding substrates for tomato production in Kenya.
               </p>
@@ -213,7 +213,7 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="blossom-end-rot" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Blossom End Rot — The Calcium Problem Explained</h2>
+              <h2 id="blossom-end-rot" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Blossom end rot — the calcium problem explained</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Blossom end rot (BER) is the single most common yield-reducing problem in Kirinyaga tomato production. It appears as a water-soaked, darkening, and eventually leathery patch on the blossom end of developing fruit — making it unmarketable regardless of size or external condition. Most farmers diagnose it as a disease and spray fungicides. It is not a disease. It is a calcium deficiency disorder, and fungicides have zero effect on it.
               </p>
@@ -242,13 +242,13 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kirinyaga Soil Data for Tomatoes</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kirinyaga soil data for tomatoes</h2>
               <p className="text-soil-600 leading-relaxed mb-5">ShambaIQ's precision soil mapping shows the following nutrient profile for Kirinyaga County's Mwea lowland area, mapped against tomato's agronomic requirements:</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Kirinyaga County Mwea soil nutrient values versus tomato requirements</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Nutrient", "Mwea Average", "Tomato Optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Nutrient", "Mwea average", "Tomato optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -274,7 +274,7 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best Tomato Varieties for Mwea Conditions</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best tomato varieties for Mwea conditions</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Variety selection for Kirinyaga must prioritise heat tolerance, humidity resistance, and virus tolerance — the three environmental stresses that distinguish Mwea's lowland conditions from highland tomato zones.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-5">
                 {[
@@ -301,7 +301,7 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three-Stage Calcium Fertilizer Programme</h2>
+              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three-stage calcium fertilizer programme</h2>
               <p className="text-soil-600 leading-relaxed mb-5">The fertilizer programme for Kirinyaga tomatoes is designed around the calcium mobility constraint of black cotton soils. Every stage either builds the soil phosphorus foundation, delivers continuous calcium through the fruiting window, or maintains nitrogen for steady growth without the excess that increases disease susceptibility.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -325,7 +325,7 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="disease" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Late Blight and Virus Management in Kirinyaga</h2>
+              <h2 id="disease" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Late blight and virus management in Kirinyaga</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Beyond blossom end rot, Kirinyaga tomato farmers face two significant biological threats that require active management throughout the season.</p>
               <div className="space-y-4 mb-6">
                 {[
@@ -363,7 +363,7 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Growing Tomatoes in Kirinyaga County</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing tomatoes in Kirinyaga county</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -378,12 +378,12 @@ export default function TomatoKirinyagaPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and Revenue Budget Per Acre — Kirinyaga Tomato 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and revenue budget per acre — Kirinyaga tomato 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Tomato production cost and revenue per acre Kirinyaga County Kenya 2026</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "Qty", "Unit Cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "Qty", "Unit cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -412,11 +412,11 @@ export default function TomatoKirinyagaPage() {
                       <td className="px-4 py-3 font-bold">KES 124,700</td>
                     </tr>
                     <tr className="bg-gold-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected Revenue (20 t x KES 30/kg at Nairobi wholesale)</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected revenue (20 t x KES 30/kg at Nairobi wholesale)</td>
                       <td className="px-4 py-3 font-bold text-gold-800">KES 600,000</td>
                     </tr>
                     <tr className="bg-green-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net Margin</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net margin</td>
                       <td className="px-4 py-3 font-bold text-green-800">KES 475,300</td>
                     </tr>
                   </tbody>
@@ -436,12 +436,12 @@ export default function TomatoKirinyagaPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/kirinyaga", label: "Kirinyaga County Soil Report" },
-                  { href: "/crops/tomato", label: "Tomato Crop Guide — All Counties" },
-                  { href: "/soil/kirinyaga/beans", label: "Beans in Kirinyaga — Rotation Crop" },
-                  { href: "/soil/murang-a/tomato", label: "Tomato in Muranga — Compare" },
-                  { href: "/dealers/kirinyaga", label: "Agrovets in Kirinyaga County" },
-                  { href: "/zones/central-highlands", label: "Central Highlands Agroecological Zone" },
+                  { href: "/soil/kirinyaga", label: "Kirinyaga county soil report" },
+                  { href: "/crops/tomato", label: "Tomato crop guide — all counties" },
+                  { href: "/soil/kirinyaga/beans", label: "Beans in Kirinyaga — rotation crop" },
+                  { href: "/soil/murang-a/tomato", label: "Tomato in muranga — compare" },
+                  { href: "/dealers/kirinyaga", label: "Agrovets in Kirinyaga county" },
+                  { href: "/zones/central-highlands", label: "Central Highlands agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -451,7 +451,7 @@ export default function TomatoKirinyagaPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -473,7 +473,7 @@ export default function TomatoKirinyagaPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kirinyaga Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kirinyaga quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Central Kenya Lowland"], ["Altitude", "1,000 – 1,200 m (Mwea)"], ["Avg Rainfall", "900 – 1,100 mm/yr"], ["Irrigation", "Mwea Scheme (canal)"], ["Dominant Soil", "Black cotton (vertisol)"], ["Avg Soil pH", "6.8 – 7.4"], ["Ca Status", "High total — low mobility"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -498,7 +498,7 @@ export default function TomatoKirinyagaPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More County Farming Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More county farming guides" />
       </div>
     </>
   );

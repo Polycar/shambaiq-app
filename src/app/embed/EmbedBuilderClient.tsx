@@ -21,7 +21,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
   // Generates clean dynamic iframe HTML code
   const embedCode = useMemo(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://shambaiq.com";
-    return `<iframe src="${origin}/embed/county/${selectedSlug}" width="100%" height="320" style="border:none;border-radius:16px;box-shadow:0 4px 16px rgba(0, 0, 0, 0.05);background:#FAF8F5;" title="${selectedCountyName} County Soil Health Report by ShambaIQ"></iframe>`;
+    return `<iframe src="${origin}/embed/county/${selectedSlug}" width="100%" height="320" style="border:none;border-radius:16px;box-shadow:0 4px 16px rgba(0, 0, 0, 0.05);background:#FAF8F5;" title="${selectedCountyName} County soil health report by ShambaIQ"></iframe>`;
   }, [selectedSlug, selectedCountyName]);
 
   const handleCopy = async () => {
@@ -39,15 +39,15 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Soil Reports", href: "/soil" },
-          { label: "Soil Widget Embed Builder" },
+          { label: "Soil reports", href: "/soil" },
+          { label: "Soil widget embed builder" },
         ]}
       />
 
       {/* Header */}
       <div className="mb-10 md:mb-12">
         <h1 className="font-display text-3xl md:text-5xl font-bold text-forest-700 mb-3 leading-tight">
-          Soil Health Widget Embed Builder
+          Soil health widget embed builder
         </h1>
         <p className="text-soil-500 max-w-2xl text-lg leading-relaxed">
           Create dynamic, hyper-local soil reports to share on your agriculture website or blog. 
@@ -61,13 +61,13 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
           <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4 flex items-center gap-2">
               <Settings size={18} className="text-gold-500" />
-              Configure Widget
+              Configure widget
             </h2>
 
             {/* Select County */}
             <div className="mb-6">
               <label htmlFor="county-select" className="block text-xs font-bold uppercase tracking-wider text-forest-600 mb-2">
-                Choose County
+                Choose county
               </label>
               <select
                 id="county-select"
@@ -96,7 +96,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
           <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
             <h2 className="font-display text-base font-bold text-forest-700 mb-3 flex items-center gap-2">
               <Code size={16} className="text-gold-500" />
-              Embed Code
+              Embed code
             </h2>
             <div className="relative">
               <pre className="bg-forest-950 text-gold-300 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre-wrap break-all pr-12 leading-relaxed">
@@ -116,11 +116,11 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
             >
               {copied ? (
                 <>
-                  <Check size={18} /> Code Copied!
+                  <Check size={18} /> Code copied!
                 </>
               ) : (
                 <>
-                  <Clipboard size={18} /> Copy HTML Code
+                  <Clipboard size={18} /> Copy HTML code
                 </>
               )}
             </button>
@@ -132,10 +132,10 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
           <div className="flex items-center justify-between px-2">
             <h2 className="font-display text-sm font-bold text-forest-600 uppercase tracking-wider flex items-center gap-2">
               <Eye size={16} />
-              Live Widget Preview
+              Live widget preview
             </h2>
             <span className="text-xs text-soil-500 flex items-center gap-1">
-              <RefreshCw size={12} className="animate-spin-slow" /> Responsive Frame
+              <RefreshCw size={12} className="animate-spin-slow" /> Responsive frame
             </span>
           </div>
 
@@ -148,7 +148,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
                 height="320"
                 className="rounded-2xl shadow-md border-0 bg-[#FAF8F5]"
                 style={{ border: "none" }}
-                title="Live Widget Preview"
+                title="Live widget preview"
               />
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function EmbedBuilderClient({ counties }: { counties: CountyItem[
               href={`/soil/${selectedSlug}`}
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-700 hover:text-gold-500 transition-colors"
             >
-              <ArrowLeft size={14} /> Back to full {selectedCountyName} County Soil Report
+              <ArrowLeft size={14} /> Back to full {selectedCountyName} County soil report
             </Link>
           </div>
         </div>

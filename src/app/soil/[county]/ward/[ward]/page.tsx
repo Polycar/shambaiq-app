@@ -15,6 +15,7 @@ import {
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL, ORGANIZATION } from "@/lib/schema";
+import { wardNarrative, makeSoilDatasetSchema } from "@/lib/seo-content";
 
 interface PageProps {
   params: Promise<{ county: string; ward: string }>;
@@ -40,15 +41,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${ward.ward} Ward Soil Report — ${county.county} County`,
-    description: `Precision soil data for ${ward.ward} ward, ${ward.subcounty} Sub-County, ${county.county}. pH, nitrogen, phosphorus, and potassium from 30m satellite mapping.`,
+    description: `Precision soil data for ${ward.ward} ward, ${ward.subcounty} sub-county, ${county.county}. pH, nitrogen, phosphorus, and potassium from 30m satellite mapping.`,
     alternates: { canonical: `https://shambaiq.com/soil/${countySlug}/ward/${wardSlug}` },
     openGraph: {
       title: `${ward.ward} Ward — Soil Report | ${county.county}`,
       description: `Satellite soil data for ${ward.ward} ward in ${county.county} County. pH, nutrient levels, and top crop recommendations.`,
       url: `https://shambaiq.com/soil/${countySlug}/ward/${wardSlug}`,
-      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `${ward.ward} Ward Soil Report, ${county.county} County` }],
+      images: [{ url: `${BASE_URL}/api/og/county/${countySlug}`, width: 1200, height: 630, alt: `${ward.ward} Ward Soil Report, ${county.county} County` }],
     },
-    twitter: { card: "summary_large_image", title: `${ward.ward} Ward Soil Report`, description: `Soil pH, nutrients, and crop suitability for ${ward.ward} ward in ${county.county} County.`, images: ["https://shambaiq.com/api/og"] },
+    twitter: { card: "summary_large_image", title: `${ward.ward} Ward Soil Report`, description: `Soil pH, nutrients, and crop suitability for ${ward.ward} ward in ${county.county} County.`, images: [`${BASE_URL}/api/og/county/${countySlug}`] },
   };
 }
 
@@ -85,6 +86,13 @@ export default async function WardPage({ params }: PageProps) {
   const soilP = precisionData?.["Extractable Phosphorus (mg/kg)"] ?? county.phosphorus;
   const soilK = precisionData?.["Extractable Potassium (mg/kg)"] ?? county.potassium;
 
+  const narrative = wardNarrative(
+    county,
+    ward,
+    { pH: soilPh, n: soilN, p: soilP, k: soilK },
+    topCrops,
+    !!precisionData,
+  );
   const placeSchema = {
     "@context": "https://schema.org",
     "@type": "Place",
@@ -97,12 +105,21 @@ export default async function WardPage({ params }: PageProps) {
       url: `${BASE_URL}/soil/${countySlug}`,
     },
   };
+  const datasetSchema = makeSoilDatasetSchema({
+    name: `${ward.ward} ward soil data, ${county.county} County`,
+    description: `Soil chemistry for ${ward.ward} ward, ${ward.subcounty} sub-county, ${county.county} County, Kenya: pH ${soilPh.toFixed(1)}, nitrogen ${soilN.toFixed(2)} g/kg, phosphorus ${soilP.toFixed(1)} mg/kg, potassium ${soilK.toFixed(1)} mg/kg${precisionData ? " (30 m satellite resolution)" : " (county-average estimate)"}.`,
+    url: `${BASE_URL}/soil/${countySlug}/ward/${wardSlug}`,
+    variables: ["Soil pH", "Total Nitrogen (g/kg)", "Extractable Phosphorus (mg/kg)", "Extractable Potassium (mg/kg)"],
+    spatialName: `${ward.ward} Ward, ${county.county} County, Kenya`,
+    lat: ward.latitude,
+    lon: ward.longitude,
+  });
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Soil Reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 2, name: "Soil reports", item: `${BASE_URL}/soil` },
       { "@type": "ListItem", position: 3, name: `${county.county} County`, item: `${BASE_URL}/soil/${countySlug}` },
       { "@type": "ListItem", position: 4, name: `${ward.ward} Ward`, item: `${BASE_URL}/soil/${countySlug}/ward/${wardSlug}` },
     ],
@@ -110,12 +127,12 @@ export default async function WardPage({ params }: PageProps) {
 
   return (
     <div className="bg-cream-100 min-h-screen">
-      <JsonLd schemas={[placeSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
+      <JsonLd schemas={[placeSchema, datasetSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
-          { label: "Soil Reports", href: "/soil" },
+          { label: "Soil reports", href: "/soil" },
           { label: county.county, href: `/soil/${county.slug}` },
-          { label: `${ward.ward} Ward` },
+          { label: `${ward.ward} ward` },
         ]}
       />
 
@@ -125,10 +142,10 @@ export default async function WardPage({ params }: PageProps) {
           <div className="flex items-start justify-between">
             <div>
               <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700">
-                {ward.ward} Ward
+                {ward.ward} ward
               </h1>
               <p className="text-soil-500 mt-1">
-                {ward.subcounty} Sub-County · {county.county} County
+                {ward.subcounty} sub-county · {county.county} county
               </p>
               <p className="text-xs text-soil-500 mt-1 font-mono">
                 📍 {ward.latitude.toFixed(4)}°, {ward.longitude.toFixed(4)}°
@@ -139,19 +156,23 @@ export default async function WardPage({ params }: PageProps) {
               href={`/app?county=${encodeURIComponent(county.county)}`}
               className="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-lg text-sm transition-colors"
             >
-              Get Advice →
+              Get advice →
             </Link>
           </div>
 
           {precisionData ? (
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-              🎯 Ward-Level Precision Data (30m satellite)
+              🎯 Ward-level precision data (30m satellite)
             </div>
           ) : (
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold">
-              📊 County-Level Averages (precision data loading)
+              📊 County-level averages (precision data loading)
             </div>
           )}
+
+          <p className="text-sm text-soil-500 leading-relaxed max-w-3xl mt-4">
+            {narrative}
+          </p>
         </div>
 
         {/* Soil data grid */}
@@ -176,10 +197,20 @@ export default async function WardPage({ params }: PageProps) {
           ))}
         </div>
 
+        {/* Soil suitability text section */}
+        <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm mb-8">
+          <h2 className="font-display text-lg font-bold text-forest-700 mb-3">
+            Soil mapping and farming in {ward.ward} Ward
+          </h2>
+          <p className="text-soil-500 text-sm leading-relaxed">
+            Local soil characteristics in <strong>{ward.ward} Ward</strong> (located within <strong>{ward.subcounty}</strong> sub-county, <strong>{county.county} County</strong>) play a vital role in determining agricultural productivity. The soil analysis indicates a pH of <strong>{soilPh.toFixed(1)}</strong>, paired with nitrogen levels of <strong>{soilN.toFixed(2)} g/kg</strong> and phosphorus levels of <strong>{soilP.toFixed(1)} mg/kg</strong>. For farmers in {ward.ward}, matching seed varieties to local climatic conditions and using fertilizer programs tailored to these exact satellite-measured soil properties is key to avoiding yield deficiencies and reducing fertilizer wastage.
+          </p>
+        </div>
+
         {/* Top crops for this ward */}
         <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-4">
-            Best Crops for {ward.ward}
+            Best crops for {ward.ward}
           </h2>
           <div className="space-y-3">
             {topCrops.map(({ crop, score }, i) => (
@@ -209,7 +240,7 @@ export default async function WardPage({ params }: PageProps) {
         {/* Other wards in this sub-county */}
         <div className="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
           <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-            Other Wards in {ward.subcounty}
+            Other wards in {ward.subcounty}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {subcountyWards

@@ -4,7 +4,7 @@ import { rateLimit, clientIp } from '@/lib/rate-limit';
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
-  const rl = await rateLimit(`match-crops:${clientIp(request)}`, 10, 15 * 60 * 1000);
+  const rl = await rateLimit(`match-crops:${clientIp(request)}`, 30, 15 * 60 * 1000);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many requests. Please wait a few minutes before trying again.' },
@@ -91,13 +91,20 @@ Respond ONLY with a raw JSON object containing a "matches" field which is a JSON
 }`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.2, maxOutputTokens: 1000 },
+          generationConfig: {
+            temperature: 0.2,
+            maxOutputTokens: 4096,
+            responseMimeType: 'application/json',
+            thinkingConfig: {
+              thinkingBudget: 0,
+            },
+          },
         }),
       }
     );

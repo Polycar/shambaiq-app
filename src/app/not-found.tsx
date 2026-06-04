@@ -19,13 +19,13 @@ export default function NotFound() {
             href="/soil"
             className="px-6 py-2.5 bg-forest-700 hover:bg-forest-600 text-white font-semibold rounded-xl transition-colors"
           >
-            Soil Reports
+            Soil reports
           </Link>
           <Link
             href="/crops"
             className="px-6 py-2.5 bg-cream-300 hover:bg-cream-400 text-forest-700 font-semibold rounded-xl transition-colors"
           >
-            Crop Guides
+            Crop guides
           </Link>
         </div>
       </div>

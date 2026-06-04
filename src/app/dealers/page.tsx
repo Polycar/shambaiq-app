@@ -6,17 +6,17 @@ import JsonLd from "@/components/JsonLd";
 import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Agrovet Directory — Find Farm Input Dealers in Kenya",
+  title: "Agrovet directory — find farm input dealers in Kenya",
   description:
     "Find verified agrovet dealers in all 47 Kenyan counties. Search for fertilizer, seeds, and pesticide suppliers near you.",
   alternates: { canonical: "https://shambaiq.com/dealers" },
   openGraph: {
-    title: "Kenya Agrovet Directory — Dealers in All 47 Counties",
+    title: "Kenya agrovet directory — dealers in all 47 counties",
     description: "Find verified fertilizer, seed, and pesticide dealers near you across all 47 Kenyan counties.",
     url: "https://shambaiq.com/dealers",
     images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: "Kenya Agrovet Dealer Directory" }],
   },
-  twitter: { card: "summary_large_image", title: "Kenya Agrovet Directory", description: "Find verified agrovet dealers in all 47 Kenyan counties — fertilizer, seeds, and pesticides.", images: ["https://shambaiq.com/api/og"] },
+  twitter: { card: "summary_large_image", title: "Kenya agrovet directory", description: "Find verified agrovet dealers in all 47 Kenyan counties — fertilizer, seeds, and pesticides.", images: ["https://shambaiq.com/api/og"] },
 };
 
 export default function DealersPage() {
@@ -25,7 +25,7 @@ export default function DealersPage() {
   const dealerListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Kenya Agrovet Dealer Directory",
+    name: "Kenya agrovet dealer directory",
     description: "Find verified agrovet dealers — fertilizer, seeds, and pesticides — across all 47 Kenyan counties.",
     url: `${BASE_URL}/dealers`,
     numberOfItems: counties.length,
@@ -42,9 +42,9 @@ export default function DealersPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd schemas={[dealerListSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Agrovet Directory" }]} />
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Agrovet directory" }]} />
       <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
-        Agrovet Directory
+        Agrovet directory
       </h1>
       <p className="text-soil-500 mb-10 max-w-2xl">
         Find verified farm input dealers — fertilizer, seeds, and pesticides —

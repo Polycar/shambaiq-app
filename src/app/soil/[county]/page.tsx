@@ -17,6 +17,8 @@ import ScoreRing from "@/components/ScoreRing";
 import NutrientBar from "@/components/NutrientBar";
 import CollapsibleWards from "@/components/CollapsibleWards";
 import SoilEmbedCard from "@/components/SoilEmbedCard";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ county: string }>;
@@ -80,29 +82,29 @@ export default async function CountySoilPage({ params }: PageProps) {
             .join(", ")}.`,
         },
       },
-      {
-        "@type": "Question",
-        name: `What fertilizer is recommended for ${county.county} County?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Fertilizer recommendations depend on the crop. Use ShambaIQ's recommendation tool for a personalized plan based on ${county.county}'s soil data.`,
-        },
-      },
+    ],
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Soil reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 3, name: county.zone, item: `${BASE_URL}/zones/${slugify(county.zone)}` },
+      { "@type": "ListItem", position: 4, name: `${county.county} County`, item: `${BASE_URL}/soil/${slug}` },
     ],
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd schemas={[faqSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Soil Reports", href: "/soil" },
+            { label: "Soil reports", href: "/soil" },
             { label: county.zone, href: `/zones/${slugify(county.zone)}` },
             { label: `${county.county} County` },
           ]}
@@ -112,7 +114,7 @@ export default async function CountySoilPage({ params }: PageProps) {
         <div className="flex flex-col md:flex-row md:items-start gap-8 mb-12">
           <div className="flex-1">
             <h1 className="font-display text-3xl md:text-4xl font-bold text-forest-700 mb-2">
-              {county.county} County Soil Health Report
+              {county.county} county soil health report
             </h1>
             <p className="text-soil-500 mb-1">
               <span className="font-medium">{county.zone}</span> agroecological
@@ -125,10 +127,23 @@ export default async function CountySoilPage({ params }: PageProps) {
           <ScoreRing score={score} />
         </div>
 
+        {/* Soil suitability text section */}
+        <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8 prose max-w-none">
+          <h2 className="font-display text-xl font-bold text-forest-700 mb-4">
+            Soil suitability and agriculture in {county.county} County
+          </h2>
+          <p className="text-soil-500 text-sm leading-relaxed mb-4">
+            Understanding the local soil chemistry is essential for optimizing crop yields and selecting the right inputs in <strong>{county.county} County</strong>. Situated within the <strong>{county.zone}</strong> zone, this region features varied soil profiles that directly influence crop suitability. With a recorded average soil pH of <strong>{county.pH}</strong>, farming practices must adapt to balance acidity or alkalinity to ensure optimal plant nutrient availability.
+          </p>
+          <p className="text-soil-500 text-sm leading-relaxed">
+            The major soil type here ranges across different sub-counties, requiring tailored fertilizer applications. For crops in {county.county}, standard DAP or NPK inputs may need to be adjusted based on the nitrogen (recorded at <strong>{county.nitrogen} g/kg</strong>) and extractable phosphorus (recorded at <strong>{county.phosphorus} mg/kg</strong>) levels. In acidic regions, applying agricultural lime is recommended to raise soil pH before planting, unlocking bound nutrients and preventing common yield deficiencies.
+          </p>
+        </section>
+
         {/* Nutrient breakdown */}
         <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-6">
-            Nutrient Breakdown
+            Nutrient breakdown
           </h2>
           <div className="space-y-5">
             <NutrientBar
@@ -139,28 +154,28 @@ export default async function CountySoilPage({ params }: PageProps) {
               max={10}
             />
             <NutrientBar
-              label="Total Nitrogen"
+              label="Total nitrogen"
               value={county.nitrogen}
               unit="g/kg"
               type="nitrogen"
               max={2.5}
             />
             <NutrientBar
-              label="Extractable Phosphorus"
+              label="Extractable phosphorus"
               value={county.phosphorus}
               unit="mg/kg"
               type="phosphorus"
               max={50}
             />
             <NutrientBar
-              label="Extractable Potassium"
+              label="Extractable potassium"
               value={county.potassium}
               unit="mg/kg"
               type="potassium"
               max={500}
             />
             <NutrientBar
-              label="Organic Carbon"
+              label="Organic carbon"
               value={county.organicCarbon}
               unit="g/kg"
               type="oc"
@@ -172,7 +187,7 @@ export default async function CountySoilPage({ params }: PageProps) {
         {/* Best crops */}
         <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8">
           <h2 className="font-display text-xl font-bold text-forest-700 mb-2">
-            Best Crops for {county.county}
+            Best crops for {county.county}
           </h2>
           <p className="text-sm text-soil-500 mb-6">
             Scored against {county.county}&apos;s soil nutrients
@@ -227,7 +242,7 @@ export default async function CountySoilPage({ params }: PageProps) {
           {/* Neighbors */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Neighboring Counties
+              Neighboring counties
             </h2>
             <div className="space-y-3">
               {neighbors.map((n) => {
@@ -319,7 +334,7 @@ export default async function CountySoilPage({ params }: PageProps) {
             href={`/app?county=${encodeURIComponent(county.county)}`}
             className="inline-block px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors"
           >
-            Get Free Advice →
+            Get free advice →
           </Link>
         </section>
       </div>

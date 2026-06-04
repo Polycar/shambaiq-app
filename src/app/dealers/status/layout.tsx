@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Check Application Status",
+  title: "Check application status",
   description: "Check the status of your agrovet listing application on ShambaIQ.",
   robots: { index: false, follow: false },
 };

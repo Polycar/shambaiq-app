@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean Farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean Farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What fertilizer should I use for beans in Kakamega?", answer: "Beans in Kakamega's leached acidic soils need phosphorus at planting but should not receive nitrogen fertilizer. Apply rock phosphate or DAP at 25 to 30 kg per acre directly into the planting furrow. Do not add CAN, urea, or any nitrogen — beans fix their own nitrogen through Rhizobium bacteria in root nodules. Adding nitrogen fertilizer suppresses nodule formation and wastes money while reducing the natural N-fixation that makes beans so valuable in a rotation. With Rhizobium inoculant and rock phosphate, Kakamega bean farmers can produce 8 to 12 bags per acre with virtually zero nitrogen cost. Get a farm-specific plan at shambaiq.com/app?county=kakamega&crop=beans." },
@@ -34,7 +34,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Grow Beans in Kakamega County — Rhizobium and Precision Phosphorus Guide",
+  name: "How to grow beans in Kakamega county — rhizobium and precision phosphorus guide",
   description: "A step-by-step guide to growing high-yield beans on Kakamega's leached acidic soils using Rhizobium inoculant, rock phosphate, and certified virus-free seed.",
   totalTime: "P75D",
   estimatedCost: { currency: "KES", value: "8000–14000 per acre" },
@@ -42,7 +42,7 @@ const howToSchema = makeHowToSchema({
   tool: ["Planting stick or jab planter", "Knapsack sprayer", "Soil pH meter", "ShambaIQ precision tool"],
   steps: [
     { name: "Check soil pH — beans fail below pH 5.5", text: "Use ShambaIQ at shambaiq.com/app?county=kakamega&crop=beans to confirm your soil pH. Kakamega's leached acidic soils commonly show pH 4.8 to 5.5. Below pH 5.5, aluminium toxicity damages root nodules before Rhizobium bacteria can establish — the nitrogen fixation system fails entirely. If your pH is below 5.5, apply 500 kg to 1 tonne of agricultural lime per acre at least 3 weeks before planting. Do not skip liming on strongly acidic Kakamega soils and expect Rhizobium to work — it will not." },
-    { name: "Apply Rhizobium inoculant to seed on planting day", text: "Mix certified bean seed with Rhizobium inoculant paste immediately before planting, following package directions (typically 5 to 10 g per kg of seed). The inoculant must coat the seed surface uniformly. Keep inoculated seed in shade and plant within 4 hours — ultraviolet light kills the bacteria rapidly. Do not mix inoculant with any fungicide seed treatments — fungicides kill Rhizobium. If you use fungicide seed dressing, apply it the previous day and allow to dry, then apply Rhizobium inoculant fresh on planting morning." },
+    { name: "Apply rhizobium inoculant to seed on planting day", text: "Mix certified bean seed with Rhizobium inoculant paste immediately before planting, following package directions (typically 5 to 10 g per kg of seed). The inoculant must coat the seed surface uniformly. Keep inoculated seed in shade and plant within 4 hours — ultraviolet light kills the bacteria rapidly. Do not mix inoculant with any fungicide seed treatments — fungicides kill Rhizobium. If you use fungicide seed dressing, apply it the previous day and allow to dry, then apply Rhizobium inoculant fresh on planting morning." },
     { name: "Apply rock phosphate or low-rate DAP in the furrow", text: "Apply rock phosphate at 50 kg per acre or DAP at 25 to 30 kg per acre in the planting furrow, covered with 2 cm of soil before placing the seed. Rock phosphate releases phosphorus slowly over the season and is less expensive per unit phosphorus than DAP on acidic soils where it solubilises effectively. DAP at low rate provides faster-available phosphorus for early root development. Do not increase DAP beyond 30 kg per acre — excess phosphorus at planting does not improve yield and wastes money." },
     { name: "Plant certified seed at correct spacing and depth", text: "Plant certified bean seed at 40 cm between rows and 10 to 15 cm within rows, 3 to 5 cm deep, two seeds per hole. This gives approximately 50,000 to 65,000 plants per acre — the density required for full yield potential. Plant at the onset of rains when soil moisture is adequate at 5 cm depth. Beans planted into dry soil or immediately after heavy rain that compacts the surface have poor emergence." },
     { name: "Weed thoroughly at 2 and 4 weeks — no weed competition", text: "Hand weed at 2 and 4 weeks after planting before canopy closure. Bean plants are particularly sensitive to early weed competition — yield losses of 30 to 50 percent occur when weeds are not controlled in the first 4 weeks. After canopy closure at 5 to 6 weeks, beans shade the soil and weed competition becomes minimal. Pre-emergence herbicide (Dual Gold) at planting reduces the weeding burden on farms with persistent weed pressure." },
@@ -52,15 +52,15 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "kakamega-bean-potential", label: "Why Kakamega Beans Are an Underperforming Asset", level: 2 },
-  { id: "soil-data", label: "Kakamega Soil Data for Beans", level: 2 },
-  { id: "rhizobium", label: "Rhizobium Inoculant — Free Nitrogen from the Air", level: 2 },
-  { id: "varieties", label: "Certified Bean Varieties for Western Kenya", level: 2 },
-  { id: "fertilizer", label: "Phosphorus-Only Fertilizer Programme", level: 2 },
-  { id: "disease", label: "Bean Common Mosaic Virus Management", level: 2 },
-  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
-  { id: "budget", label: "Cost and Revenue Budget Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "kakamega-bean-potential", label: "Why Kakamega beans are an underperforming asset", level: 2 },
+  { id: "soil-data", label: "Kakamega soil data for beans", level: 2 },
+  { id: "rhizobium", label: "Rhizobium inoculant — free nitrogen from the air", level: 2 },
+  { id: "varieties", label: "Certified bean varieties for Western Kenya", level: 2 },
+  { id: "fertilizer", label: "Phosphorus-only fertilizer programme", level: 2 },
+  { id: "disease", label: "Bean common mosaic virus management", level: 2 },
+  { id: "howto", label: "Step-by-step growing guide", level: 2 },
+  { id: "budget", label: "Cost and revenue budget per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function BeanKakamegaPage() {
@@ -69,7 +69,7 @@ export default function BeanKakamegaPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean Farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Bean Farming in Kakamega", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -78,12 +78,13 @@ export default function BeanKakamegaPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County farming guides</Link>
                 <Link href="/soil/kakamega" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kakamega County</Link>
                 <Link href="/crops/beans" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Beans</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Precision Bean Cultivation in Kakamega: <span className="text-gold-700">Double Your Harvests</span>
+                Precision bean cultivation in Kakamega:
+                <span className="text-gold-700">Double your harvests</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Beans are Kenya's second-most-important food crop and a critical protein source for Western Kenya households. In Kakamega County, they are also one of the most systematically under-managed crops — most farmers harvest 3 to 5 bags per acre when the same farm under precision management is capable of 10 to 14 bags. The gap is not irrigation, not rainfall, not seed price. It is three decisions made at planting: inoculating seed with Rhizobium, applying phosphorus at the correct low rate, and planting certified virus-free seed. Get all three right and Kakamega's leached acidic soils become highly productive bean land at minimal input cost.
@@ -103,7 +104,7 @@ export default function BeanKakamegaPage() {
             </figure>
 
             <section>
-              <h2 id="kakamega-bean-potential" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kakamega Beans Are an Underperforming Asset</h2>
+              <h2 id="kakamega-bean-potential" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kakamega beans are an underperforming asset</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kakamega's 1,500 to 1,900 mm annual rainfall, fertile appearance of its red soils, and two reliable growing seasons create conditions that should produce consistently high bean yields. The gap between potential and actual production has three causes that are entirely within farmer control.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -120,12 +121,12 @@ export default function BeanKakamegaPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kakamega Soil Data for Beans</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kakamega soil data for beans</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Kakamega County soil nutrient values versus bean requirements</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Nutrient", "Kakamega Average", "Bean Optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Nutrient", "Kakamega average", "Bean optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -150,7 +151,7 @@ export default function BeanKakamegaPage() {
             </section>
 
             <section>
-              <h2 id="rhizobium" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Rhizobium Inoculant — Free Nitrogen from the Air</h2>
+              <h2 id="rhizobium" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Rhizobium inoculant — free nitrogen from the air</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Nitrogen fixation by Rhizobium is one of the most economically significant biological processes in smallholder farming. A single application of Rhizobium inoculant costing KES 200 to 400 per acre delivers nitrogen fixation equivalent to KES 1,500 to 2,500 per acre of CAN fertilizer — and does so continuously throughout the season as the plant grows.</p>
               <div className="bg-forest-50 border border-forest-200 rounded-xl p-5 mb-6">
                 <p className="text-sm font-bold text-forest-800 mb-3">How Rhizobium Inoculation Works in Practice</p>
@@ -176,7 +177,7 @@ export default function BeanKakamegaPage() {
             </section>
 
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified Bean Varieties for Western Kenya</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Certified bean varieties for Western Kenya</h2>
               <div className="grid sm:grid-cols-2 gap-4 mb-5">
                 {[
                   { variety: "Kenya Mavuno", type: "Climbing bush", maturity: "70 – 80 days", yield: "10 – 14 bags/acre", notes: "KEPHIS-certified. Excellent angular leaf spot resistance — the primary foliar disease in Kakamega's humid conditions. High protein content preferred by Nairobi dry bean processors." },
@@ -202,7 +203,7 @@ export default function BeanKakamegaPage() {
             </section>
 
             <section>
-              <h2 id="disease" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Bean Common Mosaic Virus — Managing Kakamega's Primary Disease</h2>
+              <h2 id="disease" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Bean common mosaic virus — managing Kakamega's primary disease</h2>
               <p className="text-soil-600 leading-relaxed mb-4">BCMV is seed-borne and aphid-transmitted. Once present in a field, it cannot be cured. The entire management strategy is prevention through three simultaneous interventions.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -219,7 +220,7 @@ export default function BeanKakamegaPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Growing Beans in Kakamega County</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing beans in Kakamega county</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -234,12 +235,12 @@ export default function BeanKakamegaPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and Revenue Budget Per Acre — Kakamega Beans 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and revenue budget per acre — Kakamega beans 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Bean production cost and revenue per acre Kakamega County Kenya 2026</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "Qty", "Unit Cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "Qty", "Unit cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -265,11 +266,11 @@ export default function BeanKakamegaPage() {
                       <td className="px-4 py-3 font-bold">KES 15,200</td>
                     </tr>
                     <tr className="bg-gold-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected Revenue (11 bags x KES 8,500 per 90 kg bag)</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected revenue (11 bags x KES 8,500 per 90 kg bag)</td>
                       <td className="px-4 py-3 font-bold text-gold-800">KES 93,500</td>
                     </tr>
                     <tr className="bg-green-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net Margin</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net margin</td>
                       <td className="px-4 py-3 font-bold text-green-800">KES 78,300</td>
                     </tr>
                   </tbody>
@@ -289,12 +290,12 @@ export default function BeanKakamegaPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/kakamega", label: "Kakamega County Soil Report" },
-                  { href: "/crops/beans", label: "Beans Crop Guide — All Counties" },
-                  { href: "/blog/kakamega-soil-western-kenya-mavuno", label: "Kakamega Soil — Mavuno vs DAP" },
-                  { href: "/soil/kakamega/maize", label: "Maize in Kakamega — Rotation Crop" },
-                  { href: "/dealers/kakamega", label: "Agrovets in Kakamega County" },
-                  { href: "/zones/western-highlands", label: "Western Highlands Zone" },
+                  { href: "/soil/kakamega", label: "Kakamega county soil report" },
+                  { href: "/crops/beans", label: "Beans crop guide — all counties" },
+                  { href: "/blog/kakamega-soil-western-kenya-mavuno", label: "Kakamega soil — Mavuno vs DAP" },
+                  { href: "/soil/kakamega/maize", label: "Maize in Kakamega — rotation crop" },
+                  { href: "/dealers/kakamega", label: "Agrovets in Kakamega county" },
+                  { href: "/zones/western-highlands", label: "Western highlands zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -304,7 +305,7 @@ export default function BeanKakamegaPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -325,7 +326,7 @@ export default function BeanKakamegaPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kakamega Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kakamega quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Western Highlands"], ["Altitude", "1,400 – 1,900 m"], ["Avg Rainfall", "1,500 – 1,900 mm/yr"], ["Dominant Soil", "Leached ferralitic"], ["Avg Soil pH", "4.8 – 5.5"], ["N Fixation", "Yes — with Rhizobium"], ["P Status", "Deficient"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -349,7 +350,7 @@ export default function BeanKakamegaPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More County Farming Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More county farming guides" />
       </div>
     </>
   );

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion Farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion Farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What fertilizer should I use for onions in Kajiado?", answer: "Kajiado's alkaline soils above pH 7.5 require ammonium sulfate rather than urea or CAN as the nitrogen source, because ammonium sulfate acidifies the soil slightly with every application, gradually correcting the alkalinity that blocks zinc and iron uptake. At planting apply NPK 17:17:17 at 50 kg per acre. Top-dress with ammonium sulfate at 50 kg per acre at three weeks and again at six weeks. Avoid DAP on highly alkaline soils — it raises pH further. Get a farm-specific plan at shambaiq.com/app?county=kajiado&crop=onion." },
@@ -34,7 +34,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Grow Onions in Kajiado County — Alkaline Soil and Drip Irrigation Guide",
+  name: "How to grow onions in Kajiado county — alkaline soil and drip irrigation guide",
   description: "A step-by-step guide to growing high-yield onions on Kajiado's alkaline semi-arid soils, covering soil acidification, zinc correction, drip irrigation scheduling, and variety selection.",
   totalTime: "P120D",
   estimatedCost: { currency: "KES", value: "80000–100000 per acre" },
@@ -53,16 +53,16 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "kajiado-onion-opportunity", label: "Why Kajiado Is an Onion Goldmine", level: 2 },
-  { id: "alkaline-soil-problem", label: "Alkaline Soils — The Core Challenge", level: 2 },
-  { id: "soil-data", label: "Kajiado Soil Data for Onions", level: 2 },
-  { id: "zinc-iron-deficiency", label: "Zinc and Iron Deficiency — Diagnosis and Fix", level: 2 },
-  { id: "varieties", label: "Best Onion Varieties for Kajiado", level: 2 },
-  { id: "fertilizer", label: "Ammonium Sulfate Fertilizer Programme", level: 2 },
-  { id: "irrigation", label: "Drip Irrigation in Semi-Arid Conditions", level: 2 },
-  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
-  { id: "budget", label: "Cost and Revenue Budget Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "kajiado-onion-opportunity", label: "Why Kajiado is an onion goldmine", level: 2 },
+  { id: "alkaline-soil-problem", label: "Alkaline soils — the core challenge", level: 2 },
+  { id: "soil-data", label: "Kajiado soil data for onions", level: 2 },
+  { id: "zinc-iron-deficiency", label: "Zinc and iron deficiency — diagnosis and fix", level: 2 },
+  { id: "varieties", label: "Best onion varieties for Kajiado", level: 2 },
+  { id: "fertilizer", label: "Ammonium sulfate fertilizer programme", level: 2 },
+  { id: "irrigation", label: "Drip irrigation in semi-arid conditions", level: 2 },
+  { id: "howto", label: "Step-by-step growing guide", level: 2 },
+  { id: "budget", label: "Cost and revenue budget per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function OnionKajiadoPage() {
@@ -71,7 +71,7 @@ export default function OnionKajiadoPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion Farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Onion Farming in Kajiado", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -80,12 +80,13 @@ export default function OnionKajiadoPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County farming guides</Link>
                 <Link href="/soil/kajiado" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kajiado County</Link>
                 <Link href="/crops/onion" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Onion</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                High-Yield Onion Farming in Kajiado: <span className="text-gold-700">A Drylands Goldmine</span>
+                High-yield onion farming in Kajiado:
+                <span className="text-gold-700">A drylands goldmine</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Kajiado County's semi-arid conditions, alkaline soils, and water scarcity make it one of the more challenging farming environments in Kenya. Yet onions — when managed with precision — consistently outperform almost every other crop in this landscape. The dry conditions that stress other crops are exactly what onions need for bulb formation and post-harvest curing. The challenge is not the climate. It is the soil chemistry: Kajiado's naturally alkaline soils lock out zinc and iron, and standard fertilizer programmes designed for acidic highland soils make the alkalinity worse rather than better.
@@ -105,7 +106,7 @@ export default function OnionKajiadoPage() {
             </figure>
 
             <section>
-              <h2 id="kajiado-onion-opportunity" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kajiado Is an Onion Goldmine</h2>
+              <h2 id="kajiado-onion-opportunity" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kajiado is an onion goldmine</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya imports significant volumes of onions from Tanzania, Ethiopia, and Egypt to meet demand — yet Kajiado, sitting on Nairobi's doorstep with ideal onion-growing climate, remains underutilised for onion production. Three structural advantages make the case compelling.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -122,7 +123,7 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="alkaline-soil-problem" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Alkaline Soils — The Core Challenge</h2>
+              <h2 id="alkaline-soil-problem" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Alkaline soils — the core challenge</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Most Kenyan farming advice is written for highland acidic soils — the soils of Kiambu, Nyeri, Kakamega, and the Central Highlands where the majority of smallholder farmers operate. This advice is actively harmful when applied to Kajiado's alkaline soils, because the fertilizers and lime recommendations designed for acidic soils push Kajiado's pH even higher.</p>
               <div className="bg-red-50 border-l-4 border-red-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-red-800 mb-2">The Standard Advice That Damages Kajiado Soils</p>
@@ -131,13 +132,13 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kajiado Soil Data for Onions</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kajiado soil data for onions</h2>
               <p className="text-soil-600 leading-relaxed mb-5">ShambaIQ's precision soil mapping reveals a consistent profile across Kajiado's onion-growing sub-counties of Kajiado Central, Isinya, and Ngong:</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Kajiado County soil nutrient values versus onion requirements</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Nutrient", "Kajiado Average", "Onion Optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Nutrient", "Kajiado average", "Onion optimum", "Status", "Action"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -163,7 +164,7 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="zinc-iron-deficiency" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Zinc and Iron Deficiency — Diagnosis and Fix</h2>
+              <h2 id="zinc-iron-deficiency" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Zinc and iron deficiency — diagnosis and fix</h2>
               <p className="text-soil-600 leading-relaxed mb-5">At pH above 7.5, zinc and iron form insoluble hydroxide compounds that plant roots cannot absorb regardless of total soil content. The symptoms are distinctive and allow field diagnosis without a soil test.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
@@ -183,7 +184,7 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best Onion Varieties for Kajiado County</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best onion varieties for Kajiado county</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Only short-day varieties bulb reliably at Kajiado's near-equatorial latitude of 1.5 to 2.5 degrees south. Long-day varieties bred for temperate climates will produce abundant leaf growth but fail to form bulbs at all.</p>
               <div className="grid sm:grid-cols-3 gap-4 mb-5">
                 {[
@@ -209,13 +210,13 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Ammonium Sulfate Fertilizer Programme for Kajiado Onions</h2>
+              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Ammonium sulfate fertilizer programme for Kajiado onions</h2>
               <p className="text-soil-600 leading-relaxed mb-5">The fertilizer programme for Kajiado onions is built around the principle of acidifying nutrition — every input chosen not just for its NPK content but for its effect on soil pH. This distinguishes Kajiado management from standard Kenyan onion programmes.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Fertilizer programme for onions in Kajiado County Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Stage", "Product", "Rate/Acre", "Timing", "pH Effect"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Stage", "Product", "Rate/acre", "Timing", "pH effect"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -240,7 +241,7 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="irrigation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Drip Irrigation in Kajiado's Semi-Arid Conditions</h2>
+              <h2 id="irrigation" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Drip irrigation in Kajiado's semi-arid conditions</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Drip irrigation is not optional for commercial onion production in Kajiado — it is the technology that makes the system viable. The semi-arid climate provides the dry curing conditions that produce premium onions, but those same conditions require precise water management to maintain bulb development without moisture stress.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -264,7 +265,7 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Growing Onions in Kajiado County</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing onions in Kajiado county</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -279,12 +280,12 @@ export default function OnionKajiadoPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and Revenue Budget Per Acre — Kajiado Onion 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and revenue budget per acre — Kajiado onion 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Onion production cost and revenue per acre Kajiado County Kenya 2026</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "Qty", "Unit Cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "Qty", "Unit cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -313,11 +314,11 @@ export default function OnionKajiadoPage() {
                       <td className="px-4 py-3 font-bold">KES 59,100</td>
                     </tr>
                     <tr className="bg-gold-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected Revenue (18 t x KES 22/kg)</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected revenue (18 t x KES 22/kg)</td>
                       <td className="px-4 py-3 font-bold text-gold-800">KES 396,000</td>
                     </tr>
                     <tr className="bg-green-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net Margin Year 1</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net margin Year 1</td>
                       <td className="px-4 py-3 font-bold text-green-800">KES 336,900</td>
                     </tr>
                   </tbody>
@@ -337,12 +338,12 @@ export default function OnionKajiadoPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/kajiado", label: "Kajiado County Soil Report" },
-                  { href: "/crops/onion", label: "Onion Crop Guide — All Counties" },
-                  { href: "/soil/kajiado/tomato", label: "Tomato in Kajiado — Dryland Guide" },
-                  { href: "/soil/machakos/onion", label: "Onion in Machakos — Compare" },
-                  { href: "/dealers/kajiado", label: "Agrovets in Kajiado County" },
-                  { href: "/zones/semi-arid", label: "Semi-Arid Agroecological Zone" },
+                  { href: "/soil/kajiado", label: "Kajiado county soil report" },
+                  { href: "/crops/onion", label: "Onion crop guide — all counties" },
+                  { href: "/soil/kajiado/tomato", label: "Tomato in Kajiado — dryland guide" },
+                  { href: "/soil/machakos/onion", label: "Onion in Machakos — compare" },
+                  { href: "/dealers/kajiado", label: "Agrovets in Kajiado county" },
+                  { href: "/zones/semi-arid", label: "Semi-arid agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -352,7 +353,7 @@ export default function OnionKajiadoPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -374,7 +375,7 @@ export default function OnionKajiadoPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kajiado Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kajiado quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Semi-Arid"], ["Altitude", "1,500 – 1,900 m"], ["Avg Rainfall", "400 – 700 mm/yr"], ["Dominant Soil", "Alkaline sandy loam"], ["Avg Soil pH", "7.5 – 8.5"], ["Zinc Status", "Deficient"], ["Irrigation", "Required"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -398,7 +399,7 @@ export default function OnionKajiadoPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More County Farming Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More county farming guides" />
       </div>
     </>
   );

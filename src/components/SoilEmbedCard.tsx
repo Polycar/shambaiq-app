@@ -9,7 +9,7 @@ export default function SoilEmbedCard({ countyName, countySlug }: { countyName: 
 
   const embedCode = useMemo(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://shambaiq.com";
-    return `<iframe src="${origin}/embed/county/${countySlug}" width="100%" height="320" style="border:none;border-radius:16px;box-shadow:0 4px 16px rgba(0, 0, 0, 0.05);background:#FAF8F5;" title="${countyName} County Soil Health Report by ShambaIQ"></iframe>`;
+    return `<iframe src="${origin}/embed/county/${countySlug}" width="100%" height="320" style="border:none;border-radius:16px;box-shadow:0 4px 16px rgba(0, 0, 0, 0.05);background:#FAF8F5;" title="${countyName} County soil health report by ShambaIQ"></iframe>`;
   }, [countySlug, countyName]);
 
   const handleCopy = async () => {
@@ -27,7 +27,7 @@ export default function SoilEmbedCard({ countyName, countySlug }: { countyName: 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
           <h2 className="font-display text-xl font-bold text-forest-700 leading-tight">
-            Embed {countyName} Soil Data on Your Website
+            Embed {countyName} soil data on your website
           </h2>
           <p className="text-sm text-soil-500 mt-1 max-w-xl">
             Are you a local blogger, news agency, or county advisor? You can embed this live, 30m resolution soil suitability report card on your website for free.
@@ -37,7 +37,7 @@ export default function SoilEmbedCard({ countyName, countySlug }: { countyName: 
           href="/embed"
           className="text-xs bg-forest-700/5 hover:bg-forest-700/10 text-forest-700 font-extrabold px-4 py-2 rounded-xl transition-colors border border-forest-700/10 shrink-0"
         >
-          Customize Widget →
+          Customize widget →
         </Link>
       </div>
 
@@ -66,7 +66,7 @@ export default function SoilEmbedCard({ countyName, countySlug }: { countyName: 
             </>
           ) : (
             <>
-              <Clipboard size={16} /> Copy Embed Code
+              <Clipboard size={16} /> Copy embed code
             </>
           )}
         </button>

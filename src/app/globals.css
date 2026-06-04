@@ -188,6 +188,19 @@ body {
    PRINT / PDF STYLE INTEGRITY
    ═══════════════════════════════════════════════════ */
 @media print {
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  body *, section, div {
+    overflow: visible !important;
+  }
+  
+  #shambaiq-results > div {
+    page-break-inside: avoid !important;
+  }
+
   /* Force all details elements to render as fully open, non-interactive boxes */
   details {
     display: block !important;

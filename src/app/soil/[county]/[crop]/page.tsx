@@ -14,12 +14,12 @@ import {
   getTopDressing,
   getPrices,
   getCropCalendars,
-  slugify,
 } from "@/lib/data";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScoreRing from "@/components/ScoreRing";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL, ORGANIZATION } from "@/lib/schema";
+import { countyCropNarrative, countyCropFAQSchema, makeSoilDatasetSchema } from "@/lib/seo-content";
 
 const getYieldUnit = (cropName: string) => {
   const c = cropName.toLowerCase();
@@ -76,9 +76,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${crop.crop} in ${county.county} — ${score}/100 Suitability Score`,
       description: `Soil match analysis, fertilizer plan, and seed varieties for ${crop.crop} in ${county.county} County.`,
       url: `https://shambaiq.com/soil/${cSlug}/${crSlug}`,
-      images: [{ url: "https://shambaiq.com/api/og", width: 1200, height: 630, alt: `${crop.crop} farming in ${county.county} County` }],
+      images: [{ url: `${BASE_URL}/api/og/county/${cSlug}`, width: 1200, height: 630, alt: `${crop.crop} farming in ${county.county} County` }],
     },
-    twitter: { card: "summary_large_image", title: `${crop.crop} in ${county.county} — ${score}/100 Suitability`, description: `Soil analysis and fertilizer plan for ${crop.crop} in ${county.county} County, Kenya.`, images: ["https://shambaiq.com/api/og"] },
+    twitter: { card: "summary_large_image", title: `${crop.crop} in ${county.county} — ${score}/100 Suitability`, description: `Soil analysis and fertilizer plan for ${crop.crop} in ${county.county} County, Kenya.`, images: [`${BASE_URL}/api/og/county/${cSlug}`] },
   };
 }
 
@@ -99,46 +99,22 @@ export default async function CountyCropPage({ params }: PageProps) {
   );
 
   const estimatedRevenue = crop.price_per_kg * crop.yield_per_acre;
-  const dapPrice = prices.find((p) => p.fertilizer === "DAP");
-  const canPrice = prices.find((p) => p.fertilizer === "CAN");
 
-  const phOk = county.pH >= crop.ph_min && county.pH <= crop.ph_max;
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `Is ${county.county} good for growing ${crop.crop}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${county.county} County scores ${score}/100 for ${crop.crop} suitability. The county has soil pH ${county.pH} (optimal range ${crop.ph_min}–${crop.ph_max}), nitrogen ${county.nitrogen} g/kg, and phosphorus ${county.phosphorus} mg/kg. ${score >= 70 ? `This is a strong match for ${crop.crop}.` : score >= 50 ? `${crop.crop} can be grown with targeted soil management.` : `Significant soil amendments are recommended before planting ${crop.crop}.`}`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What fertilizer should I use for ${crop.crop} in ${county.county}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Fertilizer for ${crop.crop} in ${county.county} should address the county's soil profile: pH ${county.pH}${!phOk ? ` (lime is recommended to reach the target ${crop.ph_min}–${crop.ph_max})` : ""}, nitrogen ${county.nitrogen} g/kg, and phosphorus ${county.phosphorus} mg/kg. Use ShambaIQ's free tool for a precise bag-per-acre plan at shambaiq.com/app.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What is the soil pH for ${crop.crop} in ${county.county}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${county.county} County has soil pH ${county.pH}. ${crop.crop} requires pH ${crop.ph_min}–${crop.ph_max}. The soil is ${phOk ? "within the optimal pH range for this crop" : "outside the optimal range and may require lime or sulfur amendment"}.`,
-        },
-      },
-    ],
-  };
+  const narrative = countyCropNarrative(county, crop, score);
+  const faqSchema = countyCropFAQSchema(county, crop, score);
+  const datasetSchema = makeSoilDatasetSchema({
+    name: `${county.county} County soil profile for ${crop.crop}`,
+    description: `Soil chemistry for ${county.county} County, Kenya, assessed for ${crop.crop} suitability: pH ${county.pH}, nitrogen ${county.nitrogen} g/kg, phosphorus ${county.phosphorus} mg/kg, potassium ${county.potassium} mg/kg, organic carbon ${county.organicCarbon} g/kg.`,
+    url: `${BASE_URL}/soil/${cSlug}/${crSlug}`,
+    variables: ["Soil pH", "Total Nitrogen (g/kg)", "Extractable Phosphorus (mg/kg)", "Extractable Potassium (mg/kg)", "Organic Carbon (g/kg)"],
+    spatialName: `${county.county} County, Kenya`,
+  });
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Soil Reports", item: `${BASE_URL}/soil` },
+      { "@type": "ListItem", position: 2, name: "Soil reports", item: `${BASE_URL}/soil` },
       { "@type": "ListItem", position: 3, name: `${county.county} County`, item: `${BASE_URL}/soil/${cSlug}` },
       { "@type": "ListItem", position: 4, name: crop.crop, item: `${BASE_URL}/soil/${cSlug}/${crSlug}` },
     ],
@@ -146,11 +122,11 @@ export default async function CountyCropPage({ params }: PageProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <JsonLd schemas={[faqSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
+      <JsonLd schemas={[faqSchema, datasetSchema, breadcrumbSchema, { "@context": "https://schema.org", ...ORGANIZATION }]} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Soil Reports", href: "/soil" },
+          { label: "Soil reports", href: "/soil" },
           { label: county.county, href: `/soil/${county.slug}` },
           { label: crop.crop },
         ]}
@@ -166,8 +142,11 @@ export default async function CountyCropPage({ params }: PageProps) {
             Soil suitability analysis based on {county.county}&apos;s nutrient
             profile
           </p>
+          <p className="text-sm text-soil-500 leading-relaxed max-w-3xl mt-4">
+            {narrative}
+          </p>
         </div>
-        <ScoreRing score={score} label="Suitability Score" />
+        <ScoreRing score={score} label="Suitability score" />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -176,7 +155,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {/* Soil match */}
           <section className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Soil Match Analysis
+              Soil match analysis
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -186,10 +165,10 @@ export default async function CountyCropPage({ params }: PageProps) {
                       Nutrient
                     </th>
                     <th className="text-right py-2 text-soil-500 font-medium">
-                      {county.county} Soil
+                      {county.county} soil
                     </th>
                     <th className="text-right py-2 text-soil-500 font-medium">
-                      {crop.crop} Needs
+                      {crop.crop} needs
                     </th>
                     <th className="text-right py-2 text-soil-500 font-medium">
                       Status
@@ -275,7 +254,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {calendars.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Planting Calendar
+                Planting calendar
               </h2>
               {calendars.map((cal) => (
                 <div key={cal.season} className="mb-4 last:mb-0">
@@ -310,7 +289,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {topDress && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Top Dressing Guide
+                Top dressing guide
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="bg-cream-50 rounded-lg p-4 border border-cream-200">
@@ -347,7 +326,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {seeds.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-cream-300">
               <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-                Recommended Seed Varieties
+                Recommended seed varieties
               </h2>
               <div className="space-y-3">
                 {seeds.map((s, i) => (
@@ -418,7 +397,7 @@ export default async function CountyCropPage({ params }: PageProps) {
           {/* Fertilizer prices */}
           <div className="bg-white rounded-2xl p-6 border border-cream-300">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Fertilizer Prices
+              Fertilizer prices
             </h2>
             <div className="space-y-2">
               {prices.slice(0, 5).map((p) => (
@@ -468,7 +447,7 @@ export default async function CountyCropPage({ params }: PageProps) {
                 href={`/app?county=${encodeURIComponent(county.county)}&crop=${encodeURIComponent(crop.crop)}`}
                 className="block mt-4 text-center px-4 py-2.5 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-lg text-sm transition-colors"
               >
-                Get Full Advice →
+                Get full advice →
               </Link>
             </div>
           </div>

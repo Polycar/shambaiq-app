@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop Guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "How many bags of maize can I get per acre in Kenya?", answer: "With optimal soil pH (6.0–6.8), correct fertilizer application (1 bag DAP at planting + 1 bag CAN top-dress), a certified hybrid variety suited to your altitude, and adequate rainfall or irrigation, Kenyan farmers in highland counties achieve 25 to 35 bags of 90 kg per acre. In highland zones with good management and two seasons, 30 bags per acre is a realistic target. In ASAL zones with drought-tolerant varieties and good management, 12 to 20 bags per acre is achievable. Average Kenyan smallholder maize yield is currently 8 to 12 bags per acre — most of the gap is explained by soil pH, wrong variety, and fertilizer timing errors that ShambaIQ can identify for your specific farm." },
@@ -34,7 +34,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Grow Maize in Kenya — Complete Step-by-Step Guide",
+  name: "How to grow maize in Kenya — complete step-by-step guide",
   description: "The complete guide to growing high-yield maize in Kenya covering variety selection, soil preparation, fertilizer application, pest management, and harvest.",
   totalTime: "P120D",
   estimatedCost: { currency: "KES", value: "12000–22000 per acre" },
@@ -51,14 +51,14 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "why-yields-low", label: "Why Most Kenyan Maize Yields Are Low", level: 2 },
-  { id: "varieties", label: "Choosing the Right Maize Variety by Zone", level: 2 },
-  { id: "soil-prep", label: "Soil Preparation and pH Management", level: 2 },
-  { id: "fertilizer", label: "DAP and CAN Fertilizer Programme", level: 2 },
-  { id: "pests", label: "Fall Armyworm and Disease Control", level: 2 },
-  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
-  { id: "budget", label: "Cost and Revenue Budget Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "why-yields-low", label: "Why most Kenyan maize yields are low", level: 2 },
+  { id: "varieties", label: "Choosing the right maize variety by zone", level: 2 },
+  { id: "soil-prep", label: "Soil preparation and pH management", level: 2 },
+  { id: "fertilizer", label: "DAP and CAN fertilizer programme", level: 2 },
+  { id: "pests", label: "Fall armyworm and disease control", level: 2 },
+  { id: "howto", label: "Step-by-step growing guide", level: 2 },
+  { id: "budget", label: "Cost and revenue budget per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function CompleteMaizeGuidePage() {
@@ -67,7 +67,7 @@ export default function CompleteMaizeGuidePage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop Guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Crop guides", url: `${BASE_URL}/blog?category=crop-guides` }, { name: "Complete Maize Farming Guide Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -76,12 +76,13 @@ export default function CompleteMaizeGuidePage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=crop-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Crop Guides</Link>
+                <Link href="/blog?category=crop-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Crop guides</Link>
                 <Link href="/crops/maize" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Maize</Link>
-                <span className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full">All Counties</span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full">All counties</span>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Complete Maize Farming Guide Kenya 2026: <span className="text-gold-700">From Soil to 30 Bags Per Acre</span>
+                Complete maize farming guide Kenya 2026:
+                <span className="text-gold-700">From soil to 30 bags per acre</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 The average Kenyan smallholder maize farmer harvests 8 to 12 bags per acre. The precision farmer on the same soil in the same county harvests 25 to 35. The difference is not luck, land size, or expensive equipment. It is four decisions made correctly: soil pH before anything, the right variety for the right altitude, fertilizer applied at the right time, and fall armyworm caught early. This guide covers every step from soil to storage with specific recommendations for Kenya's seven major maize-growing agroecological zones.
@@ -101,7 +102,7 @@ export default function CompleteMaizeGuidePage() {
             </figure>
 
             <section>
-              <h2 id="why-yields-low" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Most Kenyan Maize Yields Are Low</h2>
+              <h2 id="why-yields-low" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why most Kenyan maize yields are low</h2>
               <p className="text-soil-600 leading-relaxed mb-4">Kenya's national average maize yield of 1.7 tonnes per hectare (roughly 10 bags per acre) is among the lowest in Sub-Saharan Africa for a country with highland potential. Four fixable problems account for most of the gap between current yields and achievable yields.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
@@ -120,12 +121,12 @@ export default function CompleteMaizeGuidePage() {
             </section>
 
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Choosing the Right Maize Variety by Zone</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Choosing the right maize variety by zone</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Best maize varieties by altitude and agroecological zone Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Zone", "Altitude", "Key Counties", "Top Varieties", "Days to Maturity", "Yield Potential"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Zone", "Altitude", "Key counties", "Top varieties", "Days to maturity", "Yield potential"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -150,12 +151,12 @@ export default function CompleteMaizeGuidePage() {
             </section>
 
             <section>
-              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">DAP and CAN Fertilizer Programme</h2>
+              <h2 id="fertilizer" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">DAP and CAN fertilizer programme</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Maize fertilizer programme Kenya DAP CAN application timing and rates</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Stage", "Fertilizer", "Rate/Acre", "Placement", "Critical Timing"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Stage", "Fertilizer", "Rate/acre", "Placement", "Critical timing"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -178,7 +179,7 @@ export default function CompleteMaizeGuidePage() {
             </section>
 
             <section>
-              <h2 id="pests" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Fall Armyworm and Disease Control</h2>
+              <h2 id="pests" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Fall armyworm and disease control</h2>
               <div className="space-y-3 mb-6">
                 {[
                   { pest: "Fall Armyworm (Spodoptera frugiperda)", timing: "Week 2 onwards", threshold: "10% plant infestation", product: "Emamectin benzoate or Chlorantraniliprole into whorl", note: "Spray into the whorl, not on leaf surfaces. Scout twice weekly. One spray at threshold is far more effective than three sprays on established populations." },
@@ -202,7 +203,7 @@ export default function CompleteMaizeGuidePage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Growing Maize in Kenya</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing maize in Kenya</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -217,7 +218,7 @@ export default function CompleteMaizeGuidePage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and Revenue Budget Per Acre — Kenyan Maize 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and revenue budget per acre — Kenyan maize 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <thead className="bg-forest-700 text-white">
@@ -232,7 +233,7 @@ export default function CompleteMaizeGuidePage() {
                     ))}
                     <tr className="bg-forest-700 text-white"><td className="px-4 py-3 font-bold">TOTAL COST</td><td className="px-4 py-3 font-bold">KES 19,800</td></tr>
                     <tr className="bg-gold-50"><td className="px-4 py-3 font-bold text-gold-800">Revenue (28 bags × KES 3,500)</td><td className="px-4 py-3 font-bold text-gold-800">KES 98,000</td></tr>
-                    <tr className="bg-green-50"><td className="px-4 py-3 font-bold text-green-800">Net Margin</td><td className="px-4 py-3 font-bold text-green-800">KES 78,200</td></tr>
+                    <tr className="bg-green-50"><td className="px-4 py-3 font-bold text-green-800">Net margin</td><td className="px-4 py-3 font-bold text-green-800">KES 78,200</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -246,7 +247,7 @@ export default function CompleteMaizeGuidePage() {
             </div>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -267,7 +268,7 @@ export default function CompleteMaizeGuidePage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Maize Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Maize quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["National avg yield", "8–12 bags/acre"], ["Precision avg yield", "25–35 bags/acre"], ["Key input #1", "Correct variety"], ["Key input #2", "Soil pH ≥ 5.8"], ["Key input #3", "CAN at knee height"], ["Biggest pest", "Fall armyworm"], ["Best certification", "KEPHIS F1 seed"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -280,7 +281,7 @@ export default function CompleteMaizeGuidePage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More Crop Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More crop guides" />
       </div>
     </>
   );

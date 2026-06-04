@@ -7,9 +7,9 @@ import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
 import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch, fetchSeeds } from "@/lib/api";
 
 const STOCK_LABEL: Record<string, string> = {
-  in_stock: "In Stock",
-  low_stock: "Running Low",
-  out_of_stock: "Out of Stock",
+  in_stock: "In stock",
+  low_stock: "Running low",
+  out_of_stock: "Out of stock",
 };
 const STOCK_COLOR: Record<string, string> = {
   in_stock: "text-green-700 font-semibold",
@@ -129,6 +129,95 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
+function findMatchingCrop(suggestedName: string, cropList: { crop: string }[]): string {
+  if (!suggestedName) return "Maize";
+  const name = suggestedName.toLowerCase().trim();
+  
+  // 1. Direct match
+  const direct = cropList.find(c => c.crop.toLowerCase() === name);
+  if (direct) return direct.crop;
+  
+  // 2. Common aliases
+  const aliases: Record<string, string> = {
+    "potatoes": "Potato",
+    "tomatoes": "Tomato",
+    "onions": "Onion",
+    "bananas": "Banana",
+    "mangoes": "Mango",
+    "arrowroots": "Arrow Root",
+    "arrowroot": "Arrow Root",
+    "kale (sukuma)": "Kale (Sukuma Wiki)",
+    "beans (common)": "Beans",
+    "maize (corn)": "Maize",
+    "sorghum (milo)": "Sorghum",
+    "kale": "Kale (Sukuma Wiki)",
+    "sukuma wiki": "Kale (Sukuma Wiki)",
+    "green gram": "Green Grams",
+    "green grams": "Green Grams",
+    "cow peas": "Cowpeas",
+    "cowpea": "Cowpeas",
+    "soya beans": "Soybeans",
+    "soya": "Soybeans",
+    "pigeon pea": "Pigeon Peas",
+    "sweet potatoes": "Sweet Potato",
+    "finger millet": "Finger Millet",
+    "chilies": "Chilies",
+    "chilli": "Chilies",
+    "chillies": "Chilies",
+    "capsicums": "Capsicum",
+  };
+  
+  if (aliases[name]) {
+    const matched = cropList.find(c => c.crop.toLowerCase() === aliases[name].toLowerCase());
+    if (matched) return matched.crop;
+  }
+  
+  // 3. Substring match
+  for (const c of cropList) {
+    const cLow = c.crop.toLowerCase();
+    if (name.includes(cLow) || cLow.includes(name)) {
+      return c.crop;
+    }
+  }
+  
+  // 4. Special cases
+  if (name.includes("avocado")) return "Avocado";
+  if (name.includes("potato")) {
+    if (name.includes("sweet")) return "Sweet Potato";
+    return "Potato";
+  }
+  if (name.includes("coffee")) {
+    if (name.includes("robusta")) return "Coffee (Robusta)";
+    return "Coffee (Arabica)";
+  }
+  if (name.includes("rice")) {
+    if (name.includes("lowland") || name.includes("paddy")) return "Rice (Lowland/Paddy)";
+    return "Rice (Upland)";
+  }
+  if (name.includes("millet")) {
+    if (name.includes("finger")) return "Finger Millet";
+    return "Millet";
+  }
+  if (name.includes("kale") || name.includes("sukuma")) return "Kale (Sukuma Wiki)";
+  if (name.includes("bean")) {
+    if (name.includes("soya") || name.includes("soy")) return "Soybeans";
+    return "Beans";
+  }
+  if (name.includes("pea")) {
+    if (name.includes("cow")) return "Cowpeas";
+    if (name.includes("snow")) return "Snow Peas";
+    if (name.includes("pigeon")) return "Pigeon Peas";
+  }
+  
+  // Fallback: prefix match or return original
+  for (const c of cropList) {
+    if (c.crop.toLowerCase().startsWith(name.slice(0, 4))) {
+      return c.crop;
+    }
+  }
+  return suggestedName;
+}
+
 // ─── Agrovet card ──────────────────────────────────────────────
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
@@ -155,7 +244,7 @@ function AgrovetCard({ dealer, isFirst, lang }: { dealer: Dealer; isFirst: boole
     setExpanded(v => !v);
   };
 
-  const isVerified = dealer.source === "ShambaIQ Verified";
+  const isVerified = dealer.source === "ShambaIQ verified";
 
   return (
     <div
@@ -168,7 +257,7 @@ function AgrovetCard({ dealer, isFirst, lang }: { dealer: Dealer; isFirst: boole
             <p className="font-bold text-sm text-gray-800">{dealer.name}</p>
             {isVerified && (
               <span className="text-[10px] font-bold px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full">
-                ShambaIQ Verified
+                ShambaIQ verified
               </span>
             )}
           </div>
@@ -362,7 +451,7 @@ function DiseaseAlertsCard({ alerts, lang }: { alerts: any[]; lang: string }) {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      {lang === "en" ? "Scan Leaf with Plant Doctor" : "Kagua Jani kwa Daktari wa Mimea"}
+                      {lang === "en" ? "Scan leaf with Plant doctor" : "Kagua Jani kwa Daktari wa Mimea"}
                     </Link>
                   </div>
                 </div>
@@ -374,6 +463,234 @@ function DiseaseAlertsCard({ alerts, lang }: { alerts: any[]; lang: string }) {
     </div>
   );
 }
+
+// ─── PDF Print Report ──────────────────────────────────────────
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function openPrintReport(result: any, countyFallback: string, acres: number, weather: any, agrovets: any[]) {
+  const county = result.county || countyFallback || "Kenya";
+  const date = new Date().toLocaleDateString("en-KE", { day: "numeric", month: "long", year: "numeric" });
+  const cd = result.county_data || {};
+  const tl = result.timeline;
+  const esc = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const soilRows = [
+    ["pH", cd["pH"] != null ? Number(cd["pH"]).toFixed(1) : "—", "5.5 – 7.0"],
+    ["Nitrogen (N)", cd["Total Nitrogen (g/kg)"] != null ? `${Number(cd["Total Nitrogen (g/kg)"]).toFixed(2)} g/kg` : "—", "> 1.5 g/kg"],
+    ["Phosphorus (P)", cd["Extractable Phosphorus (mg/kg)"] != null ? `${Number(cd["Extractable Phosphorus (mg/kg)"]).toFixed(1)} mg/kg` : "—", "> 25 mg/kg"],
+    ["Potassium (K)", cd["Extractable Potassium (mg/kg)"] != null ? `${Number(cd["Extractable Potassium (mg/kg)"]).toFixed(1)} mg/kg` : "—", "> 100 mg/kg"],
+    ["Organic carbon", cd["Organic Carbon (g/kg)"] != null ? `${Number(cd["Organic Carbon (g/kg)"]).toFixed(1)} g/kg` : "—", "> 10 g/kg"],
+    ["Texture", cd["Texture"] || "—", "Loam / clay loam ideal"],
+  ];
+
+  // Soil analysis advisory notes
+  const adviceHtml = (result.advice && result.advice.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">Soil analysis &amp; recommendations</div>
+      ${result.advice.map((item: string) => {
+        const t = clean(item);
+        const isErr = /Critical|Toxicity|too low/i.test(t);
+        const isWarn = /Deficiency|low|Low/i.test(t);
+        const cls = isErr ? "note-err" : isWarn ? "note-warn" : "note-ok";
+        return `<div class="advice ${cls}">${esc(t)}</div>`;
+      }).join("")}
+    </div>` : "";
+
+  // Fertilizer comparison
+  const comparisonHtml = result.comparison ? `
+    <div class="section avoid-break">
+      <div class="section-title">Fertilizer strategy</div>
+      <table class="tbl">
+        <tr><th>Factor</th><th>Common practice</th><th>Recommended</th></tr>
+        <tr><td>Strategy</td><td>${esc(clean(result.comparison.current_flaw) || "—")}</td><td class="rec">${esc(clean(result.comparison.recommended) || "—")}</td></tr>
+        <tr><td>Outcome</td><td>${esc(clean(result.comparison.current_outcome) || "Variable")}</td><td class="rec">${esc(clean(result.comparison.impact) || "—")}</td></tr>
+      </table>
+    </div>` : "";
+
+  const timelineHtml = tl ? `
+    <div class="section avoid-break">
+      <div class="section-title">Planting timeline — ${esc(tl.season || "")}</div>
+      <table class="tbl">
+        <tr><th>${esc(tl.label_1 || "Month 1")}</th><th>${esc(tl.label_2 || "Month 2")}</th><th>${esc(tl.label_3 || "Month 3")}</th></tr>
+        <tr><td>${esc(clean(tl.month_1))}</td><td>${esc(clean(tl.month_2))}</td><td>${esc(clean(tl.month_3))}</td></tr>
+      </table>
+    </div>` : "";
+
+  // 7-day weather
+  const weatherHtml = (weather && weather.forecast && weather.forecast.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">7-day weather outlook</div>
+      ${weather.summary ? `<p class="wsum">${esc(weather.summary)}${weather.advice ? " — " + esc(weather.advice) : ""}</p>` : ""}
+      <table class="tbl wx">
+        <tr>${weather.forecast.map((d: any) => `<th>${esc(new Date(d.date).toLocaleDateString("en-KE", { day: "numeric", month: "short" }))}</th>`).join("")}</tr>
+        <tr>${weather.forecast.map((d: any) => `<td>${d.temp_max != null ? Math.round(d.temp_max) + "° / " + Math.round(d.temp_min) + "°" : "—"}<br/><span class="rain">${d.rain_mm != null ? Math.round(d.rain_mm) + "mm" : ""}</span></td>`).join("")}</tr>
+      </table>
+    </div>` : "";
+
+  // Pest & disease risk alerts
+  const alertsHtml = (result.disease_alerts && result.disease_alerts.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">Pest &amp; disease risk alerts</div>
+      ${result.disease_alerts.map((a: any) => `
+        <div class="advice note-warn">
+          <strong>${esc(a.condition_en)} <span class="sev">${esc(a.severity || "Moderate")}</span></strong><br/>
+          <span class="alabel">Symptoms:</span> ${esc(a.symptoms_en || "")}<br/>
+          <span class="alabel">Prevention:</span> ${esc(a.prevention_en || "")}
+        </div>`).join("")}
+    </div>` : "";
+
+  const seedsHtml = (result.seeds && result.seeds.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">Certified seed varieties — ${esc(result.crop)}</div>
+      <table class="tbl">
+        <tr><th>Variety</th><th>Source</th><th>Zone</th><th>Maturity</th><th>Yield</th></tr>
+        ${result.seeds.map((s: any) => `<tr>
+          <td><strong>${esc(s.Variety)}</strong></td>
+          <td>${esc(s.Supplier || s.Source || "—")}</td>
+          <td>${esc(s.Altitude_Zone || "—")}</td>
+          <td>${s.Maturity_Days ? esc(s.Maturity_Days) + " days" : "—"}</td>
+          <td>${s.Yield_Bags_Per_Acre ? esc(s.Yield_Bags_Per_Acre) + " bags/acre" : "—"}</td>
+        </tr>`).join("")}
+      </table>
+    </div>` : "";
+
+  // Nearby agrovets
+  const agrovetsHtml = (agrovets && agrovets.length > 0) ? `
+    <div class="section avoid-break">
+      <div class="section-title">Nearby agrovets — where to buy inputs</div>
+      <table class="tbl">
+        <tr><th>Name</th><th>Location</th><th>Phone</th><th>Distance</th></tr>
+        ${agrovets.slice(0, 10).map((d: any) => `<tr>
+          <td><strong>${esc(d.name)}</strong></td>
+          <td>${esc(d.physical_address || d.town || county)}</td>
+          <td>${esc(d.phone || "—")}</td>
+          <td>${d.distance != null ? esc(d.distance) + " km" : "—"}</td>
+        </tr>`).join("")}
+      </table>
+    </div>` : "";
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>ShambaIQ — Farm precision report · ${esc(result.crop)} · ${esc(county)}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 10.5pt; color: #1a2e1c; background: #fff; }
+  .page { width: 180mm; margin: 0 auto; padding: 12mm 0; }
+
+  .header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid #2d5a30; padding-bottom: 8px; margin-bottom: 12px; }
+  .logo { font-size: 20pt; font-weight: 900; letter-spacing: -0.5px; color: #1a2e1c; }
+  .logo span { color: #c7931a; }
+  .logo-sub { font-size: 7.5pt; color: #5a7a5c; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
+  .header-right { text-align: right; font-size: 8pt; color: #5a7a5c; line-height: 1.5; }
+
+  .hero { background: #2d5a30; color: #fff; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .hero-left h1 { font-size: 14pt; font-weight: 800; }
+  .hero-left p { font-size: 8.5pt; color: #b8d4b9; margin-top: 2px; }
+  .score-badge { text-align: center; background: rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 12px; }
+  .score-num { font-size: 22pt; font-weight: 900; color: #f5c842; line-height: 1; }
+  .score-label { font-size: 7pt; color: #b8d4b9; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  .budget-band { border: 1.5px solid #2d5a30; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .budget-total { font-size: 16pt; font-weight: 900; color: #2d5a30; }
+  .budget-label { font-size: 7.5pt; color: #5a7a5c; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .budget-lines { font-size: 9pt; color: #3d5c3f; line-height: 1.7; text-align: right; }
+
+  .section { margin-bottom: 11px; }
+  .avoid-break { page-break-inside: avoid; }
+  .section-title { font-size: 7.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: #c7931a; margin-bottom: 6px; border-bottom: 1px solid #eee; padding-bottom: 3px; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: 9pt; }
+  .tbl th { background: #f0f7f0; color: #2d5a30; font-weight: 700; padding: 5px 7px; text-align: left; border: 1px solid #dde8dd; }
+  .tbl td { padding: 5px 7px; border: 1px solid #dde8dd; color: #1a2e1c; vertical-align: top; }
+  .tbl tr:nth-child(even) td { background: #f8faf8; }
+  .tbl .rec { color: #2d5a30; font-weight: 700; }
+  .tbl.wx th, .tbl.wx td { text-align: center; font-size: 8pt; padding: 4px 3px; }
+  .tbl.wx .rain { color: #2563eb; font-size: 7.5pt; }
+
+  .advice { font-size: 9pt; padding: 6px 9px; border-radius: 5px; margin-bottom: 5px; line-height: 1.45; border-left: 3px solid; }
+  .note-ok { background: #f0f9f0; border-color: #4caf50; }
+  .note-warn { background: #fffbeb; border-color: #f5c842; }
+  .note-err { background: #fef2f2; border-color: #dc2626; }
+  .advice .sev { font-size: 7pt; background: #f5c842; color: #1a2e1c; padding: 1px 6px; border-radius: 10px; font-weight: 700; }
+  .advice .alabel { font-weight: 700; color: #5a7a5c; }
+  .wsum { font-size: 9pt; color: #3d5c3f; margin-bottom: 6px; font-style: italic; }
+
+  .footer { border-top: 1px solid #dde8dd; margin-top: 14px; padding-top: 8px; display: flex; justify-content: space-between; font-size: 7.5pt; color: #8aaa8c; }
+
+  @page { size: A4; margin: 12mm 15mm; }
+  @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">Shamba<span>IQ</span></div>
+      <div class="logo-sub">Precision agriculture intelligence · Kenya</div>
+    </div>
+    <div class="header-right">
+      Farm precision report<br/>
+      ${esc(county)} County · ${acres} acre${acres !== 1 ? "s" : ""}<br/>
+      ${date}
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-left">
+      <h1>${esc(result.crop)}</h1>
+      <p>${esc(clean(result.confidence))}</p>
+    </div>
+    <div class="score-badge">
+      <div class="score-num">${esc(result.health_score)}</div>
+      <div class="score-label">Soil health</div>
+    </div>
+  </div>
+
+  <div class="budget-band">
+    <div>
+      <div class="budget-label">Total fertilizer budget · ${acres} acre${acres !== 1 ? "s" : ""}</div>
+      <div class="budget-total">KES ${result.budget.total_budget.toLocaleString()}</div>
+    </div>
+    <div class="budget-lines">
+      ${result.budget.breakdown.map((l: string) => `• ${esc(clean(l))}`).join("<br/>")}
+    </div>
+  </div>
+
+  <div class="section avoid-break">
+    <div class="section-title">Soil profile — ${esc(county)} County</div>
+    <table class="tbl">
+      <tr><th>Nutrient / property</th><th>Your reading</th><th>Optimal range</th></tr>
+      ${soilRows.map(([n, v, o]) => `<tr><td>${esc(n)}</td><td>${esc(v)}</td><td>${esc(o)}</td></tr>`).join("")}
+    </table>
+    <p class="wsum">${esc(clean(result.data_source)) || "Source: iSDA Africa precision soil data"}</p>
+  </div>
+
+  ${adviceHtml}
+  ${comparisonHtml}
+  ${timelineHtml}
+  ${weatherHtml}
+  ${alertsHtml}
+  ${seedsHtml}
+  ${agrovetsHtml}
+
+  <div class="footer">
+    <span>shambaiq.com · info@shambaiq.com · WhatsApp: +254 748 042 633</span>
+    <span>Confidential · Generated ${date}</span>
+  </div>
+
+</div>
+<script>window.onload = function() { window.print(); };</script>
+</body>
+</html>`;
+
+  const w = window.open("", "_blank");
+  if (!w) return;
+  w.document.write(html);
+  w.document.close();
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // ─── Component ─────────────────────────────────────────────────
 export default function RecommendTool({ counties, wards, crops, countyCoords, dealers }: Props) {
@@ -418,6 +735,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
+  const autoSubmitRef = useRef(false);
 
   // Agrovet state
   const [agrovets, setAgrovets] = useState<Dealer[]>([]);
@@ -629,8 +947,18 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary }),
         });
+        if (!matchRes.ok) {
+          const errData = await matchRes.json().catch(() => ({}));
+          throw new Error((errData as any).error || `Crop matching failed (${matchRes.status})`);
+        }
         const matchData = await matchRes.json();
-        if (matchData.matches) setCropMatches(matchData.matches);
+        if (matchData.matches && matchData.matches.length > 0) {
+          setCropMatches(matchData.matches);
+        } else {
+          setError(lang === "en"
+            ? "No crop recommendations found. Please try again in a moment."
+            : "Hakuna mapendekezo ya mazao yaliyopatikana. Jaribu tena baadaye.");
+        }
         return;
       }
 
@@ -710,9 +1038,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
             });
           })
-          .then(r => r.json())
-          .then((data) => { if (data.matches) setCropMatches(data.matches); })
-          .catch((e) => console.error("Failed to fetch precise crop matches:", e));
+          .then(r => {
+            if (!r.ok) throw new Error(`match-crops ${r.status}`);
+            return r.json();
+          })
+          .then((data) => { if (data.matches && data.matches.length > 0) setCropMatches(data.matches); })
+          .catch((e) => console.error("Failed to fetch crop matches:", e));
       }
     } catch {
       // Railway backend failed — fall back to Gemini AI agronomic advice
@@ -771,9 +1102,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 body: JSON.stringify({ county: resolvedCounty, acres, soil: soilPayload, lat, lon, zone, month, season, weather: weatherSummary })
               });
             })
-            .then(r => r.json())
-            .then((data) => { if (data.matches) setCropMatches(data.matches); })
-            .catch((e) => console.error("Failed to fetch precise matches in fallback flow:", e));
+            .then(r => {
+              if (!r.ok) throw new Error(`match-crops ${r.status}`);
+              return r.json();
+            })
+            .then((data) => { if (data.matches && data.matches.length > 0) setCropMatches(data.matches); })
+            .catch((e) => console.error("Failed to fetch crop matches in fallback flow:", e));
         } else {
           setError(lang === "en" ? "Unable to get advice — please try again." : "Imeshindwa kupata ushauri — jaribu tena.");
         }
@@ -793,6 +1127,14 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     }
   }, [county, crop, cropUnknown, companionCrop, fertilizer, acres, lang, labMode, labPH, labN, labP, labK, priceMode, resolvedCoords, cropUnit, yieldVal, locMode, gpsLat, counties]);
 
+  // Auto-submit when "Get full plan" sets a crop
+  useEffect(() => {
+    if (autoSubmitRef.current) {
+      autoSubmitRef.current = false;
+      handleSubmit();
+    }
+  }, [crop, handleSubmit]);
+
   // WhatsApp share
   const whatsappUrl = useMemo(() => {
     if (!result) return "";
@@ -800,7 +1142,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     const lines = [
       `ShambaIQ Precision Report: ${result.county}`,
       `Primary Crop: ${result.crop}`,
-      `Soil Health Score: ${result.health_score}`,
+      `Soil health score: ${result.health_score}`,
       "",
       ...result.budget.breakdown.map((l) => `${clean(l)}`),
       `Total Budget Estimate: KES ${result.budget.total_budget.toLocaleString()}`,
@@ -880,7 +1222,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
             >
-              {lang === "en" ? "Select Region" : "Chagua Eneo"}
+              {lang === "en" ? "Select region" : "Chagua Eneo"}
             </button>
             <button
               onClick={() => { setLocMode("gps"); if (!gpsLat) captureGPS(); }}
@@ -890,7 +1232,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   : "bg-cream-50 text-forest-500 hover:bg-cream-100"
               }`}
             >
-              {lang === "en" ? "Check My Farm" : "Kagua Shamba Langu"}
+              {lang === "en" ? "Check my farm" : "Kagua Shamba Langu"}
             </button>
           </div>
 
@@ -999,7 +1341,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   </select>
                   {ward && selectedWard && (
                     <p className="mt-1 text-xs text-green-700 font-semibold">
-                      Ward Locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
+                      Ward locked: {ward} ({selectedWard.latitude.toFixed(4)}, {selectedWard.longitude.toFixed(4)})
                     </p>
                   )}
                 </div>
@@ -1011,7 +1353,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           {resolvedCoords && (
             <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700 flex items-center gap-2">
               <span className="font-semibold">
-                {lang === "en" ? "iSDA Precision Active" : "Usahihi wa iSDA Umeamilishwa"}
+                {lang === "en" ? "iSDA precision active" : "Usahihi wa iSDA Umeamilishwa"}
               </span>
               <span className="text-green-500">—</span>
               <span>{resolvedCoords.source} ({resolvedCoords.lat.toFixed(4)}, {resolvedCoords.lon.toFixed(4)})</span>
@@ -1095,7 +1437,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               className="flex items-center justify-between w-full text-sm font-medium text-forest-600 py-2 cursor-pointer hover:text-forest-800 transition-colors"
             >
               <span>
-                {lang === "en" ? "Add Companion Crop" : "Ongeza Zao la Pili"}
+                {lang === "en" ? "Add companion crop" : "Ongeza Zao la Pili"}
                 {companionCrop && <span className="text-xs bg-forest-100 text-forest-700 px-2 py-0.5 rounded-full font-bold ml-2">{companionCrop}</span>}
               </span>
               <svg className={`w-4 h-4 transition-transform ${showCompanion ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -1210,7 +1552,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             </div>
             <div>
               <label htmlFor="price-mode-select" className="block text-sm font-medium text-forest-600 mb-1">
-                {lang === "en" ? "Price Basis" : "Msingi wa Bei"}
+                {lang === "en" ? "Price basis" : "Msingi wa Bei"}
               </label>
               <select
                 id="price-mode-select"
@@ -1355,11 +1697,11 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     <div className={`absolute top-0 right-0 h-full w-1.5 bg-gradient-to-b ${gradientClass}`} />
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-gray-800 text-base">{CROP_EMOJIS[cm.crop] || "🌱"} {cm.crop}</h4>
+                        <h4 className="font-bold text-gray-800 text-base">{cm.crop}</h4>
                         <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>{cm.label}</span>
                       </div>
                       <div className="flex items-center justify-between text-xs mb-1">
-                        <span className="text-gray-400 font-medium">{lang === "en" ? "Match Score" : "Ulinganifu"}</span>
+                        <span className="text-gray-400 font-medium">{lang === "en" ? "Match score" : "Ulinganifu"}</span>
                         <span className={`font-bold ${isExcellent ? "text-emerald-600" : isVeryGood ? "text-blue-600" : isGood ? "text-amber-600" : "text-red-600"}`}>{score}%</span>
                       </div>
                       <div className="w-full bg-gray-100 rounded-full h-1.5 mb-3">
@@ -1370,17 +1712,19 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     <div className="space-y-2 mt-auto">
                       {cm.gross_income > 0 && (
                         <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                          <span className="text-gray-400 font-medium">{lang === "en" ? "Est. Gross Income" : "Makadirio ya Mapato"}</span>
+                          <span className="text-gray-400 font-medium">{lang === "en" ? "Est. gross income" : "Makadirio ya Mapato"}</span>
                           <span className="font-extrabold text-forest-700">KES {cm.gross_income.toLocaleString()}/acre</span>
                         </div>
                       )}
                       <button
                         type="button"
                         onClick={() => {
-                          setCrop(cm.crop);
+                          autoSubmitRef.current = true;
+                          const matchedCrop = findMatchingCrop(cm.crop, crops);
+                          setCrop(matchedCrop);
                           setCropUnknown(false);
-                          const u = CROP_UNITS[cm.crop];
-                          if (u) setYieldVal(u.def);
+                          const u = CROP_UNITS[matchedCrop];
+                          setYieldVal(u ? u.def : null);
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                         className="w-full py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white text-xs font-bold transition-colors"
@@ -1453,6 +1797,20 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         {/* ── RESULTS ───────────────────────────────────────── */}
         {result && !result.error && (
           <div ref={resultRef} id="shambaiq-results" className="space-y-4 pb-28 fade-up">
+            
+            {/* PRINT-ONLY HEADER (hidden on screen, visible on print) */}
+            <div className="hidden print:block mb-8 border-b-2 border-forest-700 pb-4">
+              <div className="flex justify-between items-end">
+                <div>
+                  <h1 className="text-2xl font-extrabold text-forest-800 tracking-tight">ShambaIQ Precision Report</h1>
+                  <p className="text-sm font-medium text-soil-500 mt-1">{result.county} County • {acres} {lang === "en" ? "Acres" : "Eka"} • {new Date().toLocaleDateString()}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-lg font-bold text-gold-600 uppercase tracking-widest">Confidential</p>
+                  <p className="text-xs text-gray-400 mt-1">Generated by shambaiq.com/app</p>
+                </div>
+              </div>
+            </div>
 
             {/* Item 7: Back to form button on mobile */}
             <button
@@ -1469,7 +1827,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               <div className="rounded-2xl border border-cream-200 bg-white p-5 shadow-sm">
                 <h3 className="font-display font-bold text-base text-forest-700 mb-1 flex items-center gap-2">
                   <svg className="w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
-                  {lang === "en" ? "Best Crops for Your Soil & Season" : "Mazao Bora kwa Udongo na Msimu Wako"}
+                  {lang === "en" ? "Best crops for your soil & season" : "Mazao Bora kwa Udongo na Msimu Wako"}
                 </h3>
                 <p className="text-xs text-soil-500 mb-4">
                   {lang === "en" ? "Ranked by soil chemistry, texture, current season, and income potential." : "Imepangwa kwa kemikali ya udongo, umbile, msimu wa sasa, na uwezo wa mapato."}
@@ -1489,7 +1847,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                       <div key={idx} className={`border rounded-xl p-3.5 relative overflow-hidden flex flex-col gap-2 ${isCurrentCrop ? "border-forest-500 bg-forest-50" : "border-gray-100 bg-white"}`}>
                         <div className={`absolute top-0 right-0 h-full w-1 bg-gradient-to-b ${gradientClass}`} />
                         <div className="flex items-start justify-between gap-2">
-                          <h4 className="font-bold text-gray-800 text-sm">{CROP_EMOJIS[cm.crop] || "🌱"} {cm.crop} {isCurrentCrop && <span className="text-[10px] text-forest-600 font-bold">← your choice</span>}</h4>
+                          <h4 className="font-bold text-gray-800 text-sm">{cm.crop} {isCurrentCrop && <span className="text-[10px] text-forest-600 font-bold">← your choice</span>}</h4>
                           <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}`}>{cm.label}</span>
                         </div>
                         <div>
@@ -1526,7 +1884,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </div>
               <p className="font-display text-xl font-bold text-forest-700">
                 {result.health_score >= 70
-                  ? (lang === "en" ? "Good Soil Health" : "Afya Nzuri ya Udongo")
+                  ? (lang === "en" ? "Good soil health" : "Afya Nzuri ya Udongo")
                   : result.health_score >= 40
                   ? (lang === "en" ? "Moderate — Needs Attention" : "Ya Wastani — Inahitaji Uangalifu")
                   : (lang === "en" ? "Poor — Action Required" : "Mbaya — Hatua Inahitajika")}
@@ -1780,7 +2138,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               <details className="rounded-2xl border p-5 bg-white shadow-sm border-cream-300">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="font-bold text-base flex items-center gap-2 text-forest-700">
-                    {lang === "en" ? "Intercrop Analysis" : "Uchambuzi wa Mazao Mchanganyiko"}
+                    {lang === "en" ? "Intercrop analysis" : "Uchambuzi wa Mazao Mchanganyiko"}
                   </h3>
                   <div className="flex items-center gap-2">
                     <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold text-white ${
@@ -1790,7 +2148,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     }`}>
                       {result.intercrop_audit.compatible
                         ? (lang === "en" ? "Compatible" : "Inaoana")
-                        : (lang === "en" ? "Not Compatible" : "Haiendani")}
+                        : (lang === "en" ? "Not compatible" : "Haiendani")}
                     </span>
                     <svg className="w-4 h-4 text-gray-400 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
                   </div>
@@ -1815,7 +2173,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   {/* N-fixation savings */}
                   {result.intercrop_audit.n_fixation && (
                     <div className="mt-4 rounded-xl border border-green-200 bg-green-50 px-3 py-2.5">
-                      <p className="text-xs font-semibold text-green-800 mb-1">{lang === "en" ? "Nitrogen Fixation Saving" : "Akiba ya Nitrojeni"}</p>
+                      <p className="text-xs font-semibold text-green-800 mb-1">{lang === "en" ? "Nitrogen fixation saving" : "Akiba ya Nitrojeni"}</p>
                       <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-green-800">
                         <span>{lang === "en" ? "Fixed N" : "Nitrojeni iliyonaswa"}</span>
                         <span className="font-bold">{result.intercrop_audit.n_fixation.fixed_kg_per_ha} kg/ha ({result.intercrop_audit.n_fixation.fixed_kg_per_acre} kg/acre)</span>
@@ -1832,7 +2190,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   {/* Layout */}
                   {result.intercrop_audit.layout && (
                     <div className="mt-4 rounded-xl border border-cream-200 bg-cream-50 px-3 py-2.5">
-                      <p className="text-xs font-semibold text-forest-700 mb-1.5">{lang === "en" ? "Planting Layout" : "Mpango wa Upandaji"}</p>
+                      <p className="text-xs font-semibold text-forest-700 mb-1.5">{lang === "en" ? "Planting layout" : "Mpango wa Upandaji"}</p>
                       <div className="space-y-1 text-xs text-forest-800">
                         <p><span className="font-semibold">{lang === "en" ? "Arrangement: " : "Mpangilio: "}</span>{result.intercrop_audit.layout.arrangement}</p>
                         <p><span className="font-semibold">{lang === "en" ? "Timing: " : "Wakati: "}</span>{result.intercrop_audit.layout.timing}</p>
@@ -1845,7 +2203,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   {result.intercrop_audit.economics && (
                     <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2.5">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs font-semibold text-blue-800">{lang === "en" ? "Income Comparison" : "Ulinganisho wa Mapato"}</p>
+                        <p className="text-xs font-semibold text-blue-800">{lang === "en" ? "Income comparison" : "Ulinganisho wa Mapato"}</p>
                         {result.intercrop_audit.economics.advantage_pct > 0 && (
                           <span className="bg-green-100 border border-green-200 rounded px-2 py-0.5 text-xs font-bold text-green-800">+{result.intercrop_audit.economics.advantage_pct}%</span>
                         )}
@@ -1912,7 +2270,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                         const desc = (day.description || "").toLowerCase();
                         let statusText = "Sunny";
                         if (desc.includes("thunder")) statusText = "Storm";
-                        else if (desc.includes("heavy rain") || desc.includes("violent")) statusText = "Heavy Rain";
+                        else if (desc.includes("heavy rain") || desc.includes("violent")) statusText = "Heavy rain";
                         else if (desc.includes("rain") || desc.includes("shower")) statusText = "Rainy";
                         else if (desc.includes("drizzle")) statusText = "Drizzle";
                         else if (desc.includes("overcast")) statusText = "Overcast";
@@ -1966,24 +2324,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 {lang === "en" ? "Share & Download" : "Shiriki na Pakua"}
               </h3>
               <button
-                onClick={() => {
-                  const el = resultRef.current;
-                  if (!el) return;
-                  const noprint = el.querySelectorAll('[data-noprint]');
-                  noprint.forEach(n => (n as HTMLElement).style.display = 'none');
-                  const style = document.createElement('style');
-                  style.textContent = `
-                    @media print {
-                      body * { visibility: hidden; }
-                      #shambaiq-results, #shambaiq-results * { visibility: visible; }
-                      #shambaiq-results { position: absolute; left: 0; top: 0; width: 100%; }
-                    }
-                  `;
-                  document.head.appendChild(style);
-                  window.print();
-                  style.remove();
-                  noprint.forEach(n => (n as HTMLElement).style.display = '');
-                }}
+                onClick={() => openPrintReport(result, county, acres, weather, agrovets)}
                 className="block w-full py-3 rounded-xl text-center font-bold text-cream-100 text-sm cursor-pointer bg-forest-700 hover:bg-forest-600 transition-colors"
               >
                 {lang === "en" ? "Download PDF Report" : "Pakua Ripoti ya PDF"}
@@ -2031,9 +2372,9 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                 }`}
               >
                 {agrLoading
-                  ? (lang === "en" ? "Searching Agrovets..." : "Inatafuta Agroveti...")
+                  ? (lang === "en" ? "Searching agrovets..." : "Inatafuta Agroveti...")
                   : agrShown
-                    ? (lang === "en" ? "Hide Agrovets" : "Ficha Agroveti")
+                    ? (lang === "en" ? "Hide agrovets" : "Ficha Agroveti")
                     : t("dealers_find", lang)}
               </button>
             </div>
@@ -2058,7 +2399,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
             {agrShown && (
               <div className="rounded-2xl border bg-white p-5">
                 <h3 className="font-bold text-base mb-3" style={{ color: "#1a3a1a" }}>
-                  {lang === "en" ? "Agrovets Near You" : "Agroveti Karibu Nawe"}
+                  {lang === "en" ? "Agrovets near you" : "Agroveti Karibu Nawe"}
                 </h3>
                 {agrovets.length > 0 ? (
                   <div className="space-y-2.5">
@@ -2103,7 +2444,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
         )}
 
         {/* Item 14 (mobile): Empty state visible on all devices */}
-        {!loading && !result && !geminiAdvice && (
+        {!loading && !result && !geminiAdvice && !cropMatches?.length && (
           <div className="flex flex-col items-center justify-center min-h-[200px] lg:min-h-[400px] text-center px-8 rounded-2xl border-2 border-dashed border-cream-300 bg-cream-50">
             <div className="w-16 h-16 rounded-2xl bg-forest-700/8 flex items-center justify-center mb-4">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2d5a27" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

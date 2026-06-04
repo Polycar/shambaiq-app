@@ -524,7 +524,7 @@ export default function AdminDashboard() {
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="w-14 h-14 bg-forest-700/10 rounded-xl flex items-center justify-center mx-auto mb-6"><Lock size={28} className="text-forest-700" /></div>
-        <h1 className="font-display text-2xl font-bold text-forest-700 text-center mb-2">Admin Dashboard</h1>
+        <h1 className="font-display text-2xl font-bold text-forest-700 text-center mb-2">Admin dashboard</h1>
         <p className="text-soil-500 text-center text-sm mb-8">Enter your officer access code</p>
         <input type="password" placeholder="Access code" value={code} onChange={e => setCode(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} className="w-full px-4 py-3 border border-cream-300 rounded-xl text-forest-700 placeholder:text-soil-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 mb-4" />
         {authErr && <p className="text-sm text-red-600 mb-4 text-center">Invalid access code</p>}
@@ -537,7 +537,7 @@ export default function AdminDashboard() {
   const tabs: { key: Tab; label: string; icon: any; badge?: number }[] = [
     { key: "stats", label: "Overview", icon: BarChart3 },
     { key: "b2b", label: "B2B Hub", icon: BarChart3 },
-    { key: "crops", label: "Crop Economics", icon: Wheat },
+    { key: "crops", label: "Crop economics", icon: Wheat },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
     { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
@@ -550,7 +550,7 @@ export default function AdminDashboard() {
     <>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold text-forest-700">Admin Dashboard</h1>
+        <h1 className="font-display text-2xl font-bold text-forest-700">Admin dashboard</h1>
         <div className="flex gap-2">
           <button onClick={() => fetchTab(tab)} className="flex items-center gap-2 px-4 py-2 text-sm text-soil-500 hover:text-forest-700 border border-cream-300 rounded-lg hover:border-gold-400 transition-colors"><RefreshCw size={14} /> Refresh</button>
           <button onClick={() => { localStorage.removeItem("shambaiq_admin_code"); setAuth(false); setCode(""); }} className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 rounded-lg transition-colors"><X size={14} /> Sign Out</button>
@@ -565,9 +565,9 @@ export default function AdminDashboard() {
             { l: "Fields", v: summary.total_fields },
             { l: "Recommendations", v: summary.total_recommendations },
             { l: "Yields", v: summary.total_yields },
-            { l: "Pending Dealers", v: summary.pending_dealers },
-            { l: "Approved Dealers", v: summary.approved_dealers },
-            { l: "Flagged Yields", v: summary.flagged_yields },
+            { l: "Pending dealers", v: summary.pending_dealers },
+            { l: "Approved dealers", v: summary.approved_dealers },
+            { l: "Flagged yields", v: summary.flagged_yields },
           ].map(s => (
             <div key={s.l} className="bg-white rounded-lg p-3 border border-cream-300 text-center">
               <div className="font-display text-xl font-bold text-forest-700">{s.v}</div>
@@ -598,15 +598,15 @@ export default function AdminDashboard() {
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl p-6 border border-cream-300">
-              <h3 className="font-display font-bold text-forest-700 mb-4">Soil Health Issues</h3>
+              <h3 className="font-display font-bold text-forest-700 mb-4">Soil health issues</h3>
               {Object.entries(stats.soil_health || {}).map(([k, v]) => (<div key={k} className="flex justify-between py-1"><span className="text-sm text-soil-500 capitalize">{k.replace(/_/g, " ")}</span><span className="font-semibold text-forest-700">{v as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
-              <h3 className="font-display font-bold text-forest-700 mb-4">Top Counties</h3>
+              <h3 className="font-display font-bold text-forest-700 mb-4">Top counties</h3>
               {Object.entries(stats.county_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-500">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
-              <h3 className="font-display font-bold text-forest-700 mb-4">Top Crops</h3>
+              <h3 className="font-display font-bold text-forest-700 mb-4">Top crops</h3>
               {Object.entries(stats.crop_distribution || {}).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0,8).map(([c, n]) => (<div key={c} className="flex justify-between py-1"><span className="text-sm text-soil-500">{c}</span><span className="font-semibold text-forest-700">{n as number}</span></div>))}
             </div>
             <div className="bg-white rounded-xl p-6 border border-cream-300">
@@ -626,7 +626,7 @@ export default function AdminDashboard() {
           <div className="bg-gradient-to-br from-forest-700 to-forest-800 rounded-2xl p-6 text-white">
             <div className="flex items-center gap-3 mb-2">
               <BarChart3 size={22} className="text-gold-300" />
-              <h2 className="font-display text-xl font-bold">ShambaIQ B2B Data Engine</h2>
+              <h2 className="font-display text-xl font-bold">ShambaIQ B2B data engine</h2>
             </div>
             <p className="text-forest-200 text-sm leading-relaxed">
               Download structured datasets for NGOs, county governments, SACCOs, agri-extensions, and input dealers.
@@ -638,7 +638,7 @@ export default function AdminDashboard() {
             {[
               {
                 key: "ngo",
-                title: "NGO / Dev Partner Report",
+                title: "NGO / dev partner report",
                 description: "Farmer reach, county coverage, crop focus, flagged yield issues, and current market prices. Perfect for impact reporting.",
                 icon: Users,
                 color: "text-blue-600",
@@ -648,7 +648,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "county",
-                title: "County Distribution",
+                title: "County distribution",
                 description: "Farmer counts per county with percentage share. Useful for county extension offices and targeting underserved areas.",
                 icon: MapPin,
                 color: "text-emerald-600",
@@ -658,7 +658,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "crop",
-                title: "Crop Distribution",
+                title: "Crop distribution",
                 description: "Which crops farmers are growing, ranked by adoption. Useful for seed companies and agri-input dealers.",
                 icon: Wheat,
                 color: "text-amber-600",
@@ -668,7 +668,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "dealer",
-                title: "Dealer Gap Analysis",
+                title: "Dealer gap analysis",
                 description: "Counties with farmers but no approved dealer — shows where input supply is weakest and where to open next.",
                 icon: Store,
                 color: "text-purple-600",
@@ -678,7 +678,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "sacco",
-                title: "SACCO / Credit Partner",
+                title: "SACCO / credit partner",
                 description: "County-level creditworthiness proxy, farmer counts, and yield activity. For SACCOs designing agri-loan products.",
                 icon: TrendingUp,
                 color: "text-rose-600",
@@ -688,7 +688,7 @@ export default function AdminDashboard() {
               },
               {
                 key: "full",
-                title: "Full Yield Dataset",
+                title: "Full yield dataset",
                 description: "All yield records with county, crop, yield t/ha, flags, and notes. For research partners and agri-extension services.",
                 icon: FileText,
                 color: "text-soil-600",
@@ -774,7 +774,7 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-xl border border-cream-200 p-5">
             <div className="flex flex-wrap items-center gap-3 mb-2">
               <div className="flex-1">
-                <h3 className="font-semibold text-forest-700">Crop Economics ({cropPrices.length})</h3>
+                <h3 className="font-semibold text-forest-700">Crop economics ({cropPrices.length})</h3>
                 <p className="text-xs text-soil-500 mt-0.5">Click any row to edit. Changes go live on the website immediately.</p>
               </div>
               <button
@@ -1071,19 +1071,19 @@ export default function AdminDashboard() {
               const linkSuggestions: { keyword: string; text: string; link: string }[] = [];
               
               if (lowerContent.includes("maize") && !lowerContent.includes("/crops/maize")) {
-                linkSuggestions.push({ keyword: "maize", text: "Maize Farming Guide", link: "/crops/maize" });
+                linkSuggestions.push({ keyword: "maize", text: "Maize farming guide", link: "/crops/maize" });
               }
               if (lowerContent.includes("potato") && !lowerContent.includes("/crops/potato")) {
-                linkSuggestions.push({ keyword: "potato", text: "Potato Farming Guide", link: "/crops/potato" });
+                linkSuggestions.push({ keyword: "potato", text: "Potato farming guide", link: "/crops/potato" });
               }
               if (lowerContent.includes("tomato") && !lowerContent.includes("/crops/tomato")) {
-                linkSuggestions.push({ keyword: "tomato", text: "Tomato Farming Guide", link: "/crops/tomato" });
+                linkSuggestions.push({ keyword: "tomato", text: "Tomato farming guide", link: "/crops/tomato" });
               }
               if (lowerContent.includes("nakuru") && !lowerContent.includes("/soil/nakuru")) {
-                linkSuggestions.push({ keyword: "nakuru", text: "Nakuru Soil Report", link: "/soil/nakuru" });
+                linkSuggestions.push({ keyword: "nakuru", text: "Nakuru soil report", link: "/soil/nakuru" });
               }
               if (lowerContent.includes("meru") && !lowerContent.includes("/soil/meru")) {
-                linkSuggestions.push({ keyword: "meru", text: "Meru Soil Report", link: "/soil/meru" });
+                linkSuggestions.push({ keyword: "meru", text: "Meru soil report", link: "/soil/meru" });
               }
               if (lowerContent.includes("uasin") && !lowerContent.includes("/soil/uasin-gishu")) {
                 linkSuggestions.push({ keyword: "uasin", text: "Uasin Gishu Soil Report", link: "/soil/uasin-gishu" });
@@ -1127,7 +1127,7 @@ export default function AdminDashboard() {
                   <div className="lg:col-span-2 bg-white rounded-2xl border border-cream-300 p-6 shadow-sm">
                     <div className="flex justify-between items-center mb-6 pb-4 border-b border-cream-100">
                       <div>
-                        <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit Post" : "Create New Post"}</h2>
+                        <h2 className="font-display text-xl font-bold text-forest-700">{editing ? "Edit post" : "Create new post"}</h2>
                         <p className="text-xs text-soil-500">Draft or publish helpful crop guides, seasonal tips, or soil science reports.</p>
                       </div>
                       <button onClick={() => { setEditing(null); setShowBlogEditor(false); setActiveEditorTab("write"); setBlogForm({ title: "", content: "", excerpt: "", category: "Guide", status: "draft", read_time: "5 min read" }); setFocusKeyword(""); }} className="text-sm font-medium text-soil-500 hover:text-forest-700 transition-colors">← Back to list</button>
@@ -1152,7 +1152,7 @@ export default function AdminDashboard() {
                             onChange={e => setBlogForm({ ...blogForm, category: e.target.value })} 
                             className="w-full px-4 py-3 border border-cream-300 rounded-xl bg-white text-forest-700 focus:outline-none focus:border-gold-400"
                           >
-                            {["Guide", "Data Report", "Soil Science", "Fertilizer", "Seasonal", "News"].map(c => <option key={c}>{c}</option>)}
+                            {["Guide", "Data report", "Soil science", "Fertilizer", "Seasonal", "News"].map(c => <option key={c}>{c}</option>)}
                           </select>
                         </div>
                         
@@ -1314,7 +1314,7 @@ export default function AdminDashboard() {
                       <div className="flex gap-3 pt-2">
                         <button onClick={saveBlogPost} disabled={blogSaving || !blogForm.title || !blogForm.content} className="flex items-center gap-2 px-6 py-3 bg-forest-700 hover:bg-forest-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors shadow-sm">
                           {blogSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
-                          {editing ? "Update Post" : "Create Post"}
+                          {editing ? "Update post" : "Create post"}
                         </button>
                         {editing && blogForm.status === "draft" && (
                           <button onClick={async () => {
@@ -1378,7 +1378,7 @@ export default function AdminDashboard() {
                           <span className="font-display text-3xl font-extrabold text-forest-700">{score}<span className="text-sm font-normal text-soil-300">/100</span></span>
                         </div>
                         <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${scoreColor}`}>
-                          {score >= 80 ? "Excellent" : score >= 50 ? "Good" : "Needs Work"}
+                          {score >= 80 ? "Excellent" : score >= 50 ? "Good" : "Needs work"}
                         </span>
                       </div>
 
@@ -1414,7 +1414,7 @@ export default function AdminDashboard() {
                         </div>
                         {/* Blue Google link title */}
                         <a href="#" className="font-sans text-[#1a0dab] hover:underline font-normal text-[17px] leading-tight block truncate">
-                          {blogForm.title || "Post Title Preview"}
+                          {blogForm.title || "Post title preview"}
                         </a>
                         {/* Snippet Description */}
                         <p className="text-xs text-soil-500 font-sans leading-relaxed line-clamp-2">

@@ -99,7 +99,7 @@ export default function DealerApplyPage() {
           href="/dealers/status"
           className="inline-block px-6 py-3 bg-forest-700 hover:bg-forest-800 text-white font-semibold rounded-xl transition-colors"
         >
-          Check Application Status →
+          Check application status →
         </a>
       </div>
     );
@@ -129,7 +129,7 @@ export default function DealerApplyPage() {
         {/* Business name */}
         <div>
           <label className="flex items-center gap-2 text-sm font-semibold text-forest-700 mb-2">
-            <Store size={16} /> Business Name *
+            <Store size={16} /> Business name *
           </label>
           <input
             type="text"
@@ -175,7 +175,7 @@ export default function DealerApplyPage() {
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className="flex items-center gap-2 text-sm font-semibold text-forest-700 mb-2">
-              <Phone size={16} /> Phone Number *
+              <Phone size={16} /> Phone number *
             </label>
             <input
               type="tel"
@@ -187,7 +187,7 @@ export default function DealerApplyPage() {
           </div>
           <div>
             <label className="text-sm font-semibold text-forest-700 mb-2 block">
-              Email Address (Optional)
+              Email address (optional)
             </label>
             <input
               type="email"
@@ -202,7 +202,7 @@ export default function DealerApplyPage() {
         {/* Products */}
         <div>
           <label className="flex items-center gap-2 text-sm font-semibold text-forest-700 mb-2">
-            <Package size={16} /> Products Stocked
+            <Package size={16} /> Products stocked
           </label>
           <input
             type="text"
@@ -219,7 +219,7 @@ export default function DealerApplyPage() {
         {/* Shop Location — tabbed */}
         <div>
           <label className="text-sm font-semibold text-forest-700 mb-2 block">
-            Shop Location
+            Shop location
           </label>
 
           {/* Tab switcher */}
@@ -233,7 +233,7 @@ export default function DealerApplyPage() {
                   : "bg-cream-50 text-soil-500 hover:bg-cream-100"
               }`}
             >
-              Street Address
+              Street address
             </button>
             <button
               type="button"
@@ -244,7 +244,7 @@ export default function DealerApplyPage() {
                   : "bg-cream-50 text-soil-500 hover:bg-cream-100"
               }`}
             >
-              GPS Coordinates
+              GPS coordinates
             </button>
           </div>
 
@@ -303,7 +303,7 @@ export default function DealerApplyPage() {
           {status === "loading" ? (
             <><Loader2 size={20} className="animate-spin" /> Submitting...</>
           ) : (
-            "Submit for Review"
+            "Submit for review"
           )}
         </button>
       </div>

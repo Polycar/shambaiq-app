@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Kakamega Soil Mavuno Guide", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Kakamega Soil Mavuno Guide", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "What is Mavuno fertilizer?", answer: "Mavuno is a range of compound fertilizers by MEA Fertilizers for Kenya. Mavuno Planting (26:10:10:4S) provides NPK plus sulfur. Mavuno Top Dress (30:0:10:5S) provides N and K for top-dressing. Unlike DAP (18:46:0) which provides very high phosphorus, Mavuno's balanced formulations suit situations where moderate P plus K and S are all needed." },
@@ -31,11 +31,11 @@ const faqSchema = makeFAQSchema([
   { question: "What does Mavuno fertilizer contain?", answer: "Mavuno Planting: 26% N, 10% P2O5, 10% K2O, 4% S. Mavuno Top Dress: 30% N, 0% P, 10% K2O, 5% S. The sulfur content is significant for Kakamega's leached soils where sulfur deficiency mimics nitrogen deficiency symptoms." },
 ]);
 const TOC_ITEMS: TOCItem[] = [
-  { id: "kakamega-soil", label: "Kakamega Soil Profile", level: 2 },
-  { id: "mavuno-vs-dap", label: "Mavuno vs DAP Head-to-Head", level: 2 },
-  { id: "programme", label: "Complete Fertilizer Programme", level: 2 },
-  { id: "beans-warning", label: "Why Mavuno Is Wrong for Beans", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "kakamega-soil", label: "Kakamega soil profile", level: 2 },
+  { id: "mavuno-vs-dap", label: "Mavuno vs DAP head-to-head", level: 2 },
+  { id: "programme", label: "Complete fertilizer programme", level: 2 },
+  { id: "beans-warning", label: "Why Mavuno is wrong for beans", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function Page() {
@@ -44,15 +44,18 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Kakamega Soil Mavuno Guide", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Kakamega Soil Mavuno Guide", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County farming guides</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Kakamega Soil Guide: <span className="text-gold-700">Mavuno Fertilizer vs DAP — Which Wins on Western Kenya Soils?</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                Kakamega soil guide:
+                <span className="text-gold-700">Mavuno fertilizer vs DAP — which wins on Western Kenya soils?</span>
+              </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Mavuno is Kenya's most popular compound fertilizer brand — formulations developed specifically for East African soils. In Kakamega County's phosphorus-deficient, slightly acidic soils, the question of Mavuno vs DAP is one of the most common decisions smallholder farmers face. The answer depends on your specific soil nutrient profile. This guide uses ShambaIQ's precision data for Kakamega to show exactly when each product wins.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
@@ -65,12 +68,12 @@ export default function Page() {
             </figure>
 
             <section>
-              <h2 id="kakamega-soil" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kakamega Soil Profile — What the Data Shows</h2>
+              <h2 id="kakamega-soil" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kakamega soil profile — what the data shows</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Kakamega County soil nutrient profile from ShambaIQ precision mapping</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Parameter", "Kakamega Average", "Crop Optimum", "Implication for Fertilizer Choice"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Parameter", "Kakamega average", "Crop optimum", "Implication for fertilizer choice"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Soil pH", "4.8–5.5", "6.0–6.5", "Lime before any fertilizer on soils below 5.5"], ["Phosphorus (mg/kg)", "6–14", "> 15 mg/kg", "P-deficient — DAP's high P content is the advantage"], ["Potassium (mg/kg)", "80–180", "> 80 mg/kg", "Low-to-adequate — Mavuno's K content matters here"], ["Nitrogen (g/kg)", "1.2–2.0", "> 1.2 g/kg", "Adequate — CAN top-dress sufficient"], ["Organic Carbon (%)", "1.5–2.5", "> 2.0%", "Moderate — maintain with crop residues"], ["Sulfur", "Often deficient", "Adequate", "Mavuno's 4% S is an advantage on S-deficient farms"]].map(([p, avg, opt, imp], i) => (
@@ -88,11 +91,11 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="mavuno-vs-dap" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Mavuno Planting vs DAP — Head-to-Head on Kakamega Soils</h2>
+              <h2 id="mavuno-vs-dap" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Mavuno planting vs DAP — head-to-head on Kakamega soils</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Factor", "DAP (18:46:0)", "Mavuno Planting (26:10:10:4S)", "Winner for Kakamega"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Factor", "DAP (18:46:0)", "Mavuno planting (26:10:10:4s)", "Winner for Kakamega"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["P per 50 kg bag", "23 kg", "5 kg", "DAP — 4.6x more P"], ["N per 50 kg bag", "9 kg", "13 kg", "Mavuno — but N comes from CAN anyway"], ["K per 50 kg bag", "0 kg", "5 kg", "Mavuno — matters if K < 80 mg/kg"], ["Sulfur", "None", "2 kg", "Mavuno — if S-deficient"], ["Cost per bag", "KES 4,200", "KES 4,500", "DAP — more P per shilling"], ["Best scenario", "P below 10 mg/kg, K adequate", "P moderate, K deficient, S deficient", "Depends on your soil"]].map(([f, dap, mav, win], i) => (
@@ -113,7 +116,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Complete Fertilizer Programme for Kakamega Maize</h2>
+              <h2 id="programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Complete fertilizer programme for Kakamega maize</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <thead className="bg-forest-700 text-white">
@@ -133,7 +136,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="beans-warning" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Mavuno Is Wrong for Kakamega Beans</h2>
+              <h2 id="beans-warning" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Mavuno is wrong for Kakamega beans</h2>
               <div className="bg-red-50 border-l-4 border-red-400 rounded-r-xl p-5 mb-6">
                 <p className="text-sm font-bold text-red-800 mb-2">Mavuno Planting contains 26% nitrogen — beans do not need it</p>
                 <p className="text-sm text-red-700 leading-relaxed">Mavuno Planting's high nitrogen content (26%) actively suppresses Rhizobium nodule formation in beans. Beans fix 40 to 80 kg of atmospheric nitrogen per acre per season at zero cost through Rhizobium bacteria in root nodules. Applying Mavuno to beans costs more than DAP, provides less phosphorus, and reduces the free nitrogen fixation that makes beans valuable in a rotation system. For Kakamega beans, the correct basal is rock phosphate at 50 kg or DAP at 25 kg — phosphorus only, no nitrogen.</p>
@@ -150,12 +153,12 @@ export default function Page() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/kakamega", label: "Kakamega County Soil Report" },
-                  { href: "/blog/dap-vs-can-vs-npk-fertilizer-guide-kenya", label: "DAP vs CAN vs NPK Guide" },
-                  { href: "/blog/bean-farming-kakamega-double-harvest", label: "Bean Farming in Kakamega" },
-                  { href: "/crops/maize", label: "Maize Crop Guide" },
+                  { href: "/soil/kakamega", label: "Kakamega county soil report" },
+                  { href: "/blog/dap-vs-can-vs-npk-fertilizer-guide-kenya", label: "DAP vs CAN vs NPK guide" },
+                  { href: "/blog/bean-farming-kakamega-double-harvest", label: "Bean farming in Kakamega" },
+                  { href: "/crops/maize", label: "Maize crop guide" },
                   { href: "/dealers/kakamega", label: "Agrovets in Kakamega" },
-                  { href: "/app?county=kakamega", label: "Check Your Kakamega Farm" },
+                  { href: "/app?county=kakamega", label: "Check your Kakamega farm" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
@@ -163,7 +166,7 @@ export default function Page() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -179,7 +182,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Avg pH", "4.8–5.5"],
@@ -196,7 +199,7 @@ export default function Page() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="Related Guides" />
+        <RelatedPosts posts={relatedPosts} heading="Related guides" />
       </div>
     </>
   );

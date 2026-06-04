@@ -26,7 +26,7 @@ const articleSchema = makeArticleSchema({ headline: POST.title, description: POS
 const breadcrumbSchema = makeBreadcrumbSchema([
   { name: "Home", url: BASE_URL },
   { name: "Blog", url: `${BASE_URL}/blog` },
-  { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
+  { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` },
   { name: "Cabbage Farming in Kiambu", url: `${BASE_URL}/blog/${POST.slug}` },
 ]);
 
@@ -58,7 +58,7 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const howToSchema = makeHowToSchema({
-  name: "How to Grow Cabbage in Kiambu County — Soil Preparation and Fertilizer Guide",
+  name: "How to grow cabbage in Kiambu county — soil preparation and fertilizer guide",
   description: "A step-by-step guide to growing high-yield cabbage on Kiambu's acidic highland soils, covering lime application, transplanting, fertilizer timing, and pest management.",
   totalTime: "P120D",
   estimatedCost: { currency: "KES", value: "18000–24000 per acre" },
@@ -113,16 +113,16 @@ const howToSchema = makeHowToSchema({
 });
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "kiambu-cabbage-potential", label: "Why Kiambu Leads Kenya's Cabbage Production", level: 2 },
-  { id: "soil-data", label: "Kiambu Soil Data and the pH Problem", level: 2 },
-  { id: "lime-guide", label: "Lime Application Guide for Kiambu Soils", level: 2 },
-  { id: "clubroot", label: "Clubroot — The Disease That Destroys Silently", level: 2 },
-  { id: "variety-guide", label: "Best Certified Cabbage Varieties for Kiambu", level: 2 },
-  { id: "fertilizer-programme", label: "Three-Stage Fertilizer Programme", level: 2 },
-  { id: "planting-calendar", label: "Planting Calendar for Kiambu", level: 2 },
-  { id: "howto", label: "Step-by-Step Growing Guide", level: 2 },
-  { id: "budget", label: "Cost and Revenue Budget Per Acre", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "kiambu-cabbage-potential", label: "Why Kiambu leads Kenya's cabbage production", level: 2 },
+  { id: "soil-data", label: "Kiambu soil data and the pH problem", level: 2 },
+  { id: "lime-guide", label: "Lime application guide for Kiambu soils", level: 2 },
+  { id: "clubroot", label: "Clubroot — the disease that destroys silently", level: 2 },
+  { id: "variety-guide", label: "Best certified cabbage varieties for Kiambu", level: 2 },
+  { id: "fertilizer-programme", label: "Three-stage fertilizer programme", level: 2 },
+  { id: "planting-calendar", label: "Planting calendar for Kiambu", level: 2 },
+  { id: "howto", label: "Step-by-step growing guide", level: 2 },
+  { id: "budget", label: "Cost and revenue budget per acre", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function CabbageKiambuPage() {
@@ -131,7 +131,7 @@ export default function CabbageKiambuPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema, howToSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County Farming Guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Cabbage Farming in Kiambu", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "County farming guides", url: `${BASE_URL}/blog?category=county-farming-guides` }, { name: "Cabbage Farming in Kiambu", url: `${BASE_URL}/blog/${POST.slug}` }]} />
 
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
@@ -142,13 +142,13 @@ export default function CabbageKiambuPage() {
 
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County Farming Guides</Link>
+                <Link href="/blog?category=county-farming-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">County farming guides</Link>
                 <Link href="/soil/kiambu" className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full hover:bg-forest-100 transition-colors">Kiambu County</Link>
                 <Link href="/crops/cabbage" className="text-xs font-semibold uppercase tracking-widest text-soil-500 bg-cream-200 border border-cream-300 px-3 py-1 rounded-full hover:bg-cream-300 transition-colors">Cabbage</Link>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Cabbage Farming in Kiambu:{" "}
-                <span className="text-gold-700">A High-Yield Guide for Highland Soils</span>
+                Cabbage farming in Kiambu:{" "}
+                <span className="text-gold-700">A high-yield guide for highland soils</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Kiambu County supplies more fresh cabbage to Nairobi's markets than any other single county in Kenya. Its cool highland temperatures, abundant rainfall, and proximity to the city's wholesale markets give Kiambu farmers a structural advantage that is difficult to replicate. But that advantage is being eroded farm by farm — by acidic soils that were never limed, by clubroot disease that spreads silently through transplanting equipment, and by fertilizer programmes designed for maize being applied unchanged to a crop with completely different nutritional requirements. This guide addresses all three.
@@ -168,7 +168,7 @@ export default function CabbageKiambuPage() {
             </figure>
 
             <section>
-              <h2 id="kiambu-cabbage-potential" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kiambu Leads Kenya's Cabbage Production</h2>
+              <h2 id="kiambu-cabbage-potential" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Why Kiambu leads Kenya's cabbage production</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Three factors combine to make Kiambu uniquely suited to commercial cabbage production, and all three are structural — they cannot be easily replicated by lowland counties regardless of input spend.
               </p>
@@ -187,7 +187,7 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kiambu Soil Data and the pH Problem</h2>
+              <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Kiambu soil data and the pH problem</h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 ShambaIQ's high-resolution soil mapping shows a consistent pattern across Kiambu's highland sub-counties: soils are nitrogen-rich and have adequate organic carbon, but pH is systematically too low for optimal cabbage production. Cabbage belongs to the brassica family and is more sensitive to soil acidity than most food crops — it needs pH above 6.0 to absorb calcium and boron, and above 6.5 to suppress clubroot disease spore germination.
               </p>
@@ -195,7 +195,7 @@ export default function CabbageKiambuPage() {
                 <table className="w-full text-sm">
                   <caption className="sr-only">Kiambu County soil nutrient values versus cabbage requirements</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Nutrient", "Kiambu Average", "Cabbage Optimum", "Status", "Action Required"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Nutrient", "Kiambu average", "Cabbage optimum", "Status", "Action required"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -228,7 +228,7 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="lime-guide" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Lime Application Guide for Kiambu Soils</h2>
+              <h2 id="lime-guide" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Lime application guide for Kiambu soils</h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 Dolomitic lime is the preferred product for Kiambu highland soils because it supplies both calcium and magnesium — two nutrients that Kiambu's heavily leached soils are deficient in simultaneously. Calcitic lime supplies only calcium and will not correct magnesium deficiency, which manifests as interveinal chlorosis in older cabbage leaves.
               </p>
@@ -236,7 +236,7 @@ export default function CabbageKiambuPage() {
                 <table className="w-full text-sm">
                   <caption className="sr-only">Dolomitic lime application rates for cabbage in Kiambu County by soil pH</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Current Soil pH", "Lime Rate per Acre", "Product", "Timing", "Expected pH After"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Current soil pH", "Lime rate per acre", "Product", "Timing", "Expected pH after"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -266,7 +266,7 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="clubroot" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Clubroot — The Disease That Destroys Silently</h2>
+              <h2 id="clubroot" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Clubroot — the disease that destroys silently</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Clubroot (Plasmodiophora brassicae) is a soil-borne pathogen that infects brassica roots at the seedling stage, forming galls that block water and nutrient uptake while remaining invisible above ground until irreversible damage has occurred. By the time a Kiambu cabbage farmer sees wilting, yellowing, and stunted growth in the field, the root system is already destroyed.
               </p>
@@ -295,7 +295,7 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="variety-guide" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best Certified Cabbage Varieties for Kiambu</h2>
+              <h2 id="variety-guide" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best certified cabbage varieties for Kiambu</h2>
               <p className="text-soil-600 leading-relaxed mb-5">Variety choice in Kiambu must balance maturity period, head weight, market preference, and disease tolerance. The Nairobi fresh market prefers round, dense heads of 1.5 to 2.5 kg. Processors and institutions favour larger heads above 3 kg. Both markets exist within Kiambu's reach.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-5">
                 {[
@@ -321,7 +321,7 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="fertilizer-programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three-Stage Fertilizer Programme for Kiambu Cabbage</h2>
+              <h2 id="fertilizer-programme" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three-stage fertilizer programme for Kiambu cabbage</h2>
               <p className="text-soil-600 leading-relaxed mb-5">
                 Cabbage has a higher nitrogen demand than maize but requires it in a staged programme that tracks the crop's growth phases. Front-loading all nitrogen at transplanting produces excessive leaf growth, delays head formation, and produces loose, unmarketable heads. The three-stage programme below synchronises nutrient delivery with crop demand.
               </p>
@@ -347,7 +347,7 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting Calendar for Kiambu County</h2>
+              <h2 id="planting-calendar" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Planting calendar for Kiambu county</h2>
               <p className="text-soil-600 leading-relaxed mb-4">
                 Kiambu's bimodal rainfall supports two main cabbage planting windows. The long rains season produces the highest volumes and lowest prices at Nairobi markets. Farmers who time planting for the short rains often achieve better prices due to reduced market supply from other counties.
               </p>
@@ -355,7 +355,7 @@ export default function CabbageKiambuPage() {
                 <table className="w-full text-sm">
                   <caption className="sr-only">Cabbage planting calendar for Kiambu County Kenya 2026</caption>
                   <thead className="bg-cream-200">
-                    <tr>{["Season", "Sow Nursery", "Transplant", "Harvest Window", "Market Outlook"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs text-forest-800 uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Season", "Sow nursery", "Transplant", "Harvest window", "Market outlook"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs text-forest-800 uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200 bg-white">
                     <tr>
@@ -378,7 +378,7 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-Step: Growing Cabbage in Kiambu County</h2>
+              <h2 id="howto" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Step-by-step: growing cabbage in Kiambu county</h2>
               <ol className="space-y-4">
                 {howToSchema.step.map((step: { name: string; text: string }, i: number) => (
                   <li key={i} className="flex gap-4 bg-white border border-cream-300 rounded-xl p-5" itemProp="step" itemScope itemType="https://schema.org/HowToStep">
@@ -393,12 +393,12 @@ export default function CabbageKiambuPage() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and Revenue Budget Per Acre — Kiambu Cabbage 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Cost and revenue budget per acre — Kiambu cabbage 2026</h2>
               <div className="overflow-x-auto rounded-xl border border-cream-300 mb-4">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Cabbage production cost and revenue per acre Kiambu County Kenya 2026</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Item", "Qty", "Unit Cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Item", "Qty", "Unit cost (KES)", "Total (KES)"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -426,11 +426,11 @@ export default function CabbageKiambuPage() {
                       <td className="px-4 py-3 font-bold">KES 67,700</td>
                     </tr>
                     <tr className="bg-gold-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected Revenue (20 t x KES 18/kg at Wakulima)</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-gold-800">Expected revenue (20 t x KES 18/kg at Wakulima)</td>
                       <td className="px-4 py-3 font-bold text-gold-800">KES 360,000</td>
                     </tr>
                     <tr className="bg-green-50">
-                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net Margin</td>
+                      <td colSpan={3} className="px-4 py-3 font-bold text-green-800">Net margin</td>
                       <td className="px-4 py-3 font-bold text-green-800">KES 292,300</td>
                     </tr>
                   </tbody>
@@ -452,12 +452,12 @@ export default function CabbageKiambuPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/soil/kiambu", label: "Kiambu County Soil Report" },
-                  { href: "/crops/cabbage", label: "Cabbage Crop Guide — All Counties" },
-                  { href: "/soil/kiambu/kale", label: "Kale (Sukuma Wiki) in Kiambu" },
-                  { href: "/soil/murang-a/cabbage", label: "Cabbage in Muranga — Compare" },
-                  { href: "/dealers/kiambu", label: "Agrovets in Kiambu County" },
-                  { href: "/zones/central-highlands", label: "Central Highlands Agroecological Zone" },
+                  { href: "/soil/kiambu", label: "Kiambu county soil report" },
+                  { href: "/crops/cabbage", label: "Cabbage crop guide — all counties" },
+                  { href: "/soil/kiambu/kale", label: "Kale (sukuma wiki) in Kiambu" },
+                  { href: "/soil/murang-a/cabbage", label: "Cabbage in muranga — compare" },
+                  { href: "/dealers/kiambu", label: "Agrovets in Kiambu county" },
+                  { href: "/zones/central-highlands", label: "Central Highlands agroecological zone" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1">
                     <span className="text-gold-500 flex-shrink-0">→</span>{label}
@@ -467,7 +467,7 @@ export default function CabbageKiambuPage() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -490,7 +490,7 @@ export default function CabbageKiambuPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kiambu Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Kiambu quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[["Zone", "Central Highlands"], ["Altitude", "1,500 – 2,100 m"], ["Avg Rainfall", "900 – 1,100 mm/yr"], ["Dominant Soil", "Humic nitisol"], ["Avg Soil pH", "4.8 – 5.8"], ["pH Status", "Acidic — lime needed"], ["Nearest Market", "Nairobi (1–2 hrs)"]].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-2">
@@ -515,7 +515,7 @@ export default function CabbageKiambuPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More County Farming Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More county farming guides" />
       </div>
     </>
   );

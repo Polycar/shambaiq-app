@@ -6,24 +6,24 @@ import Logo from "./Logo";
 
 // Links shown in the desktop center nav
 const mainNavLinks = [
-  { href: "/app", label: "Get Farm Plan" },
-  { href: "/doctor", label: "Plant Doctor" },
-  { href: "/agronomy", label: "Ask Agronomist" },
-  { href: "/soil", label: "Soil Data" },
+  { href: "/app", label: "Get farm plan" },
+  { href: "/doctor", label: "Plant doctor" },
+  { href: "/agronomy", label: "Ask agronomist" },
+  { href: "/soil", label: "Soil data" },
   { href: "/blog", label: "Blog" },
 ];
 
 // All links shown in mobile hamburger
 const mobileNavLinks = [
-  { href: "/app", label: "Get Farm Plan" },
-  { href: "/doctor", label: "Plant Doctor" },
-  { href: "/agronomy", label: "Ask Agronomist" },
-  { href: "/soil", label: "Soil Data" },
-  { href: "/yields", label: "My Yields" },
+  { href: "/app", label: "Get farm plan" },
+  { href: "/doctor", label: "Plant doctor" },
+  { href: "/agronomy", label: "Ask agronomist" },
+  { href: "/soil", label: "Soil data" },
+  { href: "/yields", label: "My yields" },
   { href: "/dealers", label: "Dealers" },
   { href: "/blog", label: "Blog" },
-  { href: "/profile", label: "My Profile" },
-  { href: "/dealers/apply", label: "Dealer Signup", cta: true },
+  { href: "/profile", label: "My profile" },
+  { href: "/dealers/apply", label: "Dealer signup", cta: true },
 ];
 
 export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean; userName?: string }) {
@@ -104,7 +104,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
                 href="/profile"
                 className="px-4 py-2 border border-cream-300/20 hover:border-cream-300/40 text-cream-300 font-medium rounded-lg transition-colors text-sm"
               >
-                Log In
+                Log in
               </Link>
             )}
           </div>
@@ -154,7 +154,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
                   <div className="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center border-2 border-gold-400/40">
                     <span className="text-sm font-bold text-white">{userName?.charAt(0).toUpperCase() || "F"}</span>
                   </div>
-                  <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"} · View Profile</span>
+                  <span className="text-sm font-medium text-cream-300">Hi, {userName || "Farmer"} · View profile</span>
                 </Link>
                 <button
                   onClick={() => { setOpen(false); handleLogout(); }}
@@ -169,7 +169,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
                 onClick={() => setOpen(false)}
                 className="block px-3 py-2.5 mt-2 rounded-lg text-sm font-medium text-cream-300 border border-cream-300/20"
               >
-                Log In
+                Log in
               </Link>
             )}
           </nav>

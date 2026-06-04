@@ -28,7 +28,7 @@ import {
   HeroRightColumn,
 } from "@/components/ClientIslands";
 import JsonLd from "@/components/JsonLd";
-import { WEBSITE_SCHEMA, ORGANIZATION, BASE_URL } from "@/lib/schema";
+import { siteGraphSchema } from "@/lib/seo-content";
 
 
 export default function HomePage() {
@@ -47,10 +47,7 @@ export default function HomePage() {
 
   return (
     <>
-      <JsonLd schemas={[
-        { "@context": "https://schema.org", ...WEBSITE_SCHEMA },
-        { "@context": "https://schema.org", ...ORGANIZATION },
-      ]} />
+      <JsonLd schemas={siteGraphSchema()} />
 
       {/* ─── FIRST-TIME ONBOARDING (guests only) ─── */}
       <OnboardingModal />
@@ -112,7 +109,7 @@ export default function HomePage() {
                   href="/soil"
                   className="px-8 py-4 bg-cream-200/10 hover:bg-cream-200/20 text-cream-200 font-semibold rounded-xl text-lg transition-colors border border-cream-200/20 hover:border-cream-200/30"
                 >
-                  Browse Soil Data
+                  Browse soil data
                 </Link>
               </div>
               <p className="fade-up fade-up-delay-4 mt-4 text-sm text-cream-400/70">
@@ -177,10 +174,10 @@ export default function HomePage() {
           </div>
           <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible no-scrollbar">
             {([
-              { icon: Sprout, title: "Soil & Crop Advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using 30m satellite mapping.", href: "/app", color: "#16a34a" },
-              { icon: BarChart3, title: "Yield Tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
-              { icon: Camera, title: "Plant Doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
-              { icon: Store, title: "Find Agrovets", desc: "Locate nearby input suppliers by county. Phone numbers, stock lists, and directions to your nearest dealer.", href: "/dealers", color: "#C8860A" },
+              { icon: Sprout, title: "Soil & crop advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using 30m satellite mapping.", href: "/app", color: "#16a34a" },
+              { icon: BarChart3, title: "Yield tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
+              { icon: Camera, title: "Plant doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
+              { icon: Store, title: "Find agrovets", desc: "Locate nearby input suppliers by county. Phone numbers, stock lists, and directions to your nearest dealer.", href: "/dealers", color: "#C8860A" },
             ] as const).map((card) => {
               const Icon = card.icon;
               return (
@@ -236,7 +233,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-10 md:mb-12">
             <div>
-              <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 leading-tight">County Soil Data</h2>
+              <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 leading-tight">County soil data</h2>
               <p className="text-soil-500 mt-2 text-lg">Tap any county to get your free farm plan</p>
             </div>
             <Link href="/soil" className="hidden sm:flex items-center gap-1 text-gold-700 hover:text-gold-700 font-semibold text-sm transition-colors">
@@ -298,7 +295,7 @@ export default function HomePage() {
       {/* ─── CROPS MARQUEE ─────────────────────────────────── */}
       <section className="py-16 md:py-24 bg-forest-700 overflow-hidden relative grain">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 md:mb-12">
-          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-cream-100 mb-3 text-center leading-tight">40+ Crops Supported</h2>
+          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-cream-100 mb-3 text-center leading-tight">40+ crops supported</h2>
           <p className="text-center text-cream-400 text-lg">Every crop matched to your county&apos;s soil</p>
         </div>
 
@@ -317,7 +314,7 @@ export default function HomePage() {
 
         <div className="mt-10 md:mt-12 text-center relative z-20">
           <Link href="/crops" className="inline-flex items-center gap-2 px-7 py-3 rounded-xl border border-gold-500/40 text-gold-400 text-sm font-semibold hover:bg-gold-500 hover:text-white transition-all">
-            View All 40+ Crops <ArrowRight size={14} />
+            View all 40+ crops <ArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -325,7 +322,7 @@ export default function HomePage() {
       {/* ─── AGROECOLOGICAL ZONES ──────────────────────────── */}
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 text-center mb-10 md:mb-12 leading-tight">Agroecological Zones</h2>
+          <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-forest-700 text-center mb-10 md:mb-12 leading-tight">Agroecological zones</h2>
           <div className="flex overflow-x-auto pb-6 -mx-4 px-4 snap-x snap-mandatory gap-4 styled-scrollbar">
             {zones.map((z) => {
               const zoneCounties = counties.filter((c) => c.zone === z);
@@ -377,7 +374,7 @@ export default function HomePage() {
           </div>
 
           <Link href="/app" className="group inline-flex items-center gap-2 px-10 py-4 bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold rounded-xl text-lg transition-all hover:scale-[1.02] shadow-lg shadow-gold-500/25">
-            Get Free Soil Advice
+            Get free soil advice
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

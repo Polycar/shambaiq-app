@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Intelligence", url: `${BASE_URL}/blog?category=soil-intelligence` }, { name: "Kenya County Soil Rankings 2026", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil intelligence", url: `${BASE_URL}/blog?category=soil-intelligence` }, { name: "Kenya county soil rankings 2026", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "Which county has the best soil in Kenya?", answer: "Kiambu, Murang'a, and Nyeri consistently rank among Kenya's top-performing counties for soil fertility based on pH proximity to optimum, organic carbon levels, and balanced NPK ratios. Their volcanic nitisol soils derived from Mount Kenya and Aberdare geology have naturally high nutrient-holding capacity. However, 'best soil' depends on the crop — Uasin Gishu ranks highest for wheat, Kirinyaga for irrigated rice, and Kajiado for onions despite its alkaline soils. Use ShambaIQ to see your county's ranking for your specific crop at shambaiq.com." },
@@ -34,12 +34,12 @@ const faqSchema = makeFAQSchema([
 ]);
 
 const TOC_ITEMS: TOCItem[] = [
-  { id: "methodology", label: "How We Rank Kenya's County Soils", level: 2 },
-  { id: "top-counties", label: "Top 10 Counties by Soil Quality Index", level: 2 },
-  { id: "by-crop", label: "Best Counties by Crop Type", level: 2 },
-  { id: "asal-counties", label: "ASAL Counties — Managing Low-Ranked Soils", level: 2 },
-  { id: "improve", label: "How to Improve Your County's Soil Rank", level: 2 },
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "methodology", label: "How we rank Kenya's county soils", level: 2 },
+  { id: "top-counties", label: "Top 10 counties by soil quality index", level: 2 },
+  { id: "by-crop", label: "Best counties by crop type", level: 2 },
+  { id: "asal-counties", label: "ASAL counties — managing low-ranked soils", level: 2 },
+  { id: "improve", label: "How to improve your county's soil rank", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 const TOP_COUNTIES = [
@@ -61,7 +61,7 @@ export default function KenyaCountySoilRankingsPage() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil Intelligence", url: `${BASE_URL}/blog?category=soil-intelligence` }, { name: "Kenya County Soil Rankings 2026", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Soil intelligence", url: `${BASE_URL}/blog?category=soil-intelligence` }, { name: "Kenya county soil rankings 2026", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} />
@@ -70,11 +70,12 @@ export default function KenyaCountySoilRankingsPage() {
             <meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=soil-intelligence" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil Intelligence</Link>
+                <Link href="/blog?category=soil-intelligence" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Soil intelligence</Link>
                 <span className="text-xs font-semibold uppercase tracking-widest text-forest-600 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full">All 47 Counties</span>
               </div>
               <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
-                Kenya County Soil Rankings 2026: <span className="text-gold-700">Which Counties Have the Best Farming Soil?</span>
+                Kenya county soil rankings 2026:
+                <span className="text-gold-700">Which counties have the best farming soil?</span>
               </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">
                 Not all Kenyan soils are equal — and the gap between the best and worst counties is not a matter of luck. It is geology, rainfall, land management history, and the accumulated effect of farming decisions made over decades. ShambaIQ has mapped soil quality across all 47 counties using precision soil prediction models calibrated against ground-truth data, scoring each county on pH, nitrogen, phosphorus, potassium, and organic carbon. Here is what the data shows.
@@ -94,7 +95,7 @@ export default function KenyaCountySoilRankingsPage() {
             </figure>
 
             <section>
-              <h2 id="methodology" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">How We Rank Kenya's County Soils</h2>
+              <h2 id="methodology" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">How we rank Kenya's county soils</h2>
               <p className="text-soil-600 leading-relaxed mb-4">The County Soil Quality Index (CSQI) aggregates five soil parameters, each scored against agronomic optima for general crop production and weighted by impact on yield.</p>
               <div className="grid sm:grid-cols-5 gap-3 mb-6">
                 {[
@@ -114,12 +115,12 @@ export default function KenyaCountySoilRankingsPage() {
             </section>
 
             <section>
-              <h2 id="top-counties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Top 10 Counties by Soil Quality Index — 2026</h2>
+              <h2 id="top-counties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Top 10 counties by soil quality index — 2026</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Kenya county soil quality rankings 2026 by ShambaIQ</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Rank", "County", "Zone", "pH Range", "N", "P", "OC", "Best Crop", "CSQI"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Rank", "County", "Zone", "pH range", "N", "P", "Oc", "Best crop", "Csqi"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {TOP_COUNTIES.map((c, i) => (
@@ -144,7 +145,7 @@ export default function KenyaCountySoilRankingsPage() {
             </section>
 
             <section>
-              <h2 id="by-crop" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best Counties by Crop Type</h2>
+              <h2 id="by-crop" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best counties by crop type</h2>
               <p className="text-soil-600 leading-relaxed mb-5">The overall CSQI is useful but the crop-specific rankings tell a more practical story. A county that ranks 15th overall may rank 1st for a specific crop if its soil chemistry matches that crop's requirements precisely.</p>
               <div className="space-y-3 mb-6">
                 {[
@@ -170,7 +171,7 @@ export default function KenyaCountySoilRankingsPage() {
             </section>
 
             <section>
-              <h2 id="asal-counties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">ASAL Counties — Managing Low-Ranked Soils</h2>
+              <h2 id="asal-counties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">ASAL counties — managing low-ranked soils</h2>
               <p className="text-soil-600 leading-relaxed mb-4">The 23 ASAL counties — covering 80 percent of Kenya's land area — rank lower on the CSQI not because farming is impossible but because the crops and management strategies required are different. Matching crop to soil and climate is the core precision principle.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
@@ -188,13 +189,13 @@ export default function KenyaCountySoilRankingsPage() {
             </section>
 
             <section>
-              <h2 id="improve" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">How to Improve Your County's Soil Rank</h2>
+              <h2 id="improve" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">How to improve your county's soil rank</h2>
               <p className="text-soil-600 leading-relaxed mb-5">County averages mask huge farm-level variation. A farm in Kakamega (ranked 10th overall) can outperform a farm in Kiambu (ranked 1st) if the Kakamega farmer has limed to pH 6.0, applied Rhizobium, and built organic matter while the Kiambu farmer has done nothing. The ranking is a starting point — management determines the outcome.</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Interventions to improve farm soil quality score in Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Intervention", "CSQI Impact", "Time to Result", "Cost/Acre", "Priority"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Intervention", "Csqi impact", "Time to result", "Cost/acre", "Priority"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[
@@ -218,14 +219,14 @@ export default function KenyaCountySoilRankingsPage() {
             </section>
 
             <div className="bg-forest-700 text-white rounded-2xl p-8 mt-12 mb-8">
-              <p className="text-sm font-semibold uppercase tracking-widest text-forest-300 mb-2">Free Precision Tool</p>
+              <p className="text-sm font-semibold uppercase tracking-widest text-forest-300 mb-2">Free precision tool</p>
               <h3 className="text-xl font-display font-bold mb-3">{POST.ctaText}</h3>
               <p className="text-forest-200 text-sm mb-5">See your county's soil score and your farm's specific pH, nitrogen, phosphorus, potassium, and organic carbon values. Free, no sign-up required.</p>
-              <Link href={POST.ctaLink} className="inline-block bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold px-7 py-3 rounded-xl transition-colors">Check My County Soil Score</Link>
+              <Link href={POST.ctaLink} className="inline-block bg-gold-500 hover:bg-gold-400 text-forest-900 font-bold px-7 py-3 rounded-xl transition-colors">Check my county soil score</Link>
             </div>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -246,7 +247,7 @@ export default function KenyaCountySoilRankingsPage() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Top 5 Counties</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Top 5 counties</p>
                 <div className="space-y-2">
                   {TOP_COUNTIES.slice(0, 5).map((c) => (
                     <Link key={c.county} href={`/soil/${c.county.toLowerCase().replace(/'/g, "").replace(/ /g, "-")}`} className="flex items-center justify-between text-sm text-soil-500 hover:text-forest-700 transition-colors py-0.5">
@@ -260,7 +261,7 @@ export default function KenyaCountySoilRankingsPage() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="More Soil Intelligence Guides" />
+        <RelatedPosts posts={relatedPosts} heading="More soil intelligence guides" />
       </div>
     </>
   );

@@ -28,7 +28,12 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "en_KE", siteName: "ShambaIQ", images: ["/api/og"] },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
-  verification: { google: "hDkSRs8CVliEOaxCe1Odg6JKByTt7natiI-1DM4GHWo" },
+  verification: {
+    google: "hDkSRs8CVliEOaxCe1Odg6JKByTt7natiI-1DM4GHWo",
+    other: {
+      "msvalidate.01": "CFE4E1D427C53F6706E04981E78574A9",
+    },
+  },
   alternates: { canonical: "https://shambaiq.com" },
 };
 
@@ -69,8 +74,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MobileNav />
         <WhatsAppWidget />
         <PWAInstaller />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-7X2WCN7KJ7" strategy="lazyOnload" />
-        <Script id="ga-init" strategy="lazyOnload">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-7X2WCN7KJ7');`}</Script>
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <Script src="https://www.googletagmanager.com/gtag/js?id=G-7X2WCN7KJ7" strategy="lazyOnload" />
+            <Script id="ga-init" strategy="lazyOnload">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              if (window.location.hostname === 'shambaiq.com' || window.location.hostname === 'www.shambaiq.com') {
+                gtag('config', 'G-7X2WCN7KJ7');
+              }
+            `}</Script>
+          </>
+        )}
       </body>
     </html>
   );

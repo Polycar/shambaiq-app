@@ -172,9 +172,9 @@ export default function DoctorPage() {
       <div className="bg-gradient-to-br from-red-700 to-red-800 text-center py-8 px-4">
         <div className="flex items-center justify-center gap-2 mb-1">
           <Stethoscope size={28} className="text-white" />
-          <h1 className="font-display text-2xl font-bold text-white">Plant Doctor</h1>
+          <h1 className="font-display text-2xl font-bold text-white">Plant doctor</h1>
         </div>
-        <p className="text-red-200 text-sm">AI Pest & Disease Diagnostics</p>
+        <p className="text-red-200 text-sm">AI pest & disease diagnostics</p>
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-6">
@@ -193,7 +193,7 @@ export default function DoctorPage() {
                     onClick={() => cameraRef.current?.click()}
                     className="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-3 text-lg"
                   >
-                    <Camera size={24} /> Open Camera
+                    <Camera size={24} /> Open camera
                   </button>
                   <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden"
                     onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
@@ -202,7 +202,7 @@ export default function DoctorPage() {
                     onClick={() => fileRef.current?.click()}
                     className="w-full py-4 bg-cream-100 hover:bg-cream-200 text-forest-700 font-semibold rounded-xl transition-colors flex items-center justify-center gap-3 border border-cream-300"
                   >
-                    <Upload size={20} /> Upload from Gallery
+                    <Upload size={20} /> Upload from gallery
                   </button>
                   <input ref={fileRef} type="file" accept="image/*" className="hidden"
                     onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
@@ -340,7 +340,7 @@ export default function DoctorPage() {
               <div className="bg-white rounded-2xl shadow-sm border border-cream-300 overflow-hidden">
                 <div className="flex items-center gap-2 px-5 py-4 border-b border-cream-200">
                   <Clock size={16} className="text-soil-500" />
-                  <h2 className="font-display font-bold text-forest-700 text-sm">Past Diagnoses</h2>
+                  <h2 className="font-display font-bold text-forest-700 text-sm">Past diagnoses</h2>
                 </div>
 
                 {historyLoading ? (

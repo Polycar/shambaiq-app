@@ -251,7 +251,7 @@ export default function ProfilePage() {
               {ctx && (
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { label: "Soil Reports", value: ctx.soil_report_count, icon: <FlaskConical size={18} className="text-forest-600" /> },
+                    { label: "Soil reports", value: ctx.soil_report_count, icon: <FlaskConical size={18} className="text-forest-600" /> },
                     { label: "Diagnoses", value: ctx.diagnosis_count, icon: <Stethoscope size={18} className="text-red-500" /> },
                     { label: "Fields", value: ctx.fields.length, icon: <Leaf size={18} className="text-gold-500" /> },
                   ].map(s => (
@@ -267,7 +267,7 @@ export default function ProfilePage() {
               {/* Profile details + edit */}
               <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
-                  <h2 className="font-display font-bold text-forest-700 text-sm">Profile Details</h2>
+                  <h2 className="font-display font-bold text-forest-700 text-sm">Profile details</h2>
                   {!editing ? (
                     <button onClick={() => setEditing(true)} className="flex items-center gap-1 text-xs text-gold-700 font-semibold">
                       <Edit2 size={12} /> Edit
@@ -287,7 +287,7 @@ export default function ProfilePage() {
                 <div className="px-5 py-4 space-y-4 text-sm">
                   {/* Name */}
                   <div>
-                    <label className="text-xs text-soil-500 block mb-1">Full Name</label>
+                    <label className="text-xs text-soil-500 block mb-1">Full name</label>
                     {editing ? (
                       <input value={editName} onChange={e => setEditName(e.target.value)}
                         className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700" />
@@ -312,7 +312,7 @@ export default function ProfilePage() {
 
                   {/* Language */}
                   <div>
-                    <label className="text-xs text-soil-500 block mb-1">Preferred Language</label>
+                    <label className="text-xs text-soil-500 block mb-1">Preferred language</label>
                     {editing ? (
                       <select value={editLang} onChange={e => setEditLang(e.target.value)}
                         className="w-full px-3 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-300 text-forest-700">
@@ -337,7 +337,7 @@ export default function ProfilePage() {
                 <button onClick={() => { setChangingPw(!changingPw); setPwMsg(""); }}
                   className="w-full flex items-center gap-3 px-5 py-4 border-b border-cream-100 hover:bg-cream-50 transition-colors text-left">
                   <Lock size={16} className="text-soil-500" />
-                  <span className="text-sm font-medium text-forest-700 flex-1">Change Password</span>
+                  <span className="text-sm font-medium text-forest-700 flex-1">Change password</span>
                   <ChevronRight size={14} className={`text-soil-300 transition-transform ${changingPw ? "rotate-90" : ""}`} />
                 </button>
                 {changingPw && (
@@ -351,14 +351,14 @@ export default function ProfilePage() {
                     {pwMsg && <p className={`text-xs ${pwMsg.includes("success") ? "text-forest-600" : "text-red-500"}`}>{pwMsg}</p>}
                     <button onClick={changePassword} disabled={saving}
                       className="w-full py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
-                      {saving && <Loader2 size={14} className="animate-spin" />} Update Password
+                      {saving && <Loader2 size={14} className="animate-spin" />} Update password
                     </button>
                   </div>
                 )}
                 <button onClick={logout}
                   className="w-full flex items-center gap-3 px-5 py-4 hover:bg-red-50 transition-colors text-left">
                   <LogOut size={16} className="text-red-500" />
-                  <span className="text-sm font-semibold text-red-600">Log Out</span>
+                  <span className="text-sm font-semibold text-red-600">Log out</span>
                 </button>
               </div>
 
@@ -371,7 +371,7 @@ export default function ProfilePage() {
               {soilReports.length > 0 && (
                 <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
                   <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
-                    <h2 className="font-display font-bold text-forest-700 text-sm">Soil Report History</h2>
+                    <h2 className="font-display font-bold text-forest-700 text-sm">Soil report history</h2>
                     <Link href="/app" className="text-xs text-gold-700 font-semibold flex items-center gap-0.5">
                       New report <ChevronRight size={12} />
                     </Link>
@@ -417,7 +417,7 @@ export default function ProfilePage() {
               {diagnoses.length > 0 && (
                 <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
                   <div className="flex items-center justify-between px-5 py-4 border-b border-cream-200">
-                    <h2 className="font-display font-bold text-forest-700 text-sm">Recent Diagnoses</h2>
+                    <h2 className="font-display font-bold text-forest-700 text-sm">Recent diagnoses</h2>
                     <Link href="/doctor" className="text-xs text-gold-700 font-semibold flex items-center gap-0.5">
                       New scan <ChevronRight size={12} />
                     </Link>
@@ -444,7 +444,7 @@ export default function ProfilePage() {
               {ctx && ctx.fields.length > 0 && (
                 <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
                   <div className="px-5 py-4 border-b border-cream-200">
-                    <h2 className="font-display font-bold text-forest-700 text-sm">My Fields</h2>
+                    <h2 className="font-display font-bold text-forest-700 text-sm">My fields</h2>
                   </div>
                   <ul className="divide-y divide-cream-200">
                     {ctx.fields.map((f, i) => (
@@ -463,13 +463,13 @@ export default function ProfilePage() {
               {/* Quick actions */}
               <div className="bg-white rounded-2xl border border-cream-300 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-cream-200">
-                  <h2 className="font-display font-bold text-forest-700 text-sm">Quick Actions</h2>
+                  <h2 className="font-display font-bold text-forest-700 text-sm">Quick actions</h2>
                 </div>
                 {[
-                  { href: "/app", icon: <BarChart3 size={16} className="text-forest-600" />, label: "Get Soil Report", desc: "Run analysis for your shamba" },
-                  { href: "/doctor", icon: <Stethoscope size={16} className="text-red-500" />, label: "Plant Doctor", desc: "Diagnose crop diseases with AI" },
-                  { href: "/agronomy", icon: <Leaf size={16} className="text-gold-500" />, label: "Ask Agronomist", desc: "Chat with Shamba Mshauri" },
-                  { href: "/yields", icon: <BarChart3 size={16} className="text-forest-600" />, label: "My Yield History", desc: "Track your harvests" },
+                  { href: "/app", icon: <BarChart3 size={16} className="text-forest-600" />, label: "Get soil report", desc: "Run analysis for your shamba" },
+                  { href: "/doctor", icon: <Stethoscope size={16} className="text-red-500" />, label: "Plant doctor", desc: "Diagnose crop diseases with AI" },
+                  { href: "/agronomy", icon: <Leaf size={16} className="text-gold-500" />, label: "Ask agronomist", desc: "Chat with Shamba Mshauri" },
+                  { href: "/yields", icon: <BarChart3 size={16} className="text-forest-600" />, label: "My yield history", desc: "Track your harvests" },
                 ].map(a => (
                   <Link key={a.href} href={a.href}
                     className="flex items-center gap-3 px-5 py-3.5 border-b border-cream-100 last:border-0 hover:bg-cream-50 transition-colors">
@@ -497,7 +497,7 @@ export default function ProfilePage() {
       <div className="bg-gradient-to-br from-forest-700 to-[#1e4620] text-center py-10 px-4">
         <User size={36} className="text-gold-400 mx-auto mb-2" />
         <h1 className="font-display text-2xl font-bold text-white">
-          {mode === "login" ? "Welcome Back" : "Join ShambaIQ"}
+          {mode === "login" ? "Welcome back" : "Join ShambaIQ"}
         </h1>
         <p className="text-cream-300 text-sm mt-1">Track your farm, save your reports</p>
       </div>
@@ -516,7 +516,7 @@ export default function ProfilePage() {
           {mode === "register" && (
             <>
               <label className="block mb-4">
-                <span className="text-sm font-semibold text-forest-700 mb-1 block">Full Name</span>
+                <span className="text-sm font-semibold text-forest-700 mb-1 block">Full name</span>
                 <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="John Kamau"
                   className="w-full px-4 py-3 bg-cream-100 border border-cream-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400" />
               </label>
@@ -532,7 +532,7 @@ export default function ProfilePage() {
           )}
 
           <label className="block mb-4">
-            <span className="text-sm font-semibold text-forest-700 mb-1 block">Phone Number</span>
+            <span className="text-sm font-semibold text-forest-700 mb-1 block">Phone number</span>
             <div className="relative">
               <Phone size={16} className="absolute left-3 top-3.5 text-soil-500" />
               <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="0712345678"
@@ -551,7 +551,7 @@ export default function ProfilePage() {
           <button onClick={handleAuth} disabled={loading}
             className="w-full py-3.5 bg-gold-500 hover:bg-gold-600 disabled:opacity-60 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
             {loading && <Loader2 size={18} className="animate-spin" />}
-            {mode === "login" ? "Log In" : "Create Account"}
+            {mode === "login" ? "Log in" : "Create account"}
           </button>
         </div>
       </div>

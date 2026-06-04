@@ -37,10 +37,10 @@ export default async function CountyEmbedPage({ params }: PageProps) {
   const score = computeSoilHealthScore(county);
 
   const nutrients = [
-    { label: "pH (Soil Acidity)", val: county.pH, type: "ph" as const },
-    { label: "Total Nitrogen", val: `${county.nitrogen} g/kg`, type: "nitrogen" as const },
-    { label: "Extractable Phosphorus", val: `${county.phosphorus} mg/kg`, type: "phosphorus" as const },
-    { label: "Extractable Potassium", val: `${county.potassium} mg/kg`, type: "potassium" as const },
+    { label: "pH (soil acidity)", val: county.pH, type: "ph" as const },
+    { label: "Total nitrogen", val: `${county.nitrogen} g/kg`, type: "nitrogen" as const },
+    { label: "Extractable phosphorus", val: `${county.phosphorus} mg/kg`, type: "phosphorus" as const },
+    { label: "Extractable potassium", val: `${county.potassium} mg/kg`, type: "potassium" as const },
   ];
 
   return (
@@ -50,7 +50,7 @@ export default async function CountyEmbedPage({ params }: PageProps) {
         <div className="flex items-center gap-2">
           <Logo size={20} showText={false} />
           <span className="font-display font-bold text-forest-700 text-sm">
-            Shamba<span className="text-gold-500">IQ</span> Soil Report
+            Shamba<span className="text-gold-500">IQ</span> soil report
           </span>
         </div>
         <span className="text-xs bg-forest-700/5 text-forest-700 font-semibold px-2 py-0.5 rounded-full">
@@ -62,13 +62,13 @@ export default async function CountyEmbedPage({ params }: PageProps) {
       <div className="grid grid-cols-5 gap-4 items-center mb-4">
         {/* Radial ring score - 2 cols */}
         <div className="col-span-2 flex justify-center py-1">
-          <ScoreRing score={score} size={110} label="Soil Score" />
+          <ScoreRing score={score} size={110} label="Soil score" />
         </div>
 
         {/* Core metrics list - 3 cols */}
         <div className="col-span-3 space-y-2">
           <div className="text-xs font-bold text-forest-700 uppercase tracking-wider mb-1">
-            {county.county} County Soil
+            {county.county} county soil
           </div>
           {nutrients.map((n) => {
             const rawVal = typeof n.val === "string" ? parseFloat(n.val) : n.val;
@@ -99,7 +99,7 @@ export default async function CountyEmbedPage({ params }: PageProps) {
           rel="noopener"
           className="text-gold-700 hover:text-gold-500 font-bold flex items-center gap-0.5 transition-colors"
         >
-          View Full Report →
+          View full report →
         </Link>
         <span className="text-soil-500">
           Powered by{" "}
@@ -109,7 +109,7 @@ export default async function CountyEmbedPage({ params }: PageProps) {
             rel="noopener"
             className="text-forest-700 hover:underline font-bold"
           >
-            ShambaIQ {county.county} Soil Data
+            ShambaIQ {county.county} soil data
           </Link>
         </span>
       </div>

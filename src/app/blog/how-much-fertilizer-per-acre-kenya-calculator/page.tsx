@@ -21,13 +21,13 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer Guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "Fertilizer Calculator Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "Fertilizer calculator Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "Coming soon", answer: "This section is being updated with detailed FAQ content." },
 ]);
 const TOC_ITEMS: TOCItem[] = [
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function Page() {
@@ -36,15 +36,18 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer Guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "Fertilizer Calculator Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Fertilizer guides", url: `${BASE_URL}/blog?category=fertilizer-guides` }, { name: "Fertilizer calculator Kenya", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
             <header className="mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Link href="/blog?category=fertilizer-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Fertilizer Guides</Link>
+                <Link href="/blog?category=fertilizer-guides" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Fertilizer guides</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">How Much Fertilizer Per Acre in Kenya: <span className="text-gold-700">Rates by Crop, County, and Soil Type</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                How much fertilizer per acre in Kenya:
+                <span className="text-gold-700">Rates by crop, county, and soil type</span>
+              </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">The most common fertilizer question is also the most variable: how much do I use? A blanket answer of 1 bag DAP and 1 bag CAN is correct for highland maize but wrong for beans, wrong for onions in Kajiado, and wrong for any crop on unlimed acidic soils. This guide provides correct rates for Kenya's 10 most common crop-county combinations.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
@@ -61,12 +64,12 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="rates-table" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Fertilizer Rates for Kenya's 10 Most Common Crops</h2>
+              <h2 id="rates-table" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Fertilizer rates for Kenya's 10 most common crops</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Fertilizer application rates by crop in Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Crop", "At Planting", "Top-Dress", "Lime Needed?", "Total Cost/Acre"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Crop", "At planting", "Top-dress", "Lime needed?", "Total cost/acre"].map((h) => <th key={h} className="px-3 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Maize", "DAP 50 kg", "CAN 50 kg (knee height)", "If pH < 5.8", "KES 7,700"], ["Wheat", "DAP 75 kg", "CAN 50 kg (tillering)", "If pH < 6.0", "KES 9,800"], ["Beans", "DAP 25 kg + Rhizobium", "NONE", "If pH < 5.5", "KES 3,500"], ["Cabbage", "DAP 50 kg", "CAN 50 kg \u00d7 2 (wk 3 + 6)", "If pH < 5.5", "KES 11,700"], ["Tomato", "DAP 50 kg", "CAN 50 kg \u00d7 3 (wk 2, 5, 8)", "If pH < 5.5", "KES 14,700"], ["Onion (Kajiado)", "NPK 17:17:17 50 kg", "AmSulfate 50 kg \u00d7 2", "No \u2014 alkaline", "KES 10,400"], ["Potato", "DAP 50 kg + MOP 25 kg", "CAN 50 kg (earthing up)", "If pH < 5.5", "KES 10,200"], ["Sweet potato", "DAP 25 kg", "Mavuno 25 kg (wk 4)", "If pH < 5.5", "KES 5,600"], ["Sorghum", "DAP 25 kg", "CAN 25 kg (if rain good)", "Rarely needed", "KES 4,200"], ["Napier grass", "DAP 50 kg (establish)", "CAN 50 kg per cut (4-6/yr)", "If pH < 5.5", "KES 16,000+/yr"]].map(([crop, plant, top, lime, cost], i) => (
@@ -85,7 +88,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="mistakes" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three Expensive Fertilizer Mistakes</h2>
+              <h2 id="mistakes" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Three expensive fertilizer mistakes</h2>
               <div className="space-y-3 mb-6">
                 {[{title: "Applying CAN at planting instead of knee height", cost: "15\u201330% nitrogen wasted", fix: "CAN volatilises from the surface before roots can absorb it. Wait until knee height when the established root system actively absorbs nitrogen during rapid growth."}, {title: "Applying nitrogen fertilizer to beans", cost: "KES 3,500 wasted + reduced yield", fix: "Beans fix their own nitrogen through Rhizobium. External N suppresses nodule formation. Apply phosphorus only."}, {title: "Applying DAP to alkaline Kajiado soils", cost: "pH rises further, zinc locks out", fix: "DAP's diammonium component releases hydroxide ions. Use NPK 17:17:17 and ammonium sulfate instead."}].map((item) => (
                   <div key={item.title} className="bg-red-50 border border-red-200 rounded-xl p-4">
@@ -108,8 +111,8 @@ export default function Page() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/app", label: "Check Your Farm Soil" },
-                  { href: "/blog", label: "All Blog Posts" },
+                  { href: "/app", label: "Check your farm soil" },
+                  { href: "/blog", label: "All blog posts" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
@@ -117,7 +120,7 @@ export default function Page() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -133,7 +136,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Maize basal", "DAP 50 kg/acre"],
@@ -150,7 +153,7 @@ export default function Page() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="Related Guides" />
+        <RelatedPosts posts={relatedPosts} heading="Related guides" />
       </div>
     </>
   );

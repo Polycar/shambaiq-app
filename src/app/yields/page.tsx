@@ -136,11 +136,11 @@ export default function YieldsPage() {
         <div className="flex items-center justify-center gap-2 mb-1">
           <TrendingUp size={28} className="text-white" />
           <h1 className="font-display text-2xl font-bold text-white">
-            Yield Tracker
+            Yield tracker
           </h1>
         </div>
         <p className="text-blue-200 text-sm">
-          Season-over-Season Progress
+          Season-over-season progress
         </p>
       </div>
 
@@ -177,7 +177,7 @@ export default function YieldsPage() {
             <div>
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-300">
                 <h2 className="font-display text-lg font-bold text-forest-700 mb-4 flex items-center gap-2">
-                  <Plus size={18} /> Log New Harvest
+                  <Plus size={18} /> Log new harvest
                 </h2>
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <label className="block">
@@ -207,7 +207,7 @@ export default function YieldsPage() {
                 </div>
                 <label className="block mb-4">
                   <span className="text-xs font-semibold text-soil-500">
-                    Yield (Bags/Acre)
+                    Yield (bags/acre)
                   </span>
                   <input
                     type="number"
@@ -229,7 +229,7 @@ export default function YieldsPage() {
                   className="w-full py-3 bg-forest-700 hover:bg-forest-800 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   {saving ? <Loader2 size={16} className="animate-spin" /> : null}
-                  💾 Save Harvest
+                  💾 Save harvest
                 </button>
               </div>
             </div>

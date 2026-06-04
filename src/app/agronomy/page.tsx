@@ -194,7 +194,7 @@ export default function AgronomyPage() {
         <div className="w-16 h-16 rounded-2xl bg-forest-700 flex items-center justify-center mb-4">
           <Lock size={28} className="text-white" />
         </div>
-        <h2 className="font-display text-xl font-bold text-forest-700 mb-2">Login Required</h2>
+        <h2 className="font-display text-xl font-bold text-forest-700 mb-2">Login required</h2>
         <p className="text-soil-500 text-sm max-w-xs mb-6">
           Shamba Mshauri is available to registered farmers. Create a free account to get personalized agronomic advice.
         </p>
@@ -221,7 +221,7 @@ export default function AgronomyPage() {
             <p className="text-xs text-green-200 leading-none">ShambaIQ</p>
             <h1 className="font-bold text-sm leading-tight">
               Shamba Mshauri
-              <span className="font-normal text-green-200 ml-1">— AI Agronomist</span>
+              <span className="font-normal text-green-200 ml-1">— AI agronomist</span>
             </h1>
           </div>
         </Link>
@@ -259,7 +259,7 @@ export default function AgronomyPage() {
             <button onClick={() => setShowHistory(false)} className="p-1 rounded hover:bg-cream-100">
               <ChevronLeft size={18} className="text-forest-700" />
             </button>
-            <span className="text-sm font-bold text-forest-700">Chat History</span>
+            <span className="text-sm font-bold text-forest-700">Chat history</span>
           </div>
 
           <div className="p-4">

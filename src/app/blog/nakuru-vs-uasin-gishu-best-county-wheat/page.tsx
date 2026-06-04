@@ -21,13 +21,13 @@ export const metadata: Metadata = {
 };
 
 const articleSchema = makeArticleSchema({ headline: POST.title, description: POST.metaDescription, slug: POST.slug, datePublished: POST.datePublished, dateModified: POST.dateModified, image: `/api/og?type=blog&slug=${POST.slug}`, keywords: [POST.focusKeyword, ...POST.secondaryKeywords], wordCount: POST.wordCount, section: POST.section });
-const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs Uasin Gishu Wheat", url: `${BASE_URL}/blog/${POST.slug}` }]);
+const breadcrumbSchema = makeBreadcrumbSchema([{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs Uasin Gishu wheat", url: `${BASE_URL}/blog/${POST.slug}` }]);
 
 const faqSchema = makeFAQSchema([
   { question: "Coming soon", answer: "This section is being updated with detailed FAQ content." },
 ]);
 const TOC_ITEMS: TOCItem[] = [
-  { id: "faq", label: "Frequently Asked Questions", level: 2 },
+  { id: "faq", label: "Frequently asked questions", level: 2 },
 ];
 
 export default function Page() {
@@ -36,7 +36,7 @@ export default function Page() {
     <>
       <JsonLd schemas={[WEBSITE_SCHEMA, ORGANIZATION, articleSchema, breadcrumbSchema, faqSchema]} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs Uasin Gishu Wheat", url: `${BASE_URL}/blog/${POST.slug}` }]} />
+        <Breadcrumbs items={[{ name: "Home", url: BASE_URL }, { name: "Blog", url: `${BASE_URL}/blog` }, { name: "Comparisons", url: `${BASE_URL}/blog?category=comparisons` }, { name: "Nakuru vs Uasin Gishu wheat", url: `${BASE_URL}/blog/${POST.slug}` }]} />
         <div className="mt-6 lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
           <article itemScope itemType="https://schema.org/BlogPosting">
             <meta itemProp="datePublished" content={POST.datePublished} /><meta itemProp="dateModified" content={POST.dateModified} /><meta itemProp="author" content="Polycarp Andabwa" /><meta itemProp="publisher" content="ShambaIQ" />
@@ -44,7 +44,10 @@ export default function Page() {
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 <Link href="/blog?category=comparisons" className="text-xs font-semibold uppercase tracking-widest text-gold-700 bg-gold-50 border border-gold-200 px-3 py-1 rounded-full hover:bg-gold-100 transition-colors">Comparisons</Link>
               </div>
-              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">Nakuru vs Uasin Gishu: <span className="text-gold-700">Which Is Kenya's Best Wheat County?</span></h1>
+              <h1 itemProp="headline" className="text-3xl sm:text-4xl font-display font-bold text-forest-900 leading-tight mb-4">
+                Nakuru vs Uasin Gishu:
+                <span className="text-gold-700">Which is Kenya's best wheat county?</span>
+              </h1>
               <p className="text-lg text-soil-500 leading-relaxed mb-5" itemProp="description">Nakuru and Uasin Gishu produce over 70 percent of Kenya's wheat. Both offer excellent highland conditions but differ in altitude distribution, disease pressure, and market infrastructure. ShambaIQ's precision soil mapping reveals where each county has the advantage.</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soil-500 pb-6 border-b border-cream-300">
                 <AuthorCard compact /><span className="text-soil-300 hidden sm:block">·</span>
@@ -61,12 +64,12 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="soil-comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil Data: Nakuru vs Uasin Gishu</h2>
+              <h2 id="soil-comparison" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Soil data: Nakuru vs Uasin Gishu</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Soil comparison Nakuru versus Uasin Gishu for wheat production Kenya</caption>
                   <thead className="bg-forest-700 text-white">
-                    <tr>{["Parameter", "Nakuru", "Uasin Gishu", "Wheat Optimum"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
+                    <tr>{["Parameter", "Nakuru", "Uasin Gishu", "Wheat optimum"].map((h) => <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>)}</tr>
                   </thead>
                   <tbody className="divide-y divide-cream-200">
                     {[["Altitude range", "1,800\u20132,200 m", "1,800\u20132,400 m", "> 1,800 m"], ["Soil pH", "5.8\u20136.8", "5.5\u20136.5", "6.0\u20137.0"], ["Phosphorus (mg/kg)", "10\u201320", "8\u201318", "> 15"], ["Nitrogen (g/kg)", "1.4\u20132.2", "1.5\u20132.4", "> 1.5"], ["Organic Carbon (%)", "1.8\u20132.8", "2.0\u20133.2", "> 2.0"], ["Annual Rainfall", "800\u20131,000 mm", "900\u20131,200 mm", "700\u20131,000 mm"], ["Humidity", "Moderate\u2013High", "Moderate", "Low preferred"], ["Stem rust risk", "Moderate\u2013High", "Moderate", "Variety dependent"]].map(([p, nak, ug, opt], i) => (
@@ -83,7 +86,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best Wheat Varieties by County</h2>
+              <h2 id="varieties" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Best wheat varieties by county</h2>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[{county: "Nakuru", top: "Eagle 10", alt: "Kenya Fahari, Kenya Shindo", note: "Eagle 10 leads for Ug99 stem rust resistance. Kenya Fahari yields higher in favourable seasons but more susceptible to yellow stripe rust in Nakuru's cooler, wetter Rift Valley floor conditions."}, {county: "Uasin Gishu", top: "Kenya Fahari", alt: "Eagle 10, NGANO 1", note: "Eldoret Basin's lower humidity reduces foliar disease pressure in most seasons, making Kenya Fahari's yield advantage consistently realisable. NGANO 1 shows strong Ug99 resistance and competitive yield."}].map((c) => (
                   <div key={c.county} className="bg-white border border-cream-300 rounded-xl p-5">
@@ -97,7 +100,7 @@ export default function Page() {
             </section>
 
             <section>
-              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Wheat Enterprise Budget Per Acre \u2014 2026</h2>
+              <h2 id="budget" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Wheat enterprise budget per acre \u2014 2026</h2>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <thead className="bg-forest-700 text-white">
@@ -112,7 +115,7 @@ export default function Page() {
                     ))}
                     <tr className="bg-forest-700 text-white"><td className="px-4 py-3 font-bold">Total Cost</td><td className="px-4 py-3 font-bold">KES 25,700</td></tr>
                     <tr className="bg-gold-50"><td className="px-4 py-3 font-bold text-gold-800">Revenue (18 bags \u00d7 KES 4,500)</td><td className="px-4 py-3 font-bold text-gold-800">KES 81,000</td></tr>
-                    <tr className="bg-green-50"><td className="px-4 py-3 font-bold text-green-800">Net Margin</td><td className="px-4 py-3 font-bold text-green-800">KES 55,300</td></tr>
+                    <tr className="bg-green-50"><td className="px-4 py-3 font-bold text-green-800">Net margin</td><td className="px-4 py-3 font-bold text-green-800">KES 55,300</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -129,8 +132,8 @@ export default function Page() {
               <p className="text-xs font-bold uppercase tracking-widest text-soil-500 mb-3">Also on ShambaIQ</p>
               <div className="grid sm:grid-cols-2 gap-2 text-sm">
                 {[
-                  { href: "/app", label: "Check Your Farm Soil" },
-                  { href: "/blog", label: "All Blog Posts" },
+                  { href: "/app", label: "Check your farm soil" },
+                  { href: "/blog", label: "All blog posts" },
                 ].map(({ href, label }) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-soil-500 hover:text-forest-700 transition-colors py-1"><span className="text-gold-500 flex-shrink-0">→</span>{label}</Link>
                 ))}
@@ -138,7 +141,7 @@ export default function Page() {
             </aside>
 
             <section id="faq" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently Asked Questions</h2>
+              <h2 id="faq-heading" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-6">Frequently asked questions</h2>
               <div className="space-y-4">
                 {faqSchema.mainEntity.map((item: { name: string; acceptedAnswer: { text: string } }, i: number) => (
                   <details key={i} className="group bg-white border border-cream-300 rounded-xl" itemScope itemType="https://schema.org/Question">
@@ -154,7 +157,7 @@ export default function Page() {
             <div className="sticky top-6 space-y-6">
               <TableOfContents items={TOC_ITEMS} />
               <div className="bg-cream-100 border border-cream-300 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick Facts</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-3">Quick facts</p>
                 <div className="space-y-2 text-sm">
                   {[
                     ["Nakuru wheat %", "25–30% of national"],
@@ -171,7 +174,7 @@ export default function Page() {
             </div>
           </aside>
         </div>
-        <RelatedPosts posts={relatedPosts} heading="Related Guides" />
+        <RelatedPosts posts={relatedPosts} heading="Related guides" />
       </div>
     </>
   );

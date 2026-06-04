@@ -17,7 +17,7 @@ interface Application {
 }
 
 const STATUS_CONFIG = {
-  pending: { icon: Clock, color: "#f59e0b", bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", label: "Pending Review" },
+  pending: { icon: Clock, color: "#f59e0b", bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", label: "Pending review" },
   approved: { icon: CheckCircle, color: "#16a34a", bg: "bg-green-50", border: "border-green-200", text: "text-green-700", label: "Approved" },
   declined: { icon: XCircle, color: "#dc2626", bg: "bg-red-50", border: "border-red-200", text: "text-red-700", label: "Declined" },
 };
@@ -56,7 +56,7 @@ export default function DealerStatusPage() {
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Dealers", href: "/dealers" }, { label: "Status" }]} />
 
       <h1 className="font-display text-3xl font-bold text-forest-700 mb-2">
-        Check Application Status
+        Check application status
       </h1>
       <p className="text-soil-500 mb-8">
         Enter the phone number you used when registering your agrovet.
@@ -64,7 +64,7 @@ export default function DealerStatusPage() {
 
       <div className="bg-white rounded-2xl border border-cream-300 p-6 mb-8">
         <label className="text-sm font-semibold text-forest-700 mb-2 block">
-          Phone Number
+          Phone number
         </label>
         <div className="flex gap-3">
           <input
@@ -102,7 +102,7 @@ export default function DealerStatusPage() {
             href="/dealers/apply"
             className="inline-block px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-xl transition-colors"
           >
-            Register Your Agrovet →
+            Register your agrovet →
           </a>
         </div>
       )}

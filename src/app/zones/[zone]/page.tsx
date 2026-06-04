@@ -142,7 +142,7 @@ export default async function ZonePage({ params }: PageProps) {
         <div>
           <section className="bg-white rounded-2xl p-6 border border-cream-300 mb-6">
             <h2 className="font-display text-lg font-bold text-forest-700 mb-4">
-              Top Crops for this Zone
+              Top crops for this zone
             </h2>
             <div className="space-y-2">
               {zoneCrops.map((c) => (
@@ -164,7 +164,7 @@ export default async function ZonePage({ params }: PageProps) {
             href="/app"
             className="block text-center px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors"
           >
-            Get Advice for This Zone →
+            Get advice for this zone →
           </Link>
         </div>
       </div>

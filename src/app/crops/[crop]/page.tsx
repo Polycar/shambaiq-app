@@ -15,7 +15,10 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL, ORGANIZATION, makeHowToSchema } from "@/lib/schema";
 
-export const revalidate = 0;
+// ISR: serve a cached static page and refresh it hourly. Avoids full dynamic
+// SSR on every request (better TTFB / Core Web Vitals and crawl efficiency)
+// while still keeping live prices reasonably fresh.
+export const revalidate = 3600;
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
@@ -40,7 +43,7 @@ export async function generateStaticParams() {
 
 async function fetchLivePrice(cropName: string): Promise<number | null> {
   try {
-    const res = await fetch(`${API}/api/v1/crops/prices`, { cache: "no-store" });
+    const res = await fetch(`${API}/api/v1/crops/prices`, { next: { revalidate: 3600 } });
     if (!res.ok) return null;
     const data = await res.json();
     return data.prices?.[cropName] ?? null;

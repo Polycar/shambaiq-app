@@ -8,6 +8,11 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
+  // Stable last-modified for programmatic (data-driven) pages. Bump this only
+  // when the underlying soil/crop/ward datasets actually change. Using a fixed
+  // date instead of now() keeps Google's crawl scheduling accurate and avoids
+  // signalling fake freshness across thousands of URLs on every deploy.
+  const dataUpdated = "2026-06-01T00:00:00.000Z";
   const wards = getWards();
 
   // ── 1. Static Pages ────────────────────────────────────────────
@@ -76,14 +81,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ── 3. Top-Level Directories (Zones, Counties, Crops, Dealers) ──
   const zonePages: MetadataRoute.Sitemap = ALL_ZONES.map((zone) => ({
     url: `${BASE}/zones/${zone.slug}`,
-    lastModified: now,
+    lastModified: dataUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
   const countyPages: MetadataRoute.Sitemap = ALL_COUNTIES.map((c) => ({
     url: `${BASE}/soil/${c.slug}`,
-    lastModified: now,
+    lastModified: dataUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
@@ -97,7 +102,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const cropPages: MetadataRoute.Sitemap = ALL_CROPS.map((c) => ({
     url: `${BASE}/crops/${c.slug}`,
-    lastModified: now,
+    lastModified: dataUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
@@ -106,7 +111,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const comboPages: MetadataRoute.Sitemap = ALL_COUNTIES.flatMap((county) =>
     ALL_CROPS.map((crop) => ({
       url: `${BASE}/soil/${county.slug}/${crop.slug}`,
-      lastModified: now,
+      lastModified: dataUpdated,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     }))
@@ -118,7 +123,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const countySlug = county ? county.slug : slugify(w.county);
     return {
       url: `${BASE}/soil/${countySlug}/ward/${w.slug}`,
-      lastModified: now,
+      lastModified: dataUpdated,
       changeFrequency: "monthly" as const,
       priority: 0.5,
     };

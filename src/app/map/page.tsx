@@ -252,6 +252,22 @@ export default function MapPage() {
         </div>
       </section>
 
+      {/* Lab override cross-link */}
+      <div className="mb-8 bg-cream-100 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <p className="font-semibold text-forest-700 mb-1">Have a physical soil test report?</p>
+          <p className="text-sm text-soil-500">
+            Enter your lab values (pH, N, P, K) directly into ShambaIQ for an even more precise fertilizer plan.
+          </p>
+        </div>
+        <Link
+          href="/soil-test"
+          className="shrink-0 px-5 py-2.5 bg-white border border-cream-300 hover:border-gold-400 text-forest-700 font-semibold rounded-xl transition-colors text-sm"
+        >
+          Use lab results →
+        </Link>
+      </div>
+
       {/* Final CTA */}
       <div className="bg-forest-700 rounded-2xl p-8 text-center">
         <h2 className="font-display text-2xl font-bold text-cream-100 mb-3">

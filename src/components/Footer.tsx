@@ -41,6 +41,8 @@ export default function Footer() {
               <li><Link href="/crops/maize" className="hover:text-gold-400 transition-colors">Maize guide</Link></li>
               <li><Link href="/crops/beans" className="hover:text-gold-400 transition-colors">Beans guide</Link></li>
               <li><Link href="/crops" className="hover:text-gold-400 transition-colors">All 40+ Crops</Link></li>
+              <li><Link href="/map" className="hover:text-gold-400 transition-colors">GPS farm mapping</Link></li>
+              <li><Link href="/soil-test" className="hover:text-gold-400 transition-colors">Use soil test results</Link></li>
               <li><Link href="/soil/compare" className="hover:text-gold-400 transition-colors">Best county by crop</Link></li>
               <li><Link href="/zones" className="hover:text-gold-400 transition-colors">Agroecological Zones</Link></li>
               <li><Link href="/dealers" className="hover:text-gold-400 transition-colors">Agrovet directory</Link></li>

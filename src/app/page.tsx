@@ -13,6 +13,8 @@ import {
   Leaf,
   TrendingUp,
   User,
+  CloudRain,
+  Navigation,
 } from "lucide-react";
 import {
   getCountySoils,
@@ -92,7 +94,7 @@ export default function HomePage() {
 
               {/* Subheadline */}
               <p className="fade-up fade-up-delay-2 text-lg md:text-xl text-cream-300/90 mb-10 leading-relaxed max-w-2xl">
-                Free soil analysis, fertilizer plans, and crop recommendations for
+                Free soil analysis, fertilizer plans, 7-day weather forecasts, and GPS farm mapping for
                 all 47 Kenyan counties. Data-driven farming for every shamba.
               </p>
 
@@ -169,12 +171,14 @@ export default function HomePage() {
               Everything your shamba needs
             </h2>
             <p className="text-soil-500 max-w-xl mx-auto text-lg">
-              Soil reports, fertilizer plans, yield tracking, and crop disease diagnosis — all in one place
+              Soil reports, fertilizer plans, weather forecasts, GPS farm mapping, yield tracking, and crop disease diagnosis — all in one place
             </p>
           </div>
-          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible no-scrollbar">
+          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory gap-5 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible no-scrollbar">
             {([
               { icon: Sprout, title: "Soil & crop advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using 30m satellite mapping.", href: "/app", color: "#16a34a" },
+              { icon: CloudRain, title: "7-day weather forecast", desc: "Live rainfall, temperature highs and lows, and planting-window alerts for your exact farm location — updated daily.", href: "/app", color: "#0ea5e9" },
+              { icon: Navigation, title: "GPS farm mapping", desc: "Drop a pin on your exact plot. ShambaIQ pulls 30m satellite soil data for your specific farm — not just your county average.", href: "/map", color: "#7c3aed" },
               { icon: BarChart3, title: "Yield tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
               { icon: Camera, title: "Plant doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
               { icon: Store, title: "Find agrovets", desc: "Locate nearby input suppliers by county. Phone numbers, stock lists, and directions to your nearest dealer.", href: "/dealers", color: "#C8860A" },
@@ -206,7 +210,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:gap-8">
             {([
-              { step: "01", title: "Select your location", desc: "Choose your county and ward. We use 30m precision satellite data to check the exact soil health of your local farm area.", icon: MapPin },
+              { step: "01", title: "Select your location", desc: "Choose your county and ward — or tap 'Use GPS' to drop a pin on your exact plot. ShambaIQ reads 30m satellite soil data and a live 7-day weather forecast for that precise location.", icon: MapPin },
               { step: "02", title: "Pick your crop", desc: "40+ crops analyzed against your soil\u2019s pH, nitrogen, phosphorus, and potassium. Each scored for suitability.", icon: Wheat },
               { step: "03", title: "Get your plan", desc: "Fertilizer type, bags per acre, timing, budget, and nearest agrovet. Actionable advice you can use today.", icon: ClipboardCheck },
             ] as const).map((s) => {

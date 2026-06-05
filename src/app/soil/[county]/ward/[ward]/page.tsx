@@ -21,11 +21,10 @@ interface PageProps {
   params: Promise<{ county: string; ward: string }>;
 }
 
-// Build top wards at build time, rest on-demand
 export async function generateStaticParams() {
-  const counties = getCountySoils().slice(0, 3);
+  const counties = getCountySoils();
   return counties.flatMap((c) => {
-    const wards = getWardsByCounty(c.county).slice(0, 2);
+    const wards = getWardsByCounty(c.county).slice(0, 5);
     return wards.map((w) => ({ county: c.slug, ward: slugify(w.ward) }));
   });
 }
@@ -75,7 +74,10 @@ export default async function WardPage({ params }: PageProps) {
       { next: { revalidate: 86400 } }
     );
     if (res.ok) {
-      precisionData = await res.json();
+      const json = await res.json();
+      if (json.data && json.data.pH != null) {
+        precisionData = json.data;
+      }
     }
   } catch {
     // Use county-level fallback

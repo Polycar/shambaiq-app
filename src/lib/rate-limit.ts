@@ -1,8 +1,15 @@
-// Distributed rate limiter using Upstash Redis (HTTP-based, safe for Vercel serverless).
-// Falls back to a module-level in-memory Map when UPSTASH_REDIS_REST_URL is not set,
-// so local dev and preview deployments work without any extra config.
+// Distributed rate limiter using Upstash Redis + @upstash/ratelimit.
+// @upstash/ratelimit uses atomic Lua scripts — no INCR/expire race conditions.
+//
+// Env vars accepted (both naming conventions):
+//   UPSTASH_REDIS_REST_URL  or  KV_REST_API_URL
+//   UPSTASH_REDIS_REST_TOKEN  or  KV_REST_API_TOKEN
+//
+// Falls back to an ephemeral in-memory limiter for local dev only.
+// In-memory is NOT suitable for Vercel production — each cold start resets it.
 
-import { Redis } from '@upstash/redis';
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 export interface RateLimitResult {
   allowed: boolean;
@@ -10,14 +17,40 @@ export interface RateLimitResult {
   retryAfterSecs: number;
 }
 
-// ── Upstash path ──────────────────────────────────────────────────────────────
+// Accept both the Upstash-direct and Vercel-integration naming conventions.
+const redisUrl =
+  process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL;
+const redisToken =
+  process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN;
 
 let redis: Redis | null = null;
-if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-  redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
-  });
+if (redisUrl && redisToken) {
+  redis = new Redis({ url: redisUrl, token: redisToken });
+} else if (process.env.NODE_ENV === "production") {
+  console.warn(
+    "[rate-limit] Neither UPSTASH_REDIS_REST_URL nor KV_REST_API_URL is set. " +
+    "Rate limiting is DISABLED in production — set one of these env vars in Vercel."
+  );
+}
+
+// Cache one Ratelimit instance per window config so we don't create a new one per request.
+const limiterCache = new Map<string, Ratelimit>();
+
+function getLimiter(limit: number, windowMs: number): Ratelimit | null {
+  if (!redis) return null;
+  const key = `${limit}:${windowMs}`;
+  if (!limiterCache.has(key)) {
+    limiterCache.set(
+      key,
+      new Ratelimit({
+        redis,
+        // slidingWindow gives smooth per-second bursting; fixedWindow is simpler.
+        limiter: Ratelimit.slidingWindow(limit, `${Math.ceil(windowMs / 1000)} s`),
+        prefix: "rl",
+      })
+    );
+  }
+  return limiterCache.get(key)!;
 }
 
 async function redisRateLimit(
@@ -25,47 +58,22 @@ async function redisRateLimit(
   limit: number,
   windowMs: number
 ): Promise<RateLimitResult> {
-  const r = redis!;
-  const windowSecs = Math.ceil(windowMs / 1000);
-  const redisKey = `rl:${key}`;
-
-  // INCR is atomic — safe under concurrent Vercel instances
-  const count = await r.incr(redisKey);
-  if (count === 1) {
-    // First request in this window — set TTL
-    await r.expire(redisKey, windowSecs);
-  }
-
-  if (count > limit) {
-    const ttl = await r.ttl(redisKey);
-    return { allowed: false, remaining: 0, retryAfterSecs: Math.max(ttl, 1) };
-  }
-
-  return { allowed: true, remaining: limit - count, retryAfterSecs: 0 };
+  const limiter = getLimiter(limit, windowMs)!;
+  const { success, remaining, reset } = await limiter.limit(key);
+  const retryAfterSecs = success ? 0 : Math.max(1, Math.ceil((reset - Date.now()) / 1000));
+  return { allowed: success, remaining, retryAfterSecs };
 }
 
-// ── In-memory fallback ────────────────────────────────────────────────────────
+// ── In-memory fallback (local dev only) ──────────────────────────────────────
 
 interface Entry { timestamps: number[] }
 const store = new Map<string, Entry>();
-let lastCleanup = 0;
-
-function maybeCleanup(windowMs: number) {
-  const now = Date.now();
-  if (now - lastCleanup < 10 * 60 * 1000) return;
-  lastCleanup = now;
-  const cutoff = now - windowMs;
-  for (const [key, entry] of store.entries()) {
-    if (entry.timestamps.every(t => t < cutoff)) store.delete(key);
-  }
-}
 
 function memoryRateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
-  maybeCleanup(windowMs);
   const now = Date.now();
   const cutoff = now - windowMs;
   const entry = store.get(key) ?? { timestamps: [] };
-  entry.timestamps = entry.timestamps.filter(t => t > cutoff);
+  entry.timestamps = entry.timestamps.filter((t) => t > cutoff);
 
   if (entry.timestamps.length >= limit) {
     const retryAfterSecs = Math.ceil((entry.timestamps[0] + windowMs - now) / 1000);
@@ -90,7 +98,7 @@ export async function rateLimit(
 }
 
 export function clientIp(request: Request): string {
-  const forwarded = request.headers.get('x-forwarded-for');
-  if (forwarded) return forwarded.split(',')[0].trim();
-  return request.headers.get('x-real-ip') ?? 'unknown';
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return request.headers.get("x-real-ip") ?? "unknown";
 }

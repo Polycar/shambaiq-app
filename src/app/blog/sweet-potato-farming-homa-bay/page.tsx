@@ -154,7 +154,7 @@ const howToSchema = makeHowToSchema({
   steps: [
     {
       name: "Test your soil and get a nutrient baseline",
-      text: "Run your Homa Bay farm location through the ShambaIQ tool at shambaiq.com/app?county=homa-bay&crop=sweet-potato. This gives you precision satellite soil data for your exact location — pH, potassium, nitrogen, and phosphorus — so you know your exact fertilizer deficit before buying anything.",
+      text: "Run your Homa Bay location through the ShambaIQ tool at shambaiq.com/app?county=homa-bay&crop=sweet-potato. This gives you a county-average soil baseline (pH, potassium, nitrogen, and phosphorus) so you know your starting fertilizer needs. For field-level precision, use the GPS pin mode.",
     },
     {
       name: "Prepare land: plough deep and build ridges",
@@ -355,9 +355,9 @@ export default function SweetPotatoHomaBayPage() {
               <p className="text-soil-600 leading-relaxed mb-5">
                 ShambaIQ pulls soil nutrient data from{" "}
                 <Link href="/about" className="text-gold-700 hover:underline">
-                  ShambaIQ precision data
+                  iSDA Africa satellite data
                 </Link>
-                {" "}— 30-metre resolution satellite predictions trained on 130,000+ African soil
+                {" "}(CC BY 4.0) — county-average measurements calibrated against 130,000+ African soil
                 samples. Here is what the data shows for Homa Bay County:
               </p>
 

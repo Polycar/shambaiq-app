@@ -121,7 +121,7 @@ export default async function CountySoilPage({ params }: PageProps) {
               zone
             </p>
             <p className="text-sm text-soil-300">
-              Data: 30m satellite soil mapping · Updated 2026
+              Soil baseline: iSDA Africa · County average
             </p>
           </div>
           <ScoreRing score={score} />

@@ -124,7 +124,7 @@ export default function MaizeNakuruPage() {
 
             <section>
               <h2 id="soil-data" className="text-2xl font-display font-bold text-forest-800 mt-10 mb-4">Nakuru soil data and what it means for maize</h2>
-              <p className="text-soil-600 leading-relaxed mb-5">ShambaIQ uses high-resolution satellite soil prediction models at 30-metre resolution to generate nutrient estimates at farm level across all 47 counties. Here is what the data shows for Nakuru, mapped against maize's agronomic requirements:</p>
+              <p className="text-soil-600 leading-relaxed mb-5">ShambaIQ uses county-average soil measurements sourced from iSDA Africa satellite data (CC BY 4.0) to generate nutrient baselines across all 47 counties. For field-level precision, use the GPS farm mapping tool. Here is what the data shows for Nakuru county, mapped against maize's agronomic requirements:</p>
               <div className="overflow-x-auto mb-6 rounded-xl border border-cream-300">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Nakuru County soil nutrient values versus maize requirements</caption>

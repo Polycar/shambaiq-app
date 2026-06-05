@@ -14,7 +14,7 @@ Sweet Potato,5.0,7.0,low,medium,high,18,3500,Sandy Loam,600,1500,0,2200
 Groundnuts,5.5,7.0,low,medium,medium,90,400,Sandy,500,1000,0,1800
 Cowpeas,5.0,7.5,low,low,low,65,350,Sandy,250,700,0,1800
 Sunflower,6.0,7.5,medium,medium,medium,48,750,Sandy,400,800,0,2000
-Coffee (Arabica),5.0,6.0,high,medium,high,120,800,Loam,1200,2000,1300,2200
+Coffee (Arabica),5.0,6.0,high,medium,high,120,800,Loam,1000,2000,1300,2200
 Macadamia,5.0,6.5,medium,medium,medium,110,1500,Loam,700,1500,900,2100
 Mango,5.5,7.5,low,low,medium,10,2800,Sandy,500,1200,0,1200
 Onion,6.0,7.0,high,high,medium,45,3500,Sandy Loam,500,1000,0,2000
@@ -45,6 +45,6 @@ Pawpaw,6.0,7.5,high,medium,high,28,10000,Sandy Loam,600,1500,0,1500
 Wambugu Apples,5.5,7.0,medium,medium,high,75,2000,Loam,1000,1800,1500,2500
 Napier Grass,5.0,8.0,medium,low,medium,5,15000,Loam,800,2000,0,2500
 Lucerne,6.5,8.0,low,medium,high,28,6500,Clay Loam,400,800,0,2500
-Sugarcane,5.5,8.0,high,medium,high,5,27000,Loam,1100,2000,0,1500
-Cashew Nuts,5.0,7.5,low,low,medium,275,900,Sandy,800,1500,0,700
-Coconuts,5.5,8.0,low,low,high,22,2500,Sandy,1000,2000,0,600
+Sugarcane,5.5,7.0,high,medium,high,5,27000,Loam,1100,2000,0,1500
+Cashew Nuts,5.0,7.5,low,low,medium,275,900,Sandy,600,1500,0,700
+Coconuts,5.5,8.0,low,low,high,22,2500,Sandy,650,2000,0,600

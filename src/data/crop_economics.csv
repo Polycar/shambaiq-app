@@ -1,33 +1,33 @@
 Crop,ph_min,ph_max,n_need,p_need,k_need,price_per_kg,yield_per_acre,pref_texture,rain_min,rain_max,alt_min,alt_max
-Maize,5.5,7.0,high,high,medium,38,1000,Loam,500,1400,0,2500
-Beans,6.0,7.0,low,medium,low,120,700,Loam,500,1400,0,2500
+Maize,5.5,7.0,high,high,medium,38,1000,Loam,500,1600,0,2500
+Beans,6.0,7.0,low,medium,low,120,700,Loam,500,1600,0,2500
 Potato,5.0,6.5,high,high,high,32,4000,Sandy Loam,700,1500,1000,3000
 Tomato,6.0,7.0,high,high,high,40,5000,Loam,600,1400,0,2200
 Kale (Sukuma Wiki),5.5,7.0,high,medium,medium,20,5000,Clay Loam,700,1800,500,2500
 Wheat,6.0,7.5,high,high,medium,50,1000,Clay,450,950,1500,3000
-Sorghum,5.0,7.5,low,low,low,68,1000,Clay,250,700,0,1800
+Sorghum,5.0,8.0,low,low,low,68,1000,Clay,250,700,0,1800
 Avocado,5.0,6.5,medium,medium,high,18,2000,Sandy Loam,700,1500,1000,2500
 Tea,4.5,6.0,high,medium,medium,25,2200,Clay,1100,2500,1500,3000
 Finger Millet,5.0,7.0,low,low,low,60,600,Sandy,400,1000,0,2000
 Cassava,5.0,8.0,low,low,medium,15,4000,Sandy,500,1500,0,1800
 Sweet Potato,5.0,7.0,low,medium,high,18,3500,Sandy Loam,600,1500,0,2200
 Groundnuts,5.5,7.0,low,medium,medium,90,400,Sandy,500,1000,0,1800
-Cowpeas,5.0,7.5,low,low,low,65,350,Sandy,250,700,0,1800
+Cowpeas,5.0,8.0,low,low,low,65,350,Sandy,250,700,0,1800
 Sunflower,6.0,7.5,medium,medium,medium,48,750,Sandy,400,800,0,2000
 Coffee (Arabica),5.0,6.0,high,medium,high,120,800,Loam,1000,2000,1300,2200
 Macadamia,5.0,6.5,medium,medium,medium,110,1500,Loam,700,1500,900,2100
 Mango,5.5,7.5,low,low,medium,10,2800,Sandy,500,1200,0,1200
 Onion,6.0,7.0,high,high,medium,45,3500,Sandy Loam,500,1000,0,2000
 Cabbage,6.0,7.5,high,high,high,12,10000,Clay Loam,700,1500,800,2500
-Cotton,5.8,8.0,medium,medium,medium,68,900,Clay,600,1200,0,1500
-Pigeon Peas,5.0,7.0,low,low,low,75,500,Sandy,400,900,0,1800
+Cotton,5.8,8.0,medium,medium,medium,68,900,Clay,450,1200,0,1500
+Pigeon Peas,5.0,8.0,low,low,low,75,500,Sandy,400,900,0,1800
 Rice (Upland),5.0,7.0,high,medium,medium,105,1600,Clay,800,1600,0,1500
 Sisal,5.5,8.5,low,low,low,90,900,Sandy,250,700,0,1800
 Pyrethrum,5.5,6.5,medium,high,medium,280,400,Loam,900,1500,1800,3000
 Coffee (Robusta),5.0,6.5,high,medium,high,80,950,Loam,1500,2500,0,1200
 Rice (Lowland/Paddy),5.5,7.0,high,high,medium,100,2000,Clay,1000,2000,0,1500
 Millet,5.0,8.0,low,low,low,58,600,Sandy,250,700,0,1800
-Green Grams,5.5,7.5,low,low,low,120,300,Sandy Loam,250,700,0,1800
+Green Grams,5.5,8.0,low,low,low,120,300,Sandy Loam,250,700,0,1800
 Soybeans,6.0,7.0,low,medium,medium,75,550,Loam,600,1200,0,1800
 Spinach,6.0,7.5,high,medium,medium,25,3500,Loam,600,1400,0,2500
 Carrot,6.0,7.0,low,medium,high,38,5500,Sandy Loam,600,1200,1000,2500

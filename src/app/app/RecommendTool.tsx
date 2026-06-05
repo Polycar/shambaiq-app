@@ -664,7 +664,7 @@ function openPrintReport(result: any, countyFallback: string, acres: number, wea
       <tr><th>Nutrient / property</th><th>Your reading</th><th>Optimal range</th></tr>
       ${soilRows.map(([n, v, o]) => `<tr><td>${esc(n)}</td><td>${esc(v)}</td><td>${esc(o)}</td></tr>`).join("")}
     </table>
-    <p class="wsum">${esc(clean(result.data_source)) || "Source: iSDA Africa precision soil data"}</p>
+    <p class="wsum">${esc(clean(result.data_source)) || "Source: Precision satellite soil data"}</p>
   </div>
 
   ${adviceHtml}
@@ -1353,7 +1353,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
           {resolvedCoords && (
             <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700 flex items-center gap-2">
               <span className="font-semibold">
-                {lang === "en" ? "iSDA precision active" : "Usahihi wa iSDA Umeamilishwa"}
+                {lang === "en" ? "Satellite precision active" : "Usahihi wa Satelaiti Umeamilishwa"}
               </span>
               <span className="text-green-500">—</span>
               <span>{resolvedCoords.source} ({resolvedCoords.lat.toFixed(4)}, {resolvedCoords.lon.toFixed(4)})</span>
@@ -2037,7 +2037,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                   })}
                   {result.county_data["Texture"] && result.latitude && (
                     <div className="flex justify-between text-xs pt-1 border-t border-gray-200 mt-1">
-                      <span className="text-gray-500">{lang === "en" ? "Soil texture (iSDA)" : "Umbile la Udongo (iSDA)"}</span>
+                      <span className="text-gray-500">{lang === "en" ? "Soil texture" : "Umbile la Udongo"}</span>
                       <span className="font-semibold text-forest-700">{result.county_data["Texture"]}</span>
                     </div>
                   )}
@@ -2431,7 +2431,7 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
 
             {/* Footer attribution */}
             <p className="text-center text-xs text-gray-400 pb-6">
-              ISRIC / iSDAsoil Precision | Kenyan Agronomic Baselines | ShambaIQ
+              Satellite Soil Precision | Kenyan Agronomic Baselines | ShambaIQ
             </p>
           </div>
         )}

@@ -55,24 +55,26 @@ const CATEGORY_META: Record<string, { emoji: string; color: string }> = {
   Legumes:               { emoji: "🫘", color: "#16a34a" },
   "Root & Tuber Crops":  { emoji: "🥔", color: "#a86e08" },
   Vegetables:            { emoji: "🥬", color: "#15803d" },
+  Fruits:                { emoji: "🥭", color: "#dc2626" },
   "Cash Crops":          { emoji: "☕", color: "#7c3aed" },
-  "Fruits & Trees":      { emoji: "🥭", color: "#dc2626" },
+  Fodder:                { emoji: "🌿", color: "#059669" },
   Other:                 { emoji: "🌱", color: "#16a34a" },
 };
 
 function categorize(crop: string): string {
-  if (["Maize", "Wheat", "Sorghum", "Finger Millet", "Rice (Upland)"].includes(crop)) return "Cereals";
-  if (["Beans", "Cowpeas", "Groundnuts", "Pigeon Peas"].includes(crop)) return "Legumes";
-  if (["Potato", "Cassava", "Sweet Potato", "Onion", "Arrow Root"].includes(crop)) return "Root & Tuber Crops";
-  if (["Tomato", "Kale (Sukuma Wiki)", "Cabbage", "Spinach", "Carrot", "Capsicum", "Chilies", "Dhania", "Garlic", "Snow Peas"].includes(crop)) return "Vegetables";
-  if (["Tea", "Coffee (Arabica)", "Cotton", "Pyrethrum", "Sisal", "Sunflower"].includes(crop)) return "Cash Crops";
-  return "Fruits & Trees";
+  if (["Maize", "Wheat", "Sorghum", "Finger Millet", "Millet", "Rice (Upland)", "Rice (Lowland/Paddy)"].includes(crop)) return "Cereals";
+  if (["Beans", "Cowpeas", "Groundnuts", "Pigeon Peas", "Green Grams", "Soybeans"].includes(crop)) return "Legumes";
+  if (["Potato", "Cassava", "Sweet Potato", "Arrow Root"].includes(crop)) return "Root & Tuber Crops";
+  if (["Tomato", "Kale (Sukuma Wiki)", "Cabbage", "Onion", "Spinach", "Carrot", "Capsicum", "Chilies", "Dhania", "Garlic", "Snow Peas"].includes(crop)) return "Vegetables";
+  if (["Avocado", "Mango", "Banana", "Watermelon", "Passion Fruit", "Pixie Oranges", "Pawpaw", "Wambugu Apples"].includes(crop)) return "Fruits";
+  if (["Tea", "Coffee (Arabica)", "Coffee (Robusta)", "Cotton", "Pyrethrum", "Sisal", "Sunflower", "Sugarcane", "Macadamia", "Cashew Nuts", "Coconuts"].includes(crop)) return "Cash Crops";
+  if (["Napier Grass", "Lucerne"].includes(crop)) return "Fodder";
+  return "Other";
 }
 
 function formatCategory(cat: string): string {
   if (cat === "Root & Tuber Crops") return "Root & tuber crops";
   if (cat === "Cash Crops") return "Cash crops";
-  if (cat === "Fruits & Trees") return "Fruits & trees";
   return cat;
 }
 
@@ -119,7 +121,7 @@ export default async function CropsDirectoryPage() {
     groups[cat].push(c);
   });
 
-  const categoryOrder = ["Cereals", "Legumes", "Root & Tuber Crops", "Vegetables", "Cash Crops", "Fruits & Trees", "Other"];
+  const categoryOrder = ["Cereals", "Legumes", "Root & Tuber Crops", "Vegetables", "Fruits", "Cash Crops", "Fodder", "Other"];
 
   const cropListSchema = {
     "@context": "https://schema.org",

@@ -86,7 +86,7 @@ const SDGs = [
     icon: TreePine,
     headline: "Monitoring soil health to prevent degradation",
     description:
-      "Soil degradation affects 33% of Kenya's arable land. Without monitoring, farmers don't know their soil is declining until yields collapse. ShambaIQ tracks five key soil parameters (pH, nitrogen, phosphorus, potassium, organic carbon) for every county using iSDAsoil satellite data at 30-metre resolution. This creates a national baseline that makes soil degradation visible and actionable.",
+      "Soil degradation affects 33% of Kenya's arable land. Without monitoring, farmers don't know their soil is declining until yields collapse. ShambaIQ tracks five key soil parameters (pH, nitrogen, phosphorus, potassium, organic carbon) for every county using satellite soil data at 30-metre resolution. This creates a national baseline that makes soil degradation visible and actionable.",
     metrics: [
       { label: "Soil parameters monitored", value: "5" },
       { label: "Satellite resolution", value: "30 metres" },
@@ -268,7 +268,7 @@ export default function ImpactPage() {
           
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              { title: "iSDAsoil", desc: "30-metre high-resolution soil maps for Africa. Monitors pH, nitrogen, phosphorus, potassium, and organic carbon. Built using machine learning models trained on 100,000+ localized soil samples." },
+              { title: "Satellite soil maps", desc: "30-metre high-resolution soil maps for Africa. Monitors pH, nitrogen, phosphorus, potassium, and organic carbon. Built using machine learning models trained on 100,000+ localized soil samples." },
               { title: "ISRIC SoilGrids", desc: "250-metre global standardized soil databases. Provides secondary verification and robust fallback parameters when localized maps require broad calibration." },
               { title: "Open-Meteo", desc: "Premium agronomic weather telemetry and 7-day predictive rainfall models. Dynamically calculates optimal application windows to prevent fertilizer runoff." }
             ].map(source => (

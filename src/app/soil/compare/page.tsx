@@ -23,31 +23,30 @@ export const metadata: Metadata = {
 const CATEGORY_ORDER = [
   "Cereals",
   "Legumes",
+  "Root & Tuber Crops",
   "Vegetables",
-  "Root Crops",
   "Fruits",
-  "Fodder",
   "Cash Crops",
+  "Fodder",
 ];
+
+function categorize(crop: string): string {
+  if (["Maize", "Wheat", "Sorghum", "Finger Millet", "Millet", "Rice (Upland)", "Rice (Lowland/Paddy)"].includes(crop)) return "Cereals";
+  if (["Beans", "Cowpeas", "Groundnuts", "Pigeon Peas", "Green Grams", "Soybeans"].includes(crop)) return "Legumes";
+  if (["Potato", "Cassava", "Sweet Potato", "Arrow Root"].includes(crop)) return "Root & Tuber Crops";
+  if (["Tomato", "Kale (Sukuma Wiki)", "Cabbage", "Onion", "Spinach", "Carrot", "Capsicum", "Chilies", "Dhania", "Garlic", "Snow Peas"].includes(crop)) return "Vegetables";
+  if (["Avocado", "Mango", "Banana", "Watermelon", "Passion Fruit", "Pixie Oranges", "Pawpaw", "Wambugu Apples"].includes(crop)) return "Fruits";
+  if (["Tea", "Coffee (Arabica)", "Coffee (Robusta)", "Cotton", "Pyrethrum", "Sisal", "Sunflower", "Sugarcane", "Macadamia", "Cashew Nuts", "Coconuts"].includes(crop)) return "Cash Crops";
+  if (["Napier Grass", "Lucerne"].includes(crop)) return "Fodder";
+  return "Cash Crops";
+}
 
 export default function ComparePage() {
   const crops = getCrops();
 
   const byCategory: Record<string, typeof crops> = {};
   for (const crop of crops) {
-    const cat = crop.slug.includes("rice") || crop.slug.includes("maize") || crop.slug.includes("wheat") || crop.slug.includes("sorghum") || crop.slug.includes("millet")
-      ? "Cereals"
-      : crop.slug.includes("bean") || crop.slug.includes("soybean") || crop.slug.includes("cowpea") || crop.slug.includes("green-gram") || crop.slug.includes("pigeon")
-      ? "Legumes"
-      : crop.slug.includes("tomato") || crop.slug.includes("cabbage") || crop.slug.includes("kale") || crop.slug.includes("onion") || crop.slug.includes("spinach") || crop.slug.includes("carrot") || crop.slug.includes("capsicum") || crop.slug.includes("chili") || crop.slug.includes("dhania") || crop.slug.includes("garlic") || crop.slug.includes("snow-pea")
-      ? "Vegetables"
-      : crop.slug.includes("potato") || crop.slug.includes("cassava") || crop.slug.includes("arrow")
-      ? "Root Crops"
-      : crop.slug.includes("avocado") || crop.slug.includes("mango") || crop.slug.includes("banana") || crop.slug.includes("watermelon") || crop.slug.includes("passion") || crop.slug.includes("pixie") || crop.slug.includes("pawpaw") || crop.slug.includes("wambugu")
-      ? "Fruits"
-      : crop.slug.includes("napier") || crop.slug.includes("lucerne")
-      ? "Fodder"
-      : "Cash Crops";
+    const cat = categorize(crop.crop);
     if (!byCategory[cat]) byCategory[cat] = [];
     byCategory[cat].push(crop);
   }

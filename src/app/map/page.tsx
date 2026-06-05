@@ -47,7 +47,7 @@ const faqSchema = makeFAQSchema([
   {
     question: "How accurate is GPS soil mapping on ShambaIQ?",
     answer:
-      "ShambaIQ uses iSDA satellite soil data at 30-metre resolution. Your GPS pin is matched to the nearest 30m pixel, giving you soil pH, nitrogen, phosphorus, and potassium measurements that are far more precise than county or ward averages. For most farms this is accurate enough to determine the correct fertilizer type and quantity.",
+      "ShambaIQ uses satellite soil data at 30-metre resolution. Your GPS pin is matched to the nearest 30m pixel, giving you soil pH, nitrogen, phosphorus, and potassium measurements that are far more precise than county or ward averages. For most farms this is accurate enough to determine the correct fertilizer type and quantity.",
   },
   {
     question: "Do I need to download an app to use GPS farm mapping?",
@@ -62,7 +62,7 @@ const faqSchema = makeFAQSchema([
   {
     question: "Which counties does GPS farm mapping cover?",
     answer:
-      "GPS farm mapping works in all 47 counties of Kenya. The underlying satellite soil dataset (iSDA Africa) covers the entire country at 30m resolution, so your exact plot can be analysed whether you are in Trans-Nzoia, Meru, Kakamega, Kajiado, or any other county.",
+      "GPS farm mapping works in all 47 counties of Kenya. The underlying satellite soil dataset covers the entire country at 30m resolution, so your exact plot can be analysed whether you are in Trans-Nzoia, Meru, Kakamega, Kajiado, or any other county.",
   },
   {
     question: "What is the difference between 'Select region' and 'Check my farm'?",
@@ -106,7 +106,7 @@ const steps = [
 const faqs = [
   {
     q: "How accurate is the soil data?",
-    a: "ShambaIQ uses iSDA Africa satellite data at 30-metre resolution. Your GPS pin is matched to the nearest 30m measurement — far more precise than county averages, and precise enough to determine correct fertilizer type and quantity for your shamba.",
+    a: "ShambaIQ uses satellite soil data at 30-metre resolution. Your GPS pin is matched to the nearest 30m measurement — far more precise than county averages, and precise enough to determine correct fertilizer type and quantity for your shamba.",
   },
   {
     q: "Do I need to download an app?",
@@ -230,7 +230,7 @@ export default function MapPage() {
           Coverage: all 47 Kenyan counties
         </h2>
         <p className="text-soil-500 leading-relaxed max-w-2xl">
-          GPS farm mapping uses the iSDA Africa satellite soil dataset, which covers Kenya at 30-metre
+          GPS farm mapping uses satellite soil data that covers Kenya at 30-metre
           resolution. Wherever your farm is — Trans-Nzoia, Meru, Kakamega, Machakos, Nakuru, Kisii,
           Siaya, Garissa, or any of the other 47 counties — your GPS coordinates will return accurate
           soil readings. The dataset is updated periodically as new satellite passes are processed.

@@ -63,7 +63,7 @@ export default async function CropCountyComparePage({ params }: PageProps) {
     "@context": "https://schema.org",
     "@type": "Dataset",
     name: `${crop.crop} soil suitability by county — Kenya`,
-    description: `Soil and climate suitability scores for ${crop.crop} farming across all 47 Kenyan counties, derived from iSDA satellite soil measurements (pH, nitrogen, phosphorus, potassium) plus county rainfall and altitude compared against ${crop.crop}'s optimal growing conditions.`,
+    description: `Soil and climate suitability scores for ${crop.crop} farming across all 47 Kenyan counties, derived from satellite soil measurements (pH, nitrogen, phosphorus, potassium) plus county rainfall and altitude compared against ${crop.crop}'s optimal growing conditions.`,
     url: `${BASE_URL}/soil/compare/${slug}`,
     inLanguage: "en-KE",
     keywords: [`${crop.crop} Kenya`, `best county for ${crop.crop}`, "soil suitability", "Kenya agriculture"],

@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!crop) return {};
   return {
     title: `Best counties to grow ${crop.crop} in Kenya — all 47 ranked`,
-    description: `Which county is best for ${crop.crop} farming in Kenya? All 47 counties ranked by soil pH, nitrogen, phosphorus and potassium suitability. Click any county for a full fertilizer plan.`,
+    description: `Which county is best for ${crop.crop} farming in Kenya? All 47 counties ranked by soil pH, nutrients, rainfall, and altitude suitability. Click any county for a full fertilizer plan.`,
     alternates: { canonical: `${BASE_URL}/soil/compare/${slug}` },
     openGraph: {
       title: `Best counties for ${crop.crop} in Kenya — soil suitability ranking`,
-      description: `Soil suitability scores for ${crop.crop} across all 47 Kenyan counties. Ranked by pH, nitrogen, phosphorus and potassium.`,
+      description: `Soil suitability scores for ${crop.crop} across all 47 Kenyan counties. Ranked by pH, nutrients, rainfall, and altitude suitability.`,
       url: `${BASE_URL}/soil/compare/${slug}`,
     },
   };
@@ -47,7 +47,7 @@ export default async function CropCountyComparePage({ params }: PageProps) {
   const faqSchema = makeFAQSchema([
     {
       question: `Which county is best for ${crop.crop} farming in Kenya?`,
-      answer: `Based on soil suitability analysis, the top counties for ${crop.crop} are ${top3.join(", ")}. Scores reflect soil pH, nitrogen, phosphorus, and potassium measurements against ${crop.crop}'s known nutrient requirements.`,
+      answer: `Based on soil and climate suitability analysis, the top counties for ${crop.crop} are ${top3.join(", ")}. Scores combine soil pH, nitrogen, phosphorus, and potassium against ${crop.crop}'s nutrient requirements, plus a rainfall and altitude multiplier that penalises counties outside the crop's climate range.`,
     },
     {
       question: `What soil pH does ${crop.crop} need?`,
@@ -63,11 +63,11 @@ export default async function CropCountyComparePage({ params }: PageProps) {
     "@context": "https://schema.org",
     "@type": "Dataset",
     name: `${crop.crop} soil suitability by county — Kenya`,
-    description: `Soil suitability scores for ${crop.crop} farming across all 47 Kenyan counties, derived from iSDA satellite soil measurements (pH, nitrogen, phosphorus, potassium) compared against ${crop.crop}'s optimal growing conditions.`,
+    description: `Soil and climate suitability scores for ${crop.crop} farming across all 47 Kenyan counties, derived from iSDA satellite soil measurements (pH, nitrogen, phosphorus, potassium) plus county rainfall and altitude compared against ${crop.crop}'s optimal growing conditions.`,
     url: `${BASE_URL}/soil/compare/${slug}`,
     inLanguage: "en-KE",
     keywords: [`${crop.crop} Kenya`, `best county for ${crop.crop}`, "soil suitability", "Kenya agriculture"],
-    variableMeasured: ["Soil suitability score (0–100)", "Soil pH", "Total Nitrogen (g/kg)", "Extractable Phosphorus (mg/kg)", "Extractable Potassium (mg/kg)"],
+    variableMeasured: ["Soil suitability score (0–100)", "Soil pH", "Total Nitrogen (g/kg)", "Extractable Phosphorus (mg/kg)", "Extractable Potassium (mg/kg)", "Rainfall (mm/year)", "Altitude (m)"],
     creator: { "@id": `${BASE_URL}/#organization` },
     publisher: { "@id": `${BASE_URL}/#organization` },
     isAccessibleForFree: true,
@@ -102,8 +102,8 @@ export default async function CropCountyComparePage({ params }: PageProps) {
         Best counties to grow {crop.crop} in Kenya
       </h1>
       <p className="text-soil-500 max-w-2xl mb-2">
-        All 47 counties ranked by soil suitability for {crop.crop} — scored against pH {crop.ph_min}–{crop.ph_max} target,{" "}
-        {crop.n_need} nitrogen need, {crop.p_need} phosphorus need, and {crop.k_need} potassium need.
+        All 47 counties ranked by soil and climate suitability for {crop.crop} — scored against pH {crop.ph_min}–{crop.ph_max} target,{" "}
+        {crop.n_need} nitrogen, {crop.p_need} phosphorus, {crop.k_need} potassium, plus rainfall ({crop.rain_min}–{crop.rain_max} mm) and altitude ({crop.alt_min}–{crop.alt_max} m) requirements.
       </p>
       <p className="text-sm text-soil-400 mb-8">
         Click any county to see the full fertilizer plan, planting calendar, and seed varieties.

@@ -10,12 +10,12 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Best counties for every crop in Kenya — soil suitability comparison",
   description:
-    "Which Kenyan county is best for maize, beans, potato, tomato, avocado, or any of 40 crops? Ranked by soil pH, nitrogen, phosphorus and potassium from satellite data.",
+    "Which Kenyan county is best for maize, beans, potato, tomato, avocado, or any of 40 crops? Ranked by soil pH, nutrients, rainfall, and altitude from satellite and climate data.",
   alternates: { canonical: `${BASE_URL}/soil/compare` },
   openGraph: {
     title: "Best counties for every crop in Kenya — suitability rankings",
     description:
-      "Compare all 47 Kenyan counties for any crop. Rankings based on satellite soil data: pH, nitrogen, phosphorus, and potassium.",
+      "Compare all 47 Kenyan counties for any crop. Rankings combine satellite soil data (pH, nitrogen, phosphorus, potassium) with county rainfall and altitude suitability.",
     url: `${BASE_URL}/soil/compare`,
   },
 };
@@ -57,7 +57,7 @@ export default function ComparePage() {
     "@type": "ItemList",
     name: "Crop suitability comparison by county — Kenya",
     description:
-      "County-level soil suitability rankings for 40 crops grown in Kenya, derived from satellite soil pH, nitrogen, phosphorus, and potassium data.",
+      "County-level suitability rankings for 40 crops grown in Kenya, combining satellite soil pH, nitrogen, phosphorus, and potassium with county rainfall and altitude data.",
     numberOfItems: crops.length,
     url: `${BASE_URL}/soil/compare`,
     itemListElement: crops.map((c, i) => ({
@@ -92,8 +92,8 @@ export default function ComparePage() {
         Best counties for every crop in Kenya
       </h1>
       <p className="text-soil-500 max-w-2xl mb-10">
-        Select any crop to see all 47 counties ranked by soil suitability — scored
-        against satellite-measured pH, nitrogen, phosphorus, and potassium data.
+        Select any crop to see all 47 counties ranked by soil and climate suitability — scored
+        against satellite-measured pH, nitrogen, phosphorus, potassium, plus county rainfall and altitude.
       </p>
 
       {CATEGORY_ORDER.filter((cat) => byCategory[cat]?.length).map((cat) => (

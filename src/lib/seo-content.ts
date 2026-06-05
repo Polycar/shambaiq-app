@@ -107,8 +107,21 @@ export function countyCropNarrative(
   const revenue = crop.price_per_kg * crop.yield_per_acre;
   const econSentence = `At current prices (about KES ${crop.price_per_kg}/kg) and a typical ${crop.yield_per_acre.toLocaleString()} kg/acre yield, a well-managed ${crop.crop} crop here can gross roughly KES ${revenue.toLocaleString()} per acre.`;
 
+  // Sentence 5 — climate caveat when rainfall or altitude is significantly off.
+  let climateSentence = "";
+  if (county.rainfall < crop.rain_min * 0.75) {
+    climateSentence = `${county.county} receives approximately ${county.rainfall} mm/year — well below ${crop.crop}'s minimum of ${crop.rain_min} mm — so supplemental irrigation would be essential for this crop.`;
+  } else if (crop.alt_min > 0 && county.altitude < crop.alt_min * 0.7) {
+    climateSentence = `At ${county.altitude} m, the county sits below ${crop.crop}'s preferred altitude range (${crop.alt_min}–${crop.alt_max} m), which limits yield potential due to heat stress.`;
+  } else if (county.altitude > crop.alt_max * 1.2) {
+    climateSentence = `At ${county.altitude} m, the county sits above ${crop.crop}'s preferred altitude ceiling of ${crop.alt_max} m, where frost risk and cold nights reduce the crop's productivity.`;
+  }
+
   void band; // band already reflected in verdict map
-  return [verdict[band], phSentence, nutrientSentence, textureSentence, econSentence].join(" ");
+  const parts = [verdict[band], phSentence, nutrientSentence, textureSentence];
+  if (climateSentence) parts.push(climateSentence);
+  parts.push(econSentence);
+  return parts.join(" ");
 }
 
 // ── County × Crop FAQ (richer, captures "People Also Ask") ────────────────────
@@ -125,10 +138,10 @@ export function countyCropFAQSchema(
   return makeFAQSchema([
     {
       question: `Is ${county.county} good for growing ${crop.crop}?`,
-      answer: `${county.county} County scores ${score}/100 for ${crop.crop} suitability (${band}). Soil pH is ${county.pH} against a preferred ${crop.ph_min}–${crop.ph_max}, nitrogen ${county.nitrogen} g/kg and phosphorus ${county.phosphorus} mg/kg. ${
+      answer: `${county.county} County scores ${score}/100 for ${crop.crop} suitability (${band}). Soil pH is ${county.pH} against a preferred ${crop.ph_min}–${crop.ph_max}, nitrogen ${county.nitrogen} g/kg and phosphorus ${county.phosphorus} mg/kg. County rainfall is ${county.rainfall} mm/year against ${crop.crop}'s ${crop.rain_min}–${crop.rain_max} mm range. ${
         band === "excellent" || band === "good"
           ? `This is a workable match for ${crop.crop}.`
-          : `Soil amendments are recommended before planting ${crop.crop}.`
+          : `Soil amendments or irrigation may be needed before planting ${crop.crop}.`
       }`,
     },
     {

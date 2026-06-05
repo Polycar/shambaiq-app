@@ -178,7 +178,7 @@ export default function HomePage() {
             {([
               { icon: Sprout, title: "Soil & crop advice", desc: "Precision fertilizer recommendations matched to your exact local soil chemistry using 30m satellite mapping.", href: "/app", color: "#16a34a" },
               { icon: CloudRain, title: "7-day weather forecast", desc: "Live rainfall, temperature highs and lows, and planting-window alerts for your exact farm location — updated daily.", href: "/app", color: "#0ea5e9" },
-              { icon: Navigation, title: "GPS farm mapping", desc: "Drop a pin on your exact plot. ShambaIQ pulls 30m satellite soil data for your specific farm — not just your county average.", href: "/app", color: "#7c3aed" },
+              { icon: Navigation, title: "GPS farm mapping", desc: "Drop a pin on your exact plot. ShambaIQ pulls 30m satellite soil data for your specific farm — not just your county average.", href: "/map", color: "#7c3aed" },
               { icon: BarChart3, title: "Yield tracker", desc: "Log your harvest season by season. Track how precision farming improves your yield over time.", href: "/yields", color: "#2563eb" },
               { icon: Camera, title: "Plant doctor", desc: "Snap a photo of a sick leaf. AI-powered pest and disease diagnosis with localized treatment advice.", href: "/doctor", color: "#dc2626" },
               { icon: Store, title: "Find agrovets", desc: "Locate nearby input suppliers by county. Phone numbers, stock lists, and directions to your nearest dealer.", href: "/dealers", color: "#C8860A" },

@@ -48,6 +48,12 @@ export default async function sitemap(props: {
       { url: `${BASE}/login`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
       { url: `${BASE}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
       { url: `${BASE}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+      { url: `${BASE}/map`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/soil-test`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/intercrop`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/crop-finder`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/seeds`, lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${BASE}/features`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
       // County comparison hub
       { url: `${BASE}/soil/compare`, lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.85 },
     ];

@@ -45,6 +45,8 @@ export interface CountySoil {
   potassium: number;
   organicCarbon: number;
   texture: string;
+  rainfall: number;
+  altitude: number;
 }
 
 export interface CropEconomics {
@@ -58,6 +60,10 @@ export interface CropEconomics {
   price_per_kg: number;
   yield_per_acre: number;
   pref_texture: string;
+  rain_min: number;
+  rain_max: number;
+  alt_min: number;
+  alt_max: number;
 }
 
 export interface Dealer {
@@ -129,6 +135,8 @@ export function getCountySoils(): CountySoil[] {
     potassium: parseFloat(r['Extractable Potassium (mg/kg)']),
     organicCarbon: parseFloat(r['Organic Carbon (g/kg)']),
     texture: r['Texture'] || 'Loam',
+    rainfall: parseFloat(r['rainfall_mm']) || 800,
+    altitude: parseFloat(r['altitude_m']) || 1200,
   }));
   return _counties;
 }
@@ -152,6 +160,10 @@ export function getCrops(): CropEconomics[] {
     price_per_kg: parseFloat(r['price_per_kg']),
     yield_per_acre: parseFloat(r['yield_per_acre']),
     pref_texture: r['pref_texture'],
+    rain_min: parseFloat(r['rain_min']) || 400,
+    rain_max: parseFloat(r['rain_max']) || 1800,
+    alt_min: parseFloat(r['alt_min']) || 0,
+    alt_max: parseFloat(r['alt_max']) || 3000,
   }));
   return _crops;
 }
@@ -266,34 +278,9 @@ export const N_THRESHOLDS: Record<string, number> = { high: 1.2, medium: 0.8, lo
 export const P_THRESHOLDS: Record<string, number> = { high: 20, medium: 12, low: 6 };
 export const K_THRESHOLDS: Record<string, number> = { high: 200, medium: 150, low: 100 };
 
+// Alias kept for backward compatibility — now uses the same sigmoid+climate model.
 export function scoreCropForCounty(county: CountySoil, crop: CropEconomics): number {
-  // pH outside range — hard cap, not fixable in a season
-  const phOk = county.pH >= crop.ph_min && county.pH <= crop.ph_max;
-  if (!phOk) {
-    const gap = county.pH < crop.ph_min
-      ? crop.ph_min - county.pH
-      : county.pH - crop.ph_max;
-    return Math.max(0, Math.round((100 - Math.min(80, gap * 25)) * 0.94));
-  }
-
-  let score = 100;
-
-  const nMin = N_THRESHOLDS[crop.n_need] ?? 0.8;
-  const pMin = P_THRESHOLDS[crop.p_need] ?? 12;
-  const kMin = K_THRESHOLDS[crop.k_need] ?? 150;
-
-  if (county.nitrogen < nMin)   score -= Math.min(20, ((nMin - county.nitrogen) / nMin) * 30);
-  if (county.phosphorus < pMin) score -= Math.min(20, ((pMin - county.phosphorus) / pMin) * 25);
-  if (county.potassium < kMin)  score -= Math.min(20, ((kMin - county.potassium) / kMin) * 25);
-
-  const nutrientGap = (county.nitrogen < nMin ? 1 : 0) +
-                      (county.phosphorus < pMin ? 1 : 0) +
-                      (county.potassium < kMin ? 1 : 0);
-
-  // Cap at 55 when any nutrient is below minimum — consistent with
-  // the backend Alternative Crops scorer and SPAA soil_fit logic.
-  const raw = Math.min(score, nutrientGap > 0 ? 55 : 100);
-  return Math.max(0, Math.round(raw * 0.94));
+  return computeCropSoilScore(county, crop);
 }
 
 export function getTopCropsForCounty(county: CountySoil, limit = 8): { crop: CropEconomics; score: number }[] {
@@ -334,7 +321,35 @@ export function computeSoilHealthScore(county: CountySoil): number {
   return Math.round(Math.min(94, Math.max(0, raw * 94)));
 }
 
-// ─── Crop-Soil Suitability Score (sigmoid model) ───
+// ─── Climate suitability helpers ───────────────────
+
+// Quadratic penalty below minimum (crop failure when severely short).
+// Mild linear penalty above maximum (drainage/disease manageable).
+function rainfallSuitability(countyRain: number, rainMin: number, rainMax: number): number {
+  if (countyRain >= rainMin && countyRain <= rainMax) return 1.0;
+  if (countyRain < rainMin) {
+    const ratio = countyRain / rainMin;
+    return Math.max(0, ratio * ratio);
+  }
+  // Above max — mild penalty (waterlogging, disease pressure)
+  const excessRatio = (countyRain - rainMax) / rainMax;
+  return Math.max(0.5, 1 - excessRatio * 0.5);
+}
+
+// Too low = too warm/humid for crop. Too high = too cold.
+// Both directions use quadratic penalty since altitude intolerance is a hard constraint.
+function altitudeSuitability(countyAlt: number, altMin: number, altMax: number): number {
+  if (countyAlt >= altMin && countyAlt <= altMax) return 1.0;
+  if (countyAlt < altMin) {
+    const ratio = altMin > 0 ? countyAlt / altMin : 1;
+    return Math.max(0, ratio * ratio);
+  }
+  // Too high — linear penalty (cold, frost risk)
+  const excessRatio = (countyAlt - altMax) / Math.max(1, altMax);
+  return Math.max(0, 1 - excessRatio);
+}
+
+// ─── Crop-Soil Suitability Score (sigmoid model + climate multiplier) ───
 export function computeCropSoilScore(county: CountySoil, crop: CropEconomics): number {
   const sig = (x: number, x_crit: number) =>
     1 / (1 + Math.exp(-5 * (x / x_crit - 0.5)));
@@ -350,9 +365,18 @@ export function computeCropSoilScore(county: CountySoil, crop: CropEconomics): n
   const s_p  = sig(county.phosphorus, pCrit);
   const s_k  = sig(county.potassium, kCrit);
   const s_oc = sig(county.organicCarbon, 12);
-  const raw = s_ph * 0.4 + s_n * 0.2 + s_p * 0.2 + s_k * 0.1 + s_oc * 0.1;
+
+  // Soil chemistry score (0–1)
+  const soil_raw = s_ph * 0.4 + s_n * 0.2 + s_p * 0.2 + s_k * 0.1 + s_oc * 0.1;
+
+  // Climate viability multiplier (0–1): rainfall × altitude
+  // Applied as a multiplier so poor climate overrides good soil — not just a soft weight.
+  const rain_suit = rainfallSuitability(county.rainfall, crop.rain_min, crop.rain_max);
+  const alt_suit  = altitudeSuitability(county.altitude, crop.alt_min, crop.alt_max);
+  const climate   = rain_suit * alt_suit;
+
   // Maximum realistic suitability score is around 94%
-  return Math.round(Math.min(94, Math.max(0, raw * 94)));
+  return Math.round(Math.min(94, Math.max(0, soil_raw * climate * 94)));
 }
 
 // ─── Zone Helpers ──────────────────────────────────

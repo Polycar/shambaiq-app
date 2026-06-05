@@ -15,7 +15,7 @@ const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "
 export const metadata: Metadata = {
   metadataBase: new URL("https://shambaiq.com"),
   title: { default: "Free fertilizer & soil plans for Kenyan farmers — ShambaIQ", template: "%s | ShambaIQ" },
-  description: "A precision soil platform for Kenyan farmers — find the right crops, exact fertilizer quantities, when to apply, the right seeds, and your soil data from all 47 counties down to your own farm.",
+  description: "Free precision farming platform for Kenyan farmers — soil analysis, fertilizer plans, 7-day weather forecasts, GPS farm mapping, plant disease diagnosis, and crop recommendations for all 47 counties.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

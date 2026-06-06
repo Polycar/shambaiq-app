@@ -117,6 +117,8 @@ export default function AdminDashboard() {
   const [dealers, setDealers] = useState<any[]>([]);
   const [dealerFilter, setDealerFilter] = useState("pending");
   const [yields, setYields] = useState<any[]>([]);
+  const [yieldsFilter, setYieldsFilter] = useState("all");
+  const [yieldTotal, setYieldTotal] = useState(0);
   const [audit, setAudit] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [farmers, setFarmers] = useState<any[]>([]);
@@ -161,7 +163,12 @@ export default function AdminDashboard() {
     setLoading(true);
     if (t === "stats") { setStats(await f("/api/v1/analytics/stats")); setSummary(await f("/api/v1/admin/summary")); }
     else if (t === "dealers") { const d = await f(`/api/v1/admin/dealers?status=${dealerFilter}`); setDealers(d?.dealers || []); }
-    else if (t === "yields") { const y = await f("/api/v1/analytics/yields/flagged"); setYields(y?.records || []); }
+    else if (t === "yields") {
+      const params = yieldsFilter !== "all" ? `?status=${yieldsFilter}` : "";
+      const y = await f(`/api/v1/analytics/yields${params}`);
+      setYields(y?.records || []);
+      setYieldTotal(y?.total ?? 0);
+    }
     else if (t === "blog") { const b = await f("/api/v1/blog/admin/all"); setPosts(b?.posts || []); }
     else if (t === "farmers") { const fm = await f(`/api/v1/admin/farmers?search=${farmerSearch}`); setFarmers(fm?.farmers || []); }
     else if (t === "audit") { const a = await f("/api/v1/analytics/audit-log"); setAudit(a?.logs || []); }
@@ -181,7 +188,7 @@ export default function AdminDashboard() {
       if (!stats) setStats(await f("/api/v1/analytics/stats"));
     }
     setLoading(false);
-  }, [code, f, dealerFilter, farmerSearch]);
+  }, [code, f, dealerFilter, farmerSearch, yieldsFilter]);
 
   const login = async (overrideCode?: string) => {
     setAuthErr(false);
@@ -465,18 +472,53 @@ export default function AdminDashboard() {
   const exportFullDataset = useCallback(async () => {
     setB2bExporting("full");
     try {
-      const rows: (string | number | null)[][] = [["County", "Crop", "Yield (t/ha)", "Flag", "Season", "Notes"]];
-      let page = 1;
-      while (true) {
-        const data = await f(`/api/v1/analytics/yields/all?page=${page}&limit=500`);
-        if (!data?.records?.length) break;
-        data.records.forEach((r: any) => rows.push([r.county, r.crop, r.yield_t_ha, r.flag ?? "", r.season ?? "", r.notes ?? ""]));
-        if (data.records.length < 500) break;
-        page++;
-      }
-      dlCSV(rows, `shambaiq-full-dataset-${new Date().toISOString().slice(0, 10)}.csv`);
+      const res = await fetch(`${API}/api/v1/analytics/yields/export.csv`, {
+        headers: { "Authorization": `Bearer ${code}` },
+      });
+      if (!res.ok) { alert("Export failed"); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `shambaiq-yields-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } finally { setB2bExporting(null); }
-  }, [f]);
+  }, [code]);
+
+  const exportRecommendationsCSV = useCallback(async () => {
+    setB2bExporting("recs");
+    try {
+      const res = await fetch(`${API}/api/v1/analytics/recommendations/export.csv`, {
+        headers: { "Authorization": `Bearer ${code}` },
+      });
+      if (!res.ok) { alert("Export failed"); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `shambaiq-recommendations-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } finally { setB2bExporting(null); }
+  }, [code]);
+
+  const exportPartnerSummary = useCallback(async () => {
+    setB2bExporting("summary");
+    try {
+      const res = await fetch(`${API}/api/v1/analytics/summary/export.csv`, {
+        headers: { "Authorization": `Bearer ${code}` },
+      });
+      if (!res.ok) { alert("Export failed"); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `shambaiq-partner-summary-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } finally { setB2bExporting(null); }
+  }, [code]);
 
   const exportDealerGap = useCallback(async () => {
     setB2bExporting("dealer");
@@ -539,7 +581,7 @@ export default function AdminDashboard() {
     { key: "b2b", label: "B2B Hub", icon: BarChart3 },
     { key: "crops", label: "Crop economics", icon: Wheat },
     { key: "dealers", label: "Dealers", icon: Store, badge: summary?.pending_dealers },
-    { key: "yields", label: "Yields", icon: AlertTriangle, badge: summary?.flagged_yields },
+    { key: "yields", label: "Yields", icon: TrendingUp, badge: summary?.flagged_yields },
     { key: "blog", label: "Blog", icon: PenLine },
     { key: "farmers", label: "Farmers", icon: Users, badge: summary?.total_farmers },
     { key: "agrovets", label: "Agrovets CSV", icon: Upload },
@@ -689,12 +731,32 @@ export default function AdminDashboard() {
               {
                 key: "full",
                 title: "Full yield dataset",
-                description: "All yield records with county, crop, yield t/ha, flags, and notes. For research partners and agri-extension services.",
+                description: "All yield records with farmer ID, crop, season, bags/acre, status, and flags. For research partners and agri-extension services.",
                 icon: FileText,
                 color: "text-soil-600",
                 bg: "bg-cream-50",
                 border: "border-cream-200",
                 action: exportFullDataset,
+              },
+              {
+                key: "recs",
+                title: "Recommendations CSV",
+                description: "All soil recommendation records — county, crop, fertiliser advice, budget, and soil health flags. For agri-input and research partners.",
+                icon: Sparkles,
+                color: "text-teal-600",
+                bg: "bg-teal-50",
+                border: "border-teal-100",
+                action: exportRecommendationsCSV,
+              },
+              {
+                key: "summary",
+                title: "Partner summary",
+                description: "Aggregated view — crop × season yield counts and averages, plus county × crop recommendation totals. For boardroom-ready partner briefings.",
+                icon: Columns,
+                color: "text-indigo-600",
+                bg: "bg-indigo-50",
+                border: "border-indigo-100",
+                action: exportPartnerSummary,
               },
             ].map(({ key, title, description, icon: Icon, color, bg, border, action }) => (
               <div key={key} className={`bg-white rounded-xl border ${border} p-5 flex flex-col gap-4 hover:shadow-md transition-shadow`}>
@@ -937,19 +999,46 @@ export default function AdminDashboard() {
       {/* ═══ YIELDS ═══ */}
       {!loading && tab === "yields" && (
         <div>
-          {yields.length === 0 ? <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-500">No flagged yields.</p></div> : (
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div className="flex gap-2">
+              {(["all", "flagged", "verified", "rejected"] as const).map(s => (
+                <button key={s} onClick={() => setYieldsFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${yieldsFilter === s ? "bg-forest-700 text-white" : "bg-white border border-cream-300 text-soil-500"}`}>{s}</button>
+              ))}
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-soil-500">{yieldTotal} records</span>
+              <button
+                onClick={exportFullDataset}
+                className="flex items-center gap-2 px-4 py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold rounded-xl"
+              >
+                <Upload size={14} className="rotate-180" /> Download CSV
+              </button>
+            </div>
+          </div>
+          {yields.length === 0 ? (
+            <div className="text-center py-16"><CheckCircle size={32} className="text-green-500 mx-auto mb-4" /><p className="text-soil-500">No {yieldsFilter === "all" ? "" : yieldsFilter + " "}yield records.</p></div>
+          ) : (
             <div className="space-y-4">
               {yields.map(y => (
                 <div key={y.id} className="bg-white rounded-xl border border-cream-300 p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div>
-                    <h3 className="font-bold text-forest-700">{y.crop} — {y.yield_bags_per_acre} bags/acre</h3>
+                    <h3 className="font-bold text-forest-700">{y.crop} — {y.yield_bags_per_acre} {y.yield_unit || "bags/acre"}</h3>
                     <p className="text-sm text-soil-500">Farmer: {y.farmer_id} · {y.season}</p>
-                    <span className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-full"><AlertTriangle size={12} /> {y.flag_reason}</span>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full ${y.status === "flagged" ? "bg-red-50 text-red-700" : y.status === "verified" ? "bg-green-50 text-green-700" : "bg-cream-100 text-soil-500"}`}>
+                        {y.status === "flagged" && <AlertTriangle size={12} />}
+                        {y.status === "verified" && <CheckCircle size={12} />}
+                        {y.status}
+                      </span>
+                      {y.flag_reason && <span className="text-xs text-soil-400">{y.flag_reason}</span>}
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <button onClick={() => reviewYield(y.id, "verified")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><Check size={14} /> Verify</button>
-                    <button onClick={() => reviewYield(y.id, "rejected")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><X size={14} /> Reject</button>
-                  </div>
+                  {y.status === "flagged" && (
+                    <div className="flex gap-2">
+                      <button onClick={() => reviewYield(y.id, "verified")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><Check size={14} /> Verify</button>
+                      <button onClick={() => reviewYield(y.id, "rejected")} disabled={actionLoading === String(y.id)} className="flex items-center gap-1 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl disabled:opacity-50"><X size={14} /> Reject</button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -472,16 +472,11 @@ export default function AdminDashboard() {
   const exportFullDataset = useCallback(async () => {
     setB2bExporting("full");
     try {
-      const res = await fetch(`${API}/api/v1/analytics/yields/export.csv`, {
-        headers: { "Authorization": `Bearer ${code}` },
-      });
+      const res = await fetch(`${API}/api/v1/analytics/yields/export.csv`, { headers: { "Authorization": `Bearer ${code}` } });
       if (!res.ok) { alert("Export failed"); return; }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `shambaiq-yields-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
+      const a = document.createElement("a"); a.href = url; a.download = `shambaiq-yields-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     } finally { setB2bExporting(null); }
   }, [code]);
@@ -489,16 +484,11 @@ export default function AdminDashboard() {
   const exportRecommendationsCSV = useCallback(async () => {
     setB2bExporting("recs");
     try {
-      const res = await fetch(`${API}/api/v1/analytics/recommendations/export.csv`, {
-        headers: { "Authorization": `Bearer ${code}` },
-      });
+      const res = await fetch(`${API}/api/v1/analytics/recommendations/export.csv`, { headers: { "Authorization": `Bearer ${code}` } });
       if (!res.ok) { alert("Export failed"); return; }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `shambaiq-recommendations-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
+      const a = document.createElement("a"); a.href = url; a.download = `shambaiq-recommendations-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     } finally { setB2bExporting(null); }
   }, [code]);
@@ -506,16 +496,11 @@ export default function AdminDashboard() {
   const exportPartnerSummary = useCallback(async () => {
     setB2bExporting("summary");
     try {
-      const res = await fetch(`${API}/api/v1/analytics/summary/export.csv`, {
-        headers: { "Authorization": `Bearer ${code}` },
-      });
+      const res = await fetch(`${API}/api/v1/analytics/summary/export.csv`, { headers: { "Authorization": `Bearer ${code}` } });
       if (!res.ok) { alert("Export failed"); return; }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `shambaiq-partner-summary-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
+      const a = document.createElement("a"); a.href = url; a.download = `shambaiq-partner-summary-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     } finally { setB2bExporting(null); }
   }, [code]);
@@ -689,6 +674,26 @@ export default function AdminDashboard() {
                 action: exportNGOReport,
               },
               {
+                key: "county",
+                title: "County distribution",
+                description: "Farmer counts per county with percentage share. Useful for county extension offices and targeting underserved areas.",
+                icon: MapPin,
+                color: "text-emerald-600",
+                bg: "bg-emerald-50",
+                border: "border-emerald-100",
+                action: exportCountyReport,
+              },
+              {
+                key: "crop",
+                title: "Crop distribution",
+                description: "Which crops farmers are growing, ranked by adoption. Useful for seed companies and agri-input dealers.",
+                icon: Wheat,
+                color: "text-amber-600",
+                bg: "bg-amber-50",
+                border: "border-amber-100",
+                action: exportCropReport,
+              },
+              {
                 key: "dealer",
                 title: "Dealer gap analysis",
                 description: "Counties with farmers but no approved dealer — shows where input supply is weakest and where to open next.",
@@ -711,7 +716,7 @@ export default function AdminDashboard() {
               {
                 key: "full",
                 title: "Full yield dataset",
-                description: "All yield records with farmer ID, crop, season, bags/acre, status, and flags. For research partners and agri-extension services.",
+                description: "All yield records with farmer ID, crop, season, bags/acre, status and flags. For research partners and agri-extension services.",
                 icon: FileText,
                 color: "text-soil-600",
                 bg: "bg-cream-50",
@@ -987,10 +992,7 @@ export default function AdminDashboard() {
             </div>
             <div className="flex items-center gap-3">
               <span className="text-sm text-soil-500">{yieldTotal} records</span>
-              <button
-                onClick={exportFullDataset}
-                className="flex items-center gap-2 px-4 py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold rounded-xl"
-              >
+              <button onClick={exportFullDataset} className="flex items-center gap-2 px-4 py-2 bg-forest-700 hover:bg-forest-800 text-white text-sm font-semibold rounded-xl">
                 <Upload size={14} className="rotate-180" /> Download CSV
               </button>
             </div>

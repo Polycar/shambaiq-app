@@ -38,7 +38,7 @@ export default function Header({ isLoggedIn, userName }: { isLoggedIn?: boolean;
   }, []);
 
   const handleLogout = () => {
-    document.cookie = "shambaiq_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "shambaiq_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax";
     window.location.href = "/";
   };
 

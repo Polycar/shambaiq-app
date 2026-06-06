@@ -5,7 +5,7 @@ export function proxy(request: NextRequest) {
   const session = request.cookies.get('shambaiq_session');
 
   // These routes require a regular user session
-  const protectedPaths = ['/yields', '/agronomy', '/doctor', '/profile'];
+  const protectedPaths = ['/yields', '/agronomy', '/doctor', '/profile', '/admin'];
 
   const isProtected = protectedPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path)

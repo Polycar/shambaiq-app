@@ -6,14 +6,13 @@ import { getWards, slugify } from "@/lib/data";
 const BASE = "https://shambaiq.com";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
-// Shard layout (all under 5,000 URLs each, well inside Google's 50k limit):
+// Shard layout:
 //   0 = core  — static pages, blog, zones, counties, crops, dealers, compare hub
-//   1 = combos-a — county×crop, counties 0–23
-//   2 = combos-b — county×crop, counties 24–46
-//   3 = wards — all ward pages
-// When URL count passes ~10k per shard bump the split further.
+//   1 = wards — all ward pages
+// County×crop combos are intentionally excluded — discovered via internal links.
+// Keeping the sitemap lean (~400 URLs) preserves crawl budget for high-value pages.
 export async function generateSitemaps() {
-  return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
+  return [{ id: 0 }, { id: 1 }];
 }
 
 export default async function sitemap(props: {
@@ -27,36 +26,46 @@ export default async function sitemap(props: {
 
   // ── Shard 0: core pages ────────────────────────────────────────────────────
   if (id === "0") {
-    const staticPages: MetadataRoute.Sitemap = [
-      { url: BASE, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
-      { url: `${BASE}/app`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-      { url: `${BASE}/soil`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-      { url: `${BASE}/crops`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-      { url: `${BASE}/zones`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-      { url: `${BASE}/dealers`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-      { url: `${BASE}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${BASE}/about`, lastModified: now, changeFrequency: "yearly", priority: 0.7 },
-      { url: `${BASE}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
-      { url: `${BASE}/partners`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-      { url: `${BASE}/impact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-      { url: `${BASE}/dealers/apply`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
-      { url: `${BASE}/dealers/status`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-      { url: `${BASE}/api`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-      { url: `${BASE}/embed`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-      { url: `${BASE}/doctor`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-      { url: `${BASE}/yields`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${BASE}/login`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-      { url: `${BASE}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-      { url: `${BASE}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-      { url: `${BASE}/map`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-      { url: `${BASE}/soil-test`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-      { url: `${BASE}/intercrop`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-      { url: `${BASE}/crop-finder`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-      { url: `${BASE}/seeds`, lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
-      { url: `${BASE}/features`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-      // County comparison hub
-      { url: `${BASE}/soil/compare`, lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.85 },
+    // Pages that genuinely change on every deploy (live data, blog, dealer stock)
+    const livePages: MetadataRoute.Sitemap = [
+      { url: BASE,                  lastModified: now, changeFrequency: "weekly",  priority: 1.0 },
+      { url: `${BASE}/app`,         lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
+      { url: `${BASE}/blog`,        lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
+      { url: `${BASE}/dealers`,     lastModified: now, changeFrequency: "weekly",  priority: 0.7 },
+      { url: `${BASE}/yields`,      lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
     ];
+
+    // Pages whose content is driven by static datasets — stable until data changes
+    const stablePages: MetadataRoute.Sitemap = [
+      { url: `${BASE}/soil`,         lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.9 },
+      { url: `${BASE}/crops`,        lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.9 },
+      { url: `${BASE}/zones`,        lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${BASE}/map`,          lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/soil-test`,    lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/intercrop`,    lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/crop-finder`,  lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/seeds`,        lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${BASE}/features`,     lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${BASE}/api`,          lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${BASE}/embed`,        lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${BASE}/doctor`,       lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${BASE}/soil/compare`, lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${BASE}/impact`,       lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.5 },
+      { url: `${BASE}/partners`,     lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.6 },
+    ];
+
+    // Truly static pages — bump the date manually when the copy changes
+    const staticCopyPages: MetadataRoute.Sitemap = [
+      { url: `${BASE}/about`,          lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.7 },
+      { url: `${BASE}/contact`,        lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.6 },
+      { url: `${BASE}/dealers/apply`,  lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.5 },
+      { url: `${BASE}/dealers/status`, lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "monthly", priority: 0.5 },
+      { url: `${BASE}/login`,          lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.5 },
+      { url: `${BASE}/privacy`,        lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.3 },
+      { url: `${BASE}/terms`,          lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.3 },
+    ];
+
+    const staticPages = [...livePages, ...stablePages, ...staticCopyPages];
 
     const safeDate = (dateStr: string | null | undefined, fallback: string): string => {
       if (!dateStr) return fallback;
@@ -110,7 +119,7 @@ export default async function sitemap(props: {
 
     const dealerPages: MetadataRoute.Sitemap = ALL_COUNTIES.map((c) => ({
       url: `${BASE}/dealers/${c.slug}`,
-      lastModified: now,
+      lastModified: now,  // dealer availability genuinely changes
       changeFrequency: "weekly" as const,
       priority: 0.6,
     }));
@@ -141,34 +150,8 @@ export default async function sitemap(props: {
     ];
   }
 
-  // ── Shard 1: county×crop combos, first half of counties ───────────────────
+  // ── Shard 1: ward pages ───────────────────────────────────────────────────
   if (id === "1") {
-    const half = Math.ceil(ALL_COUNTIES.length / 2);
-    return ALL_COUNTIES.slice(0, half).flatMap((county) =>
-      ALL_CROPS.map((crop) => ({
-        url: `${BASE}/soil/${county.slug}/${crop.slug}`,
-        lastModified: dataUpdated,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      }))
-    );
-  }
-
-  // ── Shard 2: county×crop combos, second half of counties ──────────────────
-  if (id === "2") {
-    const half = Math.ceil(ALL_COUNTIES.length / 2);
-    return ALL_COUNTIES.slice(half).flatMap((county) =>
-      ALL_CROPS.map((crop) => ({
-        url: `${BASE}/soil/${county.slug}/${crop.slug}`,
-        lastModified: dataUpdated,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      }))
-    );
-  }
-
-  // ── Shard 3: ward pages ────────────────────────────────────────────────────
-  if (id === "3") {
     const wards = getWards();
     return wards.map((w) => {
       const county = ALL_COUNTIES.find(

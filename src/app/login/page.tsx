@@ -83,7 +83,7 @@ export default function FarmerLogin() {
         }
       } catch { /* non-critical */ }
 
-      document.cookie = `shambaiq_session=${encodeURIComponent(JSON.stringify({ name: displayName, token, phone }))}; path=/; max-age=86400`;
+      document.cookie = `shambaiq_session=${encodeURIComponent(JSON.stringify({ name: displayName, token, phone }))}; path=/; max-age=86400; Secure; SameSite=Lax`;
       router.push("/");
       router.refresh();
     } catch (err: any) {
@@ -126,7 +126,7 @@ export default function FarmerLogin() {
 
   const handleForgotReset = async () => {
     if (!forgotOtp.trim() || !forgotPw) { setForgotMsg("Please enter the code and your new password."); return; }
-    if (forgotPw.length < 6) { setForgotMsg("Password must be at least 6 characters."); return; }
+    if (forgotPw.length < 8) { setForgotMsg("Password must be at least 8 characters."); return; }
     setForgotLoading(true);
     setForgotMsg("");
     try {

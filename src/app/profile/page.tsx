@@ -169,7 +169,7 @@ export default function ProfilePage() {
         const displayName = data.name || name || "Farmer";
         document.cookie = `shambaiq_session=${encodeURIComponent(
           JSON.stringify({ name: displayName, token: tok, phone })
-        )}; path=/; max-age=86400`;
+        )}; path=/; max-age=86400; Secure; SameSite=Lax`;
         setToken(tok);
         await loadProfile(tok);
         router.refresh();
@@ -197,7 +197,7 @@ export default function ProfilePage() {
         if (session) {
           document.cookie = `shambaiq_session=${encodeURIComponent(
             JSON.stringify({ ...session, name: editName })
-          )}; path=/; max-age=86400`;
+          )}; path=/; max-age=86400; Secure; SameSite=Lax`;
         }
         setEditing(false);
       }
@@ -205,7 +205,7 @@ export default function ProfilePage() {
   };
 
   const logout = () => {
-    document.cookie = "shambaiq_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "shambaiq_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax";
     window.location.href = "/";
   };
 

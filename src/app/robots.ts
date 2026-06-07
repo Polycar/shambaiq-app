@@ -21,7 +21,11 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://shambaiq.com/sitemap.xml",
+    // generateSitemaps() shards live at /sitemap/[id].xml — there is no /sitemap.xml index
+    sitemap: [
+      "https://shambaiq.com/sitemap/0.xml",
+      "https://shambaiq.com/sitemap/1.xml",
+    ],
     host: "https://shambaiq.com",
   };
 }

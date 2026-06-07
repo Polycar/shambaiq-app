@@ -79,7 +79,10 @@ export default async function sitemap(props: {
 
     let dynamicPosts: any[] = [];
     try {
-      const res = await fetch(`${API}/api/v1/blog`, { next: { revalidate: 3600 } });
+      const res = await fetch(`${API}/api/v1/blog`, {
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(5000),
+      });
       if (res.ok) {
         const data = await res.json();
         dynamicPosts = data.posts || [];

@@ -275,7 +275,7 @@ function renderContent(raw: string, featuredImage?: string) {
     }
 
     if (line.startsWith("# ")) {
-      elements.push(<h1 key={k++} className="font-display text-3xl font-bold text-forest-700 mt-10 mb-4" dangerouslySetInnerHTML={{ __html: parseInline(line.slice(2), featuredImage) }} />);
+      elements.push(<h2 key={k++} className="font-display text-2xl font-bold text-forest-700 mt-10 mb-4" dangerouslySetInnerHTML={{ __html: parseInline(line.slice(2), featuredImage) }} />);
       i++; continue;
     }
 

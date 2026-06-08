@@ -18,7 +18,7 @@ import NutrientBar from "@/components/NutrientBar";
 import CollapsibleWards from "@/components/CollapsibleWards";
 import SoilEmbedCard from "@/components/SoilEmbedCard";
 import JsonLd from "@/components/JsonLd";
-import { BASE_URL, ORGANIZATION } from "@/lib/schema";
+import { BASE_URL, ORGANIZATION, makeCountyFAQSchema } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ county: string }>;
@@ -59,31 +59,14 @@ export default async function CountySoilPage({ params }: PageProps) {
   const wards = getWardsByCounty(county.county);
 
   // FAQ schema
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `What is the soil pH in ${county.county} County?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${county.county} County has an average soil pH of ${county.pH}, which is in the ${county.zone} agroecological zone.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What are the best crops to grow in ${county.county}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Based on soil analysis, the top crops for ${county.county} include ${topCrops
-            .slice(0, 5)
-            .map((c) => c.crop.crop)
-            .join(", ")}.`,
-        },
-      },
-    ],
-  };
+  const faqSchema = makeCountyFAQSchema({
+    county: county.county,
+    pH: county.pH,
+    nitrogen: county.nitrogen,
+    phosphorus: county.phosphorus,
+    potassium: county.potassium,
+    zone: county.zone,
+  });
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -317,6 +300,43 @@ export default async function CountySoilPage({ params }: PageProps) {
             )}
           </section>
         </div>
+
+        {/* Frequently asked questions */}
+        <section className="bg-white rounded-2xl p-6 md:p-8 border border-cream-300 mb-8">
+          <h2 className="font-display text-xl font-bold text-forest-700 mb-6">
+            Frequently asked questions
+          </h2>
+          <div className="space-y-6">
+            <div>
+              <h3 className="font-semibold text-forest-700 mb-2 text-base">
+                What is the soil pH in {county.county} County?
+              </h3>
+              <p className="text-soil-500 text-sm leading-relaxed">
+                {county.county} County has an average soil pH of {county.pH} ({county.pH < 5.5 ? "strongly acidic" : county.pH < 6.5 ? "moderately acidic to neutral" : "neutral to alkaline"}). {
+                  county.pH < 5.5
+                    ? "Lime application is strongly recommended before planting most crops to unlock phosphorus availability."
+                    : "Most crops perform well at this pH without lime treatment."
+                }
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-forest-700 mb-2 text-base">
+                What crops grow best in {county.county} County?
+              </h3>
+              <p className="text-soil-500 text-sm leading-relaxed">
+                Based on precision soil mapping data, {county.county} soils have nitrogen at {county.nitrogen} g/kg and phosphorus at {county.phosphorus} mg/kg. Get a full ranked crop suitability list for your specific farm at shambaiq.com/app.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-forest-700 mb-2 text-base">
+                What fertilizer should I use in {county.county}?
+              </h3>
+              <p className="text-soil-500 text-sm leading-relaxed">
+                Fertilizer choice depends on your target crop and exact soil conditions. Farms in the {county.zone} zone typically benefit from DAP or NPK compound at planting, followed by CAN top-dressing. Get a precise budget and bag-per-acre plan at shambaiq.com/app.
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Dynamic Embed Widget Generator for Dofollow Backlink growth */}
         <SoilEmbedCard countyName={county.county} countySlug={slug} />

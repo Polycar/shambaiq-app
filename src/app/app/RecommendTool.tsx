@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lang, t, FERTILIZER_OPTIONS, CROP_UNITS } from "@/lib/i18n";
-import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch, fetchSeeds } from "@/lib/api";
+import { getRecommendation, RecommendResult, getWeatherByCounty, getWeather, WeatherData, getDealersNearby, getDealersByCounty, Dealer, DealerProduct, matchCrops, CropMatch, fetchSeeds, submitFeedback } from "@/lib/api";
 
 const STOCK_LABEL: Record<string, string> = {
   in_stock: "In stock",
@@ -747,6 +747,15 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
   const [companionSeeds, setCompanionSeeds] = useState<any[] | null>(null);
   const [cropUnknown, setCropUnknown] = useState(false);
 
+  // Feedback states
+  const [feedbackRating, setFeedbackRating] = useState<number>(0);
+  const [feedbackHover, setFeedbackHover] = useState<number>(0);
+  const [feedbackNote, setFeedbackNote] = useState("");
+  const [feedbackYieldChange, setFeedbackYieldChange] = useState("");
+  const [feedbackSaving, setFeedbackSaving] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackError, setFeedbackError] = useState("");
+
   // Item 3: Read URL params to pre-fill form
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -886,6 +895,38 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     warning: string;
   } | null>(null);
 
+  const handleFeedbackSubmit = useCallback(async () => {
+    if (!result?.query_id) {
+      setFeedbackError(lang === "en" ? "Recommendation session not found." : "Kipindi cha ushauri hakikupatikana.");
+      return;
+    }
+    if (feedbackRating === 0) {
+      setFeedbackError(lang === "en" ? "Please select a rating." : "Tafadhali chagua alama.");
+      return;
+    }
+    const session = getCookieSession();
+    if (!session?.token) {
+      setFeedbackError(lang === "en" ? "Please log in to submit feedback." : "Tafadhali ingia ili utume maoni.");
+      return;
+    }
+    setFeedbackSaving(true);
+    setFeedbackError("");
+    try {
+      await submitFeedback(
+        result.query_id,
+        feedbackRating,
+        session.token,
+        feedbackYieldChange || undefined,
+        feedbackNote || undefined
+      );
+      setFeedbackSubmitted(true);
+    } catch (err: any) {
+      setFeedbackError(err.message || (lang === "en" ? "Failed to submit feedback." : "Imeshindwa kutuma maoni."));
+    } finally {
+      setFeedbackSaving(false);
+    }
+  }, [result?.query_id, feedbackRating, feedbackYieldChange, feedbackNote, lang]);
+
   const handleSubmit = useCallback(async () => {
     let errors: { county?: boolean; crop?: boolean } = {};
     if (locMode === "region" && !county) {
@@ -908,6 +949,12 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
     setGeminiAdvice(null);
     setCropMatches(null);
     setCompanionSeeds(null);
+    setFeedbackRating(0);
+    setFeedbackHover(0);
+    setFeedbackNote("");
+    setFeedbackYieldChange("");
+    setFeedbackSubmitted(false);
+    setFeedbackError("");
 
     const lat = resolvedCoords?.lat;
     const lon = resolvedCoords?.lon;
@@ -2315,6 +2362,98 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
                     );
                   })}
                 </div>
+              </div>
+            )}
+
+            {/* Was this advice helpful? (Feedback form) */}
+            {result.query_id && (
+              <div className="rounded-2xl border border-cream-300 bg-white p-5 space-y-4" data-noprint>
+                <h3 className="font-display font-bold text-base text-forest-700">
+                  {lang === "en" ? "Was this advice helpful?" : "Je, ushauri huu umesaidia?"}
+                </h3>
+                {feedbackSubmitted ? (
+                  <div className="text-center py-4 space-y-2">
+                    <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mx-auto text-green-600">
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    </div>
+                    <p className="font-bold text-forest-700 text-sm">{lang === "en" ? "Thank you for your feedback!" : "Asante kwa maoni yako!"}</p>
+                    <p className="text-xs text-soil-500">{lang === "en" ? "Your review helps us improve the ShambaIQ recommender engine." : "Ukaguzi wako unatusaidia kuboresha mfumo wa ushauri wa ShambaIQ."}</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs font-semibold text-soil-500 mb-2">{lang === "en" ? "Rate this recommendation" : "Kadiria ushauri huu"}</p>
+                      <div className="flex items-center gap-1.5">
+                        {[1, 2, 3, 4, 5].map((star) => {
+                          const active = feedbackHover >= star || (!feedbackHover && feedbackRating >= star);
+                          return (
+                            <button
+                              key={star}
+                              type="button"
+                              onClick={() => setFeedbackRating(star)}
+                              onMouseEnter={() => setFeedbackHover(star)}
+                              onMouseLeave={() => setFeedbackHover(0)}
+                              className="p-1 transition-transform active:scale-95 cursor-pointer text-2xl focus:outline-none"
+                            >
+                              <span className={`transition-colors ${active ? "text-yellow-500 filter drop-shadow-[0_0_2px_rgba(234,179,8,0.4)]" : "text-gray-200"}`}>
+                                ★
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="yield-change-select" className="block text-xs font-semibold text-soil-500 mb-1.5">
+                        {lang === "en" ? "Do you expect your yield to increase with this plan?" : "Je, unatarajia mazao yako yataongezeka kwa mpango huu?"}
+                      </label>
+                      <select
+                        id="yield-change-select"
+                        value={feedbackYieldChange}
+                        onChange={(e) => setFeedbackYieldChange(e.target.value)}
+                        className="w-full rounded-xl border border-cream-300 bg-cream-50/50 px-3 py-2 text-xs text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 outline-none transition-colors"
+                      >
+                        <option value="">{lang === "en" ? "Select expectation..." : "Chagua matarajio..."}</option>
+                        <option value="Increase">{lang === "en" ? "Yes, increase significantly" : "Ndiyo, yataongezeka sana"}</option>
+                        <option value="Slight Increase">{lang === "en" ? "Yes, increase slightly" : "Ndiyo, yataongezeka kidogo"}</option>
+                        <option value="No Change">{lang === "en" ? "No change expected" : "Hayatabadilika"}</option>
+                        <option value="Decrease">{lang === "en" ? "Decrease" : "Yatapungua"}</option>
+                        <option value="Unsure">{lang === "en" ? "I am unsure" : "Sina hakika"}</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="feedback-notes" className="block text-xs font-semibold text-soil-500 mb-1.5">
+                        {lang === "en" ? "Comments or suggestions (optional)" : "Maoni au mapendekezo (hiari)"}
+                      </label>
+                      <textarea
+                        id="feedback-notes"
+                        rows={3}
+                        value={feedbackNote}
+                        onChange={(e) => setFeedbackNote(e.target.value)}
+                        placeholder={lang === "en" ? "Tell us what you think about the recommended fertilizer or calendar..." : "Tuambie unavyofikiria kuhusu mbolea au ratiba iliyopendekezwa..."}
+                        className="w-full rounded-xl border border-cream-300 bg-cream-50/50 px-3 py-2 text-xs text-forest-800 focus:border-forest-600 focus:ring-1 focus:ring-forest-600 outline-none transition-colors resize-none"
+                      />
+                    </div>
+
+                    {feedbackError && (
+                      <p className="text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg p-2.5">
+                        {feedbackError}
+                      </p>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleFeedbackSubmit}
+                      disabled={feedbackSaving}
+                      className="w-full py-2.5 rounded-xl text-center font-bold text-white text-xs cursor-pointer bg-forest-700 hover:bg-forest-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                    >
+                      {feedbackSaving && <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>}
+                      {feedbackSaving ? (lang === "en" ? "Submitting..." : "Inatuma...") : (lang === "en" ? "Submit Feedback" : "Tuma Maoni")}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 

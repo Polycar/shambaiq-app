@@ -121,6 +121,7 @@ export interface RecommendResult {
   intercrop_audit?: IntercropAudit | null;
   matches?: CropMatch[];
   disease_alerts?: DiseaseAlert[];
+  query_id?: string;
 }
 
 export interface DiseaseAlert {
@@ -331,11 +332,17 @@ export async function getYieldHistory(farmerId: string) {
   return api<YieldEntry[]>(`/api/v1/analytics/yields/${encodeURIComponent(farmerId)}`);
 }
 
-export async function submitFeedback(recommendationId: string, rating: number, token: string, comment?: string) {
+export async function submitFeedback(
+  queryId: string,
+  rating: number,
+  token: string,
+  yieldChange?: string,
+  note?: string
+) {
   return api("/api/v1/analytics/feedback", {
     method: "POST",
     headers: { "Authorization": `Bearer ${token}` },
-    body: JSON.stringify({ recommendation_id: recommendationId, rating, comment }),
+    body: JSON.stringify({ query_id: queryId, rating, yield_change: yieldChange, note }),
   });
 }
 

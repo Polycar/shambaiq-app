@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const county = getCountyBySlug(slug);
   if (!county) return {};
   return {
-    title: `${county.county} County Soil Health Report 2026 — pH, Nitrogen, Phosphorus`,
+    title: `${county.county} Soil Report — pH, Nitrogen & Phosphorus`,
     description: `${county.county} County soil: pH ${county.pH}, N ${county.nitrogen} g/kg, P ${county.phosphorus} mg/kg. Precision fertilizer recommendations for 40+ crops. Free satellite soil data.`,
     alternates: { canonical: `https://shambaiq.com/soil/${slug}` },
     openGraph: {

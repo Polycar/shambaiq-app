@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!county || !crop) return {};
   const score = scoreCropForCounty(county, crop);
   return {
-    title: `Growing ${crop.crop} in ${county.county} — Soil Analysis, Fertilizer Plan, Budget`,
+    title: `${crop.crop} in ${county.county} — Soil & Fertilizer Plan`,
     description: `${county.county} County scores ${score}/100 for ${crop.crop}. Precision fertilizer rates, seed varieties, planting calendar, and per-acre budget. Satellite soil data.`,
     alternates: { canonical: `https://shambaiq.com/soil/${cSlug}/${crSlug}` },
     openGraph: {

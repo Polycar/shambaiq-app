@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!county) return {};
   const dealers = getDealersByCounty(county.county);
   return {
-    title: `Agrovets in ${county.county} County — ${dealers.length} Farm Input Dealers`,
+    title: `Agrovets in ${county.county} County — ${dealers.length} Dealers`,
     description: `Find ${dealers.length} verified agrovet dealers in ${county.county} County. Fertilizer, seeds, and pesticide suppliers with stock lists and contact info.`,
     alternates: { canonical: `https://shambaiq.com/dealers/${slug}` },
     openGraph: {

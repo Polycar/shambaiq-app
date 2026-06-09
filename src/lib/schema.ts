@@ -18,6 +18,7 @@ export const ORGANIZATION = {
     width: 512,
     height: 512,
   },
+  alternateName: "Shamba IQ",
   sameAs: ["https://github.com/Polycar", "https://twitter.com/shambaiq_ke"],
   description:
     "Kenya's precision soil intelligence platform. Satellite-powered soil scores and agronomic recommendations for all 47 counties.",

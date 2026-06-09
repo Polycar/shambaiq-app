@@ -2457,6 +2457,36 @@ export default function RecommendTool({ counties, wards, crops, countyCoords, de
               </div>
             )}
 
+            {/* Ask AI Agronomist CTA */}
+            <div className="rounded-2xl border border-gold-300 bg-gradient-to-br from-forest-800 to-forest-900 p-5 text-cream-100 space-y-3 relative overflow-hidden shadow-md" data-noprint>
+              <div className="absolute top-0 right-0 opacity-[0.04] pointer-events-none">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gold-500/20 border border-gold-500/35 text-gold-300 text-[10px] font-extrabold uppercase tracking-wider mb-2">
+                  {lang === "en" ? "Interactive AI Chat" : "Mazungumzo ya AI"}
+                </span>
+                <h3 className="font-display font-bold text-base text-cream-100">
+                  {lang === "en" ? "Have questions about this plan?" : "Una maswali kuhusu mpango huu?"}
+                </h3>
+                <p className="text-xs text-cream-300/85 leading-relaxed mt-1">
+                  {lang === "en"
+                    ? "Chat with Shamba Mshauri, our AI agronomist, to get instant answers about fertilizers, pests, or planting steps."
+                    : "Zungumza na Shamba Mshauri, mtaalamu wetu wa AI, kupata majibu ya papo hapo kuhusu mbolea, wadudu, au hatua za kupanda."}
+                </p>
+              </div>
+              <Link
+                href={`/agronomy?prefill=${encodeURIComponent(
+                  lang === "en"
+                    ? `Hi Shamba Mshauri! I just generated a soil report for ${result.crop} in ${result.county} County. My soil health score is ${result.health_score}/100. Can you help me understand the fertilizer and planting advice?`
+                    : `Habari Shamba Mshauri! Nimepata ripoti ya udongo ya ${result.crop} katika Kaunti ya ${result.county}. Alama ya afya ya udongo ni ${result.health_score}/100. Unaweza kunisaidia kuelewa ushauri wa mbolea na kupanda?`
+                )}`}
+                className="inline-flex items-center justify-center w-full py-2.5 bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-gold-600/10 cursor-pointer text-center"
+              >
+                {lang === "en" ? "Ask Shamba Mshauri →" : "Uliza Shamba Mshauri →"}
+              </Link>
+            </div>
+
             {/* Share & Download Actions */}
             <div className="rounded-2xl border border-cream-300 bg-white p-5 space-y-3" data-noprint>
               <h3 className="font-display font-bold text-base text-forest-700">

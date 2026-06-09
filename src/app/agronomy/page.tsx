@@ -60,9 +60,24 @@ export default function AgronomyPage() {
 
   useEffect(() => {
     const session = getCookieSession();
-    setLoggedIn(!!session?.token);
-    if (session?.token) {
+    const hasToken = !!session?.token;
+    setLoggedIn(hasToken);
+    if (hasToken && session?.token) {
       loadConversations(session.token);
+
+      // Auto-prefill context if present in URL query params
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const prefill = params.get("prefill");
+        if (prefill && prefill.trim()) {
+          // Clean the URL search params so reloads don't re-trigger the prefill
+          const cleanUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, cleanUrl);
+
+          // Trigger message send
+          send(prefill.trim());
+        }
+      }
     }
   }, []);
 
@@ -199,7 +214,7 @@ export default function AgronomyPage() {
           Shamba Mshauri is available to registered farmers. Create a free account to get personalized agronomic advice.
         </p>
         <div className="flex gap-3">
-          <Link href="/profile"
+          <Link href={`/login?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname + window.location.search : "/agronomy")}`}
             className="px-6 py-3 bg-forest-700 hover:bg-forest-800 text-white font-bold rounded-xl transition-colors text-sm">
             Log In / Register
           </Link>

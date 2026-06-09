@@ -84,7 +84,13 @@ export default function FarmerLogin() {
       } catch { /* non-critical */ }
 
       document.cookie = `shambaiq_session=${encodeURIComponent(JSON.stringify({ name: displayName, token, phone }))}; path=/; max-age=86400; Secure; SameSite=Lax`;
-      router.push("/");
+      let redirectUrl = "/";
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const red = params.get("redirect");
+        if (red) redirectUrl = red;
+      }
+      router.push(redirectUrl);
       router.refresh();
     } catch (err: any) {
       if (err instanceof TypeError && err.message.includes("fetch")) {

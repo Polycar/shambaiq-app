@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const crop = getCropBySlug(slug);
   if (!crop) return {};
   return {
-    title: `Best counties to grow ${crop.crop} in Kenya — all 47 ranked`,
+    title: `${crop.crop} — Best Counties in Kenya Ranked`,
     description: `Which county is best for ${crop.crop} farming in Kenya? All 47 counties ranked by soil pH, nutrients, rainfall, and altitude suitability. Click any county for a full fertilizer plan.`,
     alternates: { canonical: `${BASE_URL}/soil/compare/${slug}` },
     openGraph: {

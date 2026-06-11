@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const crop = getCropBySlug(slug);
   if (!crop) return {};
   return {
-    title: `${crop.crop} farming in Kenya — soil requirements, best counties, fertilizer guide`,
+    title: `${crop.crop} Farming in Kenya — Soil & Fertilizer Guide`,
     description: `${crop.crop} farming in Kenya: soil pH ${crop.ph_min}–${crop.ph_max}, nitrogen needs, top counties, certified seed varieties, and fertilizer budget.`,
     alternates: { canonical: `${BASE_URL}/crops/${slug}` },
     openGraph: {

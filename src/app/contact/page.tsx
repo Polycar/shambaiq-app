@@ -6,7 +6,7 @@ import { BASE_URL, ORGANIZATION } from "@/lib/schema";
 import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Contact ShambaIQ — Get Farming Support & Partnership Enquiries",
+  title: "Contact Us — Farming Support & Partnerships",
   description: "Contact ShambaIQ via WhatsApp, email, or our form. Farming support, soil data, fertilizer advice — and open to agribusiness partnership enquiries.",
   alternates: { canonical: `${BASE_URL}/contact` },
   openGraph: {

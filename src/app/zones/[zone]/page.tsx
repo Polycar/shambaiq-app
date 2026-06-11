@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!zone) return {};
   const counties = getCountiesByZone(zone);
   return {
-    title: `${zone} — Soil Health & Farming Guide | ShambaIQ`,
+    title: `${zone} — Soil & Farming Guide`,
     description: `${zone} agroecological zone: soil health scores, crop suitability, and fertilizer recommendations for ${counties.length} Kenyan counties.`,
     alternates: { canonical: `https://shambaiq.com/zones/${slug}` },
     openGraph: {

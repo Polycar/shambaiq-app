@@ -15,7 +15,6 @@ export default function robots(): MetadataRoute.Robots {
           "/admin",       // Officer dashboard
           "/profile",     // User auth pages
           "/dealer/",     // Dealer dashboard and dealer login
-          "/agronomy",    // Agronomic AI chatbot page
           "/offline",     // Offline fallback page
           "/app/results", // Dynamic results — no SEO value
         ],

@@ -169,13 +169,53 @@ export default function DoctorPage() {
   return (
     <div className="min-h-screen bg-cream-100">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-red-700 to-red-800 text-center py-8 px-4">
-        <div className="flex items-center justify-center gap-2 mb-1">
-          <Stethoscope size={28} className="text-white" />
-          <h1 className="font-display text-2xl font-bold text-white">Plant doctor</h1>
+      <div className="bg-gradient-to-br from-red-700 to-red-800 text-center py-12 px-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Stethoscope size={28} className="text-white" />
+            <h1 className="font-display text-2xl font-bold text-white">Plant Doctor</h1>
+          </div>
+          <p className="text-red-200 text-sm mb-4">AI-powered crop disease & pest diagnosis for Kenyan farms</p>
+          <p className="text-red-100 text-base max-w-lg mx-auto">
+            Photograph a sick leaf or stem. The AI identifies the disease or pest and gives you exact treatment steps, product names, and dosages — instantly, for free.
+          </p>
         </div>
-        <p className="text-red-200 text-sm">AI pest & disease diagnostics</p>
       </div>
+
+      {/* How it works */}
+      <section className="max-w-4xl mx-auto px-4 py-10">
+        <h2 className="font-display text-xl font-bold text-forest-700 text-center mb-6">How it works</h2>
+        <div className="grid sm:grid-cols-3 gap-4 text-center">
+          {[
+            { step: "1", icon: "📸", title: "Take a photo", desc: "Photograph an affected leaf, stem, or fruit clearly showing the symptoms" },
+            { step: "2", icon: "🔍", title: "AI analyzes", desc: "Our model identifies the disease or pest with a confidence score and severity rating" },
+            { step: "3", icon: "💊", title: "Get treatment", desc: "Receive step-by-step treatment instructions, product names, prices in KES, and prevention tips" },
+          ].map((s) => (
+            <div key={s.step} className="bg-white rounded-2xl p-6 border border-cream-300">
+              <div className="text-3xl mb-2">{s.icon}</div>
+              <h3 className="font-bold text-forest-700 mb-1">{s.title}</h3>
+              <p className="text-soil-500 text-sm">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Common conditions */}
+      <section className="bg-white border-y border-cream-200 py-8 px-4 mb-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="font-display text-lg font-bold text-forest-700 mb-4">Common conditions diagnosed</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "Maize Streak Virus","Grey Leaf Spot","Maize Lethal Necrosis","Late Blight",
+              "Early Blight","Coffee Leaf Rust","Cassava Mosaic Disease","Fall Armyworm",
+              "Bean Rust","Tomato Bacterial Wilt","Banana Xanthomonas Wilt","Downy Mildew",
+              "Fusarium Wilt","Anthracnose","Aphid Infestation","Thrips Damage",
+            ].map((c) => (
+              <span key={c} className="px-3 py-1 bg-red-50 border border-red-200 text-red-700 text-xs rounded-full font-medium">{c}</span>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <div className="max-w-5xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

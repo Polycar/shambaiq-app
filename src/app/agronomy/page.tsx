@@ -204,21 +204,122 @@ export default function AgronomyPage() {
   }
 
   if (!loggedIn) {
+    const loginHref = `/login?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname : "/agronomy")}`;
     return (
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-cream-100 px-4 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-forest-700 flex items-center justify-center mb-4">
-          <Lock size={28} className="text-white" />
+      <div className="min-h-screen bg-cream-50">
+        {/* Hero */}
+        <div className="bg-gradient-to-br from-forest-700 to-forest-900 py-16 px-4 text-center">
+          <div className="max-w-3xl mx-auto">
+            <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-5">
+              <Bot size={32} className="text-gold-300" />
+            </div>
+            <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+              Shamba Mshauri — Kenya&apos;s Free AI Agronomist
+            </h1>
+            <p className="text-green-200 text-lg max-w-xl mx-auto mb-8">
+              Ask any farming question in <strong className="text-white">English or Kiswahili</strong>. Get expert advice on soil, fertilizer, pests, and crop management — free for all 47 Kenyan counties.
+            </p>
+            <Link href={loginHref}
+              className="inline-block px-8 py-4 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors text-base shadow-lg">
+              Create free account — start chatting
+            </Link>
+            <p className="text-green-300 text-sm mt-3">Free · No credit card · Works on any phone</p>
+          </div>
         </div>
-        <h2 className="font-display text-xl font-bold text-forest-700 mb-2">Login required</h2>
-        <p className="text-soil-500 text-sm max-w-xs mb-6">
-          Shamba Mshauri is available to registered farmers. Create a free account to get personalized agronomic advice.
-        </p>
-        <div className="flex gap-3">
-          <Link href={`/login?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname + window.location.search : "/agronomy")}`}
-            className="px-6 py-3 bg-forest-700 hover:bg-forest-800 text-white font-bold rounded-xl transition-colors text-sm">
-            Log In / Register
-          </Link>
-        </div>
+
+        {/* Example questions */}
+        <section className="max-w-4xl mx-auto px-4 py-12">
+          <h2 className="font-display text-2xl font-bold text-forest-700 text-center mb-2">What can you ask?</h2>
+          <p className="text-soil-500 text-center mb-8">Real questions farmers ask Shamba Mshauri every day</p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {STARTER_PROMPTS.map((prompt) => (
+              <div key={prompt} className="bg-white rounded-xl px-4 py-3 border border-cream-300 text-forest-700 text-sm leading-relaxed flex items-start gap-2">
+                <Leaf size={14} className="text-gold-500 shrink-0 mt-0.5" />
+                {prompt}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Sample conversation */}
+        <section className="bg-white border-y border-cream-300 py-12 px-4">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="font-display text-2xl font-bold text-forest-700 text-center mb-8">Sample conversation</h2>
+            <div className="space-y-4">
+              {/* User message */}
+              <div className="flex gap-3 flex-row-reverse">
+                <div className="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center shrink-0">
+                  <User size={14} className="text-white" />
+                </div>
+                <div className="bg-forest-700 text-white rounded-2xl rounded-tr-sm px-4 py-3 text-sm max-w-xs">
+                  My maize leaves are turning yellow from the bottom up in Nakuru. What is wrong?
+                </div>
+              </div>
+              {/* AI response */}
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-full bg-forest-700 flex items-center justify-center shrink-0">
+                  <Bot size={14} className="text-white" />
+                </div>
+                <div className="bg-cream-50 border border-cream-300 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-forest-800 max-w-sm leading-relaxed">
+                  <p className="mb-2">Yellowing from the bottom up on maize is a classic sign of <strong>nitrogen deficiency</strong> — very common in Nakuru&apos;s acidic soils (pH 5.2–5.8).</p>
+                  <p className="mb-2"><strong>Immediate fix:</strong> Top-dress with <strong>2 bags CAN (26% N) per acre</strong>, apply when soil is moist.</p>
+                  <p>Also check your soil pH — if below 5.5, apply 2 bags agricultural lime per acre before the next season to unlock bound nutrients.</p>
+                </div>
+              </div>
+              {/* User follow-up */}
+              <div className="flex gap-3 flex-row-reverse">
+                <div className="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center shrink-0">
+                  <User size={14} className="text-white" />
+                </div>
+                <div className="bg-forest-700 text-white rounded-2xl rounded-tr-sm px-4 py-3 text-sm max-w-xs">
+                  How much will the CAN cost me per acre?
+                </div>
+              </div>
+              {/* AI response */}
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-full bg-forest-700 flex items-center justify-center shrink-0">
+                  <Bot size={14} className="text-white" />
+                </div>
+                <div className="bg-cream-50 border border-cream-300 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-forest-800 max-w-sm leading-relaxed">
+                  At the current subsidized price, a 50 kg bag of CAN costs <strong>KES 2,500</strong>. For 2 bags per acre that is <strong>KES 5,000</strong>. You can find it at certified agrovets in Nakuru — use ShambaIQ&apos;s dealer map to find the nearest one with stock.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="max-w-4xl mx-auto px-4 py-12">
+          <h2 className="font-display text-2xl font-bold text-forest-700 text-center mb-8">What Shamba Mshauri knows</h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {[
+              { icon: "🌱", title: "40+ crops", desc: "Maize, beans, potato, tomato, coffee, tea, avocado, and more" },
+              { icon: "🗺️", title: "All 47 counties", desc: "County-specific soil, fertilizer, and climate advice" },
+              { icon: "🐛", title: "Pest & disease", desc: "Identify problems from symptoms and get treatment steps" },
+              { icon: "🧪", title: "Fertilizer plans", desc: "Exact product names, dosages, timing, and costs in KES" },
+              { icon: "🇰🇪", title: "English & Kiswahili", desc: "Ask and get answers in whichever language you prefer" },
+              { icon: "💾", title: "Chat history", desc: "Your conversations are saved — pick up where you left off" },
+            ].map((f) => (
+              <div key={f.title} className="bg-white rounded-2xl p-5 border border-cream-300">
+                <div className="text-2xl mb-2">{f.icon}</div>
+                <h3 className="font-bold text-forest-700 mb-1">{f.title}</h3>
+                <p className="text-soil-500 text-sm">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="bg-forest-700 py-12 px-4 text-center">
+          <div className="max-w-xl mx-auto">
+            <h2 className="font-display text-2xl font-bold text-white mb-3">Ready to ask your first question?</h2>
+            <p className="text-green-200 mb-6">Join thousands of Kenyan farmers getting free, instant agronomic advice.</p>
+            <Link href={loginHref}
+              className="inline-block px-8 py-4 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl transition-colors text-base">
+              Create free account
+            </Link>
+          </div>
+        </section>
       </div>
     );
   }

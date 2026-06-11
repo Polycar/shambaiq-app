@@ -12,6 +12,6 @@ export const metadata: Metadata = {
     images: [{ url: `${BASE_URL}/api/og`, width: 1200, height: 630, alt: "ShambaIQ Plant Doctor AI Diagnosis" }],
   },
   twitter: { card: "summary_large_image", title: "Plant Doctor — ShambaIQ", description: "AI-powered crop disease and pest diagnosis. Photo upload, instant diagnosis, treatment advice.", images: [`${BASE_URL}/api/og`] },
-  robots: { index: false, follow: true },
+  robots: { index: true, follow: true },
 };
 export default function L({ children }: { children: React.ReactNode }) { return <>{children}</>; }

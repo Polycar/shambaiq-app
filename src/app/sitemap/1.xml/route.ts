@@ -1,8 +1,7 @@
 import { ALL_COUNTIES } from "@/lib/site-data";
 import { getWards, slugify } from "@/lib/data";
 
-export const dynamic = "force-static";
-export const revalidate = 86400; // Cache for 24 hours
+export const revalidate = 86400; // ISR: re-generate every 24 hours
 
 const BASE = "https://shambaiq.com";
 

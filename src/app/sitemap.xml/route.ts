@@ -1,7 +1,4 @@
-import { NextResponse } from "next/server";
-
-export const dynamic = "force-static";
-export const revalidate = 86400; // Cache for 24 hours
+export const revalidate = 86400; // ISR: re-generate every 24 hours
 
 export async function GET() {
   const today = new Date().toISOString().split("T")[0];

@@ -1,8 +1,7 @@
 import { ALL_POSTS } from "@/lib/blog-data";
 import { ALL_COUNTIES, ALL_CROPS, ALL_ZONES } from "@/lib/site-data";
 
-export const dynamic = "force-static";
-export const revalidate = 86400; // Cache for 24 hours
+export const revalidate = 86400; // ISR: re-generate every 24 hours
 
 const BASE = "https://shambaiq.com";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";

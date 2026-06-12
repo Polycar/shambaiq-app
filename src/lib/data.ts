@@ -344,9 +344,9 @@ function altitudeSuitability(countyAlt: number, altMin: number, altMax: number):
     const ratio = altMin > 0 ? countyAlt / altMin : 1;
     return Math.max(0, ratio * ratio);
   }
-  // Too high — linear penalty (cold, frost risk)
-  const excessRatio = (countyAlt - altMax) / Math.max(1, altMax);
-  return Math.max(0, 1 - excessRatio);
+  // Too high — quadratic penalty (symmetric with too-low side)
+  const ratio = altMax / countyAlt;
+  return Math.max(0, ratio * ratio);
 }
 
 // ─── Crop-Soil Suitability Score (sigmoid model + climate multiplier) ───

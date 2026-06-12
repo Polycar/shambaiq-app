@@ -7,7 +7,7 @@ Kale (Sukuma Wiki),5.0,7.0,high,medium,medium,20,5000,Clay Loam,700,1800,500,250
 Wheat,6.0,7.5,high,high,medium,50,1000,Clay,450,950,1800,3000
 Sorghum,5.0,8.0,low,low,low,68,1000,Clay,250,700,0,1800
 Avocado,4.5,6.5,medium,medium,high,18,2000,Sandy Loam,700,1500,1000,2200
-Tea,4.5,6.0,high,medium,medium,25,2200,Clay,1100,2500,1500,3000
+Tea,4.5,6.5,high,medium,medium,25,2200,Clay,1100,2500,1500,3000
 Finger Millet,5.0,7.0,low,low,low,60,600,Sandy,400,1400,0,2000
 Cassava,4.5,7.0,low,low,medium,15,4000,Sandy,500,1500,0,1400
 Sweet Potato,4.5,7.0,low,medium,high,18,3500,Sandy Loam,600,1800,0,2200
@@ -37,14 +37,14 @@ Dhania,6.0,7.5,low,low,low,75,900,Loam,500,1000,0,2500
 Garlic,6.0,7.5,high,medium,high,275,1800,Sandy Loam,500,900,0,2500
 Snow Peas,5.5,7.5,low,medium,medium,185,1300,Loam,700,1200,1500,3000
 Arrow Root,5.0,7.0,medium,medium,high,55,4500,Clay Loam,1000,2000,0,1800
-Banana,5.0,7.0,high,medium,high,12,7500,Loam,1200,2000,0,1800
+Banana,5.0,7.0,high,medium,high,12,7500,Loam,1200,2000,0,1500
 Watermelon,6.0,7.5,medium,medium,medium,10,5500,Sandy,300,700,0,1500
 Passion Fruit,5.5,7.5,high,medium,high,70,4500,Loam,900,1800,1200,2500
 Pixie Oranges,5.5,7.5,medium,medium,high,28,4000,Sandy Loam,600,1200,1000,2000
 Pawpaw,6.0,7.5,high,medium,high,28,10000,Sandy Loam,600,1500,0,1200
-Wambugu Apples,5.0,7.0,medium,medium,high,75,2000,Loam,1000,1800,1500,2500
+Wambugu Apples,4.5,6.5,medium,medium,high,75,2000,Loam,1000,1800,1500,2500
 Napier Grass,5.0,8.0,medium,low,medium,5,15000,Loam,800,2000,0,2500
 Lucerne,6.5,8.0,low,medium,high,28,6500,Clay Loam,400,800,0,2500
 Sugarcane,5.5,7.0,high,medium,high,5,27000,Loam,1100,2000,0,1500
-Cashew Nuts,5.0,7.5,low,low,medium,275,900,Sandy,600,1500,0,700
-Coconuts,5.5,8.0,low,low,high,22,2500,Sandy,650,2000,0,600
+Cashew Nuts,5.0,7.5,low,low,medium,275,900,Sandy,600,1500,0,500
+Coconuts,5.5,8.0,low,low,high,22,2500,Sandy,650,2000,0,400

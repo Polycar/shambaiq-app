@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
         destination: "/blog/complete-maize-farming-guide-kenya",
         permanent: true,
       },
+      // ── Rice slug redirects (crop renamed from "rice" to "rice-upland") ───
+      { source: "/soil/:county/rice", destination: "/soil/:county/rice-upland", permanent: true },
+      { source: "/crops/rice",        destination: "/crops/rice-upland",        permanent: true },
       // ── Duplicate slug redirects (cleaned 2026-05-30) ─────────────────
       { source: "/blog/bean-farming-kakamega", destination: "/blog/bean-farming-kakamega-double-harvest", permanent: true },
       { source: "/blog/cabbage-farming-kiambu", destination: "/blog/cabbage-farming-kiambu-highland-soils", permanent: true },

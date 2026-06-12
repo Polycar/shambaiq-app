@@ -23,8 +23,8 @@ export default function robots(): MetadataRoute.Robots {
     // Native sitemap.ts with generateSitemaps() — auto-generated index + shards
     sitemap: [
       "https://shambaiq.com/sitemap.xml",
-      "https://shambaiq.com/sitemap/0.xml",
-      "https://shambaiq.com/sitemap/1.xml",
+      "https://shambaiq.com/sitemaps/sitemap/0.xml",
+      "https://shambaiq.com/sitemaps/sitemap/1.xml",
     ],
     host: "https://shambaiq.com",
   };

@@ -1,42 +1,40 @@
+import type { MetadataRoute } from "next";
 import { ALL_POSTS } from "@/lib/blog-data";
 import { ALL_COUNTIES, ALL_CROPS, ALL_ZONES } from "@/lib/site-data";
-
-export const revalidate = 86400; // ISR: re-generate every 24 hours
+import { getWards, slugify } from "@/lib/data";
 
 const BASE = "https://shambaiq.com";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.shambaiq.com";
 
-interface SitemapEntry {
-  url: string;
-  lastModified?: string;
-  changeFrequency?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
-  priority?: number;
+// ── Two sitemap shards ──────────────────────────────────────────────────────
+// 0 → static pages, blog, zones, counties, crops, dealers, compare
+// 1 → all ward-level pages (~1 450 URLs)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function generateSitemaps() {
+  return [{ id: 0 }, { id: 1 }];
 }
 
-function toXML(entries: SitemapEntry[]): string {
-  const urls = entries
-    .map(
-      (entry) => `  <url>
-    <loc>${entry.url}</loc>
-    ${entry.lastModified ? `<lastmod>${entry.lastModified}</lastmod>` : ""}
-    ${entry.changeFrequency ? `<changefreq>${entry.changeFrequency}</changefreq>` : ""}
-    ${entry.priority !== undefined ? `<priority>${entry.priority.toFixed(2)}</priority>` : ""}
-  </url>`
-    )
-    .join("\n");
+export default async function sitemap(
+  props: { id: Promise<string> }
+): Promise<MetadataRoute.Sitemap> {
+  const id = await props.id;
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>`;
+  if (String(id) === "1") {
+    return buildWardSitemap();
+  }
+  return buildMainSitemap();
 }
 
-export async function GET() {
+// ── Shard 0: main pages ─────────────────────────────────────────────────────
+
+async function buildMainSitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
   const dataUpdated = "2026-06-01T00:00:00.000Z";
+  const staticCopyDate = "2026-05-01T00:00:00.000Z";
 
   // Pages that genuinely change on every deploy (live data, blog, dealer stock)
-  const livePages: SitemapEntry[] = [
+  const livePages: MetadataRoute.Sitemap = [
     { url: BASE,                  lastModified: now, changeFrequency: "weekly",  priority: 1.0 },
     { url: `${BASE}/app`,         lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
     { url: `${BASE}/blog`,        lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
@@ -44,8 +42,8 @@ export async function GET() {
     { url: `${BASE}/yields`,      lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
   ];
 
-  // Pages whose content is driven by static datasets — stable until data changes
-  const stablePages: SitemapEntry[] = [
+  // Pages whose content is driven by static datasets
+  const stablePages: MetadataRoute.Sitemap = [
     { url: `${BASE}/soil`,         lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/crops`,        lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/zones`,        lastModified: dataUpdated, changeFrequency: "monthly", priority: 0.8 },
@@ -65,16 +63,17 @@ export async function GET() {
   ];
 
   // Truly static pages — bump the date manually when the copy changes
-  const staticCopyPages: SitemapEntry[] = [
-    { url: `${BASE}/about`,          lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.7 },
-    { url: `${BASE}/contact`,        lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.6 },
-    { url: `${BASE}/dealers/apply`,  lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.5 },
-    { url: `${BASE}/dealers/status`, lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "monthly", priority: 0.5 },
-    { url: `${BASE}/login`,          lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.5 },
-    { url: `${BASE}/privacy`,        lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.3 },
-    { url: `${BASE}/terms`,          lastModified: "2026-05-01T00:00:00.000Z", changeFrequency: "yearly",  priority: 0.3 },
+  const staticCopyPages: MetadataRoute.Sitemap = [
+    { url: `${BASE}/about`,          lastModified: staticCopyDate, changeFrequency: "yearly",  priority: 0.7 },
+    { url: `${BASE}/contact`,        lastModified: staticCopyDate, changeFrequency: "yearly",  priority: 0.6 },
+    { url: `${BASE}/dealers/apply`,  lastModified: staticCopyDate, changeFrequency: "yearly",  priority: 0.5 },
+    { url: `${BASE}/dealers/status`, lastModified: staticCopyDate, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${BASE}/login`,          lastModified: staticCopyDate, changeFrequency: "yearly",  priority: 0.5 },
+    { url: `${BASE}/privacy`,        lastModified: staticCopyDate, changeFrequency: "yearly",  priority: 0.3 },
+    { url: `${BASE}/terms`,          lastModified: staticCopyDate, changeFrequency: "yearly",  priority: 0.3 },
   ];
 
+  // ── Blog posts (static + dynamic from API) ──
   const safeDate = (dateStr: string | null | undefined, fallback: string): string => {
     if (!dateStr) return fallback;
     try {
@@ -85,7 +84,7 @@ export async function GET() {
     }
   };
 
-  let dynamicPosts: any[] = [];
+  let dynamicPosts: { slug: string; published_at?: string }[] = [];
   try {
     const res = await fetch(`${API}/api/v1/blog`, {
       next: { revalidate: 3600 },
@@ -99,7 +98,7 @@ export async function GET() {
     // omit dynamic posts if API is unreachable
   }
 
-  const blogPages: SitemapEntry[] = [
+  const blogPages: MetadataRoute.Sitemap = [
     ...ALL_POSTS.map((post) => ({
       url: `${BASE}/blog/${post.slug}`,
       lastModified: safeDate(post.dateModified, now),
@@ -114,43 +113,43 @@ export async function GET() {
     })),
   ];
 
-  const zonePages: SitemapEntry[] = ALL_ZONES.map((zone) => ({
+  // ── Data-driven pages ──
+  const zonePages: MetadataRoute.Sitemap = ALL_ZONES.map((zone) => ({
     url: `${BASE}/zones/${zone.slug}`,
     lastModified: dataUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  const countyPages: SitemapEntry[] = ALL_COUNTIES.map((c) => ({
+  const countyPages: MetadataRoute.Sitemap = ALL_COUNTIES.map((c) => ({
     url: `${BASE}/soil/${c.slug}`,
     lastModified: dataUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  const dealerPages: SitemapEntry[] = ALL_COUNTIES.map((c) => ({
+  const dealerPages: MetadataRoute.Sitemap = ALL_COUNTIES.map((c) => ({
     url: `${BASE}/dealers/${c.slug}`,
     lastModified: now,
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
 
-  const cropPages: SitemapEntry[] = ALL_CROPS.map((c) => ({
+  const cropPages: MetadataRoute.Sitemap = ALL_CROPS.map((c) => ({
     url: `${BASE}/crops/${c.slug}`,
     lastModified: dataUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  // Per-crop county comparison pages
-  const comparePages: SitemapEntry[] = ALL_CROPS.map((c) => ({
+  const comparePages: MetadataRoute.Sitemap = ALL_CROPS.map((c) => ({
     url: `${BASE}/soil/compare/${c.slug}`,
     lastModified: dataUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.75,
   }));
 
-  const allEntries = [
+  return [
     ...livePages,
     ...stablePages,
     ...staticCopyPages,
@@ -161,13 +160,24 @@ export async function GET() {
     ...dealerPages,
     ...comparePages,
   ];
+}
 
-  const xml = toXML(allEntries);
+// ── Shard 1: ward pages ─────────────────────────────────────────────────────
 
-  return new Response(xml, {
-    headers: {
-      "Content-Type": "application/xml",
-      "Cache-Control": "public, max-age=86400, s-maxage=86400, stale-while-revalidate=43200",
-    },
+function buildWardSitemap(): MetadataRoute.Sitemap {
+  const dataUpdated = "2026-06-01T00:00:00.000Z";
+  const wards = getWards();
+
+  return wards.map((w) => {
+    const county = ALL_COUNTIES.find(
+      (c) => c.name.toLowerCase() === w.county.toLowerCase()
+    );
+    const countySlug = county ? county.slug : slugify(w.county);
+    return {
+      url: `${BASE}/soil/${countySlug}/ward/${w.slug}`,
+      lastModified: dataUpdated,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    };
   });
 }

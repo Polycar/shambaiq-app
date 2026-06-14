@@ -97,6 +97,19 @@ Cashew Nuts,Giriama Red,KALRO,Coastal,1000-1500,10-15,High nut recovery; suited 
 Cashew Nuts,Muruku,KALRO,Coastal/Dryland,1000-1500,8-12,Early bearing; good shell weight; tolerant to powdery mildew.
 Coconuts,East African Tall,KALRO,Coastal,1500-2000,80-120,Traditional variety; high nut yield; excellent adaptation to Kenya coast.
 Coconuts,Malayan Dwarf,KALRO,Coastal,1200-1800,90-130,Early bearing dwarf; good for small farms; high copra content.
+Maize,H625,Kenya Seed Company,Highland,150-180,32-40,Frost tolerant; resistant to grey leaf spot and northern blight; suited to cold highlands 1800-2500m.
+Maize,H6213,Kenya Seed Company,Highland,150-200,40-54,High yielding; excellent ear rot and GLS resistance; large cobs; good standability 1500-2100m.
+Maize,H626,Kenya Seed Company,Highland,150-190,40-50,Semi-dent; stays green at harvest for dual grain and fodder use; resistant to GLS.
+Maize,H628,Kenya Seed Company,Highland,150-195,31-50,Late maturity; suited to cold and wet highland conditions 1600-2300m; good disease tolerance.
+Maize,H629,Kenya Seed Company,Highland,150-190,36-45,Good standability; stays green; high potential highland zone 1500-2100m.
+Maize,H623,Kenya Seed Company,Medium/Highland,120-150,31-40,Resistant to blight, rust, and grey leaf spot; good husk cover; medium altitude 1400-1700m.
+Maize,H516,Kenya Seed Company,Lowland,80-110,13-22,Drought tolerant; MSV tolerant; suited for coastal and semi-arid lowlands below 1200m.
+Maize,DH01,Kenya Seed Company,Dryland,90-120,27-40,Drought tolerant; MSV tolerant; semi-arid adapted 0-1500m; good for low-input farmers.
+Maize,DH02,Kenya Seed Company,Dryland/Medium,90-120,27-40,MSV and GLS tolerant; drought tolerant; widely adapted to low-medium altitude 0-1500m.
+Maize,DH03,Kenya Seed Company,Dryland,90-120,13-22,Drought tolerant; tolerant to leaf diseases; suitable for dryland short second season.
+Maize,WH403,Western Seed Company,Medium,120-150,28-35,Prolific; excellent GLS and rust tolerance; good for silage; medium altitude 1200-1600m.
+Maize,WH507,Western Seed Company,Medium/Highland,130-160,27-40,Tolerant to leaf diseases; good standability; widely adapted medium to high altitude 1000-1700m.
+Maize,Ukamez-2,KALRO,Dryland/Medium,90-110,21-41,KEPHIS certified; drought tolerant; GLS and MSV resistant; dry mid altitude Eastern Kenya 800-1600m.
 Maize,Ukamez-1,KALRO,Dryland,85-100,18-22,KEPHIS certified; early maturing; drought tolerant; suited to ASALs in Eastern Kenya.
 Maize,Embu-537,KALRO,Medium/Highland,120-140,28-32,Medium altitude composite; consistent yield under Central Kenya conditions.
 Maize,KH500-48A,KALRO,Dryland/Medium,90-110,20-25,KALRO open-pollinated hybrid; heat tolerant; widely adapted in eastern regions.
@@ -112,3 +125,17 @@ Potato,Asante,KALRO,Medium/Highland,85-95,320-400,High yielding; good cooking qu
 Potato,Kenya Furaha,KALRO,Medium/Highland,90-100,340-420,Good taste; disease tolerant; KEPHIS certified; consistent yield.
 Potato,Kenya Mpya,KALRO,Medium/Highland,85-95,300-380,New release; adapted to Central Kenya highlands; good storability.
 Potato,Clone IG-70,CIP/KALRO,Highland,95-110,380-460,Virus resistant; developed by CIP for highland Kenya; high dry matter content.
+Potato,Dutch Robijn,KARI-Tigoni,Highland,90-100,310-400,Classic highland variety released 1960s; high tuber uniformity; excellent crisping quality; tolerant to late blight; short dormancy.
+Potato,Kenya Baraka,KARI-Tigoni,Highland,95-105,280-320,Oblong/round tubers; resistant to late blight and viruses; good storability; table and chips use; released 1973.
+Potato,Sherekea,KARI/CIP,Medium/Highland,90-105,320-380,High yielding; good cooking quality; medium dormancy; suited to highlands 1400-3000m; released 2010.
+Potato,Lenana,CIP/KALRO,Highland,90-105,320-400,Late blight tolerant; PVX and PLRV tolerant; dry matter 22%; good for French fries; upper highlands; released 2017.
+Potato,Wanjiku,CIP/KALRO,Highland,100-120,400-480,Extremely tolerant to PVY; late blight tolerant; dry matter 21%; French fries and crisps; 1800-3000m; released 2017.
+Potato,Nyota,CIP/KALRO,Highland,90-105,280-360,Late blight tolerant; heat tolerant; dry matter 20%; table variety; upper highlands; released 2017.
+Potato,Chulu,CIP/KALRO,Highland,100-120,280-360,Late blight and PVX tolerant; heat tolerant; dry matter 24%; table and processing; widely adapted; released 2017.
+Sweet Potato,Vitamu,KALRO,Medium/Highland,120-150,70-90,Orange-fleshed; dual purpose grain and fodder; KEPHIS certified; 1200-1800m; released 2015.
+Sweet Potato,Kenspot-1,KARI Njoro,Highland,120-150,70-90,Orange-fleshed; high beta-carotene; suited to 1700-2300m; released 2013.
+Sweet Potato,Kenspot-3,KARI Njoro,Highland,120-150,80-100,White-fleshed; high dry matter; good storability; 1900-2300m cold highland adapted; released 2013.
+Coffee (Arabica),SL 28,Coffee Research Foundation,Medium/Highland,730-1000,18-28,Classic Kenyan cultivar (1935); large bean; excellent cup quality; drought tolerant; suited to 1300-1800m; susceptible to leaf rust.
+Coffee (Arabica),SL 34,Coffee Research Foundation,Medium/Highland,730-1000,20-30,Classic Kenyan cultivar (1930s); bold bean; excellent cup quality; suited to high rainfall zones 1300-1800m; susceptible to leaf rust.
+Coffee (Arabica),K7,Coffee Research Foundation,Medium/Highland,730-1000,15-22,Released 1936; partial leaf rust resistance; good cup quality; suited to medium altitude 1300-1600m.
+Macadamia,EMB-3,KALRO-Thika,Medium/Highland,1400-1550,35-55,High first-grade nut ratio; good kernel recovery; KEPHIS certified; suited to Central Kenya highlands.

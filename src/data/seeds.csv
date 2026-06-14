@@ -102,7 +102,7 @@ Maize,H6213,Kenya Seed Company,Highland,150-200,40-54,High yielding; excellent e
 Maize,H626,Kenya Seed Company,Highland,150-190,40-50,Semi-dent; stays green at harvest for dual grain and fodder use; resistant to GLS.
 Maize,H628,Kenya Seed Company,Highland,150-195,31-50,Late maturity; suited to cold and wet highland conditions 1600-2300m; good disease tolerance.
 Maize,H629,Kenya Seed Company,Highland,150-190,36-45,Good standability; stays green; high potential highland zone 1500-2100m.
-Maize,H623,Kenya Seed Company,Medium/Highland,120-150,31-40,Resistant to blight, rust, and grey leaf spot; good husk cover; medium altitude 1400-1700m.
+Maize,H623,Kenya Seed Company,Medium/Highland,120-150,31-40,Resistant to blight rust and grey leaf spot; good husk cover; medium altitude 1400-1700m.
 Maize,H516,Kenya Seed Company,Lowland,80-110,13-22,Drought tolerant; MSV tolerant; suited for coastal and semi-arid lowlands below 1200m.
 Maize,DH01,Kenya Seed Company,Dryland,90-120,27-40,Drought tolerant; MSV tolerant; semi-arid adapted 0-1500m; good for low-input farmers.
 Maize,DH02,Kenya Seed Company,Dryland/Medium,90-120,27-40,MSV and GLS tolerant; drought tolerant; widely adapted to low-medium altitude 0-1500m.
@@ -139,3 +139,35 @@ Coffee (Arabica),SL 28,Coffee Research Foundation,Medium/Highland,730-1000,18-28
 Coffee (Arabica),SL 34,Coffee Research Foundation,Medium/Highland,730-1000,20-30,Classic Kenyan cultivar (1930s); bold bean; excellent cup quality; suited to high rainfall zones 1300-1800m; susceptible to leaf rust.
 Coffee (Arabica),K7,Coffee Research Foundation,Medium/Highland,730-1000,15-22,Released 1936; partial leaf rust resistance; good cup quality; suited to medium altitude 1300-1600m.
 Macadamia,EMB-3,KALRO-Thika,Medium/Highland,1400-1550,35-55,High first-grade nut ratio; good kernel recovery; KEPHIS certified; suited to Central Kenya highlands.
+French Beans,Julia,Seminis,Medium/Highland,50-60,50-65,Fine bean (extra-fine) for EU export; uniform straight pods; resistant to rust and anthracnose.
+French Beans,Samantha,Syngenta,Medium/Highland,55-65,55-70,Fine bean; long dark-green pods; tolerant to halo blight; leading export variety.
+French Beans,Amy,Pop Vriend Seeds,Medium/Highland,50-60,50-65,Extra-fine bean; high yielding; good shelf life for air-freight to Europe.
+French Beans,Serengeti,Syngenta,Medium/Highland,55-65,55-72,Bobby/whole-bean type; vigorous; rust and BCMV tolerant.
+French Beans,Teresa,Seminis,Medium/Highland,50-60,48-62,Fine bean; smooth pods; suited to prepared and processed export.
+Barley,Nguzo,KALRO/EABL,Highland,120-150,18-24,Malting barley; high grain plumpness; low protein for brewing; EABL contract crop.
+Barley,Grace,KALRO,Highland,120-145,16-22,Malting variety; stem rust tolerant; suited to high altitude above 2000m.
+Barley,Karne,KALRO,Highland,125-150,17-23,Dual feed and malting; good lodging resistance; grown in Mau Narok and Timau.
+Barley,Sabini,KALRO,Highland,120-150,18-24,Malting barley; uniform germination; scald and net blotch tolerant.
+Amaranth,Terere KALRO,KALRO,Medium/Highland,30-45,60-90,Indigenous leafy vegetable; high iron and protein; fast multiple harvests; KALRO selection.
+Amaranth,Amaranthus Cruentus,Simlaw Seeds,Medium,30-45,60-85,Leafy type; broad soft leaves; continuous harvest; drought tolerant.
+Amaranth,Grain Amaranth (Hypochondriacus),KALRO,Medium/Highland,90-120,8-12,Grain type; gluten-free; high lysine; dual leaf and grain use.
+Pineapple,Smooth Cayenne,Del Monte/KALRO,Coastal/Medium,450-540,400-550,Main processing variety; cylindrical fruit; high juice; grown by Del Monte Thika.
+Pineapple,MD2 (Gold),Del Monte,Coastal/Medium,420-510,400-550,Super-sweet hybrid; golden flesh; premium fresh export; high vitamin C.
+Pineapple,Queen Victoria,KALRO,Coastal,450-540,300-450,Small sweet fruit; popular fresh local market; tolerant to coastal conditions.
+African Nightshade,Managu KALRO,KALRO,Medium/Highland,30-45,50-80,Indigenous leafy vegetable; high iron and vitamin A; multiple harvests; very popular in Western Kenya.
+African Nightshade,Giant Nightshade,Simlaw Seeds,Medium/Highland,35-50,55-85,Large-leaved selection; soft palatable leaves; high market demand.
+African Nightshade,Olevolosi,KALRO,Medium,30-45,45-75,Broad-leaf type; slow bolting; continuous picking; drought tolerant.
+Butternut Squash,Atlas F1,East Africa Seeds,Medium/Dryland,75-90,120-180,High yielding butternut; uniform pear-shaped fruits; good shelf life for export.
+Butternut Squash,Waltham,Simlaw Seeds,Medium,80-95,100-160,Open-pollinated butternut; sweet orange flesh; reliable yield; good local market.
+Butternut Squash,Pluto F1,Royal Seeds,Medium/Dryland,75-90,130-190,Vigorous hybrid; powdery mildew tolerant; excellent export quality.
+Eggplant,Black Beauty,Simlaw Seeds,Medium/Highland,75-90,120-180,Large oval purple fruits; popular local and export; high yielding open-pollinated.
+Eggplant,Ravaya (Long Purple),East Africa Seeds,Medium,70-85,130-200,Long slender purple fruits; export to UK and Middle East; continuous harvest.
+Eggplant,Florida Market,Royal Seeds,Medium/Highland,75-90,110-170,Glossy dark fruits; firm flesh; good transport and shelf quality.
+Ginger,China Ginger,KALRO,Medium/Highland,210-270,60-100,High yielding rhizome; large plump fingers; suited to western and coastal Kenya; high market value.
+Ginger,Local Yellow,Local/KALRO,Medium,240-300,50-90,Aromatic local landrace; strong pungency; good for fresh and dried market.
+Dolichos,Njahi Black,KALRO,Medium/Highland,90-120,8-12,Black hyacinth bean (njahi); popular in Central Kenya; high protein; nitrogen-fixing soil improver.
+Dolichos,DL 1002,KALRO,Dryland/Medium,90-110,7-11,Improved dual-purpose lablab; grain and fodder; tolerant to drought and low fertility.
+Dolichos,Eldoret Brown,KALRO,Medium,100-130,8-13,Brown-seeded selection; vigorous; good for intercropping with maize.
+Broccoli,Calabrese,Simlaw Seeds,Highland,70-90,40-70,Open-pollinated broccoli; central head plus side shoots; suited to cool highlands.
+Broccoli,Green Magic F1,East Africa Seeds,Highland,60-75,60-90,Hybrid; uniform dome heads; heat tolerant; export and supermarket quality.
+Broccoli,Marathon F1,Royal Seeds,Highland,75-95,55-85,Large dense heads; downy mildew tolerant; excellent for high-altitude production.

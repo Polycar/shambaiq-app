@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -27,7 +28,7 @@ async function saveDiagnosis(token: string, payload: object) {
       signal: AbortSignal.timeout(4000),
     });
   } catch {
-    // Non-blocking — never fail the diagnosis if saving fails
+    // Non-blocking
   }
 }
 
@@ -39,14 +40,25 @@ export async function POST(request: Request) {
   }
 
   let token: string | undefined;
+  let sessionPhone: string | undefined;
   try {
     const sessionData = JSON.parse(decodeURIComponent(sessionCookie.value));
     if (!sessionData.phone && !sessionData.token) {
       return NextResponse.json({ error: 'Unauthorized: Invalid session' }, { status: 401 });
     }
     token = sessionData.token;
+    sessionPhone = sessionData.phone;
   } catch {
     return NextResponse.json({ error: 'Unauthorized: Invalid session format' }, { status: 401 });
+  }
+
+  const sessionKey = sessionPhone || token || clientIp(request);
+  const rl = await rateLimit(`diagnose:${sessionKey}`, 10, 60 * 60 * 1000);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Diagnosis limit reached. You can scan up to 10 plants per hour.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfterSecs) } }
+    );
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -62,29 +74,51 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 });
     }
 
-    // Fetch farmer context to personalise the Gemini prompt (best-effort)
     const ctx = token ? await fetchFarmerContext(token) : null;
     const county = ctx?.county || null;
     const crop = userCrop || ctx?.latest_soil?.crop || ctx?.fields?.[0]?.crop || null;
 
     const locationLine = county ? `The farmer is in ${county} County, Kenya.` : 'The farmer is in Kenya.';
-    const cropLine = crop ? `The crop in the image is likely ${crop}.` : '';
+    const cropLine = crop ? `The crop shown is ${crop}.` : '';
 
-    const prompt = `You are an expert plant pathologist working with Kenyan smallholder farmers.
+    const prompt = `You are an expert plant pathologist advising Kenyan smallholder farmers.
 ${locationLine}${cropLine ? ' ' + cropLine : ''}
 
-Analyze the image for any disease, pest damage, or nutrient deficiency.
+Analyze the image carefully and identify the exact disease, pest, or nutrient deficiency shown.
 
-IMPORTANT: Respond ONLY with a raw JSON object — no markdown, no backticks.
+STRICT RULES — follow every one:
+- treatment_steps: numbered steps the farmer can take TODAY. Each step MUST name the exact product (e.g. "Ridomil Gold MZ 68 WP"), the exact dose (e.g. "40g per 20L water"), and when/how to apply. Minimum 3 steps.
+- products: 2-4 real products sold at Kenyan agrovets with approximate KES retail prices.
+- prevention: specific to THIS disease — what protectant spray, resistant variety, or cultural practice prevents this exact pathogen.
+- severity: "Low", "Moderate", "High", or "Critical".
+- notes: warnings about resistance, re-entry intervals, or when to call an extension officer.
+- If the plant looks healthy, set condition to "Healthy", confidence to 95+, and give maintenance advice in notes.
+- NEVER give vague or generic advice. Name products. Give doses.
 
-Schema:
-{"condition":"Specific disease/pest/deficiency name, or Healthy","confidence":85,"treatment":"Specific treatment using products available at Kenyan agrovets — include exact product names, dosages, and timing.","prevention":"Practical prevention steps suited to smallholder farmers${county ? ` in ${county}` : ' in Kenya'}."}`;
+Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text:
+{
+  "condition": "Exact name of disease/pest/deficiency or Healthy",
+  "confidence": 85,
+  "severity": "Moderate",
+  "treatment_steps": [
+    "Step 1: Remove and destroy all infected plant material immediately.",
+    "Step 2: Spray Ridomil Gold MZ 68 WP at 40g per 20L water, covering both leaf sides. Apply in the evening.",
+    "Step 3: Repeat every 10–14 days. Alternate with Dithane M-45 to prevent resistance."
+  ],
+  "products": [
+    {"name": "Ridomil Gold MZ 68 WP", "price_kes": "~KES 850 per 100g"},
+    {"name": "Dithane M-45", "price_kes": "~KES 600 per 200g"}
+  ],
+  "prevention": "Specific prevention for this exact disease.",
+  "notes": "Any resistance warnings, re-entry periods, or referral advice."
+}`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(30000),
         body: JSON.stringify({
           contents: [
             {
@@ -95,8 +129,8 @@ Schema:
             },
           ],
           generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 1024,
+            temperature: 0.2,
+            maxOutputTokens: 4096,
             responseMimeType: 'application/json',
           },
         }),
@@ -110,35 +144,58 @@ Schema:
     }
 
     const data = await response.json();
-    const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+
+    // Gemini 2.5 Flash may include thinking parts before the actual response.
+    // Parts with { thought: true } are internal reasoning — skip them.
+    const parts: Array<{ thought?: boolean; text?: string }> =
+      data?.candidates?.[0]?.content?.parts ?? [];
+    const responsePart = parts.find(p => !p.thought);
+    const text: string = responsePart?.text ?? '';
 
     if (!text) {
+      console.error('[PlantDoctor] Empty response from Gemini. Full response:', JSON.stringify(data));
       return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
     }
 
-    const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    // Strip any residual markdown fences just in case
+    let textToParse = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    if (!textToParse.startsWith('{')) {
+      const match = textToParse.match(/\{[\s\S]*\}/);
+      if (match) textToParse = match[0];
+    }
 
-    let parsed: { condition: string; confidence: number; treatment: string; prevention: string };
+    let parsed: {
+      condition: string;
+      confidence: number;
+      severity?: string;
+      treatment_steps?: string[];
+      products?: { name: string; price_kes: string }[];
+      prevention?: string;
+      notes?: string;
+      treatment?: string;
+    };
+
     try {
-      parsed = JSON.parse(cleaned);
+      parsed = JSON.parse(textToParse);
     } catch {
+      console.error('[PlantDoctor] JSON parse failed. Raw text:', text);
       parsed = {
         condition: 'Diagnosis Complete',
         confidence: 70,
-        treatment: cleaned,
+        treatment: textToParse,
+        treatment_steps: [textToParse],
         prevention: 'Practice crop rotation and scout your fields weekly for early signs of pest or disease pressure.',
       };
     }
 
-    // Save to backend — fire and forget, never blocks the response
     if (token) {
       saveDiagnosis(token, {
         county,
         crop,
         condition: parsed.condition,
         confidence: parsed.confidence,
-        treatment: parsed.treatment,
-        prevention: parsed.prevention,
+        treatment: parsed.treatment_steps?.join(' ') || parsed.treatment || '',
+        prevention: parsed.prevention || '',
       });
     }
 

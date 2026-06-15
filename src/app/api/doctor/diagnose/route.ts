@@ -74,7 +74,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 });
     }
 
-    // Fetch farmer context to personalise the prompt (best-effort)
     const ctx = token ? await fetchFarmerContext(token) : null;
     const county = ctx?.county || null;
     const crop = userCrop || ctx?.latest_soil?.crop || ctx?.fields?.[0]?.crop || null;
@@ -90,7 +89,7 @@ Analyze the image carefully and identify the exact disease, pest, or nutrient de
 STRICT RULES — follow every one:
 - treatment_steps: numbered steps the farmer can take TODAY. Each step MUST name the exact product (e.g. "Ridomil Gold MZ 68 WP"), the exact dose (e.g. "40g per 20L water"), and when/how to apply. Minimum 3 steps.
 - products: 2-4 real products sold at Kenyan agrovets with approximate KES retail prices.
-- prevention: specific to THIS disease — what protectant spray, resistant variety, or cultural practice prevents this exact pathogen. Do NOT say "practice crop rotation" unless rotation is a primary control for this specific disease. Be specific.
+- prevention: specific to THIS disease — what protectant spray, resistant variety, or cultural practice prevents this exact pathogen.
 - severity: "Low", "Moderate", "High", or "Critical".
 - notes: warnings about resistance, re-entry intervals, or when to call an extension officer.
 - If the plant looks healthy, set condition to "Healthy", confidence to 95+, and give maintenance advice in notes.
@@ -102,9 +101,9 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
   "confidence": 85,
   "severity": "Moderate",
   "treatment_steps": [
-    "Step 1: Remove and destroy all infected plant material immediately — do not compost it.",
-    "Step 2: Spray Ridomil Gold MZ 68 WP at 40g per 20L water, covering both sides of all leaves. Apply in the evening.",
-    "Step 3: Repeat spray every 10–14 days until symptoms stop spreading. Use Dithane M-45 as an alternating product to prevent resistance."
+    "Step 1: Remove and destroy all infected plant material immediately.",
+    "Step 2: Spray Ridomil Gold MZ 68 WP at 40g per 20L water, covering both leaf sides. Apply in the evening.",
+    "Step 3: Repeat every 10–14 days. Alternate with Dithane M-45 to prevent resistance."
   ],
   "products": [
     {"name": "Ridomil Gold MZ 68 WP", "price_kes": "~KES 850 per 100g"},
@@ -119,6 +118,7 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(30000),
         body: JSON.stringify({
           contents: [
             {
@@ -132,9 +132,6 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
             temperature: 0.2,
             maxOutputTokens: 4096,
             responseMimeType: 'application/json',
-            thinkingConfig: {
-              thinkingBudget: 0,
-            },
           },
         }),
       }
@@ -147,13 +144,20 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
     }
 
     const data = await response.json();
-    const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+
+    // Gemini 2.5 Flash may include thinking parts before the actual response.
+    // Parts with { thought: true } are internal reasoning — skip them.
+    const parts: Array<{ thought?: boolean; text?: string }> =
+      data?.candidates?.[0]?.content?.parts ?? [];
+    const responsePart = parts.find(p => !p.thought);
+    const text: string = responsePart?.text ?? '';
 
     if (!text) {
+      console.error('[PlantDoctor] Empty response from Gemini. Full response:', JSON.stringify(data));
       return NextResponse.json({ error: 'Empty response from AI' }, { status: 502 });
     }
 
-    // Strip any residual markdown fences, then fall back to regex extraction
+    // Strip any residual markdown fences just in case
     let textToParse = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
     if (!textToParse.startsWith('{')) {
       const match = textToParse.match(/\{[\s\S]*\}/);
@@ -168,7 +172,6 @@ Respond ONLY with a raw JSON object — no markdown, no backticks, no extra text
       products?: { name: string; price_kes: string }[];
       prevention?: string;
       notes?: string;
-      // legacy fields kept for history compatibility
       treatment?: string;
     };
 

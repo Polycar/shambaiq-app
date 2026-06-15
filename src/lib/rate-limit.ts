@@ -20,22 +20,71 @@ export interface RateLimitResult {
 // Accept every common Upstash / Vercel-KV naming convention. Vercel's Upstash
 // marketplace integration provisions UPSTASH_REDIS_REST_*; the legacy KV
 // integration provisions KV_REST_API_*. We resolve whichever pair is present
-// and remember WHICH names matched so /api/health/ratelimit can report it.
+// (including prefixed ones e.g. UPSTASH_REDIS_CYAN_REST_URL) and remember 
+// WHICH names matched so /api/health/ratelimit can report it.
 const URL_ENV_VARS = ["UPSTASH_REDIS_REST_URL", "KV_REST_API_URL"] as const;
 const TOKEN_ENV_VARS = ["UPSTASH_REDIS_REST_TOKEN", "KV_REST_API_TOKEN"] as const;
 
-function resolveEnv(
-  names: readonly string[]
-): { name: string; value: string } | null {
-  for (const name of names) {
-    const value = process.env[name];
-    if (value && value.trim()) return { name, value: value.trim() };
+interface EnvPair {
+  urlName: string;
+  urlValue: string;
+  tokenName: string;
+  tokenValue: string;
+}
+
+function resolveEnv(): EnvPair | null {
+  const keys = Object.keys(process.env);
+  const configs = [
+    { url: "_REST_URL", token: "_REST_TOKEN" },
+    { url: "_REST_API_URL", token: "_REST_API_TOKEN" },
+    { url: "_URL", token: "_TOKEN" }
+  ];
+
+  for (const config of configs) {
+    const urlKey = keys.find(k => 
+      (k.endsWith(config.url) || k === config.url.substring(1)) && 
+      /UPSTASH|KV|REDIS/i.test(k) && 
+      process.env[k]?.trim()
+    );
+    
+    if (urlKey) {
+      const urlValue = process.env[urlKey]!.trim();
+      const prefix = urlKey.endsWith(config.url) 
+        ? urlKey.slice(0, urlKey.length - config.url.length) 
+        : "";
+      
+      let tokenKey = prefix + config.token;
+      let tokenValue = process.env[tokenKey]?.trim();
+      
+      if (!tokenValue) {
+        const tokenSuffixes = ["_REST_TOKEN", "_REST_API_TOKEN", "_TOKEN"];
+        for (const suffix of tokenSuffixes) {
+          const testKey = prefix + suffix;
+          const val = process.env[testKey]?.trim();
+          if (val) {
+            tokenKey = testKey;
+            tokenValue = val;
+            break;
+          }
+        }
+      }
+      
+      if (tokenValue) {
+        return {
+          urlName: urlKey,
+          urlValue,
+          tokenName: tokenKey,
+          tokenValue
+        };
+      }
+    }
   }
   return null;
 }
 
-const resolvedUrl = resolveEnv(URL_ENV_VARS);
-const resolvedToken = resolveEnv(TOKEN_ENV_VARS);
+const resolvedPair = resolveEnv();
+const resolvedUrl = resolvedPair ? { name: resolvedPair.urlName, value: resolvedPair.urlValue } : null;
+const resolvedToken = resolvedPair ? { name: resolvedPair.tokenName, value: resolvedPair.tokenValue } : null;
 
 let redis: Redis | null = null;
 let redisInitError: string | null = null;
@@ -53,7 +102,7 @@ if (resolvedUrl && resolvedToken) {
   console.warn(
     "[rate-limit] No Upstash credentials found (checked " +
       [...URL_ENV_VARS, ...TOKEN_ENV_VARS].join(", ") +
-      "). Rate limiting falls back to in-memory and is INEFFECTIVE on serverless."
+      " and prefixes). Rate limiting falls back to in-memory and is INEFFECTIVE on serverless."
   );
 }
 

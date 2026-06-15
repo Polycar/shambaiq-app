@@ -50,3 +50,33 @@ Cabbage,Dry Season,Irrigation-based Transplanting,Top Dressing & Pest Management
 Sunflower,Long Rains,Sowing & Basal Fertilizer,Top Dressing & Weed Control,Head Development & Bird Protection
 Sunflower,Short Rains,Sowing & Basal Fertilizer,Top Dressing & 1st Weeding,Harvesting & Drying
 Sunflower,Dry Season,Harvesting & Threshing,Land Resting,Seed Selection & Storage
+French Beans,Long Rains,Sowing & DAP Basal Fertilizer (at planting),Weeding & Pest Scouting (bean fly),Pod Fill & Harvesting starts
+French Beans,Short Rains,Sowing & Basal Fertilizer,Weeding & Bean Fly Control,Harvesting & Grading for export
+French Beans,Dry Season,Harvesting remaining pods & Land Preparation,Soil pH testing & lime if needed,Seed multiplication & storage
+Barley,Long Rains,Drilling Sowing & Basal Fertilizer (DAP),Top Dressing (CAN) at tillering,Heading & Pest Monitoring
+Barley,Short Rains,Sowing & Basal Fertilizer,Top Dressing at tillering & Weed Control,Harvesting & Drying
+Barley,Dry Season,Post-Harvest Threshing & Storage,Land Resting & Ploughing,Seed Selection & Soil pH Check
+Amaranth,Long Rains,Sowing or Transplanting & CAN Basal,Thinning & 1st Top Dressing,Continuous Leaf Harvest
+Amaranth,Short Rains,Sowing & Basal Fertilizer,Weeding & Top Dressing,Harvesting & Seed Saving
+Amaranth,Dry Season,Irrigation & Continuous Harvesting,Top Dressing every 3 weeks,Replanting if stand exhausted
+Pineapple,Long Rains,Ratoon sucker planting & Basal NPK,Weed Control & Foliar Feed,Fruit Development Monitoring
+Pineapple,Short Rains,Top Dressing & Weed Control,Flower Induction (ethephon if needed),Fruit Fill & Disease Scouting
+Pineapple,Dry Season,Harvesting & Ratoon Management,Irrigation & Top Dressing,New Sucker Selection & Planting
+African Nightshade,Long Rains,Transplanting & Basal Fertilizer (DAP),First Harvest (leaf picking) & Top Dressing,Continuous Leaf Harvest
+African Nightshade,Short Rains,Transplanting & Basal Fertilizer,Weeding & Pest Control,Harvesting & Market
+African Nightshade,Dry Season,Irrigation & Continuous Harvesting,Top Dressing (CAN) every 2 weeks,Replanting if stand is old
+Butternut Squash,Long Rains,Sowing hills & Basal Fertilizer (NPK),Vine Training & Top Dressing,Fruit Set Monitoring & Harvesting
+Butternut Squash,Short Rains,Sowing & Basal Fertilizer,Vine Management & Pest Scouting,Harvesting & Curing
+Butternut Squash,Dry Season,Harvesting & Storage,Land Preparation & Manure Application,Seed Selection & Drying
+Eggplant,Long Rains,Nursery Preparation & Transplanting & DAP Basal,Staking & Top Dressing (CAN) & Pest Control,Harvesting & Disease Management
+Eggplant,Short Rains,Nursery & Transplanting & Basal Fertilizer,Top Dressing & Phomopsis Scouting,Harvesting
+Eggplant,Dry Season,Irrigation & Continuous Harvesting,Top Dressing & Pruning old plants,Replanting & Land Preparation
+Ginger,Long Rains,Seed rhizome planting & DAP Basal (in soil),Earthing Up & 1st CAN Top Dressing,Earthing Up again & Pest Monitoring
+Ginger,Short Rains,Growth & 2nd CAN Top Dressing,Earthing Up & Weed Control,Maturity Monitoring & Drying
+Ginger,Dry Season,Harvesting & Curing rhizomes,Post-Harvest sorting & grading,Land Preparation & seed rhizome selection
+Dolichos,Long Rains,Sowing & DAP Basal Fertilizer (NO CAN — nitrogen fixer),Weeding & Vine Support if needed,Pod Fill & Harvesting
+Dolichos,Short Rains,Sowing & Basal Fertilizer (no CAN),Weeding & Pest Scouting,Harvesting & Seed Drying
+Dolichos,Dry Season,Post-Harvest seed storage,Land Resting (N benefit remains in soil),Seed Selection & preparation
+Broccoli,Long Rains,Nursery Preparation & Transplanting & DAP Basal,CAN Top Dressing (week 3) & Caterpillar Control,Head Initiation Top Dress & Harvesting
+Broccoli,Short Rains,Nursery & Transplanting,Top Dressing & DBM Scouting,Harvesting
+Broccoli,Dry Season,Irrigation-based Transplanting,CAN Top Dressing & Pest Management,Harvesting & Land Preparation
